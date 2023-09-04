@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-body: Body;
+    --font-display: Display;
+  }
+
+  body {
+    @apply text-accent bg-backdrop;
+    font-family: var(--font-body), system-ui, sans-serif;
+    font-size: 16px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-primary tracking-tighter;
+    font-size: 2rem;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 600;
+  }
+}
