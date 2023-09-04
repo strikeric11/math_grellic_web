@@ -1,0 +1,85 @@
+{
+  "section1": {
+    "title": "Whenever the Fun Starts, Learning Happens",
+    "content": "Math Grellic is a math platform that transforms learning into an exciting adventure."
+  },
+  "section2": {
+    "title": "Empower educators and engage learners on our edutainment platform",
+    "features": [
+      {
+        "key": "feat1",
+        "title": "Maximized Teacher Efficiency",
+        "content": "Spend less time on paperwork and assessments. Easily track students’ progress and give immediate feedback."
+      },
+      {
+        "key": "feat2",
+        "title": "Systematic Course Design",
+        "content": "Lessons, drills, excercises, and assessments are organized in a progressive way to gradually facilitate the absorption of topics at hand."
+      },
+      {
+        "key": "feat3",
+        "title": "Accessible And Intuitive",
+        "content": "Whether tech-savvy or not, our intuitive interface and simplified features make it a breeze to navigate for both teachers and students."
+      }
+    ]
+  },
+  "section3": {
+    "title": "About Math Grellic",
+    "content": "<p>Math Grellic is a game-based website application designed and developed to help address the least dealt learning competencies of the K to 12 Basic Education Curriculum for the Alternative Learning System (ALS-K to 12) specifically in the Learning Strand 3 (Mathematical and Problem Solving Skills).<br /><br />Moreover, this website application is designed not only to help the Alternative Learning System (ALS) learners master a mathematical skill but also the Alternative Learning System (ALS) teachers to easily track the progress of their learners and give feedbacks immediately. Less paper works in the case of teachers for everything is made easier through the help of technology.</p>"
+  },
+  "section4": {
+    "title": "Benefits of Learning With Us",
+    "benefits": [
+      {
+        "key": "benefit1",
+        "title": "Easy Tracking",
+        "content": "Learners can easily track their learning progress and teachers at the same time can easily monitor the performances of their learners through the “statistics” feature."
+      },
+      {
+        "key": "benefit2",
+        "title": "Learning is Fun",
+        "content": "Learning a mathematical skill is embedded on games where learners play, have fun and at the same time learn."
+      },
+      {
+        "key": "benefit3",
+        "title": "Flexible Study Terms",
+        "content": "Students can schedule classes with their teachers at their convenience, eliminating the need to attend face-to-face classes or visit community learning centers for Alternative Learning System (ALS) classes."
+      }
+    ]
+  },
+  "section5": {
+    "title": "Our Key Features",
+    "keyFeatures": [
+      {
+        "key": "key1",
+        "title": "Simplified Lessons",
+        "content": "Lessons can easily be accesed and are presented in video format to be easily grasped by Alternative Learning System (ALS) learners through their online accounts."
+      },
+      {
+        "key": "key2",
+        "title": "Drills and Exercises",
+        "content": "Drills, exercises, and games are provided for the students to practice their mathematical skills. Unlike in the traditional way of using books, mastering math is just few clicks away, acquiring skills and trophies."
+      },
+      {
+        "key": "key3",
+        "title": "Online Assessments",
+        "content": "Summative tests and quizzes online can be answered wherever the students want. Scores are also immediately reflected upon the completion of exams."
+      },
+      {
+        "key": "key4",
+        "title": "Immediate Feedbacks",
+        "content": "Upon completion of assessments, students gain immediate access to their exam results. Moreover, they have the option to seek clarification from their teacher regarding any ambiguous aspects of the exam."
+      },
+      {
+        "key": "key5",
+        "title": "Ready Made Statistics",
+        "content": "Students can instantly view their individual progress upon completion of activities, summative tests, and quizzes using scatter plots and tables. An overall statistics comparing the performances of all students in the class are also available both for teachers and students."
+      },
+      {
+        "key": "key6",
+        "title": "Reward System",
+        "content": "In every completion of tasks, a learner earns points with corresponding badges or trophies to motivate them to strive. Rank system is also available in order for learners to see their progress relative to their classmates’ performances in the class."
+      }
+    ]
+  }
+}

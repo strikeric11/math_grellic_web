@@ -9,7 +9,7 @@
   }
 
   body {
-    @apply text-accent bg-backdrop;
+    @apply bg-backdrop text-accent;
     font-family: var(--font-body), system-ui, sans-serif;
     font-size: 16px;
   }
@@ -20,9 +20,81 @@
   h4,
   h5,
   h6 {
-    @apply text-primary tracking-tighter;
+    @apply tracking-tighter text-primary;
     font-size: 2rem;
     font-family: var(--font-display), system-ui, sans-serif;
     font-weight: 600;
   }
+
+  .base-input input:not(:placeholder-shown) ~ label {
+    @apply !-translate-y-111 !text-13px after:!top-0;
+  }
+
+  .base-rich-text h1 {
+    @apply !text-2xl;
+  }
+
+  .base-rich-text h2 {
+    @apply !text-xl;
+  }
+
+  .base-rich-text h3 {
+    @apply !text-lg;
+  }
+
+  .base-rich-text h4 {
+    @apply !text-base;
+  }
+
+  .base-rich-text a.rich-link {
+    @apply text-primary-focus-light underline;
+  }
+
+  .base-rich-text hr {
+    @apply my-2.5;
+  }
+
+  .base-rich-text ol,
+  .base-rich-text ul {
+    @apply list-inside;
+  }
+
+  .base-rich-text ol > li > *,
+  .base-rich-text ul > li > * {
+    @apply inline-block;
+  }
+
+  .base-rich-text ol {
+    @apply list-decimal;
+  }
+
+  .base-rich-text ul {
+    @apply list-disc;
+  }
+
+  .group-button {
+    @apply flex items-center;
+  }
+
+  .group-button > .button:not(:last-child),
+  .group-button > *:not(:last-child) .button {
+    @apply !rounded-r-none !border-r-transparent;
+  }
+
+  .group-button > .button:not(:first-child),
+  .group-button > *:not(:first-child) .button {
+    @apply !rounded-l-none;
+  }
+
+  .group-button > .button.solid:not(:last-child):hover {
+    @apply !border-r-primary-focus-light;
+  }
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
 }

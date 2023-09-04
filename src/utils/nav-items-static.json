@@ -1,0 +1,12 @@
+[
+  {
+    "name": "about",
+    "to": "/about",
+    "label": "About Math Grellic"
+  },
+  {
+    "name": "training",
+    "to": "/training",
+    "label": "Training"
+  }
+]
