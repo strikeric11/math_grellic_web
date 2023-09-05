@@ -11,6 +11,8 @@ type Props = ComponentProps<typeof Link> & {
   isCompact?: boolean;
 };
 
+const META_TITLE = import.meta.env.NEXT_PUBLIC_META_TITLE;
+
 export const CoreStaticLogo = memo(function ({
   className,
   isHome,
@@ -27,11 +29,7 @@ export const CoreStaticLogo = memo(function ({
       {...moreProps}
     >
       <img src={logoPng} alt='logo' width={230} height={40} />
-      {isHome && (
-        <h1 className='invisible absolute'>
-          {import.meta.env.NEXT_PUBLIC_META_TITLE}
-        </h1>
-      )}
+      {isHome && <h1 className='invisible absolute'>{META_TITLE}</h1>}
     </Link>
   );
 });

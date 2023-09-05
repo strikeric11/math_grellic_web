@@ -7,19 +7,32 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "@headlessui/react": "latest",
+    "@hookform/resolvers": "^3.3.1",
+    "@lukemorales/query-key-factory": "^1.3.2",
     "@phosphor-icons/react": "^2.0.10",
+    "@supabase/auth-helpers-nextjs": "^0.7.4",
+    "@supabase/supabase-js": "^2.33.1",
+    "@tanstack/react-query": "^4.33.0",
+    "@tanstack/react-query-devtools": "^4.33.0",
     "classix": "^2.1.34",
+    "dayjs": "^1.11.9",
     "framer-motion": "^10.16.2",
+    "ky": "^1.0.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.46.1",
+    "react-hot-toast": "^2.4.1",
+    "react-number-format": "^5.3.1",
     "react-router-dom": "^6.15.0",
     "sort-by": "^1.2.0",
+    "zod": "^3.22.2",
     "zustand": "^4.4.1"
   },
   "devDependencies": {

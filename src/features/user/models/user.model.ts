@@ -34,7 +34,7 @@ type UserAccount = AuditTrail & {
   firstName: string;
   lastName: string;
   middleName?: string;
-  birthDate: Date; // TODO convert string to date
+  birthDate: Date;
   phoneNumber: string;
   gender: UserGender;
 };

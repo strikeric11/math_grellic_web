@@ -1,16 +1,19 @@
 import { memo, useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
+import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { ABSOLUTE_REGISTER_PATH, DASHBOARD_PATH } from '#/utils/path.util';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
+import { useAuth } from '#/user/hooks/use-auth.hook';
 import { CoreStaticLogo } from './core-static-logo.component';
 import { CoreStaticNav } from './core-static-nav.component';
 
 import navItemsStaticJson from '#/utils/nav-items-static.json';
 
 import type { ComponentProps } from 'react';
+import type { HTTPError } from 'ky';
 
 const SCROLL_Y_THRESHOLD = 40;
 
@@ -21,8 +24,7 @@ export const CoreStaticHeader = memo(function ({
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { scrollY } = useScroll();
-  // TODO logout auth
-  // const { logout } = useAuth();
+  const { logout } = useAuth();
   const [isScrollTop, setIsScrollTop] = useState(true);
   const [loading, setLoading] = useState(false);
 
@@ -51,16 +53,14 @@ export const CoreStaticHeader = memo(function ({
     } else {
       try {
         setLoading(true);
-        // TODO logout
-        // await logout();
-      } catch (error: unknown) {
-        // TODO tost
-        // toast.error(error.message);
+        await logout();
+      } catch (error) {
+        toast.error((error as HTTPError).message);
       } finally {
         setLoading(false);
       }
     }
-  }, [pathname, user, setOpenRegister]);
+  }, [pathname, user, logout, setOpenRegister]);
 
   const handleLogin = useCallback(() => {
     // If no user is signed-in show sign-in modal,

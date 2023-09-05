@@ -1,4 +1,7 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, ScrollRestoration } from 'react-router-dom';
+
+import { AuthRegisterModal } from '#/user/components/auth-register-modal.component';
+import { AuthLoginModal } from '#/user/components/auth-login-modal.component';
 
 import { CoreStaticHeader } from './core-static-header.component';
 import { CoreStaticFooter } from './core-static-footer.component';
@@ -12,8 +15,9 @@ export function CoreStaticLayout() {
         <Outlet />
       </CoreStaticMain>
       <CoreStaticFooter />
-      {/* TODO <AuthRegisterModal />
-      <AuthLoginModal /> */}
+      <AuthRegisterModal />
+      <AuthLoginModal />
+      <ScrollRestoration />
     </>
   );
 }

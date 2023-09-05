@@ -12,6 +12,7 @@ import gridPng from '#/assets/images/grid.png';
 
 import type { ComponentProps } from 'react';
 
+const META_TITLE = import.meta.env.VITE_META_TITLE;
 const bgStyle = { backgroundImage: `url(${gridPng})` };
 const currentYear = new Date().getFullYear();
 
@@ -66,10 +67,7 @@ export const CoreStaticFooter = memo(function ({
           <div className='flex flex-col items-center pt-6'>
             <h2 className='mb-7 text-[44px] font-bold'>
               Begin your journey with{' '}
-              <i className='text-secondary'>
-                {import.meta.env.VITE_META_TITLE}
-              </i>{' '}
-              today.
+              <i className='text-secondary'>{META_TITLE}</i> today.
             </h2>
             <BaseButton
               variant='primary'
