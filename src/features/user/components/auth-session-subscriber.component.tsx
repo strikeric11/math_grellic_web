@@ -1,6 +1,6 @@
 import { memo, useEffect } from 'react';
 
-import { supabase } from '#/core/config/supabase-client.config';
+import { supabase } from '../../../config/supabase-client.config';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { useAuth } from '#/user/hooks/use-auth.hook';
 

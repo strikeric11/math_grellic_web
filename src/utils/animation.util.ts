@@ -1,10 +1,3 @@
-export const dropdownAnimation = {
-  initial: { scale: 0.7 },
-  animate: { scale: 1 },
-  exit: { scale: 0.7 },
-  transition: { duration: 0.16, ease: 'linear' },
-};
-
 export const dialogBackdropTransition = {
   enter: 'transition ease-out duration-300',
   enterFrom: 'opacity-0',

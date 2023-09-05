@@ -1,6 +1,6 @@
 import ky from 'ky';
 
-import { queryKey } from '#/core/config/react-query-key.config';
+import { queryKey } from '../../../config/react-query-key.config';
 import {
   transformToStudentUserDto,
   transformToTeacherUserDto,

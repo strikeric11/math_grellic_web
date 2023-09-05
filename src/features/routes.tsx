@@ -9,6 +9,7 @@ import { CoreLayout } from './core/components/core-layout.component';
 import { CorePageNotFound } from './core/components/core-page-not-found.component';
 import { HomePage } from './static/pages/home.page';
 import { AboutPage } from './static/pages/about.page';
+import { AuthRegisterPage } from './user/pages/auth-register.page';
 
 const rootRoutes = createRoutesFromElements(
   <>
@@ -16,7 +17,7 @@ const rootRoutes = createRoutesFromElements(
       <Route index element={<HomePage />} />
       <Route path='about' element={<AboutPage />} />
       <Route path='training' element={<TrainingPage />} />
-      <Route path='auth/register' element={<RegisterPage />} />
+      <Route path='auth/register' element={<AuthRegisterPage />} />
       <Route path='*' element={<CorePageNotFound />} />
     </Route>
     {/* // TODO dashboard layout */}
@@ -30,10 +31,6 @@ export const router = createBrowserRouter(rootRoutes);
 
 function TrainingPage() {
   return <div>TRAINING PAGE</div>;
-}
-
-function RegisterPage() {
-  return <div>REGISTER PAGE</div>;
 }
 
 function DashboardPage() {

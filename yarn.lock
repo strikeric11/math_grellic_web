@@ -683,6 +683,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@popperjs/core@npm:^2.11.8":
+  version: 2.11.8
+  resolution: "@popperjs/core@npm:2.11.8"
+  checksum: e5c69fdebf52a4012f6a1f14817ca8e9599cb1be73dd1387e1785e2ed5e5f0862ff817f420a87c7fc532add1f88a12e25aeb010ffcbdc98eace3d55ce2139cf0
+  languageName: node
+  linkType: hard
+
 "@remix-run/router@npm:1.8.0":
   version: 1.8.0
   resolution: "@remix-run/router@npm:1.8.0"
@@ -910,6 +917,13 @@ __metadata:
   version: 7.5.1
   resolution: "@types/semver@npm:7.5.1"
   checksum: 2fffe938c7ac168711f245a16e1856a3578d77161ca17e29a05c3e02c7be3e9c5beefa29a3350f6c1bd982fb70aa28cc52e4845eb7d36246bcdc0377170d584d
+  languageName: node
+  linkType: hard
+
+"@types/validator@npm:^13.11.1":
+  version: 13.11.1
+  resolution: "@types/validator@npm:13.11.1"
+  checksum: 49e8b611e0b9a0cd645534fd5eeacc64c14ac2f11d7e91d3d8b891f7cf730bccb8a4b7466ac67f4c11e16531bc211a547b97314ca977dd5e58468a77bd0da735
   languageName: node
   linkType: hard
 
@@ -2824,7 +2838,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -2908,6 +2922,7 @@ __metadata:
     "@hookform/resolvers": ^3.3.1
     "@lukemorales/query-key-factory": ^1.3.2
     "@phosphor-icons/react": ^2.0.10
+    "@popperjs/core": ^2.11.8
     "@supabase/auth-helpers-nextjs": ^0.7.4
     "@supabase/supabase-js": ^2.33.1
     "@tailwindcss/forms": ^0.5.6
@@ -2916,6 +2931,7 @@ __metadata:
     "@types/node": ^20.5.9
     "@types/react": ^18.2.15
     "@types/react-dom": ^18.2.7
+    "@types/validator": ^13.11.1
     "@typescript-eslint/eslint-plugin": ^6.0.0
     "@typescript-eslint/parser": ^6.0.0
     "@vitejs/plugin-react": ^4.0.3
@@ -2931,6 +2947,8 @@ __metadata:
     ky: ^1.0.0
     localforage: ^1.10.0
     match-sorter: ^6.3.1
+    overlayscrollbars: ^2.3.0
+    overlayscrollbars-react: ^0.5.2
     postcss: ^8.4.29
     prettier: ^3.0.3
     prettier-plugin-tailwindcss: ^0.5.4
@@ -2939,10 +2957,12 @@ __metadata:
     react-hook-form: ^7.46.1
     react-hot-toast: ^2.4.1
     react-number-format: ^5.3.1
+    react-popper: ^2.3.0
     react-router-dom: ^6.15.0
     sort-by: ^1.2.0
     tailwindcss: ^3.3.3
     typescript: ^5.0.2
+    validator: ^13.11.0
     vite: ^4.4.5
     zod: ^3.22.2
     zustand: ^4.4.1
@@ -3351,6 +3371,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"overlayscrollbars-react@npm:^0.5.2":
+  version: 0.5.2
+  resolution: "overlayscrollbars-react@npm:0.5.2"
+  peerDependencies:
+    overlayscrollbars: ^2.0.0
+    react: ">=16.8.0"
+  checksum: 64c76ea5510d8b8ff30a0583018797f7a53afe3dd3b3c4c8cdcc960e277c4a5eeeeb2f027f442a65cefdef3850d042dbd8bafb84660cb50d101ad266ebca60fa
+  languageName: node
+  linkType: hard
+
+"overlayscrollbars@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "overlayscrollbars@npm:2.3.0"
+  checksum: 876dc4f3cfbf2b53335152da465eaa9c6eb64c10dfee319c72b644da9fd7ca2e9094075f34ac5042a99f4d56e5a0146c6c047ec637f478b754cacc43506d211b
+  languageName: node
+  linkType: hard
+
 "p-limit@npm:^3.0.2":
   version: 3.1.0
   resolution: "p-limit@npm:3.1.0"
@@ -3673,6 +3710,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-fast-compare@npm:^3.0.1":
+  version: 3.2.2
+  resolution: "react-fast-compare@npm:3.2.2"
+  checksum: 2071415b4f76a3e6b55c84611c4d24dcb12ffc85811a2840b5a3f1ff2d1a99be1020d9437ee7c6e024c9f4cbb84ceb35e48cf84f28fcb00265ad2dfdd3947704
+  languageName: node
+  linkType: hard
+
 "react-hook-form@npm:^7.46.1":
   version: 7.46.1
   resolution: "react-hook-form@npm:7.46.1"
@@ -3710,6 +3754,20 @@ __metadata:
     react: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
     react-dom: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
   checksum: 316054bc8aa03d4fe5b283b1e498389393858728b69acc32e2546e9ce2e54e4e937ca4fdd0fa6e771f1b5f2d8b3c883cbc19c39799a27e91265c133d79103aaa
+  languageName: node
+  linkType: hard
+
+"react-popper@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "react-popper@npm:2.3.0"
+  dependencies:
+    react-fast-compare: ^3.0.1
+    warning: ^4.0.2
+  peerDependencies:
+    "@popperjs/core": ^2.0.0
+    react: ^16.8.0 || ^17 || ^18
+    react-dom: ^16.8.0 || ^17 || ^18
+  checksum: 837111c98738011c69b3069a464ea5bdcbf487105b6148e8faf90cb7337e134edb1b98b8824322941c378756cca30a15c18c25f558e53b85ed5762fa0dc8e6b2
   languageName: node
   linkType: hard
 
@@ -4423,6 +4481,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"validator@npm:^13.11.0":
+  version: 13.11.0
+  resolution: "validator@npm:13.11.0"
+  checksum: d1e0c27022681420756da25bc03eb08d5f0c66fb008f8ff02ebc95812b77c6be6e03d3bd05cf80ca702e23eeb73dadd66b4b3683173ea2a0bc7cc72820bee131
+  languageName: node
+  linkType: hard
+
 "vite@npm:^4.4.5":
   version: 4.4.9
   resolution: "vite@npm:4.4.9"
@@ -4460,6 +4525,15 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: c511024ceae39c68c7dbf2ac4381ee655cd7bb62cf43867a14798bc835d3320b8fa7867a336143c30825c191c1fb4e9aa3348fce831ab617e96203080d3d2908
+  languageName: node
+  linkType: hard
+
+"warning@npm:^4.0.2":
+  version: 4.0.3
+  resolution: "warning@npm:4.0.3"
+  dependencies:
+    loose-envify: ^1.0.0
+  checksum: 4f2cb6a9575e4faf71ddad9ad1ae7a00d0a75d24521c193fa464f30e6b04027bd97aa5d9546b0e13d3a150ab402eda216d59c1d0f2d6ca60124d96cd40dfa35c
   languageName: node
   linkType: hard
 

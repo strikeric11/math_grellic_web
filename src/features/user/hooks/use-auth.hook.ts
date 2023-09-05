@@ -1,10 +1,14 @@
 import { useCallback } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { supabase } from '#/core/config/supabase-client.config';
+import { supabase } from '../../../config/supabase-client.config';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { UserRole } from '#/user/models/user.model';
-import { getCurrentUser, registerTeacherUser } from '#/user/api/user.api';
+import {
+  getCurrentUser,
+  registerStudentUser,
+  registerTeacherUser,
+} from '#/user/api/user.api';
 import { transformToUser } from '#/user/helpers/user.helper';
 
 import type {
@@ -44,7 +48,7 @@ export function useAuth(): Result {
     registerTeacherUser(),
   );
   const { mutateAsync: mutateRegStudentUser } = useMutation(
-    registerTeacherUser(),
+    registerStudentUser(),
   );
 
   const register = useCallback(
