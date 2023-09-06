@@ -31,14 +31,25 @@ export function CoreLayout() {
     };
   }, [currentHandle]);
 
+  const disabledSceneWrapper = useMemo(
+    () => currentHandle?.disabledSceneWrapper || false,
+    [currentHandle],
+  );
+
   return (
     <div className='flex items-start justify-start'>
       <CoreSidebar />
       <CoreMain id='main'>
         <CoreHeader />
-        <BaseScene {...sceneProps}>
-          <Outlet />
-        </BaseScene>
+        {disabledSceneWrapper ? (
+          <div className='relative z-10'>
+            <Outlet />
+          </div>
+        ) : (
+          <BaseScene {...sceneProps}>
+            <Outlet />
+          </BaseScene>
+        )}
       </CoreMain>
     </div>
   );

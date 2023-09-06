@@ -95,4 +95,5 @@ export type SceneRouteHandle = {
   breadcrumbsHidden?: boolean;
   isClose?: boolean;
   links?: GroupLink[];
+  disabledSceneWrapper?: boolean;
 };

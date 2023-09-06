@@ -20,6 +20,7 @@ import { lessonRouteHandle } from './lesson/lesson-route-handle';
 import { LessonCreatePage } from './lesson/pages/lesson-create.page';
 import { LessonListPage } from './lesson/pages/lesson-list.page';
 import { LessonSchedulePage } from './lesson/pages/lesson-schedule.page';
+import { LessonPreviewPage } from './lesson/pages/lesson-preview.page';
 
 const rootRoutes = createRoutesFromElements(
   <>
@@ -48,6 +49,11 @@ const rootRoutes = createRoutesFromElements(
           path='schedule'
           element={<LessonSchedulePage />}
           handle={lessonRouteHandle.schedule}
+        />
+        <Route
+          path='preview'
+          element={<LessonPreviewPage />}
+          handle={lessonRouteHandle.preview}
         />
       </Route>
       <Route path='*' element={<CorePageNotFound />} />

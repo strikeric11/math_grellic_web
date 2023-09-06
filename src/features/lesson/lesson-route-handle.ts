@@ -47,4 +47,5 @@ export const lessonRouteHandle: { [key: string]: SceneRouteHandle } = {
       },
     ],
   },
+  preview: { disabledSceneWrapper: true },
 };
