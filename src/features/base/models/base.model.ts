@@ -64,6 +64,7 @@ export type NavItem = {
   to: string;
   label: string;
   iconName?: IconName;
+  end?: boolean;
   size?: number;
 };
 
@@ -74,7 +75,7 @@ export type SelectOption = {
 };
 
 export type GroupLink = {
-  href: string;
+  to: string;
   label: string;
   icons?: {
     name: IconName;
@@ -87,3 +88,11 @@ export type ButtonSize = 'base' | 'sm' | 'xs';
 export type ModalSize = 'base' | 'sm' | 'lg' | 'none';
 export type SpinnerColor = 'primary' | 'white';
 export type SpinnerSize = ButtonSize;
+
+export type SceneRouteHandle = {
+  title?: string;
+  toolbarHidden?: boolean;
+  breadcrumbsHidden?: boolean;
+  isClose?: boolean;
+  links?: GroupLink[];
+};
