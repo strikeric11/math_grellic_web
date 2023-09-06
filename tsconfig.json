@@ -24,7 +24,9 @@
       "#/core/*": ["./src/features/core/*"],
       "#/base/*": ["./src/features/base/*"],
       "#/static/*": ["./src/features/static/*"],
-      "#/user/*": ["./src/features/user/*"]
+      "#/user/*": ["./src/features/user/*"],
+      "#/lesson/*": ["./src/features/lesson/*"],
+      "#/exam/*": ["./src/features/exam/*"]
     }
   },
   "include": ["src"],

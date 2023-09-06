@@ -39,6 +39,18 @@ export default defineConfig({
           new URL('./src/features/user', import.meta.url),
         ),
       },
+      {
+        find: '#/lesson',
+        replacement: fileURLToPath(
+          new URL('./src/features/lesson', import.meta.url),
+        ),
+      },
+      {
+        find: '#/exam',
+        replacement: fileURLToPath(
+          new URL('./src/features/exam', import.meta.url),
+        ),
+      },
     ],
   },
 });

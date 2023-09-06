@@ -23,7 +23,7 @@ export function App() {
       <AuthSessionSubscriber />
       <RouterProvider router={router} />
       <Toaster position='bottom-center' />
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
     </QueryClientProvider>
   );
 }
