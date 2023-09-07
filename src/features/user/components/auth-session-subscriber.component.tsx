@@ -1,6 +1,6 @@
 import { memo, useEffect } from 'react';
 
-import { supabase } from '../../../config/supabase-client.config';
+import { supabase } from '#/config/supabase-client.config';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { useAuth } from '#/user/hooks/use-auth.hook';
 
@@ -12,6 +12,7 @@ export const AuthSessionSubscriber = memo(function () {
   useEffect(() => {
     // Check auth session
     supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log(event, session);
       if (event !== 'INITIAL_SESSION') {
         return;
       }

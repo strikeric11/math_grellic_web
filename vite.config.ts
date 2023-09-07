@@ -12,6 +12,10 @@ export default defineConfig({
         replacement: fileURLToPath(new URL('./src/assets', import.meta.url)),
       },
       {
+        find: '#/config',
+        replacement: fileURLToPath(new URL('./src/config', import.meta.url)),
+      },
+      {
         find: '#/utils',
         replacement: fileURLToPath(new URL('./src/utils', import.meta.url)),
       },

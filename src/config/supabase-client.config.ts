@@ -1,10 +1,6 @@
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = createClientComponentClient({
-  supabaseUrl,
-  supabaseKey,
-  isSingleton: true,
-});
+export const supabase = createClient(supabaseUrl, supabaseKey);

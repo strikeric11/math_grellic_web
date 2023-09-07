@@ -6,9 +6,9 @@ import { Toaster } from 'react-hot-toast';
 import { useOverlayScrollbars } from 'overlayscrollbars-react';
 
 import { router } from './routes';
-import { queryClient } from '../config/react-query-client.config';
+import { queryClient } from '#/config/react-query-client.config';
 import { AuthSessionSubscriber } from './user/components/auth-session-subscriber.component';
-import '../config/dayjs.config';
+import '#/config/dayjs.config';
 
 export function App() {
   const [initBodyOverlayScrollbars] = useOverlayScrollbars({ defer: true });

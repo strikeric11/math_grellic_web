@@ -1,6 +1,5 @@
-import ky from 'ky';
-
-import { queryKey } from '../../../config/react-query-key.config';
+import { kyInstance } from '#/config/ky.config';
+import { queryKey } from '#/config/react-query-key.config';
 import {
   transformToStudentUserDto,
   transformToTeacherUserDto,
@@ -15,7 +14,7 @@ import type { HTTPError } from 'ky';
 import type { User } from '#/user/models/user.model';
 import type { AuthRegisterFormData } from '#/user/models/auth.model';
 
-const API_URL = `${import.meta.env.VITE_API_BASE_URL}/users`;
+const BASE_URL = 'users/auth';
 
 export function getCurrentUser(
   options?: Omit<
@@ -24,10 +23,10 @@ export function getCurrentUser(
   >,
 ) {
   const queryFn = async (): Promise<any> => {
-    const url = `${API_URL}/auth/me`;
+    const url = `${BASE_URL}/me`;
 
     try {
-      const user = await ky.get(url, { credentials: 'include' }).json();
+      const user = await kyInstance.get(url, { credentials: 'include' }).json();
       return user;
     } catch (error) {
       const errorRes = await (error as HTTPError).response.json();
@@ -49,11 +48,11 @@ export function registerTeacherUser(
   >,
 ) {
   const mutationFn = async (data: AuthRegisterFormData): Promise<any> => {
-    const url = `${API_URL}/auth/register-teacher`;
+    const url = `${BASE_URL}/register-teacher`;
     const json = transformToTeacherUserDto(data);
 
     try {
-      const user = await ky.post(url, { credentials: 'include', json }).json();
+      const user = await kyInstance.post(url, { json }).json();
       return transformToUser(user);
     } catch (error) {
       const errorRes = await (error as HTTPError).response.json();
@@ -75,11 +74,11 @@ export function registerStudentUser(
   >,
 ) {
   const mutationFn = async (data: AuthRegisterFormData): Promise<any> => {
-    const url = `${API_URL}/auth/register-student`;
+    const url = `${BASE_URL}/register-student`;
     const json = transformToStudentUserDto(data);
 
     try {
-      const user = await ky.post(url, { credentials: 'include', json }).json();
+      const user = await kyInstance.post(url, { json }).json();
       return transformToUser(user);
     } catch (error) {
       const errorRes = await (error as HTTPError).response.json();

@@ -20,6 +20,7 @@
     // Others
     "paths": {
       "#/assets/*": ["./src/assets/*"],
+      "#/config/*": ["./src/config/*"],
       "#/utils/*": ["./src/utils/*"],
       "#/core/*": ["./src/features/core/*"],
       "#/base/*": ["./src/features/base/*"],

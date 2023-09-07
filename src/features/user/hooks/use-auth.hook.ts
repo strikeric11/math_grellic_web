@@ -8,7 +8,7 @@ import {
   getCurrentUser,
   registerStudentUser,
   registerTeacherUser,
-} from '#/user/api/user.api';
+} from '#/user/api/auth.api';
 import { transformToUser } from '#/user/helpers/user.helper';
 
 import type {
