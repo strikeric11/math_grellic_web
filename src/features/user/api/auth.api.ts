@@ -26,7 +26,7 @@ export function getCurrentUser(
     const url = `${BASE_URL}/me`;
 
     try {
-      const user = await kyInstance.get(url, { credentials: 'include' }).json();
+      const user = await kyInstance.get(url).json();
       return user;
     } catch (error) {
       const errorRes = await (error as HTTPError).response.json();

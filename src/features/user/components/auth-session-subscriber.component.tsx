@@ -12,7 +12,6 @@ export const AuthSessionSubscriber = memo(function () {
   useEffect(() => {
     // Check auth session
     supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log(event, session);
       if (event !== 'INITIAL_SESSION') {
         return;
       }
