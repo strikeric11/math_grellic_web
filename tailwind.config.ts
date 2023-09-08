@@ -8,6 +8,7 @@ export default {
       maxWidth: {
         'static-full': '1232px',
         max: '1920px',
+        compact: '860px',
         input: '280px',
       },
       height: {

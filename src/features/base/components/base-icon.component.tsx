@@ -19,6 +19,7 @@ import {
   ChatCenteredText,
   CheckCircle,
   CheckFat,
+  CircleDashed,
   Clock,
   DoorOpen,
   Exam,
@@ -54,9 +55,9 @@ import {
   User,
   UsersFour,
   X,
-  type Icon,
-  type IconProps,
 } from '@phosphor-icons/react';
+
+import type { Icon, IconProps } from '@phosphor-icons/react';
 import type { IconName } from '../models/base.model';
 
 type Props = IconProps & {
@@ -102,6 +103,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return CheckFat;
       case 'check-circle':
         return CheckCircle;
+      case 'circle-dashed':
+        return CircleDashed;
       case 'clock':
         return Clock;
       case 'door-open':

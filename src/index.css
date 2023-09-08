@@ -50,6 +50,10 @@
     @apply text-primary-focus-light underline;
   }
 
+  .base-rich-text.rt-output p {
+    @apply my-2;
+  }
+
   .base-rich-text hr {
     @apply my-2.5;
   }

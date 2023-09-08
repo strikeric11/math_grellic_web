@@ -23,6 +23,7 @@ export type IconName =
   | 'chat-centered-text'
   | 'check-fat'
   | 'check-circle'
+  | 'circle-dashed'
   | 'clock'
   | 'door-open'
   | 'exam'

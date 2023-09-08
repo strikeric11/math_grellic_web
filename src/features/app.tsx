@@ -22,7 +22,7 @@ export function App() {
     <QueryClientProvider client={queryClient}>
       <AuthSessionSubscriber />
       <RouterProvider router={router} />
-      <Toaster position='bottom-center' />
+      <Toaster containerClassName='mb-12' position='bottom-center' />
       <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
     </QueryClientProvider>
   );

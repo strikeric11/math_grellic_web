@@ -35,7 +35,7 @@ const menuIconProps: ComponentProps<typeof BaseIconButton>['iconProps'] = {
   weight: 'bold',
 };
 
-const Menubar = memo(function ({ editor }: { editor: Editor }) {
+function Menubar({ editor }: { editor: Editor }) {
   const handleToggleHeading = useCallback(
     (level: Level) => () =>
       editor.chain().focus().toggleHeading({ level }).run(),
@@ -285,7 +285,7 @@ const Menubar = memo(function ({ editor }: { editor: Editor }) {
       <BaseDivider />
     </div>
   );
-});
+}
 
 export const BaseRichTextEditor = memo(function ({
   className,
