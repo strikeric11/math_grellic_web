@@ -36,11 +36,7 @@ export const CoreHeader = memo(function ({
           <BaseIconButton name='user' variant='solid' size='sm' />
         </div>
         <BaseDivider vertical />
-        <CoreClock
-          dateTime={new Date()}
-          className='h-full'
-          isCompact={!isScrollTop}
-        />
+        <CoreClock className='h-full' isCompact={!isScrollTop} />
       </div>
     </header>
   );
