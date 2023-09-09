@@ -4,7 +4,7 @@ import cx from 'classix';
 import { BaseIcon } from './base-icon.component';
 
 import type { ComponentProps } from 'react';
-import type { IconName } from '#/base/models/base.model';
+import type { IconName } from '../models/base.model';
 
 type Props = ComponentProps<'button'> & {
   size?: 'base' | 'sm';

@@ -21,7 +21,7 @@ import type {
   ControllerRenderProps,
   UseControllerProps,
 } from 'react-hook-form';
-import type { IconName, SelectOption } from '#/base/models/base.model';
+import type { IconName, SelectOption } from '../models/base.model';
 
 type Props = Omit<ComponentProps<typeof Listbox>, 'onChange'> & {
   options: SelectOption[];

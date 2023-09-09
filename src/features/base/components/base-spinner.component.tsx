@@ -2,7 +2,7 @@ import { memo } from 'react';
 import cx from 'classix';
 
 import type { ComponentProps } from 'react';
-import type { SpinnerColor, SpinnerSize } from '#/base/models/base.model';
+import type { SpinnerColor, SpinnerSize } from '../models/base.model';
 
 type Props = ComponentProps<'div'> & {
   color?: SpinnerColor;

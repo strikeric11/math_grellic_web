@@ -23,6 +23,7 @@ import type { ComponentProps, ReactNode } from 'react';
 type StepperControlsProps = ComponentProps<typeof BaseStepperControls>;
 
 type Props = ComponentProps<'div'> & {
+  disabled?: boolean;
   controlsRightContent?: ReactNode;
   onReset?: StepperControlsProps['onReset'];
   onPrev?: StepperControlsProps['onPrev'];
@@ -31,11 +32,12 @@ type Props = ComponentProps<'div'> & {
 
 export const BaseStepper = memo(function ({
   className,
+  disabled,
+  children,
   controlsRightContent,
   onReset,
   onPrev,
   onNext,
-  children,
   ...moreProps
 }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -128,6 +130,7 @@ export const BaseStepper = memo(function ({
         onPrev={handlePrevStep}
         onNext={handleNextStep}
         onReset={handleReset}
+        disabled={disabled}
       >
         {controlsRightContent}
       </BaseStepperControls>

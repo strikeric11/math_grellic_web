@@ -5,7 +5,7 @@ import { BaseIcon } from './base-icon.component';
 
 import type { ComponentProps } from 'react';
 import type { IconWeight } from '@phosphor-icons/react';
-import type { IconName } from '#/base/models/base.model';
+import type { IconName } from '../models/base.model';
 
 type Props = ComponentProps<'button'> & {
   leftIconName?: IconName;

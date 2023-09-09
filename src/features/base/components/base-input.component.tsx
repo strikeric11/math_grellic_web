@@ -8,7 +8,7 @@ import { BaseIconButton } from './base-icon-button.component';
 
 import type { ComponentProps, FormEvent } from 'react';
 import type { UseControllerProps } from 'react-hook-form';
-import type { IconName } from '#/base/models/base.model';
+import type { IconName } from '../models/base.model';
 
 type Props = ComponentProps<'input'> & {
   label?: string;

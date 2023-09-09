@@ -9,12 +9,14 @@ import { BaseSurface } from './base-surface.component';
 import type { ComponentProps, ReactNode } from 'react';
 
 type Props = Omit<ComponentProps<typeof Menu>, 'children'> & {
+  disabled?: boolean;
   children?: ReactNode;
 };
 
 export const BaseDropdownMenu = memo(function ({
   className,
   children,
+  disabled,
   ...moreProps
 }: Props) {
   return (
@@ -24,7 +26,12 @@ export const BaseDropdownMenu = memo(function ({
       {...moreProps}
     >
       <div>
-        <Menu.Button as={BaseIconButton} name='caret-down' className='button' />
+        <Menu.Button
+          as={BaseIconButton}
+          name='caret-down'
+          className='button'
+          disabled={disabled}
+        />
       </div>
       <Transition as={Fragment} {...menuTransition}>
         <Menu.Items

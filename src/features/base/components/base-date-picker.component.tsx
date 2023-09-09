@@ -25,7 +25,7 @@ import type {
   ControllerRenderProps,
   UseControllerProps,
 } from 'react-hook-form';
-import type { IconName } from '#/base/models/base.model';
+import type { IconName } from '../models/base.model';
 
 type Props = ComponentProps<'div'> & {
   name?: string;

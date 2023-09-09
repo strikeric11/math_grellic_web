@@ -1,3 +1,5 @@
+import type { ComponentProps, JSXElementConstructor } from 'react';
+
 export enum SidebarMode {
   Collapsed = 0,
   Expanded,
@@ -97,4 +99,11 @@ export type SceneRouteHandle = {
   isClose?: boolean;
   links?: GroupLink[];
   disabledSceneWrapper?: boolean;
+};
+
+export type FormProps<
+  T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
+> = Omit<ComponentProps<T>, 'onSubmit'> & {
+  isDone?: boolean;
+  onDone?: (isDone: boolean) => void;
 };

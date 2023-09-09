@@ -5,7 +5,7 @@ import { BaseLink } from './base-link.component';
 import { BaseIcon } from './base-icon.component';
 
 import type { ComponentProps } from 'react';
-import type { GroupLink } from '#/base/models/base.model';
+import type { GroupLink } from '../models/base.model';
 
 type Props = ComponentProps<'div'> & {
   links: GroupLink[];

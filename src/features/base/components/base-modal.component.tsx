@@ -10,7 +10,7 @@ import { BaseSurface } from './base-surface.component';
 import { BaseControlButton } from './base-control-button.component';
 
 import type { ComponentProps, ReactNode } from 'react';
-import type { ModalSize } from '#/base/models/base.model';
+import type { ModalSize } from '../models/base.model';
 
 type Props = Omit<ComponentProps<typeof BaseSurface>, 'children'> & {
   open: boolean;

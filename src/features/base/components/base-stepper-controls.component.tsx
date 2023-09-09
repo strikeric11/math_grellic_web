@@ -7,6 +7,7 @@ import { BaseDivider } from './base-divider.component';
 import type { ComponentProps } from 'react';
 
 type Props = ComponentProps<'div'> & {
+  disabled?: boolean;
   onReset?: () => void;
   onPrev?: () => void;
   onNext?: () => void;
@@ -14,6 +15,7 @@ type Props = ComponentProps<'div'> & {
 
 export const BaseStepperControls = memo(function ({
   className,
+  disabled,
   children,
   onReset,
   onPrev,
@@ -31,6 +33,7 @@ export const BaseStepperControls = memo(function ({
           size='sm'
           rightIconName='arrow-counter-clockwise'
           onClick={onReset}
+          disabled={disabled}
         >
           Reset Fields
         </BaseButton>
@@ -40,6 +43,7 @@ export const BaseStepperControls = memo(function ({
           size='sm'
           leftIconName='arrow-circle-left'
           onClick={onPrev}
+          disabled={disabled}
         >
           Prev
         </BaseButton>
@@ -48,6 +52,7 @@ export const BaseStepperControls = memo(function ({
           size='sm'
           rightIconName='arrow-circle-right'
           onClick={onNext}
+          disabled={disabled}
         >
           Next
         </BaseButton>

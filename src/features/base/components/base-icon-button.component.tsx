@@ -4,11 +4,7 @@ import cx from 'classix';
 import { BaseIcon } from './base-icon.component';
 
 import type { ComponentProps } from 'react';
-import type {
-  ButtonSize,
-  ButtonVariant,
-  IconName,
-} from '#/base/models/base.model';
+import type { ButtonSize, ButtonVariant, IconName } from '../models/base.model';
 
 type Props = ComponentProps<'button'> & {
   name: IconName;
@@ -42,12 +38,20 @@ export const BaseIconButton = memo(
           'inline-flex h-12 w-12 items-center justify-center rounded-md !outline-none transition-all active:scale-90',
           variant === 'primary' &&
             'border-2 border-primary-border bg-primary text-white drop-shadow-primary hover:bg-primary-focus',
+          variant === 'primary' &&
+            disabled &&
+            '!border-accent/40 !bg-gray-300 !text-accent/50',
           variant === 'solid' &&
             'border border-primary-border-light bg-white text-primary-focus hover:border-primary-focus-light hover:text-primary-focus-light',
+          variant === 'solid' && disabled && '!text-accent/50',
           variant === 'link' &&
             '!rounded border border-transparent text-primary hover:text-primary-focus-light',
+          variant === 'link' && disabled && '!text-accent/50',
           variant === 'border' &&
             'border-2 border-primary text-primary hover:border-primary-focus-light hover:text-primary-focus-light',
+          variant === 'border' &&
+            disabled &&
+            '!border-accent/40 !text-accent/50',
           size === 'sm' && '!h-10 !w-10',
           size === 'xs' && '!h-9 !w-9',
           isInput &&
