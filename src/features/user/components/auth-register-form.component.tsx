@@ -1,13 +1,12 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { capitalize } from '#/utils/string.util';
-import { useAuth } from '#/user/hooks/use-auth.hook';
-import { UserGender, UserRole } from '#/user/models/user.model';
 import {
   BaseControlledInput,
   BaseControlledPhoneInput,
@@ -18,16 +17,18 @@ import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseControlledSelect } from '#/base/components/base-select.component';
 import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
 import { BaseControlledCheckbox } from '#/base/components/base-checkbox.component';
+import { UserGender, UserRole } from '../models/user.model';
 
-import type { ComponentProps } from 'react';
-import type { SelectOption } from '#/base/models/base.model';
-import type { AuthRegisterFormData } from '#/user/models/auth.model';
-import { zodResolver } from '@hookform/resolvers/zod';
+import type { FormProps, SelectOption } from '#/base/models/base.model';
+import type { User } from '../models/user.model';
+import type { AuthRegisterFormData } from '../models/auth.model';
 
-type Props = ComponentProps<'div'> & {
+type Props = FormProps<'div'> & {
   userRole: UserRole;
-  isDone?: boolean;
-  onDone: (isDone: boolean) => void;
+  onSubmit: (
+    data: AuthRegisterFormData,
+    role: UserRole,
+  ) => Promise<User | null>;
 };
 
 const genders: SelectOption[] = [
@@ -100,6 +101,7 @@ export const AuthRegisterForm = memo(function ({
   userRole,
   isDone,
   onDone,
+  onSubmit,
   ...moreProps
 }: Props) {
   const {
@@ -113,7 +115,6 @@ export const AuthRegisterForm = memo(function ({
     resolver: zodResolver(schema),
   });
 
-  const { register } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
@@ -127,14 +128,14 @@ export const AuthRegisterForm = memo(function ({
   const submitForm = useCallback(
     async (data: AuthRegisterFormData) => {
       try {
-        await register(data, userRole);
-        onDone(true);
+        await onSubmit(data, userRole);
+        onDone && onDone(true);
         // TODO show done component
       } catch (error: any) {
         toast.error(error.message);
       }
     },
-    [userRole, register, onDone],
+    [userRole, onSubmit, onDone],
   );
 
   return (

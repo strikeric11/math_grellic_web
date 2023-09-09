@@ -7,16 +7,16 @@ import cx from 'classix';
 import toast from 'react-hot-toast';
 
 import { DASHBOARD_PATH } from '#/utils/path.util';
-import { useAuth } from '#/user/hooks/use-auth.hook';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseControlledInput } from '#/base/components/base-input.component';
 import { BaseControlledPasswordInput } from '#/base/components/base-password-input.component';
+import { useAuth } from '../hooks/use-auth.hook';
 
 import gridWhiteSmPng from '#/assets/images/grid-white-sm.png';
 import logoOnlySmPng from '#/assets/images/logo-only-sm.png';
 
 import type { ComponentProps } from 'react';
-import type { AuthCredentials } from '#/user/models/auth.model';
+import type { AuthCredentials } from '../models/auth.model';
 
 type Props = ComponentProps<'div'> & {
   onRegister?: () => void;

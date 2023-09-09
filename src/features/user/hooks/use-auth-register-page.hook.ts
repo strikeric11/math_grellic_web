@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useCallback, useState } from 'react';
 
-import { UserRole } from '#/user/models/user.model';
+import { UserRole } from '../models/user.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 

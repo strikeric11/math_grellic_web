@@ -1,18 +1,18 @@
 import { kyInstance } from '#/config/ky.config';
 import { queryKey } from '#/config/react-query-key.config';
 import {
-  transformToStudentUserDto,
-  transformToTeacherUserDto,
+  transformToStudentUserCreateDto,
+  transformToTeacherUserCreateDto,
   transformToUser,
-} from '#/user/helpers/user.helper';
+} from '../helpers/user.helper';
 
 import type {
   UseMutationOptions,
   UseQueryOptions,
 } from '@tanstack/react-query';
 import type { HTTPError } from 'ky';
-import type { User } from '#/user/models/user.model';
-import type { AuthRegisterFormData } from '#/user/models/auth.model';
+import type { User } from '../models/user.model';
+import type { AuthRegisterFormData } from '../models/auth.model';
 
 const BASE_URL = 'users/auth';
 
@@ -35,7 +35,7 @@ export function getCurrentUser(
   };
 
   return {
-    ...queryKey.users.user,
+    ...queryKey.users.currentUser,
     queryFn,
     ...options,
   };
@@ -49,7 +49,7 @@ export function registerTeacherUser(
 ) {
   const mutationFn = async (data: AuthRegisterFormData): Promise<any> => {
     const url = `${BASE_URL}/register-teacher`;
-    const json = transformToTeacherUserDto(data);
+    const json = transformToTeacherUserCreateDto(data);
 
     try {
       const user = await kyInstance.post(url, { json }).json();
@@ -75,7 +75,7 @@ export function registerStudentUser(
 ) {
   const mutationFn = async (data: AuthRegisterFormData): Promise<any> => {
     const url = `${BASE_URL}/register-student`;
-    const json = transformToStudentUserDto(data);
+    const json = transformToStudentUserCreateDto(data);
 
     try {
       const user = await kyInstance.post(url, { json }).json();

@@ -17,7 +17,7 @@ export enum UserGender {
   Female = 'female',
 }
 
-export type User = AuditTrail & {
+export type User = Partial<AuditTrail> & {
   id: number;
   email: string;
   supabaseUserId: string;
@@ -29,7 +29,7 @@ export type User = AuditTrail & {
   userAccount?: TeacherUserAccount | StudentUserAccount; // TODO AdminUserAccount
 };
 
-type UserAccount = AuditTrail & {
+type UserAccount = Partial<AuditTrail> & {
   id: number;
   firstName: string;
   lastName: string;

@@ -1,11 +1,12 @@
 import dayjs from 'dayjs';
-import { UserRole } from '#/user/models/user.model';
+
+import { UserRole } from '../models/user.model';
 
 import type {
   StudentUserAccount,
   TeacherUserAccount,
   User,
-} from '#/user/models/user.model';
+} from '../models/user.model';
 
 export function transformToUser({
   id,
@@ -96,7 +97,7 @@ export function transformToStudentUserAccount({
   } as StudentUserAccount;
 }
 
-export function transformToTeacherUserDto({
+export function transformToTeacherUserCreateDto({
   email,
   password,
   approvalStatus,
@@ -136,7 +137,7 @@ export function transformToTeacherUserDto({
   };
 }
 
-export function transformToStudentUserDto({
+export function transformToStudentUserCreateDto({
   email,
   password,
   approvalStatus,

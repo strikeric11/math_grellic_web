@@ -3,7 +3,7 @@ import { Tab } from '@headlessui/react';
 import cx from 'classix';
 
 import { capitalize } from '#/utils/string.util';
-import { UserRole } from '#/user/models/user.model';
+import { UserRole } from '../models/user.model';
 
 import type { ComponentProps } from 'react';
 

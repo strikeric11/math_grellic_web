@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import type { UserSlice, User } from '#/user/models/user.model';
+import type { UserSlice, User } from '../models/user.model';
 
 export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = (
   set,

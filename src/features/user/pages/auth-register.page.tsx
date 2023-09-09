@@ -1,10 +1,11 @@
 import cx from 'classix';
 
-import { useAuthRegisterPage } from '#/user/hooks/use-auth-register-page.hook';
 import { BaseStaticScene } from '#/base/components/base-static-scene.component';
-import { AuthRegisterDone } from '#/user/components/auth-register-done.component';
-import { AuthRegisterForm } from '#/user/components/auth-register-form.component';
-import { AuthRegisterRoleTab } from '#/user/components/auth-register-role-tab.component';
+import { useAuthRegisterPage } from '../hooks/use-auth-register-page.hook';
+import { useAuth } from '../hooks/use-auth.hook';
+import { AuthRegisterDone } from '../components/auth-register-done.component';
+import { AuthRegisterForm } from '../components/auth-register-form.component';
+import { AuthRegisterRoleTab } from '../components/auth-register-role-tab.component';
 
 export function AuthRegisterPage() {
   const {
@@ -15,6 +16,7 @@ export function AuthRegisterPage() {
     handleRoleChange,
     handleLogin,
   } = useAuthRegisterPage();
+  const { register } = useAuth();
 
   return (
     <BaseStaticScene id='auth-register'>
@@ -43,6 +45,7 @@ export function AuthRegisterPage() {
                   userRole={selectedUserRole}
                   isDone={isDone}
                   onDone={setIsDone}
+                  onSubmit={register}
                 />
               </>
             )}

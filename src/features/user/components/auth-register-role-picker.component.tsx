@@ -1,9 +1,9 @@
 import { memo, useCallback } from 'react';
 import cx from 'classix';
 
-import { UserRole } from '#/user/models/user.model';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { UserRole } from '../models/user.model';
 
 import selectStudentPng from '#/assets/images/select-student.png';
 import selectTeacherPng from '#/assets/images/select-teacher.png';
