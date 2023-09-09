@@ -7,14 +7,22 @@ import {
 } from '#/base/components/base-input.component';
 import { BaseControlledRichTextEditor } from '#/base/components/base-rich-text-editor.component';
 
-import type { LessonUpsertFormData } from '#/lesson/models/lesson.model';
+import type { ComponentProps } from 'react';
+import type { LessonUpsertFormData } from '../models/lesson.model';
 
-export const LessonUpsertFormStep1 = memo(function () {
+type Props = ComponentProps<'div'> & {
+  disabled?: boolean;
+};
+
+export const LessonUpsertFormStep1 = memo(function ({
+  disabled,
+  ...moreProps
+}: Props) {
   const { control } = useFormContext<LessonUpsertFormData>();
 
   return (
-    <div>
-      <fieldset className='flex flex-wrap gap-5'>
+    <div {...moreProps}>
+      <fieldset className='group flex flex-wrap gap-5' disabled={disabled}>
         <div className='flex w-full items-start justify-between gap-5'>
           <BaseControlledInput
             label='Title'
@@ -47,9 +55,11 @@ export const LessonUpsertFormStep1 = memo(function () {
           />
         </div>
         <BaseControlledRichTextEditor
+          className='max-w-[600px]'
           label='Lesson Description'
           name='description'
           control={control}
+          disabled={disabled}
         />
       </fieldset>
     </div>

@@ -1,7 +1,7 @@
-import { useLessonPreviewPage } from '#/lesson/hooks/use-lesson-preview.hook';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
-import { LessonSingle } from '#/lesson/components/lesson-single.component';
 import { BaseScene } from '#/base/components/base-scene.component';
+import { useLessonPreviewPage } from '../hooks/use-lesson-preview.hook';
+import { LessonSingle } from '../components/lesson-single.component';
 
 export function LessonPreviewPage() {
   const { lesson, titlePreview } = useLessonPreviewPage();
@@ -12,7 +12,7 @@ export function LessonPreviewPage() {
     <div className='w-full pt-8 text-center'>Lesson preview has expired.</div>
   ) : (
     <BaseScene title={titlePreview} breadcrumbsHidden isClose>
-      <LessonSingle lesson={lesson} />
+      <LessonSingle lesson={lesson} preview />
     </BaseScene>
   );
 }

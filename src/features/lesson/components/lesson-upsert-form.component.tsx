@@ -1,9 +1,11 @@
 import { memo, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Menu } from '@headlessui/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import isTime from 'validator/lib/isTime';
+import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { LESSONS_PATH } from '#/utils/path.util';
@@ -14,14 +16,14 @@ import { BaseDropdownButton } from '#/base/components/base-dropdown-button.compo
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
 import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
 import { BaseStepper } from '#/base/components/base-stepper.component';
-import { LessonUpsertFormData } from '#/lesson/models/lesson.model';
 import { LessonUpsertFormStep1 } from './lesson-upsert-form-step-1.component';
 import { LessonUpsertFormStep2 } from './lesson-upsert-form-step-2.component';
 
-import type { ComponentProps } from 'react';
+import type { FormProps } from '#/base/models/base.model';
+import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
 
-type Props = ComponentProps<'div'> & {
-  onComplete?: () => void;
+type Props = FormProps<'div'> & {
+  onSubmit: (data: LessonUpsertFormData) => Promise<Lesson>;
 };
 
 const schema = z
@@ -92,9 +94,12 @@ const defaultValues: Partial<LessonUpsertFormData> = {
 
 export const LessonUpsertForm = memo(function ({
   className,
-  onComplete,
+  isDone,
+  onDone,
+  onSubmit,
   ...moreProps
 }: Props) {
+  const navigate = useNavigate();
   const setLessonFormData = useBoundStore((state) => state.setLessonFormData);
 
   const methods = useForm<LessonUpsertFormData>({
@@ -103,30 +108,38 @@ export const LessonUpsertForm = memo(function ({
     resolver: zodResolver(schema),
   });
 
-  const { trigger, reset, getValues, handleSubmit } = methods;
+  const {
+    formState: { isSubmitting },
+    trigger,
+    reset,
+    getValues,
+    handleSubmit,
+  } = methods;
 
   const submitForm = useCallback(
-    async (data: LessonUpsertFormData) => {
+    async (data: LessonUpsertFormData, status?: RecordStatus) => {
       try {
-        // TODO
-        // const militaryTime = dayjs(
-        //   `${values.formattedValue} ${timeSuffix}`,
-        //   'h:mm a',
-        // ).format('HH:mm');
-        onComplete && onComplete();
-        console.log('success', data);
-      } catch (error) {
-        // TODO
-        console.log('error', error);
+        const targetData = status ? { ...data, status } : data;
+        const lesson = await onSubmit(targetData);
+
+        toast.success(
+          `Lesson No. ${lesson.orderNumber} — ${lesson.title}, created`,
+        );
+
+        onDone && onDone(true);
+        navigate(LESSONS_PATH);
+      } catch (error: any) {
+        toast.error(error.message);
       }
     },
-    [onComplete],
+    [onSubmit, onDone, navigate],
   );
 
   const handlePreview = useCallback(async () => {
     const isValid = await trigger();
 
     if (!isValid) {
+      toast.error('Please fill in all the required fields');
       return;
     }
 
@@ -135,6 +148,7 @@ export const LessonUpsertForm = memo(function ({
   }, [trigger, getValues, setLessonFormData]);
 
   useEffect(() => {
+    // Set lessonFormData to undefined when unmounting component
     return () => {
       setLessonFormData(undefined);
     };
@@ -144,23 +158,28 @@ export const LessonUpsertForm = memo(function ({
   return (
     <div className={cx('w-full', className)} {...moreProps}>
       <FormProvider {...methods}>
-        <form
-          onSubmit={handleSubmit(submitForm, (errors) => {
-            console.log(methods.getValues());
-            console.log(errors);
-          })}
-        >
+        <form onSubmit={handleSubmit((data) => submitForm(data))}>
           <BaseStepper
+            disabled={isSubmitting || isDone}
             onReset={() => reset()}
             controlsRightContent={
               <div className='group-button'>
-                <BaseButton type='submit' rightIconName='share-fat'>
+                <BaseButton
+                  rightIconName='share-fat'
+                  loading={isSubmitting}
+                  disabled={isDone}
+                  onClick={handleSubmit((data) =>
+                    submitForm(data, RecordStatus.Published),
+                  )}
+                >
                   Publish Now
                 </BaseButton>
-                <BaseDropdownMenu>
+                <BaseDropdownMenu disabled={isSubmitting || isDone}>
                   <Menu.Item
                     as={BaseDropdownButton}
+                    type='submit'
                     iconName='floppy-disk-back'
+                    disabled={isSubmitting || isDone}
                   >
                     Save as Draft
                   </Menu.Item>
@@ -168,6 +187,7 @@ export const LessonUpsertForm = memo(function ({
                     as={BaseDropdownButton}
                     iconName='file-text'
                     onClick={handlePreview}
+                    disabled={isSubmitting || isDone}
                   >
                     Preview
                   </Menu.Item>
@@ -176,10 +196,10 @@ export const LessonUpsertForm = memo(function ({
             }
           >
             <BaseStepperStep label='Lesson Info'>
-              <LessonUpsertFormStep1 />
+              <LessonUpsertFormStep1 disabled={isSubmitting || isDone} />
             </BaseStepperStep>
             <BaseStepperStep label='Lesson Schedule'>
-              <LessonUpsertFormStep2 />
+              <LessonUpsertFormStep2 disabled={isSubmitting || isDone} />
             </BaseStepperStep>
           </BaseStepper>
         </form>

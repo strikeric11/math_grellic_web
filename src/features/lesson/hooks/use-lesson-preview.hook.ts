@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 
-import type { Lesson } from '#/lesson/models/lesson.model';
+import type { Lesson } from '../models/lesson.model';
 
 type Result = {
   titlePreview: string;

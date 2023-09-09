@@ -4,19 +4,27 @@ import { useFormContext } from 'react-hook-form';
 import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
 import { BaseControlledTimePicker } from '#/base/components/base-time-picker.component';
 
-import type { LessonUpsertFormData } from '#/lesson/models/lesson.model';
+import type { LessonUpsertFormData } from '../models/lesson.model';
+import type { ComponentProps } from 'react';
+
+type Props = ComponentProps<'div'> & {
+  disabled?: boolean;
+};
 
 const calendarSelectorProps = {
   minDate: new Date(`${new Date().getFullYear() - 5}-01-01`),
   maxDate: new Date(`${new Date().getFullYear() + 5}-12-31`),
 };
 
-export const LessonUpsertFormStep2 = memo(function () {
+export const LessonUpsertFormStep2 = memo(function ({
+  disabled,
+  ...moreProps
+}: Props) {
   const { control } = useFormContext<LessonUpsertFormData>();
 
   return (
-    <div>
-      <fieldset className='flex flex-wrap gap-5'>
+    <div {...moreProps}>
+      <fieldset className='group flex flex-wrap gap-5' disabled={disabled}>
         <div className='flex w-full items-start justify-between gap-5'>
           <BaseControlledDatePicker
             name='startDate'
