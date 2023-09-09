@@ -1,13 +1,22 @@
 import { memo } from 'react';
+import DOMPurify from 'dompurify';
 
 import { BaseStaticScene } from '#/base/components/base-static-scene.component';
 
-import aboutContent from '#/static/content/about-content.json';
 import logoOnlyPng from '#/assets/images/logo-only.png';
 import mgProfilePicPng from '#/assets/images/mg-profile-pic.png';
 import mathSymbolsPng from '#/assets/images/math-symbols.png';
+import aboutContent from '../content/about-content.json';
 
 const headerStyle = { backgroundImage: `url(${mathSymbolsPng})` };
+
+const section1ContentHtml = {
+  __html: DOMPurify.sanitize(aboutContent.section1.content),
+};
+
+const section2ContentHtml = {
+  __html: DOMPurify.sanitize(aboutContent.section2.content),
+};
 
 export const AboutPage = memo(function () {
   return (
@@ -20,7 +29,7 @@ export const AboutPage = memo(function () {
           <h2 className='mb-6 leading-none'>{aboutContent.section1.title}</h2>
           <div
             className='text-justify text-lg'
-            dangerouslySetInnerHTML={{ __html: aboutContent.section1.content }}
+            dangerouslySetInnerHTML={section1ContentHtml}
           ></div>
         </div>
       </section>
@@ -44,7 +53,7 @@ export const AboutPage = memo(function () {
         <div className='-mt-[170px] flex w-full flex-col items-center bg-backdrop-light pb-20 pt-48'>
           <div
             className='w-full max-w-[800px] text-justify text-lg'
-            dangerouslySetInnerHTML={{ __html: aboutContent.section2.content }}
+            dangerouslySetInnerHTML={section2ContentHtml}
           />
         </div>
       </section>

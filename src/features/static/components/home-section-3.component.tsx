@@ -1,12 +1,17 @@
 import { memo } from 'react';
+import DOMPurify from 'dompurify';
 import cx from 'classix';
 
 import { BaseLink } from '#/base/components/base-link.component';
 
-import homeContent from '#/static/content/home-content.json';
 import logoOnlyWithStudentPng from '#/assets/images/logo-only-with-student.png';
+import homeContent from '../content/home-content.json';
 
 import type { ComponentProps } from 'react';
+
+const contentHtml = {
+  __html: DOMPurify.sanitize(homeContent.section3.content),
+};
 
 export const HomeSection3 = memo(function ({
   className,
@@ -32,7 +37,7 @@ export const HomeSection3 = memo(function ({
         <h2 className='mb-6'>{homeContent.section3.title}</h2>
         <div
           className='mb-5 text-justify text-lg'
-          dangerouslySetInnerHTML={{ __html: homeContent.section3.content }}
+          dangerouslySetInnerHTML={contentHtml}
         ></div>
         <BaseLink to='/about' rightIconName='arrow-circle-right'>
           Learn More

@@ -1,11 +1,11 @@
 import { memo } from 'react';
 
 import { BaseStaticScene } from '#/base/components/base-static-scene.component';
-import { HomeSection1 } from '#/static/components/home-section-1.component';
-import { HomeSection2 } from '#/static/components/home-section-2.component';
-import { HomeSection3 } from '#/static/components/home-section-3.component';
-import { HomeSection4 } from '#/static/components/home-section-4.component';
-import { HomeSection5 } from '#/static/components/home-section-5.component';
+import { HomeSection1 } from '../components/home-section-1.component';
+import { HomeSection2 } from '../components/home-section-2.component';
+import { HomeSection3 } from '../components/home-section-3.component';
+import { HomeSection4 } from '../components/home-section-4.component';
+import { HomeSection5 } from '../components/home-section-5.component';
 
 export const HomePage = memo(function () {
   return (

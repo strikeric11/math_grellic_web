@@ -6,8 +6,8 @@ import { DASHBOARD_PATH } from '#/utils/path.util';
 import { BaseButton } from '#/base/components/base-button.components';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 
-import homeContent from '#/static/content/home-content.json';
 import teacherWithLogoPng from '#/assets/images/illu-teacher-with-logo.png';
+import homeContent from '../content/home-content.json';
 
 import type { ComponentProps } from 'react';
 

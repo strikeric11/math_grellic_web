@@ -1,11 +1,11 @@
 import { memo } from 'react';
 import cx from 'classix';
 
-import homeContent from '#/static/content/home-content.json';
 import iconBenefitFlexiblePng from '#/assets/images/icon-benefit-flexible.png';
 import iconBenefitGamePng from '#/assets/images/icon-benefit-game.png';
 import iconBenefitStarPng from '#/assets/images/icon-benefit-star.png';
 import teacherWithSymbolsPng from '#/assets/images/illu-teacher-with-symbols.png';
+import homeContent from '../content/home-content.json';
 
 import type { ComponentProps } from 'react';
 

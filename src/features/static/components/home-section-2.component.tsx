@@ -1,11 +1,11 @@
 import { memo } from 'react';
 import cx from 'classix';
 
-import homeContent from '#/static/content/home-content.json';
 import mathSymbolsPng from '#/assets/images/math-symbols.png';
 import feat1Png from '#/assets/images/feat-1.png';
 import feat2Png from '#/assets/images/feat-2.png';
 import feat3Png from '#/assets/images/feat-3.png';
+import homeContent from '../content/home-content.json';
 
 import type { ComponentProps } from 'react';
 

@@ -1,13 +1,13 @@
 import { memo } from 'react';
 import cx from 'classix';
 
-import homeContent from '#/static/content/home-content.json';
 import iconKeyExamPng from '#/assets/images/icon-key-exam.png';
 import iconKeyExercisePng from '#/assets/images/icon-key-exercise.png';
 import iconKeyFeedbackPng from '#/assets/images/icon-key-feedback.png';
 import iconKeyLessonPng from '#/assets/images/icon-key-lesson.png';
 import iconKeyRewardPng from '#/assets/images/icon-key-reward.png';
 import iconKeyStatisticsPng from '#/assets/images/icon-key-statistics.png';
+import homeContent from '../content/home-content.json';
 
 import type { ComponentProps } from 'react';
 
