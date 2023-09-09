@@ -4,7 +4,7 @@ import cx from 'classix';
 
 import { ABSOLUTE_REGISTER_PATH, DASHBOARD_PATH } from '#/utils/path.util';
 import { BaseButton } from '#/base/components/base-button.components';
-import { useBoundStore } from '#/core/hooks/use-store.hook';
+import { useBoundStore } from '../hooks/use-store.hook';
 
 import studentWithNumbersPng from '#/assets/images/illu-student-with-numbers.png';
 import logoColPng from '#/assets/images/logo-col.png';

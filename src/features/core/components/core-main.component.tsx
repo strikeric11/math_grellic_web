@@ -1,7 +1,7 @@
 import cx from 'classix';
 
 import { SidebarMode } from '#/base/models/base.model';
-import { useBoundStore } from '#/core/hooks/use-store.hook';
+import { useBoundStore } from '../hooks/use-store.hook';
 
 import type { ComponentProps } from 'react';
 

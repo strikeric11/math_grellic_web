@@ -5,8 +5,8 @@ import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { ABSOLUTE_REGISTER_PATH, DASHBOARD_PATH } from '#/utils/path.util';
-import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { useAuth } from '#/user/hooks/use-auth.hook';
+import { useBoundStore } from '../hooks/use-store.hook';
 import { CoreStaticLogo } from './core-static-logo.component';
 import { CoreStaticNav } from './core-static-nav.component';
 

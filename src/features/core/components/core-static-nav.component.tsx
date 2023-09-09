@@ -4,7 +4,7 @@ import cx from 'classix';
 
 import { ABSOLUTE_REGISTER_PATH } from '#/utils/path.util';
 import { BaseButton } from '#/base/components/base-button.components';
-import { useBoundStore } from '#/core/hooks/use-store.hook';
+import { useBoundStore } from '../hooks/use-store.hook';
 import { CoreStaticNavItem } from './core-static-nav-item.component';
 
 import type { ComponentProps } from 'react';

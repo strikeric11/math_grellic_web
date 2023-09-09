@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
-import { getDateTimeNow } from '#/core/api/core.api';
+import { getDateTimeNow } from '../api/core.api';
 
 type Result = {
   loading: boolean;

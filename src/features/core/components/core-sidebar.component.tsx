@@ -4,7 +4,7 @@ import cx from 'classix';
 import { DASHBOARD_PATH } from '#/utils/path.util';
 import { SidebarMode } from '#/base/models/base.model';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
-import { useBoundStore } from '#/core/hooks/use-store.hook';
+import { useBoundStore } from '../hooks/use-store.hook';
 import { CoreLogo } from './core-logo.component';
 import { CoreNav } from './core-nav.component';
 

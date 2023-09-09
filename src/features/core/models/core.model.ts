@@ -6,9 +6,9 @@ export enum RecordStatus {
 }
 
 export type AuditTrail = {
-  createdAt?: Date;
-  updatedAt?: Date;
-  isActive?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  isActive: boolean;
 };
 
 export type CoreSlice = {
