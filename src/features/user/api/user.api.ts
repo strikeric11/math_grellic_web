@@ -7,15 +7,25 @@ import type { StudentUserAccount } from '../models/user.model';
 const BASE_URL = 'users';
 
 export function getStudentsByCurrentTeacherUser(
-  q?: string,
+  keys?: { q?: string; ids?: number[] },
   options?: Omit<
     UseQueryOptions<StudentUserAccount[], Error, StudentUserAccount[], any>,
-    'queryKey' | 'queryFn'
+    'queryFn'
   >,
 ) {
+  const { ids, q } = keys || {};
+  const { queryKey, ...moreOptions } = options || {};
+
   const queryFn = async (): Promise<any> => {
     const searchTerm = !q?.trim() ? '' : `?q=${q}`;
-    const url = `${BASE_URL}/teachers/students${searchTerm}`;
+
+    let selectedIds = '';
+    if (ids?.length) {
+      const joinedIds = ids.join(',');
+      selectedIds = searchTerm ? `&ids=${joinedIds}` : `?ids=${joinedIds}`;
+    }
+
+    const url = `${BASE_URL}/teachers/students${searchTerm}${selectedIds}`;
 
     try {
       const students = await kyInstance.get(url).json();
@@ -27,8 +37,10 @@ export function getStudentsByCurrentTeacherUser(
   };
 
   return {
-    queryKey: ['users', 'students', { q }],
+    queryKey: queryKey?.length
+      ? [...queryKey, { q, ids }]
+      : ['users', 'students', { q, ids }],
     queryFn,
-    ...options,
+    ...moreOptions,
   };
 }
