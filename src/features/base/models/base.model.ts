@@ -40,6 +40,7 @@ export type IconName =
   | 'link-simple'
   | 'list-bullets'
   | 'list-numbers'
+  | 'magnifying-glass'
   | 'minus'
   | 'plus'
   | 'radio-button'

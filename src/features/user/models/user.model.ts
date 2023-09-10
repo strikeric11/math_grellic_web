@@ -31,6 +31,7 @@ export type User = Partial<AuditTrail> & {
 
 type UserAccount = Partial<AuditTrail> & {
   id: number;
+  publicId: string;
   firstName: string;
   lastName: string;
   middleName?: string;

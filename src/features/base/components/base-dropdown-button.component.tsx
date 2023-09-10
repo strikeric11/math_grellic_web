@@ -34,7 +34,7 @@ export const BaseDropdownButton = memo(
         ref={ref}
         type='button'
         className={cx(
-          'flex w-full flex-col rounded px-3 py-2.5 text-left leading-none transition-colors',
+          'flex w-full flex-col rounded px-3 py-2.5 text-left leading-none',
           size === 'base' ? 'text-base' : 'text-sm',
           !disabled
             ? 'hover:bg-primary hover:text-white'

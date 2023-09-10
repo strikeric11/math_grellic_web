@@ -142,7 +142,7 @@ export const AuthRegisterForm = memo(function ({
     <div className={cx('w-full', className)} {...moreProps}>
       <form onSubmit={handleSubmit(submitForm)}>
         <fieldset
-          className='group flex flex-wrap justify-center gap-5 lg:grid lg:grid-cols-3'
+          className='group/field flex flex-wrap justify-center gap-5 lg:grid lg:grid-cols-3'
           disabled={isSubmitting || isDone}
         >
           <BaseControlledInput
@@ -186,7 +186,7 @@ export const AuthRegisterForm = memo(function ({
         </fieldset>
         <BaseDivider className='my-4' />
         <fieldset
-          className='group grid grid-cols-1 place-items-center justify-center gap-5 md:flex lg:grid lg:grid-cols-3 lg:place-items-start'
+          className='group/field grid grid-cols-1 place-items-center justify-center gap-5 md:flex lg:grid lg:grid-cols-3 lg:place-items-start'
           disabled={isSubmitting || isDone}
         >
           <BaseControlledInput
@@ -213,7 +213,7 @@ export const AuthRegisterForm = memo(function ({
         </fieldset>
         <fieldset
           className={cx(
-            'group mt-6',
+            'group/field mt-6',
             userRole === UserRole.Student && 'flex items-center gap-5',
           )}
           disabled={isSubmitting || isDone}

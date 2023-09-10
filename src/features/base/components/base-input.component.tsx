@@ -60,15 +60,18 @@ export const BaseInput = memo(
         )}
         {...moreWrapperProps}
       >
-        <div className='relative mb-0.5 h-input w-full'>
+        <div
+          className={cx('relative mb-0.5 w-full', label ? 'h-input' : 'h-12')}
+        >
           <input
             ref={ref}
             name={name}
             type='text'
             id={newId}
             className={cx(
-              `peer h-full w-full rounded-md border-2 border-accent/40 pb-2 pl-18px pr-5 pt-26px text-accent !outline-none
-              transition-all focus:!border-primary-focus focus:!ring-1 focus:!ring-primary-focus group-disabled:!bg-backdrop-gray`,
+              `peer h-full w-full rounded-md border-2 border-accent/40 pb-2 pl-18px pr-5 text-accent !outline-none
+              transition-all focus:!border-primary-focus focus:!ring-1 focus:!ring-primary-focus group-disabled/field:!bg-backdrop-gray`,
+              label ? 'pt-26px' : 'pt-2',
               !!iconName && '!pl-43px',
               !!errorMessage && '!border-red-500/60',
               !!rightIconBtnName && '!pr-11',

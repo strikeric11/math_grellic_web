@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 
 import { queryClient } from '#/config/react-query-client.config';
-import { queryKey } from '#/config/react-query-key.config';
 import { createLesson as createLessonApi } from '../api/lesson-teacher.api';
 
 import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
@@ -20,7 +19,7 @@ export function useLessonUpsert(): Result {
     createLessonApi({
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: queryKey.lessons.list.queryKey,
+          queryKey: ['lessons', 'list'],
         });
       },
     }),

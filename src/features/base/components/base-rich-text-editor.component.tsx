@@ -58,7 +58,7 @@ export const BaseRichTextEditor = memo(function ({
     ],
     editorProps: {
       attributes: {
-        class: 'base-rich-text w-full h-full outline-0',
+        class: 'base-rich-text h-full w-full outline-0',
       },
     },
     content: initialValue,
@@ -94,8 +94,7 @@ export const BaseRichTextEditor = memo(function ({
         <OverlayScrollbarsComponent className='h-96 w-full p-18px' defer>
           <EditorContent
             editor={editor}
-            className='h-full w-full'
-            disabled={disabled}
+            className={cx('h-full w-full', disabled && 'pointer-events-none')}
           />
         </OverlayScrollbarsComponent>
       </div>

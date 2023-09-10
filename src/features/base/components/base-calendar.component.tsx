@@ -54,7 +54,7 @@ export const BaseCalendar = memo(function ({
           <div
             key={rowIndex}
             className={cx(
-              'group flex w-full flex-1 items-center',
+              'group/row flex w-full flex-1 items-center',
               dateRowClassName,
             )}
           >
@@ -63,8 +63,8 @@ export const BaseCalendar = memo(function ({
                 key={`${value}-${i}`}
                 type='button'
                 className={cx(
-                  `h-full w-full border border-transparent border-b-primary-border-light border-r-primary-border-light p-[3px] text-sm transition-transform
-                  last:border-r-transparent hover:!border-primary-focus-light hover:bg-backdrop-light hover:text-primary-focus-light active:scale-90 group-first:border-t-primary-border-light group-last:border-b-transparent`,
+                  `h-full w-full border border-b-primary-border-light border-l-transparent border-r-primary-border-light border-t-transparent p-[3px] text-sm transition-transform
+                    last:border-r-transparent hover:!border-primary-focus-light hover:bg-backdrop-light hover:text-primary-focus-light active:scale-90 group-first/row:border-t-primary-border-light group-last/row:border-b-transparent`,
                   !isPresent && 'text-accent/70',
                   !!selectedDate &&
                     value.isSame(dayjs(selectedDate), 'day') &&

@@ -27,6 +27,7 @@ export type LessonUpsertFormData = {
   description?: string;
   startDate?: Date;
   startTime?: string;
+  students?: number[];
 };
 
 export type LessonSlice = {

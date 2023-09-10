@@ -34,7 +34,7 @@ export const BaseTimePicker = memo(
     const [isFocus, setIsFocus] = useState(false);
 
     const formattedValue = useMemo(() => {
-      if (!value || !value.toString().trim().length) {
+      if (!value?.toString().trim().length) {
         return localValue?.value;
       }
 
@@ -43,7 +43,7 @@ export const BaseTimePicker = memo(
 
     const timeSuffix = useMemo(() => {
       const regex = /[^a-zA-Z]/g;
-      if (!value || !value.toString().replace(regex, '').length) {
+      if (!value?.toString().replace(regex, '').length) {
         return localTimeSuffix;
       }
 
@@ -119,7 +119,7 @@ export const BaseTimePicker = memo(
           fullWidth={fullWidth}
           onValueChange={handleValueChange}
         />
-        {showTimeSuffix && (
+        {!!showTimeSuffix && (
           <BaseButton
             className='!absolute left-[90px] top-[25.2px] !font-body !text-base !text-accent'
             variant='link'

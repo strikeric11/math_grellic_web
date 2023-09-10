@@ -70,7 +70,7 @@ export const BaseButton = memo(
         className={cx(
           'button relative inline-flex w-fit items-center justify-center font-display tracking-tighter !outline-none transition-all active:scale-95',
           variant === 'primary' &&
-            'group h-[55px] !items-start text-lg text-white drop-shadow-primary-lg',
+            'group/btn h-[55px] !items-start text-lg text-white drop-shadow-primary-lg',
           (variant === 'solid' || variant === 'border') &&
             'h-12 rounded-md border-2 px-6 py-2',
           variant === 'solid' &&
@@ -116,7 +116,7 @@ export const BaseButton = memo(
           className={cx(
             'inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all',
             variant === 'primary' &&
-              'relative z-10 h-[50px] rounded-full border-2 border-primary-border bg-gradient-to-r from-primary-focus to-primary-dark group-hover:brightness-125 group-active:translate-y-[5px]',
+              'relative z-10 h-[50px] rounded-full border-2 border-primary-border bg-gradient-to-r from-primary-focus to-primary-dark group-hover/btn:brightness-125 group-active/btn:translate-y-[5px]',
             variant === 'primary' &&
               disabled &&
               '!border-accent/40 !bg-gray-300 !bg-none',
@@ -164,7 +164,7 @@ export const BaseButton = memo(
           >
             <div
               className={cx(
-                'h-full w-full rounded-full bg-gradient-to-r from-primary-focus to-primary-dark opacity-90 group-hover:brightness-125',
+                'h-full w-full rounded-full bg-gradient-to-r from-primary-focus to-primary-dark opacity-90 group-hover/btn:brightness-125',
                 disabled && '!bg-gray-300 !bg-none',
               )}
             />

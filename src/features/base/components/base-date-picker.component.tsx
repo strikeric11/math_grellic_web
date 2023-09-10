@@ -147,8 +147,8 @@ export const BaseDatePicker = memo(
               <Popover.Button
                 ref={setButtonRef}
                 className={cx(
-                  `group mb-0.5 flex h-input w-full items-center rounded-md border-2 border-accent/40 bg-white pl-18px pr-4
-            text-left text-accent !outline-none transition-all focus:!border-primary-focus focus:!ring-1 focus:!ring-primary-focus group-disabled:!bg-backdrop-gray`,
+                  `group/dtpicker mb-0.5 flex h-input w-full items-center rounded-md border-2 border-accent/40 bg-white pl-18px pr-4 text-left text-accent !outline-none transition-all
+                   focus:!border-primary-focus focus:!ring-1 focus:!ring-primary-focus group-disabled/dtpicker:!bg-backdrop-gray group-disabled/field:!bg-backdrop-gray`,
                   !!iconName && '!pl-[13px]',
                   !!errorMessage && '!border-red-500/60',
                   disabled && '!pointer-events-none !bg-backdrop-gray',
@@ -168,7 +168,7 @@ export const BaseDatePicker = memo(
                       name={iconName}
                       size={22}
                       className={cx(
-                        'absolute left-0 top-1/2 -translate-y-1/2 group-focus:!text-primary',
+                        'absolute left-0 top-1/2 -translate-y-1/2 group-focus/dtpicker:!text-primary',
                         !!errorMessage && '!text-red-500',
                       )}
                     />
@@ -176,7 +176,7 @@ export const BaseDatePicker = memo(
                   {!!label && (
                     <span
                       className={cx(
-                        `absolute left-0 top-1/2 -translate-y-1/2 font-bold text-accent/70 transition-all group-focus:!text-primary`,
+                        `absolute left-0 top-1/2 -translate-y-1/2 font-bold text-accent/70 transition-all group-focus/dtpicker:!text-primary`,
                         localValue !== undefined &&
                           '!-translate-y-111 !text-13px after:!top-0',
                         !!iconName && '!left-[31px]',

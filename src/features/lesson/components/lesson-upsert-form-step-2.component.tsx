@@ -3,6 +3,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
 import { BaseControlledTimePicker } from '#/base/components/base-time-picker.component';
+import { StudentUserControlledPicker } from '#/user/components/student-user-picker.component';
 
 import type { LessonUpsertFormData } from '../models/lesson.model';
 import type { ComponentProps } from 'react';
@@ -24,7 +25,13 @@ export const LessonUpsertFormStep2 = memo(function ({
 
   return (
     <div {...moreProps}>
-      <fieldset className='group flex flex-wrap gap-5' disabled={disabled}>
+      <div className='mb-4 italic'>
+        This section is optional, schedules can be added later.
+      </div>
+      <fieldset
+        className='group/field flex flex-wrap gap-5'
+        disabled={disabled}
+      >
         <div className='flex w-full items-start justify-between gap-5'>
           <BaseControlledDatePicker
             name='startDate'
@@ -40,6 +47,13 @@ export const LessonUpsertFormStep2 = memo(function ({
             control={control}
             iconName='clock'
             fullWidth
+          />
+        </div>
+        <div className='flex w-full items-start gap-5'>
+          <StudentUserControlledPicker
+            name='students'
+            label='Students'
+            control={control}
           />
         </div>
       </fieldset>

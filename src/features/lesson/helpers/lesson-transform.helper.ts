@@ -56,9 +56,11 @@ export function transformToLessonCreateDto({
   description,
   startDate,
   startTime,
+  studentIds,
 }: any) {
   const date = dayjs(startDate).format('YYYY-MM-DD');
   const transformedStartDate = dayjs(`${date} ${startTime}`).toDate();
+  const transformedStudentsIds = !studentIds?.length ? null : studentIds;
 
   return {
     status,
@@ -68,5 +70,6 @@ export function transformToLessonCreateDto({
     durationSeconds,
     description,
     startDate: transformedStartDate,
+    studentIds: transformedStudentsIds,
   };
 }

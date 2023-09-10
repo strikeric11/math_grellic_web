@@ -3,7 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { supabase } from '#/config/supabase-client.config';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
-import { transformToUser } from '../helpers/user.helper';
+import { transformToUser } from '../helpers/user-transform.helper';
 import { UserRole } from '../models/user.model';
 import {
   getCurrentUser,

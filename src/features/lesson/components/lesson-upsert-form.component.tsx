@@ -59,6 +59,7 @@ const schema = z
         message: 'Start time is invalid',
       })
       .optional(),
+    studentIds: z.array(z.number()).optional(),
   })
   .refine(
     (data) => {
@@ -123,7 +124,7 @@ export const LessonUpsertForm = memo(function ({
         const lesson = await onSubmit(targetData);
 
         toast.success(
-          `Lesson No. ${lesson.orderNumber} — ${lesson.title}, created`,
+          `Successfully created Lesson No. ${lesson.orderNumber} — ${lesson.title}`,
         );
 
         onDone && onDone(true);
@@ -150,7 +151,7 @@ export const LessonUpsertForm = memo(function ({
   useEffect(() => {
     // Set lessonFormData to undefined when unmounting component
     return () => {
-      setLessonFormData(undefined);
+      setLessonFormData();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

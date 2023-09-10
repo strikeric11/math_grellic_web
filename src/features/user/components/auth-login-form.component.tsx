@@ -90,7 +90,7 @@ export const AuthLoginForm = memo(function ({
         </div>
         <form onSubmit={handleSubmit(submitForm)}>
           <fieldset
-            className='group mb-6 flex flex-col items-center gap-6'
+            className='group/field mb-6 flex flex-col items-center gap-6'
             disabled={isSubmitting || isDone}
           >
             <BaseControlledInput

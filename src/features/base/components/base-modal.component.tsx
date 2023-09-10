@@ -14,7 +14,7 @@ import type { ModalSize } from '../models/base.model';
 
 type Props = Omit<ComponentProps<typeof BaseSurface>, 'children'> & {
   open: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   size?: ModalSize;
   children?: ReactNode;
 };
@@ -24,7 +24,7 @@ export function BaseModal({
   open,
   size = 'base',
   children,
-  onClose = () => null,
+  onClose,
   ...moreProps
 }: Props) {
   const handleClose = useCallback(() => {
@@ -33,14 +33,11 @@ export function BaseModal({
 
   return (
     <Transition appear show={open} as={Fragment}>
-      <Dialog as='div' onClose={onClose}>
+      <Dialog as='div' onClose={handleClose}>
         <Transition.Child as={Fragment} {...dialogBackdropTransition}>
           <div className='fixed inset-0 z-max bg-black/20 backdrop-blur-lg' />
         </Transition.Child>
-        <div
-          className='fixed inset-0 z-max w-screen overflow-y-auto'
-          onClick={handleClose}
-        >
+        <div className='fixed inset-0 z-max w-screen overflow-y-auto'>
           <Transition.Child as={Fragment} {...dialogPanelTransition}>
             <div className='flex min-h-full items-center justify-center'>
               <Dialog.Panel
@@ -53,7 +50,8 @@ export function BaseModal({
               >
                 <BaseSurface
                   className={cx(
-                    'relative min-h-[150px] w-full overflow-hidden !bg-backdrop pt-14 shadow-md',
+                    'relative min-h-[150px] w-full overflow-hidden !bg-backdrop shadow-md',
+                    onClose ? 'pt-14' : 'pt-8',
                     className,
                   )}
                   rounded='lg'

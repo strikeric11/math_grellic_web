@@ -65,9 +65,15 @@ export const BaseSelect = memo(
     ref,
   ) {
     const [localValue, setLocalValue] = useState<string | undefined>(value);
+
+    const targetValue = useMemo(
+      () => value || localValue || null,
+      [value, localValue],
+    );
+
     const currentLabel = useMemo(
-      () => options.find((option) => option.value == localValue)?.label,
-      [localValue, options],
+      () => options.find((option) => option.value == targetValue)?.label,
+      [targetValue, options],
     );
 
     const handleChange = useCallback(
@@ -95,13 +101,14 @@ export const BaseSelect = memo(
           !fullWidth && 'max-w-input',
           className,
         )}
+        value={targetValue}
         onChange={handleChange}
         {...moreProps}
       >
         <Listbox.Button
           className={cx(
-            `group mb-0.5 flex h-input w-full items-center rounded-md border-2 border-accent/40 bg-white pl-18px pr-4
-          text-left text-accent !outline-none transition-all focus:!border-primary-focus focus:!ring-1 focus:!ring-primary-focus group-disabled:!bg-backdrop-gray`,
+            `group/select mb-0.5 flex h-input w-full items-center rounded-md border-2 border-accent/40 bg-white pl-18px pr-4 text-left text-accent !outline-none
+              transition-all focus:!border-primary-focus focus:!ring-1 focus:!ring-primary-focus group-disabled/field:!bg-backdrop-gray group-disabled/select:!bg-backdrop-gray`,
             !!iconName && '!pl-[13px]',
             !!errorMessage && '!border-red-500/60',
             disabled && '!pointer-events-none !bg-backdrop-gray',
@@ -120,7 +127,7 @@ export const BaseSelect = memo(
                 name={iconName}
                 size={22}
                 className={cx(
-                  'absolute left-0 top-1/2 -translate-y-1/2 group-focus:!text-primary',
+                  'absolute left-0 top-1/2 -translate-y-1/2 group-focus/select:!text-primary',
                   !!errorMessage && '!text-red-500',
                 )}
               />
@@ -128,8 +135,8 @@ export const BaseSelect = memo(
             {!!label && (
               <span
                 className={cx(
-                  `absolute left-0 top-1/2 -translate-y-1/2 font-bold text-accent/70 transition-all group-focus:!text-primary`,
-                  localValue !== undefined &&
+                  `absolute left-0 top-1/2 -translate-y-1/2 font-bold text-accent/70 transition-all group-focus/select:!text-primary`,
+                  targetValue != null &&
                     '!-translate-y-111 !text-13px after:!top-0',
                   !!iconName && '!left-[31px]',
                   !!errorMessage && '!text-red-500',
@@ -146,7 +153,7 @@ export const BaseSelect = memo(
             name='caret-down'
             size={22}
             weight='fill'
-            className='shrink-0 group-hover:!text-primary group-focus:!text-primary'
+            className='shrink-0 group-hover/select:!text-primary group-focus/select:!text-primary'
           />
         </Listbox.Button>
         {!!description && !errorMessage && (
@@ -171,7 +178,7 @@ export const BaseSelect = memo(
                   as={BaseDropdownButton}
                   key={opValue}
                   value={opValue}
-                  checked={localValue === opValue}
+                  checked={targetValue === opValue}
                   size={optionSize}
                   iconName={opIconName}
                   className={({ active }: { active: boolean }) =>

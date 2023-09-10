@@ -28,16 +28,16 @@ const Button = memo(function ({
   return (
     <button
       className={cx(
-        'group w-[240px] transition-transform active:scale-95',
+        'group/rbtn w-[240px] transition-transform active:scale-95',
         className,
       )}
       {...moreProps}
     >
-      <div className='relative w-full pt-5 transition-transform group-hover:-translate-y-5'>
+      <div className='relative w-full pt-5 transition-transform group-hover/rbtn:-translate-y-5'>
         {children}
         <BaseSurface
           className={`flex w-full justify-center border border-primary-focus/50 !pb-3 !pt-[170px] font-display text-21px font-bold leading-none
-            tracking-tighter text-primary drop-shadow-primary transition-all group-hover:text-primary-focus group-hover:drop-shadow-primary-focus`}
+            tracking-tighter text-primary drop-shadow-primary transition-all group-hover/rbtn:text-primary-focus group-hover/rbtn:drop-shadow-primary-focus`}
           rounded='base'
         >
           {label}

@@ -34,6 +34,7 @@ import {
   LinkSimple,
   ListBullets,
   ListNumbers,
+  MagnifyingGlass,
   Minus,
   Plus,
   RadioButton,
@@ -133,6 +134,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return ListBullets;
       case 'list-numbers':
         return ListNumbers;
+      case 'magnifying-glass':
+        return MagnifyingGlass;
       case 'minus':
         return Minus;
       case 'plus':

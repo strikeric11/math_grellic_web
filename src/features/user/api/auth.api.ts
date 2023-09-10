@@ -1,10 +1,9 @@
 import { kyInstance } from '#/config/ky.config';
-import { queryKey } from '#/config/react-query-key.config';
 import {
   transformToStudentUserCreateDto,
   transformToTeacherUserCreateDto,
   transformToUser,
-} from '../helpers/user.helper';
+} from '../helpers/user-transform.helper';
 
 import type {
   UseMutationOptions,
@@ -14,7 +13,7 @@ import type { HTTPError } from 'ky';
 import type { User } from '../models/user.model';
 import type { AuthRegisterFormData } from '../models/auth.model';
 
-const BASE_URL = 'users/auth';
+const BASE_URL = 'users';
 
 export function getCurrentUser(
   options?: Omit<
@@ -35,7 +34,7 @@ export function getCurrentUser(
   };
 
   return {
-    ...queryKey.users.currentUser,
+    queryKey: ['users', 'current-user'],
     queryFn,
     ...options,
   };
@@ -44,11 +43,11 @@ export function getCurrentUser(
 export function registerTeacherUser(
   options?: Omit<
     UseMutationOptions<User | null, Error, AuthRegisterFormData, any>,
-    'mutationKey' | 'mutationFn'
+    'mutationFn'
   >,
 ) {
   const mutationFn = async (data: AuthRegisterFormData): Promise<any> => {
-    const url = `${BASE_URL}/register-teacher`;
+    const url = `${BASE_URL}/teachers/register`;
     const json = transformToTeacherUserCreateDto(data);
 
     try {
@@ -60,21 +59,17 @@ export function registerTeacherUser(
     }
   };
 
-  return {
-    ...queryKey.users.createUser,
-    mutationFn,
-    ...options,
-  };
+  return { mutationFn, ...options };
 }
 
 export function registerStudentUser(
   options?: Omit<
     UseMutationOptions<User | null, Error, AuthRegisterFormData, any>,
-    'mutationKey' | 'mutationFn'
+    'mutationFn'
   >,
 ) {
   const mutationFn = async (data: AuthRegisterFormData): Promise<any> => {
-    const url = `${BASE_URL}/register-student`;
+    const url = `${BASE_URL}/students/register`;
     const json = transformToStudentUserCreateDto(data);
 
     try {
@@ -86,9 +81,5 @@ export function registerStudentUser(
     }
   };
 
-  return {
-    ...queryKey.users.createUser,
-    mutationFn,
-    ...options,
-  };
+  return { mutationFn, ...options };
 }
