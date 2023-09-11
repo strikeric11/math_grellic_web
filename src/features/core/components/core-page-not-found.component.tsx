@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import { cx } from 'classix';
 
-import { DASHBOARD_PATH } from '#/utils/path.util';
 import { BaseLink } from '#/base/components/base-link.component';
 
 import type { ComponentProps } from 'react';
@@ -13,7 +12,7 @@ type Props = ComponentProps<'div'> & {
 
 export const CorePageNotFound = memo(function ({
   className,
-  to = DASHBOARD_PATH,
+  to = '/',
   linkLabel = 'Return to dashboard',
   ...moreProps
 }: Props) {

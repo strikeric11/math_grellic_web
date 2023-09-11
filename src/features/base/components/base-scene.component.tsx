@@ -2,7 +2,7 @@ import { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cx from 'classix';
 
-import { DASHBOARD_PATH } from '#/utils/path.util';
+import { teacherBaseRoute } from '#/app/routes/teacher-routes';
 import { BaseControlButton } from './base-control-button.component';
 import { BaseBreadcrumbs } from './base-breadcrumbs.component';
 
@@ -32,7 +32,7 @@ export const BaseScene = memo(function ({
     if (window.history.state && window.history.state.idx > 0) {
       navigate(-1);
     } else {
-      navigate(DASHBOARD_PATH, { replace: true });
+      navigate(teacherBaseRoute, { replace: true });
     }
   }, [navigate]);
 
@@ -59,16 +59,7 @@ export const BaseScene = memo(function ({
                 Back
               </BaseControlButton>
             )}
-            {!breadcrumbsHidden && (
-              <BaseBreadcrumbs />
-              // TODO breadcrumbs
-              // <Breadcrumbs
-              //   listClassName='flex items-center text-accent/80 text-sm'
-              //   inactiveItemClassName='flex hover:text-primary after:content-["/"] after:mx-1.5'
-              //   activeItemClassName='!pointer-events-none'
-              //   omitRootLabel
-              // />
-            )}
+            {!breadcrumbsHidden && <BaseBreadcrumbs />}
           </div>
           {!!headerRightContent && <div>{headerRightContent}</div>}
         </div>

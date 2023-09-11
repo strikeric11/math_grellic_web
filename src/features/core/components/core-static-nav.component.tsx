@@ -2,7 +2,7 @@ import { memo, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import cx from 'classix';
 
-import { ABSOLUTE_REGISTER_PATH } from '#/utils/path.util';
+import { staticRoutes } from '#/app/routes/static-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { useBoundStore } from '../hooks/use-store.hook';
 import { CoreStaticNavItem } from './core-static-nav-item.component';
@@ -16,6 +16,8 @@ type Props = ComponentProps<'nav'> & {
   onGetStarted?: () => void;
   onLogin?: () => void;
 };
+
+const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.authRegister.to}`;
 
 export const CoreStaticNav = memo(function ({
   items,
@@ -42,7 +44,7 @@ export const CoreStaticNav = memo(function ({
       <ul className='flex items-center'>
         {items.map(({ name, label, to }) => (
           <li key={name}>
-            <CoreStaticNavItem to={to} label={label} />
+            <CoreStaticNavItem to={`/${to}`} label={label} />
           </li>
         ))}
         <li>

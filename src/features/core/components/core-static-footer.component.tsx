@@ -2,7 +2,8 @@ import { memo, useCallback, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import cx from 'classix';
 
-import { ABSOLUTE_REGISTER_PATH, DASHBOARD_PATH } from '#/utils/path.util';
+import { generateDashboardPath } from '#/utils/path.util';
+import { staticRoutes } from '#/app/routes/static-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { useBoundStore } from '../hooks/use-store.hook';
 
@@ -13,6 +14,7 @@ import gridPng from '#/assets/images/grid.png';
 import type { ComponentProps } from 'react';
 
 const META_TITLE = import.meta.env.VITE_META_TITLE;
+const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.authRegister.to}`;
 const bgStyle = { backgroundImage: `url(${gridPng})` };
 const currentYear = new Date().getFullYear();
 
@@ -22,8 +24,8 @@ export const CoreStaticFooter = memo(function ({
 }: ComponentProps<'footer'>) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const setOpenRegister = useBoundStore((state) => state.setOpenRegister);
   const user = useBoundStore((state) => state.user);
+  const setOpenRegister = useBoundStore((state) => state.setOpenRegister);
 
   const getStartedText = useMemo(
     () => (!user ? 'Get Started' : 'Dashboard'),
@@ -43,7 +45,8 @@ export const CoreStaticFooter = memo(function ({
 
       setOpenRegister(true);
     } else {
-      navigate(DASHBOARD_PATH);
+      const to = generateDashboardPath(user.role);
+      navigate(to);
     }
   }, [pathname, user, setOpenRegister, navigate]);
 

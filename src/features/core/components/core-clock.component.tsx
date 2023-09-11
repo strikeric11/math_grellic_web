@@ -25,8 +25,7 @@ export const CoreClock = memo(function ({
         )}
         {...moreProps}
       >
-        {/* TODO MAKE CLOCK REALTIME */}
-        <div className='font-medium uppercase leading-none text-primary'>
+        <div className='flex w-[75px] justify-center font-medium uppercase leading-none text-primary'>
           {time}
         </div>
         <div

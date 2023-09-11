@@ -2,6 +2,7 @@ import { memo, useState } from 'react';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
 import cx from 'classix';
 
+import { useAuth } from '#/user/hooks/use-auth.hook';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { CoreClock } from './core-clock.component';
@@ -15,11 +16,18 @@ export const CoreHeader = memo(function ({
   ...moreProps
 }: ComponentProps<'header'>) {
   const { scrollY } = useScroll();
+  const { logout } = useAuth();
   const [isScrollTop, setIsScrollTop] = useState(true);
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
     setIsScrollTop(latest <= SCROLL_Y_THRESHOLD);
   });
+
+  // TODO notification and user menu
+  // TEMP
+  const handleUserClick = () => {
+    logout();
+  };
 
   return (
     <header
@@ -33,7 +41,12 @@ export const CoreHeader = memo(function ({
       <div className='flex h-[48px] items-center justify-center gap-2.5 overflow-hidden'>
         <div className='flex items-center gap-1.5'>
           <BaseIconButton name='bell' variant='solid' size='sm' />
-          <BaseIconButton name='user' variant='solid' size='sm' />
+          <BaseIconButton
+            name='user'
+            variant='solid'
+            size='sm'
+            onClick={handleUserClick}
+          />
         </div>
         <BaseDivider vertical />
         <CoreClock className='h-full' isCompact={!isScrollTop} />

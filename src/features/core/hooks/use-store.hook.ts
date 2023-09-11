@@ -23,6 +23,12 @@ export const useBoundStore = create<CoreSlice & UserSlice & LessonSlice>()(
           sidebarMode: state.sidebarMode,
           lessonFormData: state.lessonFormData,
         }),
+        // Always set user field's initial value to undefined, to prevent localstorage manipulation
+        merge: (persistedState, currentState) => ({
+          ...currentState,
+          ...(persistedState as any),
+          user: undefined,
+        }),
       },
     ),
   ),

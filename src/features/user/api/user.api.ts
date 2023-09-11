@@ -1,4 +1,5 @@
-import { kyInstance } from '#/config/ky.config';
+import { generateSearchParams, kyInstance } from '#/config/ky.config';
+import { queryUserKey } from '#/config/react-query-keys.config';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 import type { HTTPError } from 'ky';
@@ -13,22 +14,15 @@ export function getStudentsByCurrentTeacherUser(
     'queryFn'
   >,
 ) {
-  const { ids, q } = keys || {};
+  const { q, ids } = keys || {};
   const { queryKey, ...moreOptions } = options || {};
 
   const queryFn = async (): Promise<any> => {
-    const searchTerm = !q?.trim() ? '' : `?q=${q}`;
-
-    let selectedIds = '';
-    if (ids?.length) {
-      const joinedIds = ids.join(',');
-      selectedIds = searchTerm ? `&ids=${joinedIds}` : `?ids=${joinedIds}`;
-    }
-
-    const url = `${BASE_URL}/teachers/students${searchTerm}${selectedIds}`;
+    const url = `${BASE_URL}/teachers/students`;
+    const searchParams = generateSearchParams({ q, ids: ids?.join(',') });
 
     try {
-      const students = await kyInstance.get(url).json();
+      const students = await kyInstance.get(url, { searchParams }).json();
       return students;
     } catch (error) {
       const errorRes = await (error as HTTPError).response.json();
@@ -39,7 +33,7 @@ export function getStudentsByCurrentTeacherUser(
   return {
     queryKey: queryKey?.length
       ? [...queryKey, { q, ids }]
-      : ['users', 'students', { q, ids }],
+      : [...queryUserKey.students, { q, ids }],
     queryFn,
     ...moreOptions,
   };

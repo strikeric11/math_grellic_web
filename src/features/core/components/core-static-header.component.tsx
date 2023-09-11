@@ -4,18 +4,18 @@ import { useMotionValueEvent, useScroll } from 'framer-motion';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
-import { ABSOLUTE_REGISTER_PATH, DASHBOARD_PATH } from '#/utils/path.util';
+import { generateDashboardPath } from '#/utils/path.util';
+import { staticRouteLinks, staticRoutes } from '#/app/routes/static-routes';
 import { useAuth } from '#/user/hooks/use-auth.hook';
 import { useBoundStore } from '../hooks/use-store.hook';
 import { CoreStaticLogo } from './core-static-logo.component';
 import { CoreStaticNav } from './core-static-nav.component';
 
-import navItemsStaticJson from '#/utils/nav-items-static.json';
-
 import type { ComponentProps } from 'react';
 import type { HTTPError } from 'ky';
 
 const SCROLL_Y_THRESHOLD = 40;
+const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.authRegister.to}`;
 
 export const CoreStaticHeader = memo(function ({
   className,
@@ -68,7 +68,8 @@ export const CoreStaticHeader = memo(function ({
     if (!user) {
       setOpenLogin(true);
     } else {
-      navigate(DASHBOARD_PATH);
+      const to = generateDashboardPath(user.role);
+      navigate(to);
     }
   }, [user, setOpenLogin, navigate]);
 
@@ -91,7 +92,7 @@ export const CoreStaticHeader = memo(function ({
       >
         <CoreStaticLogo to='/' isHome={isHome} isCompact={!isScrollTop} />
         <CoreStaticNav
-          items={navItemsStaticJson}
+          items={staticRouteLinks}
           loading={loading}
           onGetStarted={handleGetStarted}
           onLogin={handleLogin}

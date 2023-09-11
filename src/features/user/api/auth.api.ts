@@ -1,3 +1,4 @@
+import { queryUserKey } from '#/config/react-query-keys.config';
 import { kyInstance } from '#/config/ky.config';
 import {
   transformToStudentUserCreateDto,
@@ -34,7 +35,7 @@ export function getCurrentUser(
   };
 
   return {
-    queryKey: ['users', 'current-user'],
+    queryKey: queryUserKey.currentUser,
     queryFn,
     ...options,
   };

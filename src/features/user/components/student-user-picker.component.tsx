@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useController } from 'react-hook-form';
 import cx from 'classix';
 
+import { queryUserKey } from '#/config/react-query-keys.config';
 import { BaseSelect } from '#/base/components/base-select.component';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
@@ -100,7 +101,7 @@ export const StudentUserPicker = memo(
       getStudentsByCurrentTeacherUser(
         { ids: value || selectedStudentIds || [] },
         {
-          queryKey: ['users', 'selected-students'],
+          queryKey: queryUserKey.selectedStudents,
           refetchOnWindowFocus: false,
           refetchOnMount: false,
           refetchOnReconnect: false,

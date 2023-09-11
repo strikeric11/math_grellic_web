@@ -2,7 +2,7 @@ import { memo, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cx from 'classix';
 
-import { DASHBOARD_PATH } from '#/utils/path.util';
+import { generateDashboardPath } from '#/utils/path.util';
 import { BaseButton } from '#/base/components/base-button.components';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 
@@ -30,7 +30,8 @@ export const HomeSection1 = memo(function ({
     if (!user) {
       setOpenRegister(true);
     } else {
-      navigate(DASHBOARD_PATH);
+      const to = generateDashboardPath(user.role);
+      navigate(to);
     }
   }, [user, setOpenRegister, navigate]);
 

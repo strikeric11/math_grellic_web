@@ -2,6 +2,8 @@ import { Fragment, memo, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import cx from 'classix';
 
+import { teacherPath } from '#/app/routes/teacher-routes';
+
 import type { ComponentProps } from 'react';
 
 export const BaseBreadcrumbs = memo(function ({
@@ -11,9 +13,11 @@ export const BaseBreadcrumbs = memo(function ({
   const { pathname } = useLocation();
 
   const breadcrumbs = useMemo(() => {
-    const labels = pathname.split('/').filter((path) => path.trim());
+    const labels = pathname
+      .split('/')
+      .filter((path, index) => index !== 1 && path.trim());
 
-    const link: string[] = [];
+    const link: string[] = [teacherPath];
     return labels.map((label, index) => {
       link.push('/' + labels[index]);
 

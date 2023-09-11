@@ -1,17 +1,19 @@
-import { LESSONS_PATH } from '#/utils/path.util';
+import { teacherBaseRoute, teacherRoutes } from '../app/routes/teacher-routes';
 import type { SceneRouteHandle } from '#/base/models/base.model';
 
-export const lessonRouteHandle: { [key: string]: SceneRouteHandle } = {
+const lessonBaseRoute = `${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
+
+export const lessonTeacherRouteHandle: { [key: string]: SceneRouteHandle } = {
   list: {
     title: 'Lessons',
     links: [
       {
-        to: `${LESSONS_PATH}/create`,
+        to: `${lessonBaseRoute}/${teacherRoutes.lesson.createTo}`,
         label: 'Create Lesson',
         icons: [{ name: 'plus', size: 16 }, { name: 'chalkboard-teacher' }],
       },
       {
-        to: `${LESSONS_PATH}/schedule`,
+        to: `${lessonBaseRoute}/${teacherRoutes.lesson.scheduleTo}`,
         label: 'Schedule Lesson',
         icons: [{ name: 'plus', size: 16 }, { name: 'calendar' }],
       },
@@ -21,12 +23,12 @@ export const lessonRouteHandle: { [key: string]: SceneRouteHandle } = {
     title: 'Create a Lesson',
     links: [
       {
-        to: LESSONS_PATH,
+        to: lessonBaseRoute,
         label: 'Lesson List',
         icons: [{ name: 'plus', size: 16 }, { name: 'chalkboard-teacher' }],
       },
       {
-        to: `${LESSONS_PATH}/schedule`,
+        to: `${lessonBaseRoute}/${teacherRoutes.lesson.scheduleTo}`,
         label: 'Schedule Lesson',
         icons: [{ name: 'plus', size: 16 }, { name: 'calendar' }],
       },
@@ -36,12 +38,12 @@ export const lessonRouteHandle: { [key: string]: SceneRouteHandle } = {
     title: 'Schedule a Lesson',
     links: [
       {
-        to: LESSONS_PATH,
+        to: lessonBaseRoute,
         label: 'Lesson List',
         icons: [{ name: 'plus', size: 16 }, { name: 'chalkboard-teacher' }],
       },
       {
-        to: '/calendar',
+        to: `${teacherBaseRoute}/${teacherRoutes.schedule.to}`,
         label: 'Calendar',
         icons: [{ name: 'calendar' }],
       },

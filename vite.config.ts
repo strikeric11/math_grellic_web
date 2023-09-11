@@ -20,6 +20,12 @@ export default defineConfig({
         replacement: fileURLToPath(new URL('./src/utils', import.meta.url)),
       },
       {
+        find: '#/app',
+        replacement: fileURLToPath(
+          new URL('./src/features/app', import.meta.url),
+        ),
+      },
+      {
         find: '#/core',
         replacement: fileURLToPath(
           new URL('./src/features/core', import.meta.url),
@@ -35,6 +41,12 @@ export default defineConfig({
         find: '#/static',
         replacement: fileURLToPath(
           new URL('./src/features/static', import.meta.url),
+        ),
+      },
+      {
+        find: '#/dashboard',
+        replacement: fileURLToPath(
+          new URL('./src/features/dashboard', import.meta.url),
         ),
       },
       {

@@ -22,7 +22,7 @@ type Result = {
     data: AuthRegisterFormData,
     role: UserRole,
   ) => Promise<User | null>;
-  login: (credentials: AuthCredentials) => Promise<void>;
+  login: (credentials: AuthCredentials) => Promise<User>;
   logout: () => Promise<void>;
   getUser: () => void;
 };
@@ -101,11 +101,14 @@ export function useAuth(): Result {
       if (error) {
         throw new Error('Email or password is incorrect');
       }
+
       const currentUser = await getUser();
 
       if (!currentUser) {
         throw new Error('Email or password is incorrect');
       }
+
+      return currentUser;
     },
     [getUser],
   );

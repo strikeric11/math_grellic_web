@@ -22,9 +22,11 @@
       "#/assets/*": ["./src/assets/*"],
       "#/config/*": ["./src/config/*"],
       "#/utils/*": ["./src/utils/*"],
+      "#/app/*": ["./src/features/app/*"],
       "#/core/*": ["./src/features/core/*"],
       "#/base/*": ["./src/features/base/*"],
       "#/static/*": ["./src/features/static/*"],
+      "#/dashboard/*": ["./src/features/dashboard/*"],
       "#/user/*": ["./src/features/user/*"],
       "#/lesson/*": ["./src/features/lesson/*"],
       "#/exam/*": ["./src/features/exam/*"]

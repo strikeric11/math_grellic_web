@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { ABSOLUTE_REGISTER_PATH } from '#/utils/path.util';
+import { staticRoutes } from '#/app/routes/static-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { AuthLoginForm } from './auth-login-form.component';
@@ -9,6 +9,8 @@ import { AuthLoginForm } from './auth-login-form.component';
 import type { ComponentProps } from 'react';
 
 type Props = Omit<ComponentProps<typeof BaseModal>, 'open' | 'onClose'>;
+
+const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.authRegister.to}`;
 
 export const AuthLoginModal = memo(function (props: Props) {
   const { pathname } = useLocation();
@@ -38,7 +40,7 @@ export const AuthLoginModal = memo(function (props: Props) {
       setOpenLogin(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user]);
 
   return (
     <BaseModal

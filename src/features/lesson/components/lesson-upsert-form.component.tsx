@@ -8,7 +8,7 @@ import isTime from 'validator/lib/isTime';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
-import { LESSONS_PATH } from '#/utils/path.util';
+import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseButton } from '#/base/components/base-button.components';
@@ -25,6 +25,8 @@ import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
 type Props = FormProps<'div'> & {
   onSubmit: (data: LessonUpsertFormData) => Promise<Lesson>;
 };
+
+const LESSONS_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
 
 const schema = z
   .object({
@@ -145,7 +147,7 @@ export const LessonUpsertForm = memo(function ({
     }
 
     setLessonFormData(getValues());
-    window.open(`${LESSONS_PATH}/preview`, '_blank')?.focus();
+    window.open(teacherRoutes.lesson.previewTo, '_blank')?.focus();
   }, [trigger, getValues, setLessonFormData]);
 
   useEffect(() => {

@@ -6,7 +6,7 @@ import z from 'zod';
 import cx from 'classix';
 import toast from 'react-hot-toast';
 
-import { DASHBOARD_PATH } from '#/utils/path.util';
+import { generateDashboardPath } from '#/utils/path.util';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseControlledInput } from '#/base/components/base-input.component';
 import { BaseControlledPasswordInput } from '#/base/components/base-password-input.component';
@@ -60,9 +60,11 @@ export const AuthLoginForm = memo(function ({
   const submitForm = useCallback(
     async (data: AuthCredentials) => {
       try {
-        await login(data);
+        const user = await login(data);
+        const to = generateDashboardPath(user.role);
+        // Set is done and navigate to user role's dashboard
         setIsDone(true);
-        navigate(DASHBOARD_PATH);
+        navigate(to);
       } catch (error: any) {
         reset({ email: getValues('email'), password: '' });
         toast.error(error.message);

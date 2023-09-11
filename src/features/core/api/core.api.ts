@@ -1,4 +1,5 @@
 import { kyInstance } from '#/config/ky.config';
+import { queryCoreKey } from '#/config/react-query-keys.config';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 import type { HTTPError } from 'ky';
@@ -24,7 +25,7 @@ export function getDateTimeNow(
   };
 
   return {
-    queryKey: ['time'],
+    queryKey: queryCoreKey.time,
     queryFn,
     ...options,
   };

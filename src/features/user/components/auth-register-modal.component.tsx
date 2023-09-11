@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { ABSOLUTE_REGISTER_PATH } from '#/utils/path.util';
+import { staticRoutes } from '#/app/routes/static-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { AuthRegisterRolePicker } from './auth-register-role-picker.component';
@@ -10,6 +10,8 @@ import type { ComponentProps } from 'react';
 import type { UserRole } from '../models/user.model';
 
 type Props = Omit<ComponentProps<typeof BaseModal>, 'open' | 'onClose'>;
+
+const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.authRegister.to}`;
 
 export const AuthRegisterModal = memo(function (props: Props) {
   const navigate = useNavigate();
