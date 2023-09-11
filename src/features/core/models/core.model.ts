@@ -19,3 +19,5 @@ export type CoreSlice = {
   setOpenRegister: (openRegister?: boolean) => void;
   setOpenLogin: (openLogin?: boolean) => void;
 };
+
+export type PaginatedQueryData<T> = (T[] | number)[];

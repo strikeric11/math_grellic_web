@@ -10,22 +10,28 @@ import type {
   UseQueryOptions,
 } from '@tanstack/react-query';
 import type { HTTPError } from 'ky';
+import type { PaginatedQueryData } from '#/core/models/core.model';
 import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
 
 const BASE_URL = 'lessons';
 
-export function getLessonsByCurrentTeacherUser(
-  keys?: { q?: string },
+export function getPaginatedLessonsByCurrentTeacherUser(
+  keys?: { q?: string; status?: string },
   options?: Omit<
-    UseQueryOptions<Lesson[], Error, Lesson[], any>,
+    UseQueryOptions<
+      PaginatedQueryData<Lesson>,
+      Error,
+      PaginatedQueryData<Lesson>,
+      any
+    >,
     'queryKey' | 'queryFn'
   >,
 ) {
-  const { q } = keys || {};
+  const { q, status } = keys || {};
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/teachers/list`;
-    const searchParams = generateSearchParams({ q });
+    const searchParams = generateSearchParams({ q, status });
 
     try {
       const lessons = await kyInstance.get(url, { searchParams }).json();
@@ -37,7 +43,7 @@ export function getLessonsByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryLessonKey.list, { q }],
+    queryKey: [...queryLessonKey.list, { q, status }],
     queryFn,
     ...options,
   };

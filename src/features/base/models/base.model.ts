@@ -10,6 +10,7 @@ export type IconName =
   | 'arrow-circle-left'
   | 'arrow-circle-right'
   | 'arrow-counter-clockwise'
+  | 'arrow-clockwise'
   | 'arrow-left'
   | 'arrows-in-line-horizontal'
   | 'arrows-out-line-horizontal'
@@ -17,6 +18,7 @@ export type IconName =
   | 'arrow-u-up-right'
   | 'bell'
   | 'calendar'
+  | 'calendar-check'
   | 'caret-circle-left'
   | 'caret-circle-right'
   | 'caret-down'
@@ -28,11 +30,13 @@ export type IconName =
   | 'circle-dashed'
   | 'clock'
   | 'door-open'
+  | 'dots-three-vertical'
   | 'exam'
   | 'eye'
   | 'eye-slash'
   | 'file-text'
   | 'floppy-disk-back'
+  | 'funnel'
   | 'game-controller'
   | 'gender-female'
   | 'gender-male'
@@ -107,4 +111,11 @@ export type FormProps<
 > = Omit<ComponentProps<T>, 'onSubmit'> & {
   isDone?: boolean;
   onDone?: (isDone: boolean) => void;
+};
+
+export type QueryFilterOption = {
+  key: string;
+  name: string;
+  value: string;
+  label: string;
 };

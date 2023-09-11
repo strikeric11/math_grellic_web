@@ -91,7 +91,7 @@ export const BaseButton = memo(
             '!h-10',
           (variant === 'solid' || variant === 'border') &&
             size === 'xs' &&
-            '!h-9 !px-3 !text-sm',
+            '!h-9 !px-3 !text-sm !tracking-normal',
           variant === 'link' && (size === 'sm' || size === 'xs') && '!text-sm',
           bodyFont && '!font-body !tracking-normal',
           (loading || disabled) && '!pointer-events-none',

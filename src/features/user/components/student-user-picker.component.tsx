@@ -59,7 +59,7 @@ export const StudentUserPicker = memo(
     },
     ref,
   ) {
-    const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
+    const [keyword, setKeyword] = useState<string | undefined>(undefined);
 
     const {
       data: students,
@@ -67,7 +67,7 @@ export const StudentUserPicker = memo(
       isLoading,
     } = useQuery(
       getStudentsByCurrentTeacherUser(
-        { q: searchTerm },
+        { q: keyword },
         {
           refetchOnWindowFocus: false,
           initialData: [],
@@ -175,7 +175,7 @@ export const StudentUserPicker = memo(
     );
 
     const handleSearchChange = useCallback((value: string | null) => {
-      setSearchTerm(value || undefined);
+      setKeyword(value || undefined);
     }, []);
 
     // Cancel by syncing modalSelectedStudentIds back to selectedStudentIds,

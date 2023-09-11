@@ -28,6 +28,7 @@ export const BaseSearchInput = memo(
     return (
       <BaseInput
         ref={ref}
+        type='search'
         placeholder='Find a student'
         iconName='magnifying-glass'
         onChange={handleChange}

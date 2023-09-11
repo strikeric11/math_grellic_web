@@ -10,7 +10,6 @@ import {
 import { Popover, Transition } from '@headlessui/react';
 import { usePopper } from 'react-popper';
 import { useController } from 'react-hook-form';
-import { AnimatePresence } from 'framer-motion';
 import cx from 'classix';
 import dayjs from 'dayjs';
 
@@ -191,50 +190,48 @@ export const BaseDatePicker = memo(
                   {formattedValue}
                 </div>
               </Popover.Button>
-              <AnimatePresence>
-                <Popover.Panel
-                  className='absolute z-max mt-2.5'
-                  ref={setPopperRef}
-                  style={popperStyles}
-                  {...attributes.popper}
-                >
-                  <Transition as={Fragment} show={open} appear>
-                    <Transition.Child as='div' {...menuTransition}>
-                      <BaseSurface
-                        className='flex h-[352px] w-[336px] flex-col overflow-hidden !p-0 drop-shadow-primary-sm'
-                        rounded='xs'
-                      >
-                        <BaseCalendarSelector
-                          currentDate={currentDate}
-                          isExpanded={isSelectorExpanded}
-                          onExpand={handleSelectorExpand}
-                          onChange={handleCurrentDateChange}
-                          {...calendarSelectorProps}
-                        />
-                        {!isSelectorExpanded && (
-                          <div
-                            key={currentDate.toString()}
-                            className='flex w-full flex-1'
-                          >
-                            <BaseCalendar
-                              className={cx(
-                                'flex-1 border-t border-t-primary-border-light',
-                                calendarClassName,
-                              )}
-                              onChange={(date: Date) =>
-                                handleSelectedDateChange(date, close)
-                              }
-                              {...moreCalendarProps}
-                              currentDate={currentDate}
-                              selectedDate={localValue}
-                            />
-                          </div>
-                        )}
-                      </BaseSurface>
-                    </Transition.Child>
-                  </Transition>
-                </Popover.Panel>
-              </AnimatePresence>
+              <Popover.Panel
+                ref={setPopperRef}
+                className='absolute z-max mt-2.5'
+                style={popperStyles}
+                {...attributes.popper}
+              >
+                <Transition as={Fragment} show={open} appear>
+                  <Transition.Child as='div' {...menuTransition}>
+                    <BaseSurface
+                      className='flex h-[352px] w-[336px] flex-col overflow-hidden !p-0 drop-shadow-primary-sm'
+                      rounded='xs'
+                    >
+                      <BaseCalendarSelector
+                        currentDate={currentDate}
+                        isExpanded={isSelectorExpanded}
+                        onExpand={handleSelectorExpand}
+                        onChange={handleCurrentDateChange}
+                        {...calendarSelectorProps}
+                      />
+                      {!isSelectorExpanded && (
+                        <div
+                          key={currentDate.toString()}
+                          className='flex w-full flex-1'
+                        >
+                          <BaseCalendar
+                            className={cx(
+                              'flex-1 border-t border-t-primary-border-light',
+                              calendarClassName,
+                            )}
+                            onChange={(date: Date) =>
+                              handleSelectedDateChange(date, close)
+                            }
+                            {...moreCalendarProps}
+                            currentDate={currentDate}
+                            selectedDate={localValue}
+                          />
+                        </div>
+                      )}
+                    </BaseSurface>
+                  </Transition.Child>
+                </Transition>
+              </Popover.Panel>
             </>
           )}
         </Popover>

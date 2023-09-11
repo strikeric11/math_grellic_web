@@ -1,6 +1,8 @@
 import { memo } from 'react';
 import cx from 'classix';
 
+import { LessonTeacherSingleCard } from './lesson-teacher-single-card.component';
+
 import type { ComponentProps } from 'react';
 import type { Lesson } from '../models/lesson.model';
 
@@ -14,9 +16,12 @@ export const LessonTeacherList = memo(function ({
   ...moreProps
 }: Props) {
   return (
-    <div className={cx(className, '')} {...moreProps}>
+    <div
+      className={cx('flex w-full flex-col gap-2.5', className)}
+      {...moreProps}
+    >
       {lessons.map((lesson) => (
-        <div>{lesson.title}</div>
+        <LessonTeacherSingleCard key={lesson.id} lesson={lesson} />
       ))}
     </div>
   );

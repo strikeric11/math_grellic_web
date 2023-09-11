@@ -7,12 +7,23 @@ import type { UseControllerProps } from 'react-hook-form';
 
 type Props = ComponentProps<'input'> & {
   label?: string;
+  labelClassName?: string;
   errorMessage?: string;
 };
 
 export const BaseCheckbox = memo(
   forwardRef<HTMLInputElement, Props>(function (
-    { id, value, className, name, label, errorMessage, disabled, ...moreProps },
+    {
+      id,
+      value,
+      className,
+      labelClassName,
+      name,
+      label,
+      errorMessage,
+      disabled,
+      ...moreProps
+    },
     ref,
   ) {
     const newId = id || name;
@@ -26,7 +37,7 @@ export const BaseCheckbox = memo(
           id={newId}
           checked={!!value}
           className={cx(
-            'mt-0.5 shrink-0 rounded border-2 border-accent/40 text-primary',
+            'mt-0.5 shrink-0 cursor-pointer rounded border-2 border-accent/40 text-primary',
             disabled && '!bg-backdrop-gray',
             className,
           )}
@@ -36,7 +47,11 @@ export const BaseCheckbox = memo(
         {!!label && (
           <label
             htmlFor={newId}
-            className={cx('ml-3 text-sm', !!errorMessage && 'text-red-500')}
+            className={cx(
+              'ml-3 cursor-pointer text-sm',
+              !!errorMessage && 'text-red-500',
+              labelClassName,
+            )}
           >
             {label}
           </label>

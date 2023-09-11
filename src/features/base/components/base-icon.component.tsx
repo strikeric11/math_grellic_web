@@ -3,6 +3,7 @@ import { memo, useMemo } from 'react';
 import {
   ArrowCircleLeft,
   ArrowCircleRight,
+  ArrowClockwise,
   ArrowCounterClockwise,
   ArrowLeft,
   ArrowUUpLeft,
@@ -11,6 +12,7 @@ import {
   ArrowsOutLineHorizontal,
   Bell,
   Calendar,
+  CalendarCheck,
   CaretCircleLeft,
   CaretCircleRight,
   CaretDown,
@@ -22,11 +24,13 @@ import {
   CircleDashed,
   Clock,
   DoorOpen,
+  DotsThreeVertical,
   Exam,
   Eye,
   EyeSlash,
   FileText,
   FloppyDiskBack,
+  Funnel,
   GameController,
   GenderFemale,
   GenderMale,
@@ -72,6 +76,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return ArrowCircleLeft;
       case 'arrow-circle-right':
         return ArrowCircleRight;
+      case 'arrow-clockwise':
+        return ArrowClockwise;
       case 'arrow-counter-clockwise':
         return ArrowCounterClockwise;
       case 'arrow-left':
@@ -88,6 +94,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return Bell;
       case 'calendar':
         return Calendar;
+      case 'calendar-check':
+        return CalendarCheck;
       case 'caret-circle-left':
         return CaretCircleLeft;
       case 'caret-circle-right':
@@ -110,6 +118,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return Clock;
       case 'door-open':
         return DoorOpen;
+      case 'dots-three-vertical':
+        return DotsThreeVertical;
       case 'exam':
         return Exam;
       case 'eye':
@@ -120,6 +130,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return FileText;
       case 'floppy-disk-back':
         return FloppyDiskBack;
+      case 'funnel':
+        return Funnel;
       case 'game-controller':
         return GameController;
       case 'gender-female':

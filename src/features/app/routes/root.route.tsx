@@ -7,6 +7,7 @@ import {
 
 import { queryClient } from '#/config/react-query-client.config';
 
+import { coreRouteHandle } from '#/core/core-route-handle';
 import { CorePageNotFound } from '#/core/components/core-page-not-found.component';
 import { CoreStaticLayout } from '#/core/components/core-static-layout.component';
 import { CoreLayout } from '#/core/components/core-layout.component';
@@ -87,6 +88,7 @@ const rootRoutes = createRoutesFromElements(
         <Route
           path='*'
           element={<CorePageNotFound to={`/${teacherBaseRoute}`} />}
+          handle={coreRouteHandle.notFound}
         />
       </Route>
       {/* TODO Student routes */}

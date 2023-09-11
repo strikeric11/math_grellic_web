@@ -10,6 +10,7 @@ type Props = ComponentProps<'button'> & {
   size?: 'base' | 'sm';
   selected?: boolean;
   checked?: boolean;
+  alwaysShowCheck?: boolean;
   center?: boolean;
   iconName?: IconName;
 };
@@ -22,6 +23,7 @@ export const BaseDropdownButton = memo(
       iconName,
       selected,
       checked,
+      alwaysShowCheck,
       center,
       disabled,
       children,
@@ -57,13 +59,22 @@ export const BaseDropdownButton = memo(
             )}
             {children}
           </div>
-          {!!checked && (
+          {alwaysShowCheck ? (
             <BaseIcon
               name='check-fat'
-              className='text-green-500'
+              className={cx(checked ? 'text-green-500' : 'text-accent/50')}
               size={size === 'base' ? 18 : 20}
               weight='fill'
             />
+          ) : (
+            checked && (
+              <BaseIcon
+                name='check-fat'
+                className='text-green-500'
+                size={size === 'base' ? 18 : 20}
+                weight='fill'
+              />
+            )
           )}
         </div>
       </button>
