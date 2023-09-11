@@ -12,7 +12,8 @@ import { CorePageNotFound } from '#/core/components/core-page-not-found.componen
 import { CoreStaticLayout } from '#/core/components/core-static-layout.component';
 import { CoreLayout } from '#/core/components/core-layout.component';
 
-// import { AuthProtectedRoute } from './user/components/auth-protected-route.component';
+import { UserRole } from '#/user/models/user.model';
+import { AuthProtectedRoute } from '#/user/components/auth-protected-route.component';
 
 import { HomePage } from '#/static/pages/home.page';
 import { AboutPage } from '#/static/pages/about.page';
@@ -30,8 +31,9 @@ import {
 import { LessonSchedulePage } from '#/lesson/pages/lesson-schedule.page';
 import { LessonPreviewPage } from '#/lesson/pages/lesson-preview.page';
 
-import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
 import { staticRoutes } from './static-routes';
+import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
+import { studentBaseRoute } from './student-routes';
 
 const rootRoutes = createRoutesFromElements(
   <>
@@ -53,8 +55,9 @@ const rootRoutes = createRoutesFromElements(
       <Route
         path={teacherBaseRoute}
         element={
-          // TODO auth protected
-          <Outlet />
+          <AuthProtectedRoute roles={[UserRole.Teacher]}>
+            <Outlet />
+          </AuthProtectedRoute>
         }
       >
         <Route
@@ -68,6 +71,7 @@ const rootRoutes = createRoutesFromElements(
             element={<LessonTeacherListPage />}
             handle={lessonTeacherRouteHandle.list}
             loader={lessonTeacherListLoader(queryClient)}
+            errorElement={<CorePageNotFound />}
           />
           <Route
             path={teacherRoutes.lesson.createTo}
@@ -92,6 +96,14 @@ const rootRoutes = createRoutesFromElements(
         />
       </Route>
       {/* TODO Student routes */}
+      <Route
+        path={studentBaseRoute}
+        element={
+          <AuthProtectedRoute roles={[UserRole.Student]}>
+            <Outlet />
+          </AuthProtectedRoute>
+        }
+      ></Route>
     </Route>
   </>,
 );
