@@ -56,12 +56,6 @@ export const BaseDataToolbar = memo(
           onChange={onSearchChange}
         />
         <div className='flex items-center gap-x-2.5'>
-          <BaseIconButton
-            name='arrow-clockwise'
-            variant='link'
-            size='sm'
-            onClick={onRefresh}
-          />
           <BaseDataToolbarFilterMenu
             options={filterOptions}
             defaulSelectedtOptions={defaulSelectedtFilterOptions}
@@ -75,6 +69,12 @@ export const BaseDataToolbar = memo(
             submitButtonLabel='Apply Sort'
             buttonProps={sortButtonProps}
             onSubmit={onSort}
+          />
+          <BaseIconButton
+            name='arrow-clockwise'
+            variant='link'
+            size='sm'
+            onClick={onRefresh}
           />
         </div>
       </div>

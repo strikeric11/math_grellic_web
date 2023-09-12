@@ -104,7 +104,7 @@ export const BaseDataToolbarFilterMenu = memo(function ({
             ref={setButtonRef}
             as={BaseButton}
             className={cx(
-              '!border !border-primary-focus !p-2 !font-body !text-sm !tracking-normal',
+              '!p-2 !font-body !text-sm font-medium !tracking-normal',
               !currentSelectedOptions.length
                 ? '!border-transparent'
                 : '!pr-2.5',
@@ -126,7 +126,7 @@ export const BaseDataToolbarFilterMenu = memo(function ({
             <Transition as={Fragment} show={open} appear>
               <Transition.Child as='div' {...menuTransition}>
                 <BaseSurface
-                  className='min-w-[200px] overflow-hidden !px-2.5 !pt-5 drop-shadow-primary-sm'
+                  className='min-w-[200px] overflow-hidden !px-2.5 !pb-2.5 !pt-5 drop-shadow-primary-sm'
                   rounded='xs'
                 >
                   <div className='mb-3 flex w-full flex-col'>
