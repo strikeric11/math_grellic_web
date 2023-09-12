@@ -2,6 +2,7 @@ import { memo, useMemo } from 'react';
 import dayjs from 'dayjs';
 import cx from 'classix';
 
+import { RecordStatus } from '#/core/models/core.model';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseChip } from '#/base/components/base-chip.component';
@@ -27,6 +28,7 @@ export const LessonTeacherSingleCard = memo(function ({
   const orderNumber = useMemo(() => lesson.orderNumber, [lesson]);
   const title = useMemo(() => lesson.title, [lesson]);
   const durationSeconds = useMemo(() => lesson.durationSeconds || 0, [lesson]);
+  const isDraft = useMemo(() => lesson.status === RecordStatus.Draft, [lesson]);
 
   const [scheduleDate, scheduleTime] = useMemo(() => {
     if (!lesson.schedules?.length) {
@@ -58,6 +60,8 @@ export const LessonTeacherSingleCard = memo(function ({
               </BaseChip>
               <BaseDivider className='!h-6' vertical />
               <BaseChip iconName='hourglass'>{durationSeconds} mins</BaseChip>
+              <BaseDivider className='!h-6' vertical />
+              {isDraft && <BaseChip iconName='file-dashed'>Draft</BaseChip>}
             </div>
             {/* Title */}
             <h2 className='font-body text-lg font-medium tracking-normal text-accent'>

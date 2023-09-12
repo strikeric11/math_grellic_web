@@ -10,32 +10,36 @@ import { BaseSurface } from './base-surface.component';
 import { BaseDropdownButton } from './base-dropdown-button.component';
 
 import type { ComponentProps } from 'react';
-import type { QueryFilterOption } from '../models/base.model';
+import type { QuerySort, QuerySortOption } from '../models/base.model';
+import { BaseDivider } from './base-divider.component';
 
 type Props = ComponentProps<typeof Popover> & {
-  options: QueryFilterOption[];
-  defaulSelectedtOptions?: QueryFilterOption[];
+  options: QuerySortOption[];
+  defaultSelectedSort?: QuerySort;
   submitButtonLabel?: string;
-  allowNoFilters?: boolean;
   buttonProps?: ComponentProps<typeof BaseButton>;
-  onSubmit?: (options: QueryFilterOption[]) => void;
+  onSubmit?: (sort: QuerySort) => void;
 };
 
-export const BaseDataToolbarFilterMenu = memo(function ({
+const orderOptions = [
+  { value: 'asc', label: 'Ascending' },
+  { value: 'desc', label: 'Descending' },
+];
+
+export const BaseDataToolbarSorterMenu = memo(function ({
   className,
   options,
-  defaulSelectedtOptions,
-  submitButtonLabel = 'Apply',
-  allowNoFilters,
+  defaultSelectedSort,
+  submitButtonLabel,
   buttonProps: { className: buttonClassName, ...moreButtonProps } = {},
   onSubmit,
   ...moreProps
 }: Props) {
-  const [selectedOptions, setSelectedOptions] = useState<QueryFilterOption[]>(
-    defaulSelectedtOptions || [],
+  const [selectedSort, setSelectedSort] = useState<QuerySort>(
+    defaultSelectedSort || ({} as QuerySort),
   );
-  const [currentSelectedOptions, setCurrentSelectedOptions] =
-    useState<QueryFilterOption[]>(selectedOptions);
+  const [currentSelectedSort, setCurrentSelectedSort] =
+    useState<QuerySort>(selectedSort);
 
   const [buttonRef, setButtonRef] = useState<any>(undefined);
   const [popperRef, setPopperRef] = useState<any>(undefined);
@@ -48,52 +52,68 @@ export const BaseDataToolbarFilterMenu = memo(function ({
   });
 
   const buttonLabel = useMemo(() => {
-    if (!currentSelectedOptions.length) {
+    if (!Object.keys(currentSelectedSort)?.length) {
       return '';
     }
 
-    return currentSelectedOptions.map((option) => option.label).join(', ');
-  }, [currentSelectedOptions]);
+    const { label } =
+      options.find((option) => option.value === currentSelectedSort.field) ||
+      {};
+
+    return `${label}, ${currentSelectedSort.order.toUpperCase()}`;
+  }, [options, currentSelectedSort]);
 
   const isChecked = useCallback(
-    (option: QueryFilterOption) => {
-      if (!selectedOptions.length) {
+    (value: string) => {
+      if (!selectedSort.field?.trim()) {
         return false;
       }
-      return selectedOptions.some((sOption) => sOption.key === option.key);
+      return selectedSort.field === value;
     },
-    [selectedOptions],
+    [selectedSort],
+  );
+
+  const isOrderChecked = useCallback(
+    (value: string) => {
+      if (!selectedSort.order?.trim()) {
+        return false;
+      }
+      return selectedSort.order === value;
+    },
+    [selectedSort],
   );
 
   const handleOpenMenu = useCallback(() => {
-    setSelectedOptions(currentSelectedOptions);
-  }, [currentSelectedOptions]);
+    setSelectedSort(currentSelectedSort);
+  }, [currentSelectedSort]);
 
   const handleOptionSelect = useCallback(
-    (option: QueryFilterOption) => () =>
-      setSelectedOptions((prev) => {
-        const isExisting = prev.some((op) => op.key === option.key);
-        if (isExisting) {
-          return prev.filter((op) => op.key !== option.key);
-        } else {
-          return [...prev, option];
-        }
-      }),
+    (value: string) => () =>
+      setSelectedSort((prev) => ({ ...prev, field: value })),
+    [],
+  );
+
+  const handleOrderSelect = useCallback(
+    (value: string) => () =>
+      setSelectedSort((prev) => ({
+        ...prev,
+        order: value as QuerySort['order'],
+      })),
     [],
   );
 
   const handleSubmit = useCallback(
     (close: () => void) => () => {
-      if (!selectedOptions.length && !allowNoFilters) {
+      if (!selectedSort.field?.trim()) {
         toast.error('Select at least one option');
         return;
       }
 
-      setCurrentSelectedOptions(selectedOptions);
-      onSubmit && onSubmit(selectedOptions);
+      setCurrentSelectedSort(selectedSort);
+      onSubmit && onSubmit(selectedSort);
       close();
     },
-    [selectedOptions, allowNoFilters, onSubmit],
+    [selectedSort, onSubmit],
   );
 
   return (
@@ -105,7 +125,7 @@ export const BaseDataToolbarFilterMenu = memo(function ({
             as={BaseButton}
             className={cx(
               '!border !border-primary-focus !p-2 !font-body !text-sm !tracking-normal',
-              !currentSelectedOptions.length
+              !currentSelectedSort.field?.trim()
                 ? '!border-transparent'
                 : '!pr-2.5',
               buttonClassName,
@@ -130,14 +150,26 @@ export const BaseDataToolbarFilterMenu = memo(function ({
                   rounded='xs'
                 >
                   <div className='mb-3 flex w-full flex-col'>
-                    {options.map((option) => (
+                    {options.map(({ value, label }) => (
                       <BaseDropdownButton
-                        key={option.key}
-                        checked={isChecked(option)}
-                        onClick={handleOptionSelect(option)}
+                        key={value}
+                        checked={isChecked(value)}
+                        onClick={handleOptionSelect(value)}
                         alwaysShowCheck
                       >
-                        {option.label}
+                        {label}
+                      </BaseDropdownButton>
+                    ))}
+                    <BaseDivider className='my-2' />
+                    {orderOptions.map(({ value, label }) => (
+                      <BaseDropdownButton
+                        key={value}
+                        size='sm'
+                        checked={isOrderChecked(value)}
+                        onClick={handleOrderSelect(value)}
+                        alwaysShowCheck
+                      >
+                        {label}
                       </BaseDropdownButton>
                     ))}
                   </div>

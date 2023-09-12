@@ -28,6 +28,7 @@ import {
   Exam,
   Eye,
   EyeSlash,
+  FileDashed,
   FileText,
   FloppyDiskBack,
   Funnel,
@@ -126,6 +127,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return Eye;
       case 'eye-slash':
         return EyeSlash;
+      case 'file-dashed':
+        return FileDashed;
       case 'file-text':
         return FileText;
       case 'floppy-disk-back':

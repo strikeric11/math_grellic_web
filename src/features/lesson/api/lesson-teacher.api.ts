@@ -16,7 +16,7 @@ import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
 const BASE_URL = 'lessons';
 
 export function getPaginatedLessonsByCurrentTeacherUser(
-  keys?: { q?: string; status?: string },
+  keys?: { q?: string; status?: string; sort?: string },
   options?: Omit<
     UseQueryOptions<
       PaginatedQueryData<Lesson>,
@@ -27,11 +27,11 @@ export function getPaginatedLessonsByCurrentTeacherUser(
     'queryKey' | 'queryFn'
   >,
 ) {
-  const { q, status } = keys || {};
+  const { q, status, sort } = keys || {};
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/teachers/list`;
-    const searchParams = generateSearchParams({ q, status });
+    const searchParams = generateSearchParams({ q, status, sort });
 
     try {
       const lessons = await kyInstance.get(url, { searchParams }).json();
@@ -43,7 +43,7 @@ export function getPaginatedLessonsByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryLessonKey.list, { q, status }],
+    queryKey: [...queryLessonKey.list, { q, status, sort }],
     queryFn,
     ...options,
   };

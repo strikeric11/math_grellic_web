@@ -34,6 +34,7 @@ export type IconName =
   | 'exam'
   | 'eye'
   | 'eye-slash'
+  | 'file-dashed'
   | 'file-text'
   | 'floppy-disk-back'
   | 'funnel'
@@ -118,4 +119,14 @@ export type QueryFilterOption = {
   name: string;
   value: string;
   label: string;
+};
+
+export type QuerySortOption = {
+  value: string;
+  label: string;
+};
+
+export type QuerySort = {
+  field: string;
+  order: 'asc' | 'desc';
 };
