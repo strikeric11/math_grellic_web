@@ -11,12 +11,18 @@ import type {
 } from '@tanstack/react-query';
 import type { HTTPError } from 'ky';
 import type { PaginatedQueryData } from '#/core/models/core.model';
+import type { QueryPagination } from '#/base/models/base.model';
 import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
 
 const BASE_URL = 'lessons';
 
 export function getPaginatedLessonsByCurrentTeacherUser(
-  keys?: { q?: string; status?: string; sort?: string },
+  keys?: {
+    q?: string;
+    status?: string;
+    sort?: string;
+    pagination?: Omit<QueryPagination, 'totalCount'>;
+  },
   options?: Omit<
     UseQueryOptions<
       PaginatedQueryData<Lesson>,
@@ -27,11 +33,18 @@ export function getPaginatedLessonsByCurrentTeacherUser(
     'queryKey' | 'queryFn'
   >,
 ) {
-  const { q, status, sort } = keys || {};
+  const { q, status, sort, pagination } = keys || {};
+  const { take, skip } = pagination || {};
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/teachers/list`;
-    const searchParams = generateSearchParams({ q, status, sort });
+    const searchParams = generateSearchParams({
+      q,
+      status,
+      sort,
+      skip: skip?.toString() || '0',
+      take: take?.toString() || '0',
+    });
 
     try {
       const lessons = await kyInstance.get(url, { searchParams }).json();
@@ -43,7 +56,33 @@ export function getPaginatedLessonsByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryLessonKey.list, { q, status, sort }],
+    queryKey: [...queryLessonKey.list, { q, status, sort, take, skip }],
+    queryFn,
+    ...options,
+  };
+}
+
+export function getLessonBySlugAndCurrentTeacherUser(
+  slug: string,
+  options?: Omit<
+    UseQueryOptions<Lesson, Error, Lesson, any>,
+    'queryKey' | 'queryFn'
+  >,
+) {
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/${slug}/teachers`;
+
+    try {
+      const lessons = await kyInstance.get(url).json();
+      return lessons;
+    } catch (error) {
+      const errorRes = await (error as HTTPError).response.json();
+      throw new Error(errorRes.message);
+    }
+  };
+
+  return {
+    queryKey: [...queryLessonKey.preview],
     queryFn,
     ...options,
   };

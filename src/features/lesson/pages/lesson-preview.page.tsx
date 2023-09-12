@@ -1,10 +1,10 @@
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { BaseScene } from '#/base/components/base-scene.component';
-import { useLessonPreviewPage } from '../hooks/use-lesson-preview.hook';
+import { useLessonPreviewPage } from '../hooks/use-lesson-preview-page.hook';
 import { LessonSingle } from '../components/lesson-single.component';
 
 export function LessonPreviewPage() {
-  const { lesson, titlePreview } = useLessonPreviewPage();
+  const { titlePreview, lesson } = useLessonPreviewPage();
 
   return lesson === undefined ? (
     <BasePageSpinner />

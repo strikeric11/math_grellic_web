@@ -1,7 +1,7 @@
-import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
-
 import { capitalize } from '#/utils/string.util';
 import { RecordStatus } from '#/core/models/core.model';
+import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
+import { BaseDataPagination } from '#/base/components/base-data-pagination.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { getPaginatedLessonsByCurrentTeacherUser } from '../api/lesson-teacher.api';
 import {
@@ -39,12 +39,22 @@ const sortOptions = [
 ];
 
 export function LessonTeacherListPage() {
-  const { lessons, setKeyword, setFilters, setSort, refetch } =
-    useLessonTeacherListPage();
+  const {
+    lessons,
+    setKeyword,
+    setFilters,
+    setSort,
+    refetch,
+    totalCount,
+    pagination,
+    nextPage,
+    prevPage,
+    handleLessonPreview,
+  } = useLessonTeacherListPage();
 
   return (
-    <div id='scene-content' className='flex w-full flex-1 items-start py-5'>
-      <div className='flex-1'>
+    <div id='scene-content' className='flex w-full flex-1 items-start pt-5'>
+      <div className='flex w-full flex-1 flex-col self-stretch'>
         <BaseDataToolbar
           className='mb-5'
           filterOptions={filterOptions}
@@ -56,10 +66,18 @@ export function LessonTeacherListPage() {
           onFilter={setFilters}
           onSort={setSort}
         />
-        <LessonTeacherList lessons={lessons} />
-        {/* // TODO pagination */}
-        <div></div>
+        <LessonTeacherList
+          lessons={lessons}
+          onLessonPreview={handleLessonPreview}
+        />
+        <BaseDataPagination
+          totalCount={totalCount}
+          pagination={pagination}
+          onNext={nextPage}
+          onPrev={prevPage}
+        />
       </div>
+      {/* TODO sidebar components */}
       <BaseRightSidebar />
     </div>
   );

@@ -10,4 +10,5 @@ export const queryUserKey = {
 
 export const queryLessonKey = {
   list: ['lessons', 'list'],
+  preview: ['lessons', 'preview'],
 };

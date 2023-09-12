@@ -10,7 +10,11 @@ import { BaseSurface } from './base-surface.component';
 import { BaseDropdownButton } from './base-dropdown-button.component';
 
 import type { ComponentProps } from 'react';
-import type { QuerySort, QuerySortOption } from '../models/base.model';
+import type {
+  IconName,
+  QuerySort,
+  QuerySortOption,
+} from '../models/base.model';
 import { BaseDivider } from './base-divider.component';
 
 type Props = ComponentProps<typeof Popover> & {
@@ -22,8 +26,8 @@ type Props = ComponentProps<typeof Popover> & {
 };
 
 const orderOptions = [
-  { value: 'asc', label: 'Ascending' },
-  { value: 'desc', label: 'Descending' },
+  { value: 'asc', label: 'Ascending', iconName: 'sort-ascending' },
+  { value: 'desc', label: 'Descending', iconName: 'sort-descending' },
 ];
 
 export const BaseDataToolbarSorterMenu = memo(function ({
@@ -146,7 +150,7 @@ export const BaseDataToolbarSorterMenu = memo(function ({
             <Transition as={Fragment} show={open} appear>
               <Transition.Child as='div' {...menuTransition}>
                 <BaseSurface
-                  className='min-w-[200px] overflow-hidden !px-2.5 !pb-2.5 !pt-5 drop-shadow-primary-sm'
+                  className='min-w-[250px] overflow-hidden !p-2.5 drop-shadow-primary-sm'
                   rounded='xs'
                 >
                   <div className='mb-3 flex w-full flex-col'>
@@ -154,6 +158,7 @@ export const BaseDataToolbarSorterMenu = memo(function ({
                       <BaseDropdownButton
                         key={value}
                         checked={isChecked(value)}
+                        iconName='feather'
                         onClick={handleOptionSelect(value)}
                         alwaysShowCheck
                       >
@@ -161,10 +166,11 @@ export const BaseDataToolbarSorterMenu = memo(function ({
                       </BaseDropdownButton>
                     ))}
                     <BaseDivider className='my-2' />
-                    {orderOptions.map(({ value, label }) => (
+                    {orderOptions.map(({ value, label, iconName }) => (
                       <BaseDropdownButton
                         key={value}
                         checked={isOrderChecked(value)}
+                        iconName={iconName as IconName}
                         onClick={handleOrderSelect(value)}
                         alwaysShowCheck
                       >

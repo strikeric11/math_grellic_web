@@ -8,12 +8,16 @@ import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
 
 import type { ComponentProps } from 'react';
 import type { Lesson } from '../models/lesson.model';
+import { Menu } from '@headlessui/react';
+import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 
 type Props = ComponentProps<typeof BaseSurface> & {
   lesson: Lesson;
+  onPreview?: () => void;
 };
 
 const menuIconProps = { weight: 'bold', size: 48 } as ComponentProps<
@@ -23,6 +27,7 @@ const menuIconProps = { weight: 'bold', size: 48 } as ComponentProps<
 export const LessonTeacherSingleCard = memo(function ({
   className,
   lesson,
+  onPreview,
   ...moreProps
 }: Props) {
   const orderNumber = useMemo(() => lesson.orderNumber, [lesson]);
@@ -60,8 +65,12 @@ export const LessonTeacherSingleCard = memo(function ({
               </BaseChip>
               <BaseDivider className='!h-6' vertical />
               <BaseChip iconName='hourglass'>{durationSeconds} mins</BaseChip>
-              <BaseDivider className='!h-6' vertical />
-              {isDraft && <BaseChip iconName='file-dashed'>Draft</BaseChip>}
+              {isDraft && (
+                <>
+                  <BaseDivider className='!h-6' vertical />
+                  <BaseChip iconName='file-dashed'>Draft</BaseChip>
+                </>
+              )}
             </div>
             {/* Title */}
             <h2 className='font-body text-lg font-medium tracking-normal text-accent'>
@@ -78,14 +87,37 @@ export const LessonTeacherSingleCard = memo(function ({
           </div>
         )}
       </div>
-      <div className='relative h-12 w-7 overflow-hidden'>
-        {/* // TODO Menu */}
-        <BaseIconButton
-          name='dots-three-vertical'
-          variant='link'
-          className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-          iconProps={menuIconProps}
-        />
+      <div className='relative h-12 w-7'>
+        <BaseDropdownMenu
+          customMenuButton={
+            <div className='relative h-12 w-7'>
+              <Menu.Button
+                as={BaseIconButton}
+                name='dots-three-vertical'
+                variant='link'
+                className='button absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+                iconProps={menuIconProps}
+              />
+            </div>
+          }
+        >
+          {/* TODO edit */}
+          <Menu.Item as={BaseDropdownButton} iconName='pencil'>
+            Edit
+          </Menu.Item>
+          {/* TODO details */}
+          <Menu.Item as={BaseDropdownButton} iconName='article'>
+            Details
+          </Menu.Item>
+          {/* TODO preview */}
+          <Menu.Item
+            as={BaseDropdownButton}
+            iconName='file-text'
+            onClick={onPreview}
+          >
+            Preview
+          </Menu.Item>
+        </BaseDropdownMenu>
       </div>
     </BaseSurface>
   );

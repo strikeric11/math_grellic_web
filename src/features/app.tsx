@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 import { useOverlayScrollbars } from 'overlayscrollbars-react';
 
@@ -23,7 +22,6 @@ export function App() {
       <AuthSessionSubscriber />
       <RouterProvider router={router} />
       <Toaster containerClassName='mb-12' position='bottom-center' />
-      <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
     </QueryClientProvider>
   );
 }

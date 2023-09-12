@@ -10,13 +10,15 @@ import type { ComponentProps, ReactNode } from 'react';
 
 type Props = Omit<ComponentProps<typeof Menu>, 'children'> & {
   disabled?: boolean;
+  customMenuButton?: ReactNode;
   children?: ReactNode;
 };
 
 export const BaseDropdownMenu = memo(function ({
   className,
-  children,
   disabled,
+  customMenuButton,
+  children,
   ...moreProps
 }: Props) {
   return (
@@ -26,12 +28,14 @@ export const BaseDropdownMenu = memo(function ({
       {...moreProps}
     >
       <div>
-        <Menu.Button
-          as={BaseIconButton}
-          name='caret-down'
-          className='button'
-          disabled={disabled}
-        />
+        {customMenuButton || (
+          <Menu.Button
+            as={BaseIconButton}
+            name='caret-down'
+            className='button'
+            disabled={disabled}
+          />
+        )}
       </div>
       <Transition as={Fragment} {...menuTransition}>
         <Menu.Items

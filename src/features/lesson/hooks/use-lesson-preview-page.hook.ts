@@ -16,20 +16,13 @@ export function useLessonPreviewPage(): Result {
     if (!lessonFormData) {
       return lessonFormData;
     }
-
-    return {
-      ...lessonFormData,
-      id: 0,
-    };
+    return { ...lessonFormData, id: 0 } as Lesson;
   }, [lessonFormData]);
 
   const titlePreview = useMemo(
-    () => (lesson?.title ? `${lesson?.title} Preview` : 'Preview'),
+    () => (lesson?.title ? `${lesson?.title} (Preview)` : 'Preview'),
     [lesson],
   );
 
-  return {
-    lesson,
-    titlePreview,
-  };
+  return { titlePreview, lesson };
 }

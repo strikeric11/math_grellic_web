@@ -16,6 +16,7 @@ export type IconName =
   | 'arrows-out-line-horizontal'
   | 'arrow-u-up-left'
   | 'arrow-u-up-right'
+  | 'article'
   | 'bell'
   | 'calendar'
   | 'calendar-check'
@@ -34,6 +35,7 @@ export type IconName =
   | 'exam'
   | 'eye'
   | 'eye-slash'
+  | 'feather'
   | 'file-dashed'
   | 'file-text'
   | 'floppy-disk-back'
@@ -48,10 +50,13 @@ export type IconName =
   | 'magnifying-glass'
   | 'minus'
   | 'plus'
+  | 'pencil'
   | 'radio-button'
   | 'rocket-launch'
   | 'share-fat'
   | 'squares-four'
+  | 'sort-ascending'
+  | 'sort-descending'
   | 'text-align-center'
   | 'text-align-justify'
   | 'text-align-left'
@@ -129,4 +134,9 @@ export type QuerySortOption = {
 export type QuerySort = {
   field: string;
   order: 'asc' | 'desc';
+};
+
+export type QueryPagination = {
+  take: number;
+  skip: number;
 };

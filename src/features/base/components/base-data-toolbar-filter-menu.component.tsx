@@ -126,7 +126,7 @@ export const BaseDataToolbarFilterMenu = memo(function ({
             <Transition as={Fragment} show={open} appear>
               <Transition.Child as='div' {...menuTransition}>
                 <BaseSurface
-                  className='min-w-[200px] overflow-hidden !px-2.5 !pb-2.5 !pt-5 drop-shadow-primary-sm'
+                  className='min-w-[250px] overflow-hidden !p-2.5 drop-shadow-primary-sm'
                   rounded='xs'
                 >
                   <div className='mb-3 flex w-full flex-col'>
@@ -134,6 +134,7 @@ export const BaseDataToolbarFilterMenu = memo(function ({
                       <BaseDropdownButton
                         key={option.key}
                         checked={isChecked(option)}
+                        iconName='feather'
                         onClick={handleOptionSelect(option)}
                         alwaysShowCheck
                       >

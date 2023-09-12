@@ -10,6 +10,7 @@ import {
   ArrowUUpRight,
   ArrowsInLineHorizontal,
   ArrowsOutLineHorizontal,
+  Article,
   Bell,
   Calendar,
   CalendarCheck,
@@ -28,6 +29,7 @@ import {
   Exam,
   Eye,
   EyeSlash,
+  Feather,
   FileDashed,
   FileText,
   FloppyDiskBack,
@@ -41,10 +43,13 @@ import {
   ListNumbers,
   MagnifyingGlass,
   Minus,
+  Pencil,
   Plus,
   RadioButton,
   RocketLaunch,
   ShareFat,
+  SortAscending,
+  SortDescending,
   SquaresFour,
   TextAlignCenter,
   TextAlignJustify,
@@ -91,6 +96,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return ArrowUUpLeft;
       case 'arrow-u-up-right':
         return ArrowUUpRight;
+      case 'article':
+        return Article;
       case 'bell':
         return Bell;
       case 'calendar':
@@ -127,6 +134,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return Eye;
       case 'eye-slash':
         return EyeSlash;
+      case 'feather':
+        return Feather;
       case 'file-dashed':
         return FileDashed;
       case 'file-text':
@@ -153,6 +162,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return MagnifyingGlass;
       case 'minus':
         return Minus;
+      case 'pencil':
+        return Pencil;
       case 'plus':
         return Plus;
       case 'radio-button':
@@ -161,6 +172,10 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return RocketLaunch;
       case 'share-fat':
         return ShareFat;
+      case 'sort-ascending':
+        return SortAscending;
+      case 'sort-descending':
+        return SortDescending;
       case 'squares-four':
         return SquaresFour;
       case 'text-align-center':

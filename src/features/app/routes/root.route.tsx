@@ -28,6 +28,10 @@ import {
   LessonTeacherListPage,
   loader as lessonTeacherListLoader,
 } from '#/lesson/pages/lesson-teacher-list.page';
+import {
+  LessonPreviewSlugPage,
+  loader as lessonPreviewSlugLoader,
+} from '#/lesson/pages/lesson-preview-slug.page';
 import { LessonSchedulePage } from '#/lesson/pages/lesson-schedule.page';
 import { LessonPreviewPage } from '#/lesson/pages/lesson-preview.page';
 
@@ -83,11 +87,20 @@ const rootRoutes = createRoutesFromElements(
             element={<LessonSchedulePage />}
             handle={lessonTeacherRouteHandle.schedule}
           />
-          <Route
-            path={teacherRoutes.lesson.previewTo}
-            element={<LessonPreviewPage />}
-            handle={lessonTeacherRouteHandle.preview}
-          />
+          <Route path={teacherRoutes.lesson.previewTo} element={<Outlet />}>
+            <Route
+              index
+              element={<LessonPreviewPage />}
+              handle={lessonTeacherRouteHandle.preview}
+            />
+            <Route
+              path={':slug'}
+              element={<LessonPreviewSlugPage />}
+              handle={lessonTeacherRouteHandle.preview}
+              loader={lessonPreviewSlugLoader(queryClient)}
+              errorElement={<CorePageNotFound />}
+            />
+          </Route>
         </Route>
         <Route
           path='*'
