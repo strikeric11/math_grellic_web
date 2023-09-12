@@ -1,3 +1,5 @@
+import { useParams } from 'react-router-dom';
+
 import { BaseScene } from '#/base/components/base-scene.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { getLessonBySlugAndCurrentTeacherUser } from '../api/lesson-teacher.api';
@@ -7,9 +9,9 @@ import { LessonSingle } from '../components/lesson-single.component';
 import type { LoaderFunctionArgs } from 'react-router-dom';
 import type { QueryClient } from '@tanstack/react-query';
 
-export function LessonPreviewSlugPage(props: any) {
-  console.log(props);
-  const { titlePreview, lesson } = useLessonPreviewSlugPage('asd');
+export function LessonPreviewSlugPage() {
+  const { slug } = useParams();
+  const { titlePreview, lesson } = useLessonPreviewSlugPage(slug || '');
 
   return lesson === undefined ? (
     <BasePageSpinner />
