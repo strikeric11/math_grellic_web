@@ -41,14 +41,21 @@ export const BaseScene = memo(function ({
   }, []);
 
   return (
-    <div className={cx('relative z-10 px-9', className)} {...moreProps}>
+    <div
+      className={cx(
+        'relative z-10 flex w-full flex-1 flex-col px-9',
+        className,
+      )}
+      {...moreProps}
+    >
       {!!title?.trim() && (
-        <div className='flex h-20 items-center justify-start'>
+        <div id='scene-title' className='flex h-20 items-center justify-start'>
           <h1 className='w-fit text-2xl'>{title}</h1>
         </div>
       )}
       {!toolbarHidden && (
         <div
+          id='scene-toolbar'
           className={cx(
             'flex min-h-[46px] w-full items-center justify-between',
             !title?.trim() && 'h-20',

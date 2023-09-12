@@ -2,6 +2,7 @@ import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
 
 import { capitalize } from '#/utils/string.util';
 import { RecordStatus } from '#/core/models/core.model';
+import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { getPaginatedLessonsByCurrentTeacherUser } from '../api/lesson-teacher.api';
 import {
   defaultSort,
@@ -42,21 +43,24 @@ export function LessonTeacherListPage() {
     useLessonTeacherListPage();
 
   return (
-    <div className='py-5'>
-      <BaseDataToolbar
-        className='mb-5'
-        filterOptions={filterOptions}
-        defaulSelectedtFilterOptions={filterOptions}
-        defaultSelectedSort={defaultSort}
-        sortOptions={sortOptions}
-        onSearchChange={setKeyword}
-        onRefresh={refetch}
-        onFilter={setFilters}
-        onSort={setSort}
-      />
-      <LessonTeacherList lessons={lessons} />
-      {/* // TODO pagination */}
-      <div></div>
+    <div id='scene-content' className='flex w-full flex-1 items-start py-5'>
+      <div className='flex-1'>
+        <BaseDataToolbar
+          className='mb-5'
+          filterOptions={filterOptions}
+          defaulSelectedtFilterOptions={filterOptions}
+          defaultSelectedSort={defaultSort}
+          sortOptions={sortOptions}
+          onSearchChange={setKeyword}
+          onRefresh={refetch}
+          onFilter={setFilters}
+          onSort={setSort}
+        />
+        <LessonTeacherList lessons={lessons} />
+        {/* // TODO pagination */}
+        <div></div>
+      </div>
+      <BaseRightSidebar />
     </div>
   );
 }

@@ -1,27 +1,20 @@
-import { memo, useState } from 'react';
-import { useMotionValueEvent, useScroll } from 'framer-motion';
+import { memo } from 'react';
 import cx from 'classix';
 
 import { useAuth } from '#/user/hooks/use-auth.hook';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
+import { useScroll } from '../hooks/use-scroll.hook';
 import { CoreClock } from './core-clock.component';
 
 import type { ComponentProps } from 'react';
-
-const SCROLL_Y_THRESHOLD = 40;
 
 export const CoreHeader = memo(function ({
   className,
   ...moreProps
 }: ComponentProps<'header'>) {
-  const { scrollY } = useScroll();
+  const { isScrollTop } = useScroll();
   const { logout } = useAuth();
-  const [isScrollTop, setIsScrollTop] = useState(true);
-
-  useMotionValueEvent(scrollY, 'change', (latest) => {
-    setIsScrollTop(latest <= SCROLL_Y_THRESHOLD);
-  });
 
   // TODO notification and user menu
   // TEMP

@@ -12,12 +12,14 @@ export type AuditTrail = {
 };
 
 export type CoreSlice = {
-  sidebarMode: SidebarMode;
   openRegister?: boolean;
   openLogin?: boolean;
-  setSidebarMode: (sidebarMode: SidebarMode) => void;
+  sidebarMode: SidebarMode;
+  rightSidebarMode: Omit<SidebarMode, 'Hidden'>;
   setOpenRegister: (openRegister?: boolean) => void;
   setOpenLogin: (openLogin?: boolean) => void;
+  setSidebarMode: (sidebarMode: SidebarMode) => void;
+  toggleRightSidebarMode: () => void;
 };
 
 export type PaginatedQueryData<T> = (T[] | number)[];

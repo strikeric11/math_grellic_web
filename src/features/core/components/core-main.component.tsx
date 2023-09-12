@@ -15,7 +15,7 @@ export function CoreMain({
   return (
     <main
       className={cx(
-        'relative min-h-screen w-full flex-1 transition-[margin] duration-300',
+        'relative flex min-h-screen w-full flex-1 flex-col transition-[margin] duration-300',
         sidebarMode === SidebarMode.Collapsed && 'ml-[70px]',
         sidebarMode === SidebarMode.Expanded && 'ml-64',
         sidebarMode === SidebarMode.Hidden && 'ml-0',

@@ -21,6 +21,7 @@ export const useBoundStore = create<CoreSlice & UserSlice & LessonSlice>()(
         name: 'main-storage',
         partialize: (state) => ({
           sidebarMode: state.sidebarMode,
+          rightSidebarMode: state.rightSidebarMode,
           lessonFormData: state.lessonFormData,
         }),
         // Always set user field's initial value to undefined, to prevent localstorage manipulation
