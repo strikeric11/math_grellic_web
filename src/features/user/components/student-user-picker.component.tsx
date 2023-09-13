@@ -101,7 +101,7 @@ export const StudentUserPicker = memo(
       getStudentsByCurrentTeacherUser(
         { ids: value || selectedStudentIds || [] },
         {
-          queryKey: queryUserKey.selectedStudents,
+          queryKey: queryUserKey.selectedStudentList,
           refetchOnWindowFocus: false,
           refetchOnMount: false,
           refetchOnReconnect: false,

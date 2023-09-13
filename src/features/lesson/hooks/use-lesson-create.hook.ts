@@ -13,7 +13,7 @@ type Result = {
   createLesson: (data: LessonUpsertFormData) => Promise<Lesson>;
 };
 
-export function useLessonUpsert(): Result {
+export function useLessonCreate(): Result {
   const [isDone, setIsDone] = useState(false);
 
   const { mutateAsync: createLesson } = useMutation(

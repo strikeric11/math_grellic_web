@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect } from 'react';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu } from '@headlessui/react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -19,13 +19,16 @@ import { BaseStepper } from '#/base/components/base-stepper.component';
 import { LessonUpsertFormStep1 } from './lesson-upsert-form-step-1.component';
 import { LessonUpsertFormStep2 } from './lesson-upsert-form-step-2.component';
 
-import type { FormProps } from '#/base/models/base.model';
+import type { FieldErrors } from 'react-hook-form';
+import type { FormProps, IconName } from '#/base/models/base.model';
 import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
 
 type Props = FormProps<'div'> & {
+  lessonFormData?: LessonUpsertFormData;
   onSubmit: (data: LessonUpsertFormData) => Promise<Lesson>;
 };
 
+const LESSON_PREVIEW_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}/${teacherRoutes.lesson.previewTo}`;
 const LESSONS_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
 
 const schema = z
@@ -45,7 +48,10 @@ const schema = z
       .string()
       .min(1, 'Lesson title is required')
       .max(255, 'Title is too long'),
-    videoUrl: z.string().url().max(255, 'Url is too long'),
+    videoUrl: z
+      .string()
+      .url('Video embed url is invalid')
+      .max(255, 'Url is too long'),
     description: z.string().optional(),
     status: z.nativeEnum(RecordStatus),
     startDate: z
@@ -61,42 +67,51 @@ const schema = z
         message: 'Start time is invalid',
       })
       .optional(),
-    studentIds: z.array(z.number()).optional(),
+    studentIds: z.array(z.number()).nullable().optional(),
   })
-  .refine(
-    (data) => {
-      if (!!data.startDate && !data.startTime) {
-        return false;
+  .superRefine((data, ctx) => {
+    if (data.startDate || data.startDate || data.studentIds !== undefined) {
+      if (!data.startDate) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Start date is invalid',
+          path: ['startDate'],
+        });
       }
-      return true;
-    },
-    {
-      message: 'Start time is invalid',
-      path: ['startTime'],
-    },
-  )
-  .refine(
-    (data) => {
-      if (!!data.startTime && !data.startDate) {
-        return false;
+
+      if (!data.startTime) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Start time is invalid',
+          path: ['startTime'],
+        });
       }
-      return true;
-    },
-    {
-      message: 'Start date is invalid',
-      path: ['startDate'],
-    },
-  );
+
+      if (data.studentIds === undefined) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Assign students',
+          path: ['studentIds'],
+        });
+      }
+    }
+  });
 
 const defaultValues: Partial<LessonUpsertFormData> = {
   title: '',
   videoUrl: '',
   description: '',
   status: RecordStatus.Draft,
+  orderNumber: undefined,
+  durationSeconds: undefined,
+  startDate: undefined,
+  startTime: undefined,
+  studentIds: undefined,
 };
 
 export const LessonUpsertForm = memo(function ({
   className,
+  lessonFormData,
   isDone,
   onDone,
   onSubmit,
@@ -105,9 +120,14 @@ export const LessonUpsertForm = memo(function ({
   const navigate = useNavigate();
   const setLessonFormData = useBoundStore((state) => state.setLessonFormData);
 
+  const [isUpdate, isUpdatePublished] = useMemo(
+    () => [!!lessonFormData, lessonFormData?.status === RecordStatus.Published],
+    [lessonFormData],
+  );
+
   const methods = useForm<LessonUpsertFormData>({
     shouldFocusError: false,
-    defaultValues,
+    defaultValues: lessonFormData || defaultValues,
     resolver: zodResolver(schema),
   });
 
@@ -118,6 +138,26 @@ export const LessonUpsertForm = memo(function ({
     getValues,
     handleSubmit,
   } = methods;
+
+  const [publishButtonLabel, publishButtonIconName] = useMemo(
+    () => [
+      isUpdatePublished ? 'Save Changes' : 'Publish Now',
+      (isUpdatePublished ? 'floppy-disk-back' : 'share-fat') as IconName,
+    ],
+    [isUpdatePublished],
+  );
+
+  const handleReset = useCallback(() => {
+    reset(isUpdate ? lessonFormData : defaultValues);
+  }, [isUpdate, lessonFormData, reset]);
+
+  const handleSubmitError = useCallback(
+    (errors: FieldErrors<LessonUpsertFormData>) => {
+      const errorMessage = Object.entries(errors)[0][1].message;
+      toast.error(errorMessage || '');
+    },
+    [],
+  );
 
   const submitForm = useCallback(
     async (data: LessonUpsertFormData, status?: RecordStatus) => {
@@ -147,7 +187,7 @@ export const LessonUpsertForm = memo(function ({
     }
 
     setLessonFormData(getValues());
-    window.open(teacherRoutes.lesson.previewTo, '_blank')?.focus();
+    window.open(LESSON_PREVIEW_PATH, '_blank')?.focus();
   }, [trigger, getValues, setLessonFormData]);
 
   useEffect(() => {
@@ -161,31 +201,36 @@ export const LessonUpsertForm = memo(function ({
   return (
     <div className={cx('w-full', className)} {...moreProps}>
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit((data) => submitForm(data))}>
+        <form
+          onSubmit={handleSubmit((data) => submitForm(data), handleSubmitError)}
+        >
           <BaseStepper
             disabled={isSubmitting || isDone}
-            onReset={() => reset()}
+            onReset={handleReset}
             controlsRightContent={
               <div className='group-button'>
                 <BaseButton
-                  rightIconName='share-fat'
+                  rightIconName={publishButtonIconName}
                   loading={isSubmitting}
                   disabled={isDone}
-                  onClick={handleSubmit((data) =>
-                    submitForm(data, RecordStatus.Published),
+                  onClick={handleSubmit(
+                    (data) => submitForm(data, RecordStatus.Published),
+                    handleSubmitError,
                   )}
                 >
-                  Publish Now
+                  {publishButtonLabel}
                 </BaseButton>
                 <BaseDropdownMenu disabled={isSubmitting || isDone}>
-                  <Menu.Item
-                    as={BaseDropdownButton}
-                    type='submit'
-                    iconName='floppy-disk-back'
-                    disabled={isSubmitting || isDone}
-                  >
-                    Save as Draft
-                  </Menu.Item>
+                  {(!isUpdate || !isUpdatePublished) && (
+                    <Menu.Item
+                      as={BaseDropdownButton}
+                      type='submit'
+                      iconName='floppy-disk-back'
+                      disabled={isSubmitting || isDone}
+                    >
+                      Save as Draft
+                    </Menu.Item>
+                  )}
                   <Menu.Item
                     as={BaseDropdownButton}
                     iconName='file-text'
@@ -201,9 +246,11 @@ export const LessonUpsertForm = memo(function ({
             <BaseStepperStep label='Lesson Info'>
               <LessonUpsertFormStep1 disabled={isSubmitting || isDone} />
             </BaseStepperStep>
-            <BaseStepperStep label='Lesson Schedule'>
-              <LessonUpsertFormStep2 disabled={isSubmitting || isDone} />
-            </BaseStepperStep>
+            {(!isUpdate || !isUpdatePublished) && (
+              <BaseStepperStep label='Lesson Schedule'>
+                <LessonUpsertFormStep2 disabled={isSubmitting || isDone} />
+              </BaseStepperStep>
+            )}
           </BaseStepper>
         </form>
       </FormProvider>

@@ -32,7 +32,7 @@ export const BaseScene = memo(function ({
     if (window.history.state && window.history.state.idx > 0) {
       navigate(-1);
     } else {
-      navigate(teacherBaseRoute, { replace: true });
+      navigate(`/${teacherBaseRoute}`, { replace: true });
     }
   }, [navigate]);
 

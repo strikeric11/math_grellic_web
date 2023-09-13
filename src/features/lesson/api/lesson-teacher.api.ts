@@ -3,6 +3,7 @@ import { queryLessonKey } from '#/config/react-query-keys.config';
 import {
   transformToLesson,
   transformToLessonCreateDto,
+  transformToLessonUpdateDto,
 } from '../helpers/lesson-transform.helper';
 
 import type {
@@ -56,25 +57,25 @@ export function getPaginatedLessonsByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryLessonKey.list, { q, status, sort, take, skip }],
+    queryKey: [...queryLessonKey.list, { q, status, sort, skip, take }],
     queryFn,
     ...options,
   };
 }
 
 export function getLessonBySlugAndCurrentTeacherUser(
-  slug: string,
-  options?: Omit<
-    UseQueryOptions<Lesson, Error, Lesson, any>,
-    'queryKey' | 'queryFn'
-  >,
+  keys: { slug: string; exclude?: string; include?: string },
+  options?: Omit<UseQueryOptions<Lesson, Error, Lesson, any>, 'queryFn'>,
 ) {
+  const { slug, exclude, include } = keys;
+
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/${slug}/teachers`;
+    const searchParams = generateSearchParams({ exclude, include });
 
     try {
-      const lessons = await kyInstance.get(url).json();
-      return lessons;
+      const lesson = await kyInstance.get(url, { searchParams }).json();
+      return lesson;
     } catch (error) {
       const errorRes = await (error as HTTPError).response.json();
       throw new Error(errorRes.message);
@@ -82,7 +83,7 @@ export function getLessonBySlugAndCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryLessonKey.preview],
+    queryKey: [...queryLessonKey.single, { slug, exclude, include }],
     queryFn,
     ...options,
   };
@@ -99,6 +100,44 @@ export function createLesson(
 
     try {
       const lesson = await kyInstance.post(BASE_URL, { json }).json();
+      return transformToLesson(lesson);
+    } catch (error) {
+      const errorRes = await (error as HTTPError).response.json();
+      throw new Error(errorRes.message);
+    }
+  };
+
+  return { mutationFn, ...options };
+}
+
+export function updateLesson(
+  options?: Omit<
+    UseMutationOptions<
+      Lesson,
+      Error,
+      { slug: string; data: LessonUpsertFormData; scheduleId?: number },
+      any
+    >,
+    'mutationFn'
+  >,
+) {
+  const mutationFn = async ({
+    slug,
+    data,
+    scheduleId,
+  }: {
+    slug: string;
+    data: LessonUpsertFormData;
+    scheduleId?: number;
+  }): Promise<any> => {
+    const url = `${BASE_URL}/${slug}`;
+    const json = transformToLessonUpdateDto(data);
+    const searchParams = generateSearchParams({
+      schedule: scheduleId?.toString(),
+    });
+
+    try {
+      const lesson = await kyInstance.patch(url, { json, searchParams }).json();
       return transformToLesson(lesson);
     } catch (error) {
       const errorRes = await (error as HTTPError).response.json();

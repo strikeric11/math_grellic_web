@@ -11,14 +11,18 @@ type Result = {
   lesson?: Lesson | null;
 };
 
-export function useLessonPreviewSlugPage(slug: string): Result {
+export function useLessonPreviewSlug(slug?: string): Result {
   const { data: lesson } = useQuery(
-    getLessonBySlugAndCurrentTeacherUser(slug, {
-      refetchOnWindowFocus: false,
-      select: (data: any) => {
-        return transformToLesson(data);
+    getLessonBySlugAndCurrentTeacherUser(
+      { slug: slug || '', exclude: 'schedules' },
+      {
+        enabled: !!slug,
+        refetchOnWindowFocus: false,
+        select: (data: any) => {
+          return transformToLesson(data);
+        },
       },
-    }),
+    ),
   );
 
   const titlePreview = useMemo(

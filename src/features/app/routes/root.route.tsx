@@ -25,15 +25,14 @@ import { DashboardTeacherPage } from '#/dashboard/pages/dashboard-teacher.page';
 import { lessonTeacherRouteHandle } from '#/lesson/lesson-route-handle';
 import { LessonCreatePage } from '#/lesson/pages/lesson-create.page';
 import {
-  LessonTeacherListPage,
-  loader as lessonTeacherListLoader,
-} from '#/lesson/pages/lesson-teacher-list.page';
-import {
-  LessonPreviewSlugPage,
-  loader as lessonPreviewSlugLoader,
-} from '#/lesson/pages/lesson-preview-slug.page';
+  getPaginatedLessonsLoader,
+  getLessonBySlugLoader,
+} from '#/lesson/lesson-route-loader';
+import { LessonTeacherListPage } from '#/lesson/pages/lesson-teacher-list.page';
+import { LessonPreviewSlugPage } from '#/lesson/pages/lesson-preview-slug.page';
 import { LessonSchedulePage } from '#/lesson/pages/lesson-schedule.page';
 import { LessonPreviewPage } from '#/lesson/pages/lesson-preview.page';
+import { LessonUpdatePage } from '#/lesson/pages/lesson-update.page';
 
 import { staticRoutes } from './static-routes';
 import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
@@ -44,7 +43,13 @@ const rootRoutes = createRoutesFromElements(
     <Route path='/' element={<CoreStaticLayout />}>
       <Route index element={<HomePage />} />
       <Route path={staticRoutes.about.to} element={<AboutPage />} />
-      <Route path={staticRoutes.training.to} element={<TrainingPage />} />
+      <Route
+        path={staticRoutes.training.to}
+        element={
+          // TODO training page
+          <div>TRAINING PAGE</div>
+        }
+      />
       <Route
         path={staticRoutes.authRegister.to}
         element={<AuthRegisterPage />}
@@ -74,7 +79,14 @@ const rootRoutes = createRoutesFromElements(
             index
             element={<LessonTeacherListPage />}
             handle={lessonTeacherRouteHandle.list}
-            loader={lessonTeacherListLoader(queryClient)}
+            loader={getPaginatedLessonsLoader(queryClient)}
+            errorElement={<CorePageNotFound />}
+          />
+          <Route
+            path={':slug/edit'}
+            element={<LessonUpdatePage />}
+            handle={lessonTeacherRouteHandle.update}
+            loader={getLessonBySlugLoader(queryClient)}
             errorElement={<CorePageNotFound />}
           />
           <Route
@@ -97,7 +109,9 @@ const rootRoutes = createRoutesFromElements(
               path={':slug'}
               element={<LessonPreviewSlugPage />}
               handle={lessonTeacherRouteHandle.preview}
-              loader={lessonPreviewSlugLoader(queryClient)}
+              loader={getLessonBySlugLoader(queryClient, {
+                exclude: 'schedules',
+              })}
               errorElement={<CorePageNotFound />}
             />
           </Route>
@@ -122,7 +136,3 @@ const rootRoutes = createRoutesFromElements(
 );
 
 export const router = createBrowserRouter(rootRoutes);
-
-function TrainingPage() {
-  return <div>TRAINING PAGE</div>;
-}

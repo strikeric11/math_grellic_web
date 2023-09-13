@@ -9,7 +9,7 @@ type Result = {
   lesson?: Lesson | null;
 };
 
-export function useLessonPreviewPage(): Result {
+export function useLessonPreview(): Result {
   const lessonFormData = useBoundStore((state) => state.lessonFormData);
 
   const lesson = useMemo(() => {

@@ -1,8 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 import { TAKE } from '#/utils/pagination.util';
-import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { getPaginatedLessonsByCurrentTeacherUser } from '../api/lesson-teacher.api';
 import { transformToLesson } from '../helpers/lesson-transform.helper';
 
@@ -14,7 +15,8 @@ import type {
 } from '#/base/models/base.model';
 import type { Lesson } from '../models/lesson.model';
 
-const LESSON_PREVIEW_PATH = `${teacherRoutes.lesson.to}/${teacherRoutes.lesson.previewTo}`;
+const LESSON_PREVIEW_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}/${teacherRoutes.lesson.previewTo}`;
+const LESSON_UPDATE_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
 
 type Result = {
   lessons: Lesson[];
@@ -27,6 +29,7 @@ type Result = {
   refetch: QueryObserverBaseResult['refetch'];
   nextPage: () => void;
   prevPage: () => void;
+  handleLessonUpdate: (slug: string) => void;
   handleLessonPreview: (slug: string) => void;
 };
 
@@ -35,7 +38,8 @@ export const defaultSort = {
   order: 'asc' as QuerySort['order'],
 };
 
-export function useLessonTeacherListPage(): Result {
+export function useLessonTeacherList(): Result {
+  const navigate = useNavigate();
   const [keyword, setKeyword] = useState<string | null>(null);
   const [filters, setFilters] = useState<QueryFilterOption[]>([]);
   const [sort, setSort] = useState<QuerySort>(defaultSort);
@@ -100,6 +104,13 @@ export function useLessonTeacherListPage(): Result {
     window.open(`${LESSON_PREVIEW_PATH}/${slug}`, '_blank')?.focus();
   }, []);
 
+  const handleLessonUpdate = useCallback(
+    (slug: string) => {
+      navigate(`${LESSON_UPDATE_PATH}/${slug}/edit`);
+    },
+    [navigate],
+  );
+
   return {
     lessons,
     loading: isFetching || isLoading,
@@ -112,5 +123,6 @@ export function useLessonTeacherListPage(): Result {
     nextPage,
     prevPage,
     handleLessonPreview,
+    handleLessonUpdate,
   };
 }

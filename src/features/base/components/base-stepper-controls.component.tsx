@@ -8,6 +8,7 @@ import type { ComponentProps } from 'react';
 
 type Props = ComponentProps<'div'> & {
   disabled?: boolean;
+  isSingleStep?: boolean;
   onReset?: () => void;
   onPrev?: () => void;
   onNext?: () => void;
@@ -16,6 +17,7 @@ type Props = ComponentProps<'div'> & {
 export const BaseStepperControls = memo(function ({
   className,
   disabled,
+  isSingleStep,
   children,
   onReset,
   onPrev,
@@ -37,25 +39,29 @@ export const BaseStepperControls = memo(function ({
         >
           Reset Fields
         </BaseButton>
-        <BaseDivider className='!h-[46px]' vertical />
-        <BaseButton
-          variant='link'
-          size='sm'
-          leftIconName='arrow-circle-left'
-          onClick={onPrev}
-          disabled={disabled}
-        >
-          Prev
-        </BaseButton>
-        <BaseButton
-          variant='link'
-          size='sm'
-          rightIconName='arrow-circle-right'
-          onClick={onNext}
-          disabled={disabled}
-        >
-          Next
-        </BaseButton>
+        {!isSingleStep && (
+          <>
+            <BaseDivider className='!h-[46px]' vertical />
+            <BaseButton
+              variant='link'
+              size='sm'
+              leftIconName='arrow-circle-left'
+              onClick={onPrev}
+              disabled={disabled}
+            >
+              Prev
+            </BaseButton>
+            <BaseButton
+              variant='link'
+              size='sm'
+              rightIconName='arrow-circle-right'
+              onClick={onNext}
+              disabled={disabled}
+            >
+              Next
+            </BaseButton>
+          </>
+        )}
       </div>
       <div>{children}</div>
     </div>

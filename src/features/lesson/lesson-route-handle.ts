@@ -34,6 +34,21 @@ export const lessonTeacherRouteHandle: { [key: string]: SceneRouteHandle } = {
       },
     ],
   },
+  update: {
+    title: 'Edit Lesson',
+    links: [
+      {
+        to: lessonBaseRoute,
+        label: 'Lesson List',
+        icons: [{ name: 'plus', size: 16 }, { name: 'chalkboard-teacher' }],
+      },
+      {
+        to: `${lessonBaseRoute}/${teacherRoutes.lesson.scheduleTo}`,
+        label: 'Schedule Lesson',
+        icons: [{ name: 'plus', size: 16 }, { name: 'calendar' }],
+      },
+    ],
+  },
   schedule: {
     title: 'Schedule a Lesson',
     links: [

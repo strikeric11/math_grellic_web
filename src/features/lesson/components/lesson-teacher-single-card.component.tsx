@@ -17,6 +17,7 @@ import { BaseDropdownButton } from '#/base/components/base-dropdown-button.compo
 
 type Props = ComponentProps<typeof BaseSurface> & {
   lesson: Lesson;
+  onUpdate?: () => void;
   onPreview?: () => void;
 };
 
@@ -27,6 +28,7 @@ const menuIconProps = { weight: 'bold', size: 48 } as ComponentProps<
 export const LessonTeacherSingleCard = memo(function ({
   className,
   lesson,
+  onUpdate,
   onPreview,
   ...moreProps
 }: Props) {
@@ -101,8 +103,11 @@ export const LessonTeacherSingleCard = memo(function ({
             </div>
           }
         >
-          {/* TODO edit */}
-          <Menu.Item as={BaseDropdownButton} iconName='pencil'>
+          <Menu.Item
+            as={BaseDropdownButton}
+            iconName='pencil'
+            onClick={onUpdate}
+          >
             Edit
           </Menu.Item>
           {/* TODO details */}

@@ -1,7 +1,7 @@
 import cx from 'classix';
 
 import { BaseStaticScene } from '#/base/components/base-static-scene.component';
-import { useAuthRegisterPage } from '../hooks/use-auth-register-page.hook';
+import { useAuthRegister } from '../hooks/use-auth-register.hook';
 import { useAuth } from '../hooks/use-auth.hook';
 import { AuthRegisterDone } from '../components/auth-register-done.component';
 import { AuthRegisterForm } from '../components/auth-register-form.component';
@@ -15,7 +15,7 @@ export function AuthRegisterPage() {
     selectedUserRole,
     handleRoleChange,
     handleLogin,
-  } = useAuthRegisterPage();
+  } = useAuthRegister();
   const { register } = useAuth();
 
   return (

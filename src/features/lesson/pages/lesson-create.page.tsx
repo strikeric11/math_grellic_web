@@ -1,8 +1,8 @@
 import { LessonUpsertForm } from '../components/lesson-upsert-form.component';
-import { useLessonUpsert } from '../hooks/use-lesson-upsert.hook';
+import { useLessonCreate } from '../hooks/use-lesson-create.hook';
 
 export function LessonCreatePage() {
-  const { isDone, setIsDone, createLesson } = useLessonUpsert();
+  const { isDone, setIsDone, createLesson } = useLessonCreate();
 
   return (
     <LessonUpsertForm

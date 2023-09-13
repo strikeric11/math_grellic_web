@@ -2,16 +2,12 @@ import { useParams } from 'react-router-dom';
 
 import { BaseScene } from '#/base/components/base-scene.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
-import { getLessonBySlugAndCurrentTeacherUser } from '../api/lesson-teacher.api';
-import { useLessonPreviewSlugPage } from '../hooks/use-lesson-preview-slug-page.hook';
+import { useLessonPreviewSlug } from '../hooks/use-lesson-preview-slug.hook';
 import { LessonSingle } from '../components/lesson-single.component';
-
-import type { LoaderFunctionArgs } from 'react-router-dom';
-import type { QueryClient } from '@tanstack/react-query';
 
 export function LessonPreviewSlugPage() {
   const { slug } = useParams();
-  const { titlePreview, lesson } = useLessonPreviewSlugPage(slug || '');
+  const { titlePreview, lesson } = useLessonPreviewSlug(slug);
 
   return lesson === undefined ? (
     <BasePageSpinner />
@@ -23,18 +19,3 @@ export function LessonPreviewSlugPage() {
     </BaseScene>
   );
 }
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const loader =
-  (queryClient: QueryClient) =>
-  async ({ params }: LoaderFunctionArgs) => {
-    if (!params?.slug) {
-      return;
-    }
-
-    const query = getLessonBySlugAndCurrentTeacherUser(params.slug);
-    return (
-      queryClient.getQueryData(query.queryKey as string[]) ??
-      (await queryClient.fetchQuery(query))
-    );
-  };

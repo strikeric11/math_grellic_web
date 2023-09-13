@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion';
+import { LazyMotion, domAnimation, m } from 'framer-motion';
 import cx from 'classix';
 
 import {
@@ -56,13 +56,19 @@ export const BaseStepper = memo(function ({
     [children],
   );
 
-  const stepLabels = useMemo(
-    () =>
+  const isSingleStep = useMemo(() => steps?.length === 1, [steps]);
+
+  const stepLabels = useMemo(() => {
+    if (isSingleStep) {
+      return [];
+    }
+
+    return (
       steps?.map(
         (c) => (c.props as ComponentProps<typeof BaseStepperStep>).label,
-      ) || [],
-    [steps],
-  );
+      ) || []
+    );
+  }, [isSingleStep, steps]);
 
   const isForward = useMemo(
     () => (prevIndex <= currentIndex ? 1 : 0),
@@ -103,7 +109,7 @@ export const BaseStepper = memo(function ({
     <div className={cx('w-full', className)} {...moreProps}>
       <div className='flex w-full items-center justify-center'>
         <BaseDivider />
-        <ol className='mx-4 flex items-center'>
+        <ol className='mx-4 flex h-5 items-center'>
           {stepLabels.map((label, index) => (
             <li
               key={index}
@@ -113,7 +119,7 @@ export const BaseStepper = memo(function ({
                 index < currentIndex && 'after:border-primary-focus',
               )}
             >
-              <div className='mr-1 flex h-5 w-5 items-center justify-center'>
+              <div className='mr-1 flex h-full w-5 items-center justify-center'>
                 {index < currentIndex ? (
                   <BaseIcon name='check-circle' size={20} weight='fill' />
                 ) : (
@@ -131,32 +137,27 @@ export const BaseStepper = memo(function ({
         onNext={handleNextStep}
         onReset={handleReset}
         disabled={disabled}
+        isSingleStep={isSingleStep}
       >
         {controlsRightContent}
       </BaseStepperControls>
       <div className='relative mx-auto min-h-[700px] w-full max-w-[600px] !overflow-hidden py-5'>
         {!!steps && (
           <LazyMotion features={domAnimation}>
-            <AnimatePresence
-              initial={false}
+            <m.div
+              key={currentIndex}
+              className='h-full w-full'
               custom={isForward}
-              mode='popLayout'
+              variants={stepperAnimationVariants}
+              initial='initial'
+              animate='animate'
+              exit='exit'
+              transition={stepperAnimationTransition}
+              onAnimationStart={handleAnimation(true)}
+              onAnimationComplete={handleAnimation(false)}
             >
-              <m.div
-                key={currentIndex}
-                className='h-full w-full'
-                custom={isForward}
-                variants={stepperAnimationVariants}
-                initial='initial'
-                animate='animate'
-                exit='exit'
-                transition={stepperAnimationTransition}
-                onAnimationStart={handleAnimation(true)}
-                onAnimationComplete={handleAnimation(false)}
-              >
-                {steps[currentIndex]}
-              </m.div>
-            </AnimatePresence>
+              {steps[currentIndex]}
+            </m.div>
           </LazyMotion>
         )}
       </div>

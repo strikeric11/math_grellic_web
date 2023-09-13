@@ -3,14 +3,11 @@ import { RecordStatus } from '#/core/models/core.model';
 import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
 import { BaseDataPagination } from '#/base/components/base-data-pagination.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
-import { getPaginatedLessonsByCurrentTeacherUser } from '../api/lesson-teacher.api';
 import {
   defaultSort,
-  useLessonTeacherListPage,
-} from '../hooks/use-lesson-teacher-list-page.hook';
+  useLessonTeacherList,
+} from '../hooks/use-lesson-teacher-list.hook';
 import { LessonTeacherList } from '../components/lesson-teacher-list.component';
-
-import type { QueryClient } from '@tanstack/react-query';
 
 const filterOptions = [
   {
@@ -49,8 +46,9 @@ export function LessonTeacherListPage() {
     pagination,
     nextPage,
     prevPage,
+    handleLessonUpdate,
     handleLessonPreview,
-  } = useLessonTeacherListPage();
+  } = useLessonTeacherList();
 
   return (
     <div id='scene-content' className='flex w-full flex-1 items-start pt-5'>
@@ -68,6 +66,7 @@ export function LessonTeacherListPage() {
         />
         <LessonTeacherList
           lessons={lessons}
+          onLessonUpdate={handleLessonUpdate}
           onLessonPreview={handleLessonPreview}
         />
         <BaseDataPagination
@@ -82,12 +81,3 @@ export function LessonTeacherListPage() {
     </div>
   );
 }
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const loader = (queryClient: QueryClient) => async () => {
-  const query = getPaginatedLessonsByCurrentTeacherUser();
-  return (
-    queryClient.getQueryData(query.queryKey as string[]) ??
-    (await queryClient.fetchQuery(query))
-  );
-};

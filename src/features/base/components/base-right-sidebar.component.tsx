@@ -32,8 +32,8 @@ export const BaseRightSidebar = memo(function ({
       style={heightStyle}
       className={cx(
         className,
-        'sticky top-0 flex w-full grow-0 items-start pb-4 transition-[width,height] duration-300',
-        rightSidebarMode === SidebarMode.Collapsed ? 'w-[0px]' : 'w-[408px]',
+        'sticky top-0 flex grow-0 items-start pb-4 transition-[width,height] duration-300',
+        rightSidebarMode === SidebarMode.Collapsed ? 'w-0' : 'w-[408px]',
         isScrollTop ? 'pt-0' : 'pt-4',
       )}
       {...moreProps}

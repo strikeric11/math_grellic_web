@@ -29,7 +29,7 @@ export function AuthProtectedRoute({
     return <Navigate to={redirectTo} />;
   } else {
     return (
-      <div className='flex h-screen w-screen items-center justify-center'>
+      <div className='absolute left-0 top-0 flex h-screen w-screen items-center justify-center'>
         <BaseSpinner />
       </div>
     );

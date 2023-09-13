@@ -41,6 +41,6 @@ export const stepperAnimationVariants = {
 };
 
 export const stepperAnimationTransition = {
-  x: { type: 'spring', stiffness: 300, damping: 30 },
+  x: { type: 'spring', stiffness: 370, damping: 50 },
   opacity: { duration: 0.3 },
 };

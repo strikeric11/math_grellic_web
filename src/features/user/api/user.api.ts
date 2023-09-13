@@ -31,9 +31,10 @@ export function getStudentsByCurrentTeacherUser(
   };
 
   return {
-    queryKey: queryKey?.length
-      ? [...queryKey, { q, ids }]
-      : [...queryUserKey.students, { q, ids }],
+    queryKey: [
+      ...(queryKey?.length ? queryKey : queryUserKey.studentList),
+      { q, ids },
+    ],
     queryFn,
     ...moreOptions,
   };
