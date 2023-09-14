@@ -4,7 +4,7 @@ import {
 } from './api/lesson-teacher.api';
 
 import type { QueryClient } from '@tanstack/react-query';
-import type { LoaderFunctionArgs } from 'react-router-dom';
+import { defer, type LoaderFunctionArgs } from 'react-router-dom';
 
 export const getLessonBySlugLoader =
   (
@@ -27,10 +27,17 @@ export const getLessonBySlugLoader =
 
 export const getPaginatedLessonsLoader =
   (queryClient: QueryClient) => async () => {
-    const query = getPaginatedLessonsByCurrentTeacherUser();
+    const query = getPaginatedLessonsByCurrentTeacherUser({
+      q: undefined,
+      status: undefined,
+      sort: 'orderNumber,asc',
+      pagination: { take: 16, skip: 0 },
+    });
 
-    return (
-      queryClient.getQueryData(query.queryKey as string[]) ??
-      (await queryClient.fetchQuery(query))
-    );
+    // return (queryClient.getQueryData(query.queryKey as string[]) ??
+    // (await queryClient.fetchQuery(query)))
+
+    return defer({
+      foo: queryClient.fetchQuery(query),
+    });
   };

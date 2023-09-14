@@ -19,6 +19,21 @@ export const lessonTeacherRouteHandle: { [key: string]: SceneRouteHandle } = {
       },
     ],
   },
+  single: {
+    disabledSceneWrapper: true,
+    links: [
+      {
+        to: lessonBaseRoute,
+        label: 'Lesson List',
+        icons: [{ name: 'plus', size: 16 }, { name: 'chalkboard-teacher' }],
+      },
+      {
+        to: `${lessonBaseRoute}/${teacherRoutes.lesson.createTo}`,
+        label: 'Create Lesson',
+        icons: [{ name: 'plus', size: 16 }, { name: 'chalkboard-teacher' }],
+      },
+    ],
+  },
   create: {
     title: 'Create a Lesson',
     links: [

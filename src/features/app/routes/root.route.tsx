@@ -29,9 +29,10 @@ import {
   getLessonBySlugLoader,
 } from '#/lesson/lesson-route-loader';
 import { LessonTeacherListPage } from '#/lesson/pages/lesson-teacher-list.page';
+import { LessonTeacherSinglePage } from '#/lesson/pages/lesson-teacher-single.component';
 import { LessonPreviewSlugPage } from '#/lesson/pages/lesson-preview-slug.page';
-import { LessonSchedulePage } from '#/lesson/pages/lesson-schedule.page';
 import { LessonPreviewPage } from '#/lesson/pages/lesson-preview.page';
+import { LessonSchedulePage } from '#/lesson/pages/lesson-schedule.page';
 import { LessonUpdatePage } from '#/lesson/pages/lesson-update.page';
 
 import { staticRoutes } from './static-routes';
@@ -82,13 +83,31 @@ const rootRoutes = createRoutesFromElements(
             loader={getPaginatedLessonsLoader(queryClient)}
             errorElement={<CorePageNotFound />}
           />
-          <Route
-            path={':slug/edit'}
-            element={<LessonUpdatePage />}
-            handle={lessonTeacherRouteHandle.update}
-            loader={getLessonBySlugLoader(queryClient)}
-            errorElement={<CorePageNotFound />}
-          />
+          <Route path=':slug' element={<Outlet />}>
+            <Route
+              index
+              element={<LessonTeacherSinglePage />}
+              handle={lessonTeacherRouteHandle.single}
+              loader={getLessonBySlugLoader(queryClient)}
+              errorElement={<CorePageNotFound />}
+            />
+            <Route
+              path='edit'
+              element={<LessonUpdatePage />}
+              handle={lessonTeacherRouteHandle.update}
+              loader={getLessonBySlugLoader(queryClient)}
+              errorElement={<CorePageNotFound />}
+            />
+            <Route
+              path='preview'
+              element={<LessonPreviewSlugPage />}
+              handle={lessonTeacherRouteHandle.preview}
+              loader={getLessonBySlugLoader(queryClient, {
+                exclude: 'schedules',
+              })}
+              errorElement={<CorePageNotFound />}
+            />
+          </Route>
           <Route
             path={teacherRoutes.lesson.createTo}
             element={<LessonCreatePage />}
@@ -104,15 +123,6 @@ const rootRoutes = createRoutesFromElements(
               index
               element={<LessonPreviewPage />}
               handle={lessonTeacherRouteHandle.preview}
-            />
-            <Route
-              path={':slug'}
-              element={<LessonPreviewSlugPage />}
-              handle={lessonTeacherRouteHandle.preview}
-              loader={getLessonBySlugLoader(queryClient, {
-                exclude: 'schedules',
-              })}
-              errorElement={<CorePageNotFound />}
             />
           </Route>
         </Route>
