@@ -15,8 +15,7 @@ import type {
 } from '#/base/models/base.model';
 import type { Lesson } from '../models/lesson.model';
 
-const LESSON_PREVIEW_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}/${teacherRoutes.lesson.previewTo}`;
-const LESSON_UPDATE_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
+const LESSONS_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
 
 type Result = {
   lessons: Lesson[];
@@ -101,12 +100,17 @@ export function useLessonTeacherList(): Result {
   }, [skip, pagination]);
 
   const handleLessonPreview = useCallback((slug: string) => {
-    window.open(`${LESSON_PREVIEW_PATH}/${slug}`, '_blank')?.focus();
+    window
+      .open(
+        `${LESSONS_PATH}/${slug}/${teacherRoutes.lesson.previewTo}`,
+        '_blank',
+      )
+      ?.focus();
   }, []);
 
   const handleLessonUpdate = useCallback(
     (slug: string) => {
-      navigate(`${LESSON_UPDATE_PATH}/${slug}/edit`);
+      navigate(`${LESSONS_PATH}/${slug}/edit`);
     },
     [navigate],
   );

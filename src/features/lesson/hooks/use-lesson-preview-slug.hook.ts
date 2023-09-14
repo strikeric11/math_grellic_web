@@ -1,17 +1,20 @@
 import { useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 import { transformToLesson } from '../helpers/lesson-transform.helper';
 import { getLessonBySlugAndCurrentTeacherUser } from '../api/lesson-teacher.api';
 
 import type { Lesson } from '../models/lesson.model';
-import { useQuery } from '@tanstack/react-query';
 
 type Result = {
   titlePreview: string;
   lesson?: Lesson | null;
 };
 
-export function useLessonPreviewSlug(slug?: string): Result {
+export function useLessonPreviewSlug(): Result {
+  const { slug } = useParams();
+
   const { data: lesson } = useQuery(
     getLessonBySlugAndCurrentTeacherUser(
       { slug: slug || '', exclude: 'schedules' },

@@ -37,12 +37,14 @@ export const BaseSpinner = memo(function ({
 
 export const BasePageSpinner = memo(function ({
   className,
+  absolute,
   ...moreProps
-}: ComponentProps<'div'>) {
+}: ComponentProps<'div'> & { absolute?: boolean }) {
   return (
     <div
       className={cx(
         'flex min-h-screen w-full animate-fadeIn items-center justify-center',
+        absolute && 'absolute left-0 top-0',
         className,
       )}
       {...moreProps}

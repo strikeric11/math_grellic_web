@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { UserRole } from '#/user/models/user.model';
-import { BaseSpinner } from '#/base/components/base-spinner.component';
+import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 
 import type { ReactNode } from 'react';
@@ -28,10 +28,6 @@ export function AuthProtectedRoute({
   } else if (user === null) {
     return <Navigate to={redirectTo} />;
   } else {
-    return (
-      <div className='absolute left-0 top-0 flex h-screen w-screen items-center justify-center'>
-        <BaseSpinner />
-      </div>
-    );
+    return <BasePageSpinner absolute />;
   }
 }
