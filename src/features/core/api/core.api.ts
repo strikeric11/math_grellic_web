@@ -1,3 +1,4 @@
+import { ApiError } from '#/utils/api.util';
 import { kyInstance } from '#/config/ky.config';
 import { queryCoreKey } from '#/config/react-query-keys.config';
 
@@ -20,7 +21,7 @@ export function getDateTimeNow(
       return dateTime;
     } catch (error) {
       const errorRes = await (error as HTTPError).response.json();
-      throw new Error(errorRes.message);
+      throw new ApiError(errorRes.message, errorRes.statusCode);
     }
   };
 

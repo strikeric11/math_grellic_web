@@ -1,3 +1,4 @@
+import { ApiError } from '#/utils/api.util';
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
 
@@ -26,7 +27,7 @@ export function getStudentsByCurrentTeacherUser(
       return students;
     } catch (error) {
       const errorRes = await (error as HTTPError).response.json();
-      throw new Error(errorRes.message);
+      throw new ApiError(errorRes.message, errorRes.statusCode);
     }
   };
 

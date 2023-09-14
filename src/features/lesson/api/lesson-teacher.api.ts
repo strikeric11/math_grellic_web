@@ -1,3 +1,4 @@
+import { ApiError } from '#/utils/api.util';
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
 import { queryLessonKey } from '#/config/react-query-keys.config';
 import {
@@ -52,7 +53,7 @@ export function getPaginatedLessonsByCurrentTeacherUser(
       return lessons;
     } catch (error) {
       const errorRes = await (error as HTTPError).response.json();
-      throw new Error(errorRes.message);
+      throw new ApiError(errorRes.message, errorRes.statusCode);
     }
   };
 
@@ -78,7 +79,7 @@ export function getLessonBySlugAndCurrentTeacherUser(
       return lesson;
     } catch (error) {
       const errorRes = await (error as HTTPError).response.json();
-      throw new Error(errorRes.message);
+      throw new ApiError(errorRes.message, errorRes.statusCode);
     }
   };
 
@@ -103,7 +104,7 @@ export function createLesson(
       return transformToLesson(lesson);
     } catch (error) {
       const errorRes = await (error as HTTPError).response.json();
-      throw new Error(errorRes.message);
+      throw new ApiError(errorRes.message, errorRes.statusCode);
     }
   };
 
@@ -141,7 +142,7 @@ export function updateLesson(
       return transformToLesson(lesson);
     } catch (error) {
       const errorRes = await (error as HTTPError).response.json();
-      throw new Error(errorRes.message);
+      throw new ApiError(errorRes.message, errorRes.statusCode);
     }
   };
 

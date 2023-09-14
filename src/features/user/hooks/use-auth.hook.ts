@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
+import { generateError } from '#/utils/api.util';
 import { supabase } from '#/config/supabase-client.config';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToUser } from '../helpers/user-transform.helper';
@@ -99,7 +100,13 @@ export function useAuth(): Result {
       });
 
       if (error) {
-        throw new Error('Email or password is incorrect');
+        throw generateError(
+          {
+            4: 'Email or password is incorrect',
+            5: 'We have encountered an internal error',
+          },
+          error.status,
+        );
       }
 
       const currentUser = await getUser();
