@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { PAGINATION_TAKE } from '#/utils/api.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
-import { getPaginatedLessonsByCurrentTeacherUser } from '../api/lesson-teacher.api';
+import { getPaginatedLessonsByCurrentTeacherUser } from '../api/teacher-lesson.api';
 import { transformToLesson } from '../helpers/lesson-transform.helper';
 
 import type { QueryObserverBaseResult } from '@tanstack/react-query';
@@ -26,9 +26,10 @@ type Result = {
   refetch: QueryObserverBaseResult['refetch'];
   nextPage: () => void;
   prevPage: () => void;
-  handleLessonUpdate: (slug: string) => void;
+  handleLessonEdit: (slug: string) => void;
   handleLessonDetails: (slug: string) => void;
   handleLessonPreview: (slug: string) => void;
+  handleLessonSchedule: (slug: string) => void;
 };
 
 const LESSONS_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
@@ -45,7 +46,7 @@ export const defaultParamKeys = {
   pagination: { take: PAGINATION_TAKE, skip: 0 },
 };
 
-export function useLessonTeacherList(): Result {
+export function useTeacherLessonList(): Result {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState<string | null>(null);
   const [filters, setFilters] = useState<QueryFilterOption[]>([]);
@@ -130,9 +131,16 @@ export function useLessonTeacherList(): Result {
     [navigate],
   );
 
-  const handleLessonUpdate = useCallback(
+  const handleLessonEdit = useCallback(
     (slug: string) => {
       navigate(`${LESSONS_PATH}/${slug}/${teacherRoutes.lesson.editTo}`);
+    },
+    [navigate],
+  );
+
+  const handleLessonSchedule = useCallback(
+    (slug: string) => {
+      navigate(`${LESSONS_PATH}/${slug}/${teacherRoutes.lesson.schedule.to}`);
     },
     [navigate],
   );
@@ -150,6 +158,7 @@ export function useLessonTeacherList(): Result {
     prevPage,
     handleLessonPreview,
     handleLessonDetails,
-    handleLessonUpdate,
+    handleLessonEdit,
+    handleLessonSchedule,
   };
 }

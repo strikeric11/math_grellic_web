@@ -8,9 +8,9 @@ import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import {
   defaultSort,
-  useLessonTeacherList,
-} from '../hooks/use-lesson-teacher-list.hook';
-import { LessonTeacherList } from '../components/lesson-teacher-list.component';
+  useTeacherLessonList,
+} from '../hooks/use-teacher-lesson-list.hook';
+import { TeacherLessonList } from '../components/teacher-lesson-list.component';
 
 const filterOptions = [
   {
@@ -38,7 +38,7 @@ const sortOptions = [
   },
 ];
 
-export function LessonTeacherListPage() {
+export function TeacherLessonListPage() {
   const {
     lessons,
     loading,
@@ -50,10 +50,11 @@ export function LessonTeacherListPage() {
     pagination,
     nextPage,
     prevPage,
-    handleLessonUpdate,
+    handleLessonEdit,
     handleLessonDetails,
     handleLessonPreview,
-  } = useLessonTeacherList();
+    handleLessonSchedule,
+  } = useTeacherLessonList();
 
   const data: any = useLoaderData();
 
@@ -72,12 +73,13 @@ export function LessonTeacherListPage() {
             onFilter={setFilters}
             onSort={setSort}
           />
-          <LessonTeacherList
+          <TeacherLessonList
             lessons={lessons}
             loading={loading}
-            onLessonUpdate={handleLessonUpdate}
             onLessonDetails={handleLessonDetails}
             onLessonPreview={handleLessonPreview}
+            onLessonEdit={handleLessonEdit}
+            onLessonSchedule={handleLessonSchedule}
           />
           <BaseDataPagination
             totalCount={totalCount}

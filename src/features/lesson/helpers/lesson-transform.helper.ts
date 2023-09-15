@@ -46,10 +46,13 @@ export function transformToLessonSchedule({
   updatedAt,
   startDate,
   students,
+  lesson,
 }: any): Partial<LessonSchedule> {
   const transformedStudents = !students?.length
     ? null
     : students.map((student: any) => transformToStudentUserAccount(student));
+
+  const transformedLesson = lesson ? transformToLesson(lesson) : undefined;
 
   return {
     id,
@@ -57,6 +60,7 @@ export function transformToLessonSchedule({
     updatedAt: dayjs(updatedAt).toDate(),
     startDate: dayjs(startDate).toDate(),
     students: transformedStudents,
+    lesson: transformedLesson,
   };
 }
 export function transformToLessonFormData({
@@ -95,7 +99,7 @@ export function transformToLessonFormData({
   };
 }
 
-export function transformToLessonCreateDto({
+export function transformToLessonUpsertDto({
   status,
   orderNumber,
   title,
@@ -123,29 +127,18 @@ export function transformToLessonCreateDto({
   };
 }
 
-export function transformToLessonUpdateDto({
-  status,
-  orderNumber,
-  title,
-  videoUrl,
-  duration,
-  description,
+export function transformToLessonScheduleUpsertDto({
+  lessonId,
   startDate,
   startTime,
   studentIds,
 }: any) {
-  const durationSeconds = convertDurationToSeconds(duration);
   const date = dayjs(startDate).format('YYYY-MM-DD');
   const transformedStartDate = dayjs(`${date} ${startTime}`).toDate();
   const transformedStudentsIds = !studentIds?.length ? null : studentIds;
 
   return {
-    status,
-    orderNumber,
-    title,
-    videoUrl,
-    durationSeconds,
-    description,
+    lessonId,
     startDate: transformedStartDate,
     studentIds: transformedStudentsIds,
   };

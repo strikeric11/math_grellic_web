@@ -1,4 +1,5 @@
 import { memo, useMemo } from 'react';
+import { Menu } from '@headlessui/react';
 import dayjs from 'dayjs';
 import cx from 'classix';
 
@@ -10,29 +11,30 @@ import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
+import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 
 import type { ComponentProps } from 'react';
 import type { Lesson } from '../models/lesson.model';
-import { Menu } from '@headlessui/react';
-import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 
 type Props = ComponentProps<typeof BaseSurface> & {
   lesson: Lesson;
-  onUpdate?: () => void;
   onDetails?: () => void;
   onPreview?: () => void;
+  onEdit?: () => void;
+  onSchedule?: () => void;
 };
 
 const menuIconProps = { weight: 'bold', size: 48 } as ComponentProps<
   typeof BaseIconButton
 >['iconProps'];
 
-export const LessonTeacherSingleCard = memo(function ({
+export const TeacherLessonSingleCard = memo(function ({
   className,
   lesson,
-  onUpdate,
   onDetails,
   onPreview,
+  onEdit,
+  onSchedule,
   ...moreProps
 }: Props) {
   const orderNumber = useMemo(() => lesson.orderNumber, [lesson]);
@@ -124,12 +126,16 @@ export const LessonTeacherSingleCard = memo(function ({
             Preview
           </Menu.Item>
           <BaseDivider className='my-1' />
+          <Menu.Item as={BaseDropdownButton} iconName='pencil' onClick={onEdit}>
+            Edit
+          </Menu.Item>
+          <BaseDivider className='my-1' />
           <Menu.Item
             as={BaseDropdownButton}
-            iconName='pencil'
-            onClick={onUpdate}
+            iconName='calendar'
+            onClick={onSchedule}
           >
-            Edit
+            Set Schedule
           </Menu.Item>
         </BaseDropdownMenu>
       </div>
@@ -137,7 +143,7 @@ export const LessonTeacherSingleCard = memo(function ({
   );
 });
 
-export const LessonTeacherSingleCardSkeleton = memo(function () {
+export const TeacherLessonSingleCardSkeleton = memo(function () {
   return (
     <div className='flex w-full animate-pulse justify-between rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-4'>
       <div className='flex w-full items-center gap-4'>

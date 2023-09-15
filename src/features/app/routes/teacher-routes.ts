@@ -21,7 +21,11 @@ export const teacherRoutes = {
     createTo: 'create',
     editTo: 'edit',
     previewTo: 'preview',
-    scheduleTo: 'schedule',
+    schedule: {
+      to: 'schedule',
+      createTo: 'create',
+      editTo: 'edit',
+    },
   },
   activity: {
     name: 'activities',
@@ -36,10 +40,10 @@ export const teacherRoutes = {
     label: 'Exams',
     iconName: 'exam',
   },
-  schedule: {
-    name: 'schedule',
-    to: 'schedule',
-    label: 'Schedule',
+  calendar: {
+    name: 'calendar',
+    to: 'calendar',
+    label: 'Calendar',
     iconName: 'calendar',
   },
   performance: {

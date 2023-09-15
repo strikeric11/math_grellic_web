@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
 import { transformToLesson } from '../helpers/lesson-transform.helper';
-import { getLessonBySlugAndCurrentTeacherUser } from '../api/lesson-teacher.api';
+import { getLessonBySlugAndCurrentTeacherUser } from '../api/teacher-lesson.api';
 
 import type { Lesson } from '../models/lesson.model';
 

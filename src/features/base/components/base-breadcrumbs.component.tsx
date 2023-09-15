@@ -6,10 +6,15 @@ import { teacherPath } from '#/app/routes/teacher-routes';
 
 import type { ComponentProps } from 'react';
 
+type Props = ComponentProps<'ol'> & {
+  withtrailingSlash?: boolean;
+};
+
 export const BaseBreadcrumbs = memo(function ({
   className,
+  withtrailingSlash,
   ...moreProps
-}: ComponentProps<'ol'>) {
+}: Props) {
   const { pathname } = useLocation();
 
   const breadcrumbs = useMemo(() => {
@@ -20,6 +25,7 @@ export const BaseBreadcrumbs = memo(function ({
     const link: string[] = [teacherPath];
     return labels.map((label, index) => {
       link.push('/' + labels[index]);
+      const itemLink = !withtrailingSlash ? link.join('') : `/${link.join('')}`;
 
       if (index === labels.length - 1) {
         return <li>{label}</li>;
@@ -27,11 +33,11 @@ export const BaseBreadcrumbs = memo(function ({
 
       return (
         <li className='flex after:mx-1.5 after:content-["/"] hover:text-primary'>
-          <Link to={link.join('')}>{label}</Link>
+          <Link to={itemLink}>{label}</Link>
         </li>
       );
     });
-  }, [pathname]);
+  }, [pathname, withtrailingSlash]);
 
   return (
     <ol

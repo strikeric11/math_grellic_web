@@ -9,8 +9,8 @@ import {
 } from '../helpers/lesson-transform.helper';
 import {
   getLessonBySlugAndCurrentTeacherUser,
-  updateLesson as updateLessonApi,
-} from '../api/lesson-teacher.api';
+  editLesson as editLessonApi,
+} from '../api/teacher-lesson.api';
 
 import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
 
@@ -18,14 +18,14 @@ type Result = {
   isDone: boolean;
   setIsDone: (isDone: boolean) => void;
   lessonFormData: LessonUpsertFormData | undefined;
-  updateLesson: (slug: string, data: LessonUpsertFormData) => Promise<Lesson>;
+  editLesson: (slug: string, data: LessonUpsertFormData) => Promise<Lesson>;
 };
 
-export function useLessonUpdate(slug?: string): Result {
+export function useLessonEdit(slug?: string): Result {
   const [isDone, setIsDone] = useState(false);
 
   const { mutateAsync } = useMutation(
-    updateLessonApi({
+    editLessonApi({
       onSuccess: (data: any) =>
         Promise.all([
           queryClient.invalidateQueries({
@@ -56,7 +56,7 @@ export function useLessonUpdate(slug?: string): Result {
     [lesson],
   );
 
-  const updateLesson = useCallback(
+  const editLesson = useCallback(
     async (slug: string, data: LessonUpsertFormData) => {
       const scheduleId = lesson?.schedules?.length
         ? lesson?.schedules[0]?.id
@@ -69,5 +69,5 @@ export function useLessonUpdate(slug?: string): Result {
     [mutateAsync, lesson],
   );
 
-  return { isDone, setIsDone, lessonFormData, updateLesson };
+  return { isDone, setIsDone, lessonFormData, editLesson };
 }

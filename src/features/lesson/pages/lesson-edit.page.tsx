@@ -3,21 +3,20 @@ import { useLoaderData, useParams } from 'react-router-dom';
 
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { LessonUpsertForm } from '../components/lesson-upsert-form.component';
-import { useLessonUpdate } from '../hooks/use-lesson-update.hook';
+import { useLessonEdit } from '../hooks/use-lesson-edit.hook';
 
 import type { LessonUpsertFormData } from '../models/lesson.model';
 
-export function LessonUpdatePage() {
+export function LessonEditPage() {
   const { slug } = useParams();
 
-  const { isDone, setIsDone, lessonFormData, updateLesson } =
-    useLessonUpdate(slug);
+  const { isDone, setIsDone, lessonFormData, editLesson } = useLessonEdit(slug);
 
   const data: any = useLoaderData();
 
-  const handleUpdateLesson = useCallback(
-    (data: LessonUpsertFormData) => updateLesson(slug || '', data),
-    [slug, updateLesson],
+  const handleEditLesson = useCallback(
+    (data: LessonUpsertFormData) => editLesson(slug || '', data),
+    [slug, editLesson],
   );
 
   return (
@@ -26,7 +25,7 @@ export function LessonUpdatePage() {
         isDone={isDone}
         onDone={setIsDone}
         lessonFormData={lessonFormData}
-        onSubmit={handleUpdateLesson}
+        onSubmit={handleEditLesson}
       />
     </BaseDataSuspense>
   );

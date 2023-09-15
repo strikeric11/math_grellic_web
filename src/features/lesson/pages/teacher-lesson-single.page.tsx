@@ -1,17 +1,17 @@
 import { useLoaderData } from 'react-router-dom';
 
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
-import { useLessonTeacherSingle } from '../hooks/use-lesson-teacher-single.hook';
-import { LessonTeacherSingle } from '../components/lesson-teacher-single.component';
+import { useTeacherLessonSingle } from '../hooks/use-teacher-lesson-single.hook';
+import { TeacherLessonSingle } from '../components/teacher-lesson-single.component';
 
-export function LessonTeacherSinglePage() {
-  const { lesson } = useLessonTeacherSingle();
+export function TeacherLessonSinglePage() {
+  const { lesson } = useTeacherLessonSingle();
   const data: any = useLoaderData();
 
   return (
     <BaseDataSuspense resolve={data?.main}>
       {lesson && (
-        <LessonTeacherSingle
+        <TeacherLessonSingle
           className='mx-auto max-w-compact py-4'
           lesson={lesson}
         />

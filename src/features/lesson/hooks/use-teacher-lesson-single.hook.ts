@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
-import { getLessonBySlugAndCurrentTeacherUser } from '../api/lesson-teacher.api';
+import { getLessonBySlugAndCurrentTeacherUser } from '../api/teacher-lesson.api';
 import { transformToLesson } from '../helpers/lesson-transform.helper';
 
 import type { Lesson } from '../models/lesson.model';
@@ -12,7 +12,7 @@ type Result = {
   lesson?: Lesson | null;
 };
 
-export function useLessonTeacherSingle(): Result {
+export function useTeacherLessonSingle(): Result {
   const { slug } = useParams();
 
   const { data: lesson } = useQuery(

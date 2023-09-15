@@ -3,21 +3,21 @@ import DOMPurify from 'dompurify';
 import cx from 'classix';
 
 import { convertSecondsToDuration } from '#/utils/time.util';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { BaseChip } from '#/base/components/base-chip.component';
+import { BaseDivider } from '#/base/components/base-divider.component';
+import { BaseLink } from '#/base/components/base-link.component';
+import { BaseIcon } from '#/base/components/base-icon.component';
+import { LessonVideo } from './lesson-video.component';
 
 import type { ComponentProps } from 'react';
 import type { Lesson } from '../models/lesson.model';
-import { BaseChip } from '#/base/components/base-chip.component';
-import { BaseDivider } from '#/base/components/base-divider.component';
-import { LessonVideo } from './lesson-video.component';
-import { BaseLink } from '#/base/components/base-link.component';
-import { teacherRoutes } from '#/app/routes/teacher-routes';
-import { BaseIcon } from '#/base/components/base-icon.component';
 
 type Props = ComponentProps<'div'> & {
   lesson: Lesson;
 };
 
-export const LessonTeacherSingle = memo(function ({
+export const TeacherLessonSingle = memo(function ({
   className,
   lesson,
   ...moreProps
@@ -38,6 +38,7 @@ export const LessonTeacherSingle = memo(function ({
     }),
     [lesson],
   );
+  // const schedules = useMemo(() => lesson.schedules, [lesson]);
 
   return (
     <div className={cx('w-full', className)} {...moreProps}>
@@ -75,6 +76,7 @@ export const LessonTeacherSingle = memo(function ({
         className='base-rich-text rt-output'
         dangerouslySetInnerHTML={descriptionHtml}
       />
+      {/* LOAD schedules */}
     </div>
   );
 });

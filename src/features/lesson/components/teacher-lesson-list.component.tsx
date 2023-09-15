@@ -2,9 +2,9 @@ import { memo, useCallback } from 'react';
 import cx from 'classix';
 
 import {
-  LessonTeacherSingleCard,
-  LessonTeacherSingleCardSkeleton,
-} from './lesson-teacher-single-card.component';
+  TeacherLessonSingleCard,
+  TeacherLessonSingleCardSkeleton,
+} from './teacher-lesson-single-card.component';
 
 import type { ComponentProps } from 'react';
 import type { Lesson } from '../models/lesson.model';
@@ -14,16 +14,18 @@ type Props = ComponentProps<'div'> & {
   loading?: boolean;
   onLessonPreview?: (slug: string) => void;
   onLessonDetails?: (slug: string) => void;
-  onLessonUpdate?: (slug: string) => void;
+  onLessonEdit?: (slug: string) => void;
+  onLessonSchedule?: (slug: string) => void;
 };
 
-export const LessonTeacherList = memo(function ({
+export const TeacherLessonList = memo(function ({
   className,
   lessons,
   loading,
   onLessonPreview,
   onLessonDetails,
-  onLessonUpdate,
+  onLessonEdit,
+  onLessonSchedule,
   ...moreProps
 }: Props) {
   const handleLessonPreview = useCallback(
@@ -40,11 +42,18 @@ export const LessonTeacherList = memo(function ({
     [onLessonDetails],
   );
 
-  const handleLessonUpdate = useCallback(
+  const handleLessonEdit = useCallback(
     (slug: string) => () => {
-      onLessonUpdate && onLessonUpdate(slug);
+      onLessonEdit && onLessonEdit(slug);
     },
-    [onLessonUpdate],
+    [onLessonEdit],
+  );
+
+  const handleLessonSchedule = useCallback(
+    (slug: string) => () => {
+      onLessonSchedule && onLessonSchedule(slug);
+    },
+    [onLessonSchedule],
   );
 
   return (
@@ -58,15 +67,16 @@ export const LessonTeacherList = memo(function ({
     >
       {loading
         ? [...Array(4)].map((_, index) => (
-            <LessonTeacherSingleCardSkeleton key={index} />
+            <TeacherLessonSingleCardSkeleton key={index} />
           ))
         : lessons.map((lesson) => (
-            <LessonTeacherSingleCard
+            <TeacherLessonSingleCard
               key={lesson.id}
               lesson={lesson}
               onPreview={handleLessonPreview(lesson.slug)}
               onDetails={handleLessonDetails(lesson.slug)}
-              onUpdate={handleLessonUpdate(lesson.slug)}
+              onEdit={handleLessonEdit(lesson.slug)}
+              onSchedule={handleLessonSchedule(lesson.slug)}
               role='row'
             />
           ))}

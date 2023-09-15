@@ -125,7 +125,7 @@ export const LessonUpsertForm = memo(function ({
   const navigate = useNavigate();
   const setLessonFormData = useBoundStore((state) => state.setLessonFormData);
 
-  const [isUpdate, isUpdatePublished] = useMemo(
+  const [isEdit, isEditPublished] = useMemo(
     () => [!!lessonFormData, lessonFormData?.status === RecordStatus.Published],
     [lessonFormData],
   );
@@ -146,15 +146,15 @@ export const LessonUpsertForm = memo(function ({
 
   const [publishButtonLabel, publishButtonIconName] = useMemo(
     () => [
-      isUpdatePublished ? 'Save Changes' : 'Publish Now',
-      (isUpdatePublished ? 'floppy-disk-back' : 'share-fat') as IconName,
+      isEditPublished ? 'Save Changes' : 'Publish Now',
+      (isEditPublished ? 'floppy-disk-back' : 'share-fat') as IconName,
     ],
-    [isUpdatePublished],
+    [isEditPublished],
   );
 
   const handleReset = useCallback(() => {
-    reset(isUpdate ? lessonFormData : defaultValues);
-  }, [isUpdate, lessonFormData, reset]);
+    reset(isEdit ? lessonFormData : defaultValues);
+  }, [isEdit, lessonFormData, reset]);
 
   const handleSubmitError = useCallback(
     (errors: FieldErrors<LessonUpsertFormData>) => {
@@ -170,9 +170,7 @@ export const LessonUpsertForm = memo(function ({
         const targetData = status ? { ...data, status } : data;
         const lesson = await onSubmit(targetData);
 
-        toast.success(
-          `Successfully created Lesson No. ${lesson.orderNumber} — ${lesson.title}`,
-        );
+        toast.success(`Created ${lesson.title} (No. ${lesson.orderNumber})`);
 
         onDone && onDone(true);
         navigate(LESSONS_PATH);
@@ -226,7 +224,7 @@ export const LessonUpsertForm = memo(function ({
                   {publishButtonLabel}
                 </BaseButton>
                 <BaseDropdownMenu disabled={isSubmitting || isDone}>
-                  {(!isUpdate || !isUpdatePublished) && (
+                  {(!isEdit || !isEditPublished) && (
                     <Menu.Item
                       as={BaseDropdownButton}
                       type='submit'
@@ -251,7 +249,7 @@ export const LessonUpsertForm = memo(function ({
             <BaseStepperStep label='Lesson Info'>
               <LessonUpsertFormStep1 disabled={isSubmitting || isDone} />
             </BaseStepperStep>
-            {(!isUpdate || !isUpdatePublished) && (
+            {(!isEdit || !isEditPublished) && (
               <BaseStepperStep label='Lesson Schedule'>
                 <LessonUpsertFormStep2 disabled={isSubmitting || isDone} />
               </BaseStepperStep>

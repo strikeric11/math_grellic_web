@@ -18,9 +18,6 @@ export const studentRoutes = {
     to: 'lessons',
     label: 'Lessons',
     iconName: 'chalkboard-teacher',
-    createTo: 'create',
-    scheduleTo: 'schedule',
-    previewTo: 'preview',
   },
   activity: {
     name: 'activities',
@@ -35,10 +32,10 @@ export const studentRoutes = {
     label: 'Exams',
     iconName: 'exam',
   },
-  schedule: {
-    name: 'schedule',
-    to: 'schedule',
-    label: 'Schedule',
+  calendar: {
+    name: 'calendar',
+    to: 'calendar',
+    label: 'Calendar',
     iconName: 'calendar',
   },
   performance: {

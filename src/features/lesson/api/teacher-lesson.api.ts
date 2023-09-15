@@ -3,8 +3,7 @@ import { generateSearchParams, kyInstance } from '#/config/ky.config';
 import { queryLessonKey } from '#/config/react-query-keys.config';
 import {
   transformToLesson,
-  transformToLessonCreateDto,
-  transformToLessonUpdateDto,
+  transformToLessonUpsertDto,
 } from '../helpers/lesson-transform.helper';
 
 import type {
@@ -97,7 +96,7 @@ export function createLesson(
   >,
 ) {
   const mutationFn = async (data: LessonUpsertFormData): Promise<any> => {
-    const json = transformToLessonCreateDto(data);
+    const json = transformToLessonUpsertDto(data);
 
     try {
       const lesson = await kyInstance.post(BASE_URL, { json }).json();
@@ -111,7 +110,7 @@ export function createLesson(
   return { mutationFn, ...options };
 }
 
-export function updateLesson(
+export function editLesson(
   options?: Omit<
     UseMutationOptions<
       Lesson,
@@ -132,7 +131,7 @@ export function updateLesson(
     scheduleId?: number;
   }): Promise<any> => {
     const url = `${BASE_URL}/${slug}`;
-    const json = transformToLessonUpdateDto(data);
+    const json = transformToLessonUpsertDto(data);
     const searchParams = generateSearchParams({
       schedule: scheduleId?.toString(),
     });

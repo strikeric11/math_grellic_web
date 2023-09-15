@@ -3,7 +3,7 @@ import type { SceneRouteHandle } from '#/base/models/base.model';
 
 const lessonBaseRoute = `${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
 
-export const lessonTeacherRouteHandle: { [key: string]: SceneRouteHandle } = {
+export const teacherLessonRouteHandle: { [key: string]: SceneRouteHandle } = {
   list: {
     title: 'Lessons',
     links: [
@@ -13,9 +13,9 @@ export const lessonTeacherRouteHandle: { [key: string]: SceneRouteHandle } = {
         icons: [{ name: 'plus', size: 16 }, { name: 'chalkboard-teacher' }],
       },
       {
-        to: `${lessonBaseRoute}/${teacherRoutes.lesson.scheduleTo}`,
-        label: 'Schedule Lesson',
-        icons: [{ name: 'plus', size: 16 }, { name: 'calendar' }],
+        to: `${teacherBaseRoute}/${teacherRoutes.calendar.to}`,
+        label: 'Calendar',
+        icons: [{ name: 'calendar' }],
       },
     ],
   },
@@ -43,13 +43,13 @@ export const lessonTeacherRouteHandle: { [key: string]: SceneRouteHandle } = {
         icons: [{ name: 'plus', size: 16 }, { name: 'chalkboard-teacher' }],
       },
       {
-        to: `${lessonBaseRoute}/${teacherRoutes.lesson.scheduleTo}`,
-        label: 'Schedule Lesson',
-        icons: [{ name: 'plus', size: 16 }, { name: 'calendar' }],
+        to: `${teacherBaseRoute}/${teacherRoutes.calendar.to}`,
+        label: 'Calendar',
+        icons: [{ name: 'calendar' }],
       },
     ],
   },
-  update: {
+  edit: {
     title: 'Edit Lesson',
     links: [
       {
@@ -58,26 +58,12 @@ export const lessonTeacherRouteHandle: { [key: string]: SceneRouteHandle } = {
         icons: [{ name: 'plus', size: 16 }, { name: 'chalkboard-teacher' }],
       },
       {
-        to: `${lessonBaseRoute}/${teacherRoutes.lesson.scheduleTo}`,
-        label: 'Schedule Lesson',
-        icons: [{ name: 'plus', size: 16 }, { name: 'calendar' }],
-      },
-    ],
-  },
-  schedule: {
-    title: 'Schedule a Lesson',
-    links: [
-      {
-        to: lessonBaseRoute,
-        label: 'Lesson List',
+        to: `${lessonBaseRoute}/${teacherRoutes.lesson.createTo}`,
+        label: 'Create Lesson',
         icons: [{ name: 'plus', size: 16 }, { name: 'chalkboard-teacher' }],
       },
-      {
-        to: `${teacherBaseRoute}/${teacherRoutes.schedule.to}`,
-        label: 'Calendar',
-        icons: [{ name: 'calendar' }],
-      },
     ],
   },
+  schedule: { disabledSceneWrapper: true },
   preview: { disabledSceneWrapper: true },
 };

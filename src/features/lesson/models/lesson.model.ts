@@ -28,11 +28,18 @@ export type LessonUpsertFormData = {
   title: string;
   videoUrl: string;
   slug?: string;
-  duration?: number;
+  duration?: string;
   description?: string;
   startDate?: Date;
   startTime?: string;
   studentIds?: number[];
+};
+
+export type LessonScheduleUpsertFormData = {
+  lessonId: number;
+  startDate: Date;
+  startTime: string;
+  studentIds: number[];
 };
 
 export type LessonSlice = {
