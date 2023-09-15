@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
-import { BaseControlledTimePicker } from '#/base/components/base-time-picker.component';
+import { BaseControlledTimeInput } from '#/base/components/base-time-input.component';
 import { StudentUserControlledPicker } from '#/user/components/student-user-picker.component';
 
 import type { LessonUpsertFormData } from '../models/lesson.model';
@@ -41,7 +41,7 @@ export const LessonUpsertFormStep2 = memo(function ({
             calendarSelectorProps={calendarSelectorProps}
             fullWidth
           />
-          <BaseControlledTimePicker
+          <BaseControlledTimeInput
             name='startTime'
             label='Start Time'
             control={control}

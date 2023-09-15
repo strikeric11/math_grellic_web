@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import duration from 'dayjs/plugin/duration';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import localeData from 'dayjs/plugin/localeData';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -8,6 +9,7 @@ import timezone from 'dayjs/plugin/timezone';
 
 // Initialize dayjs
 dayjs.extend(relativeTime);
+dayjs.extend(duration);
 // Use custom format for time
 dayjs.extend(customParseFormat);
 // Set global dayjs settings

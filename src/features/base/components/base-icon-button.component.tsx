@@ -42,7 +42,7 @@ export const BaseIconButton = memo(
             disabled &&
             '!border-accent/40 !bg-gray-300 !text-accent/50',
           variant === 'solid' &&
-            'border border-primary-border-light bg-white text-primary-focus hover:border-primary-focus-light hover:text-primary-focus-light',
+            'border border-primary-border-light bg-white text-primary hover:border-primary-focus-light hover:text-primary-focus-light',
           variant === 'solid' && disabled && '!text-accent/50',
           variant === 'link' &&
             '!rounded border border-transparent text-primary hover:text-primary-focus-light',

@@ -19,8 +19,9 @@ export const teacherRoutes = {
     label: 'Lessons',
     iconName: 'chalkboard-teacher',
     createTo: 'create',
-    scheduleTo: 'schedule',
+    editTo: 'edit',
     previewTo: 'preview',
+    scheduleTo: 'schedule',
   },
   activity: {
     name: 'activities',

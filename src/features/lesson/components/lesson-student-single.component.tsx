@@ -2,6 +2,7 @@ import { memo, useMemo } from 'react';
 import DOMPurify from 'dompurify';
 import { cx } from 'classix';
 
+import { convertSecondsToDuration } from '#/utils/time.util';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
@@ -27,7 +28,10 @@ export const LessonStudentSingle = memo(function LessonSingle({
   const orderNumber = useMemo(() => lesson.orderNumber, [lesson]);
   const title = useMemo(() => lesson.title, [lesson]);
   const videoUrl = useMemo(() => lesson.videoUrl, [lesson]);
-  const durationSeconds = useMemo(() => lesson.durationSeconds || 0, [lesson]);
+  const duration = useMemo(
+    () => convertSecondsToDuration(lesson.durationSeconds || 0, true),
+    [lesson],
+  );
   const descriptionHtml = useMemo(
     () => ({ __html: DOMPurify.sanitize(lesson.description || '') }),
     [lesson],
@@ -46,7 +50,7 @@ export const LessonStudentSingle = memo(function LessonSingle({
               Lesson {orderNumber}
             </BaseChip>
             <BaseDivider className='!h-6' vertical />
-            <BaseChip iconName='hourglass'>{durationSeconds} mins</BaseChip>
+            <BaseChip iconName='hourglass'>{duration}</BaseChip>
           </div>
           <div className='flex items-center gap-2.5'>
             {isCompleted ? (

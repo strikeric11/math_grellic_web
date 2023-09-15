@@ -20,7 +20,7 @@ export const lessonTeacherRouteHandle: { [key: string]: SceneRouteHandle } = {
     ],
   },
   single: {
-    disabledSceneWrapper: true,
+    title: 'Lesson Details',
     links: [
       {
         to: lessonBaseRoute,

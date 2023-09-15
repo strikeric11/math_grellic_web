@@ -28,7 +28,7 @@ export type LessonUpsertFormData = {
   title: string;
   videoUrl: string;
   slug?: string;
-  durationSeconds?: number;
+  duration?: number;
   description?: string;
   startDate?: Date;
   startTime?: string;

@@ -1,5 +1,9 @@
 import dayjs from 'dayjs';
 
+import {
+  convertDurationToSeconds,
+  convertSecondsToDuration,
+} from '#/utils/time.util';
 import { transformToStudentUserAccount } from '#/user/helpers/user-transform.helper';
 
 import type { Lesson, LessonSchedule } from '../models/lesson.model';
@@ -64,6 +68,8 @@ export function transformToLessonFormData({
   description,
   schedules,
 }: any) {
+  const duration = convertSecondsToDuration(durationSeconds);
+  // Convert schedule
   let startDate = undefined;
   let startTime = undefined;
   let studentIds = undefined;
@@ -81,7 +87,7 @@ export function transformToLessonFormData({
     orderNumber,
     title,
     videoUrl,
-    durationSeconds,
+    duration,
     description: description || undefined,
     startDate,
     startTime,
@@ -94,12 +100,13 @@ export function transformToLessonCreateDto({
   orderNumber,
   title,
   videoUrl,
-  durationSeconds,
+  duration,
   description,
   startDate,
   startTime,
   studentIds,
 }: any) {
+  const durationSeconds = convertDurationToSeconds(duration);
   const date = dayjs(startDate).format('YYYY-MM-DD');
   const transformedStartDate = dayjs(`${date} ${startTime}`).toDate();
   const transformedStudentsIds = !studentIds?.length ? null : studentIds;
@@ -121,12 +128,13 @@ export function transformToLessonUpdateDto({
   orderNumber,
   title,
   videoUrl,
-  durationSeconds,
+  duration,
   description,
   startDate,
   startTime,
   studentIds,
 }: any) {
+  const durationSeconds = convertDurationToSeconds(duration);
   const date = dayjs(startDate).format('YYYY-MM-DD');
   const transformedStartDate = dayjs(`${date} ${startTime}`).toDate();
   const transformedStudentsIds = !studentIds?.length ? null : studentIds;

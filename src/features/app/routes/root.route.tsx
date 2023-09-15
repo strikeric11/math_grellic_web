@@ -29,7 +29,7 @@ import {
   getLessonBySlugLoader,
 } from '#/lesson/lesson-route-loader';
 import { LessonTeacherListPage } from '#/lesson/pages/lesson-teacher-list.page';
-import { LessonTeacherSinglePage } from '#/lesson/pages/lesson-teacher-single.component';
+import { LessonTeacherSinglePage } from '#/lesson/pages/lesson-teacher-single.page';
 import { LessonPreviewSlugPage } from '#/lesson/pages/lesson-preview-slug.page';
 import { LessonPreviewPage } from '#/lesson/pages/lesson-preview.page';
 import { LessonSchedulePage } from '#/lesson/pages/lesson-schedule.page';
@@ -81,7 +81,6 @@ const rootRoutes = createRoutesFromElements(
             element={<LessonTeacherListPage />}
             handle={lessonTeacherRouteHandle.list}
             loader={getPaginatedLessonsLoader(queryClient)}
-            errorElement={<CorePageNotFound />}
           />
           <Route path=':slug' element={<Outlet />}>
             <Route
@@ -89,14 +88,12 @@ const rootRoutes = createRoutesFromElements(
               element={<LessonTeacherSinglePage />}
               handle={lessonTeacherRouteHandle.single}
               loader={getLessonBySlugLoader(queryClient)}
-              errorElement={<CorePageNotFound />}
             />
             <Route
               path='edit'
               element={<LessonUpdatePage />}
               handle={lessonTeacherRouteHandle.update}
               loader={getLessonBySlugLoader(queryClient)}
-              errorElement={<CorePageNotFound />}
             />
             <Route
               path='preview'
@@ -105,7 +102,6 @@ const rootRoutes = createRoutesFromElements(
               loader={getLessonBySlugLoader(queryClient, {
                 exclude: 'schedules',
               })}
-              errorElement={<CorePageNotFound />}
             />
           </Route>
           <Route

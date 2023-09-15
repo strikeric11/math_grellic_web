@@ -1,3 +1,5 @@
+export const PAGINATION_TAKE = 16;
+
 export class ApiError extends Error {
   constructor(
     message: string,

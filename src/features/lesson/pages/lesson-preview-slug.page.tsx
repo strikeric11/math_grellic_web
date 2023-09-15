@@ -1,20 +1,19 @@
+import { useLoaderData } from 'react-router-dom';
+
+import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseScene } from '#/base/components/base-scene.component';
-import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { useLessonPreviewSlug } from '../hooks/use-lesson-preview-slug.hook';
 import { LessonStudentSingle } from '../components/lesson-student-single.component';
 
 export function LessonPreviewSlugPage() {
   const { titlePreview, lesson } = useLessonPreviewSlug();
+  const data: any = useLoaderData();
 
-  if (lesson === undefined) {
-    return <BasePageSpinner />;
-  }
-
-  return !lesson ? (
-    <div className='w-full pt-8 text-center'>Lesson preview has expired.</div>
-  ) : (
-    <BaseScene title={titlePreview} breadcrumbsHidden isClose>
-      <LessonStudentSingle lesson={lesson} preview />
-    </BaseScene>
+  return (
+    <BaseDataSuspense resolve={data?.main}>
+      <BaseScene title={titlePreview} breadcrumbsHidden isClose>
+        {lesson && <LessonStudentSingle lesson={lesson} preview />}
+      </BaseScene>
+    </BaseDataSuspense>
   );
 }

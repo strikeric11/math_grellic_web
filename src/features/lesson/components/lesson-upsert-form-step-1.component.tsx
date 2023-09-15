@@ -5,6 +5,7 @@ import {
   BaseControlledInput,
   BaseControlledNumberInput,
 } from '#/base/components/base-input.component';
+import { BaseControlledDurationInput } from '#/base/components/base-duration-input.component';
 import { BaseControlledRichTextEditor } from '#/base/components/base-rich-text-editor.component';
 
 import type { ComponentProps } from 'react';
@@ -50,9 +51,9 @@ export const LessonUpsertFormStep1 = memo(function ({
             fullWidth
             asterisk
           />
-          <BaseControlledNumberInput
-            label='Duration (in mins)'
-            name='durationSeconds'
+          <BaseControlledDurationInput
+            label='Duration (hh:mm:ss)'
+            name='duration'
             control={control}
             fullWidth
           />

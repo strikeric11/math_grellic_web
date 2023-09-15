@@ -2,6 +2,7 @@ import { memo, useMemo } from 'react';
 import dayjs from 'dayjs';
 import cx from 'classix';
 
+import { convertSecondsToDuration } from '#/utils/time.util';
 import { RecordStatus } from '#/core/models/core.model';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
@@ -18,6 +19,7 @@ import { BaseDropdownButton } from '#/base/components/base-dropdown-button.compo
 type Props = ComponentProps<typeof BaseSurface> & {
   lesson: Lesson;
   onUpdate?: () => void;
+  onDetails?: () => void;
   onPreview?: () => void;
 };
 
@@ -29,12 +31,16 @@ export const LessonTeacherSingleCard = memo(function ({
   className,
   lesson,
   onUpdate,
+  onDetails,
   onPreview,
   ...moreProps
 }: Props) {
   const orderNumber = useMemo(() => lesson.orderNumber, [lesson]);
   const title = useMemo(() => lesson.title, [lesson]);
-  const durationSeconds = useMemo(() => lesson.durationSeconds || 0, [lesson]);
+  const duration = useMemo(
+    () => convertSecondsToDuration(lesson.durationSeconds || 0, true),
+    [lesson],
+  );
   const isDraft = useMemo(() => lesson.status === RecordStatus.Draft, [lesson]);
 
   const [scheduleDate, scheduleTime] = useMemo(() => {
@@ -66,7 +72,7 @@ export const LessonTeacherSingleCard = memo(function ({
                 Lesson {orderNumber}
               </BaseChip>
               <BaseDivider className='!h-6' vertical />
-              <BaseChip iconName='hourglass'>{durationSeconds} mins</BaseChip>
+              <BaseChip iconName='hourglass'>{duration}</BaseChip>
               {isDraft && (
                 <>
                   <BaseDivider className='!h-6' vertical />
@@ -105,16 +111,11 @@ export const LessonTeacherSingleCard = memo(function ({
         >
           <Menu.Item
             as={BaseDropdownButton}
-            iconName='pencil'
-            onClick={onUpdate}
+            iconName='article'
+            onClick={onDetails}
           >
-            Edit
-          </Menu.Item>
-          {/* TODO details */}
-          <Menu.Item as={BaseDropdownButton} iconName='article'>
             Details
           </Menu.Item>
-          {/* TODO preview */}
           <Menu.Item
             as={BaseDropdownButton}
             iconName='file-text'
@@ -122,8 +123,34 @@ export const LessonTeacherSingleCard = memo(function ({
           >
             Preview
           </Menu.Item>
+          <BaseDivider className='my-1' />
+          <Menu.Item
+            as={BaseDropdownButton}
+            iconName='pencil'
+            onClick={onUpdate}
+          >
+            Edit
+          </Menu.Item>
         </BaseDropdownMenu>
       </div>
     </BaseSurface>
+  );
+});
+
+export const LessonTeacherSingleCardSkeleton = memo(function () {
+  return (
+    <div className='flex w-full animate-pulse justify-between rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-4'>
+      <div className='flex w-full items-center gap-4'>
+        <div className='h-[68px] w-[121px] rounded bg-accent/20' />
+        <div className='flex h-fit flex-1 flex-col gap-y-3'>
+          <div className='h-6 w-[200px] rounded bg-accent/20' />
+          <div className='h-6 w-28 rounded bg-accent/20' />
+        </div>
+      </div>
+      <div className='flex h-full gap-x-5'>
+        <div className='h-6 w-[240px] rounded bg-accent/20' />
+        <div className='h-full w-5 rounded bg-accent/20' />
+      </div>
+    </div>
   );
 });

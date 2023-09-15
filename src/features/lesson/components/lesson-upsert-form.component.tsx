@@ -40,9 +40,14 @@ const schema = z
       })
       .int()
       .gt(0),
-    durationSeconds: z
-      .number({ invalid_type_error: 'Duration is invalid' })
-      .int()
+    duration: z
+      .string()
+      .refine(
+        (value) => isTime(value, { hourFormat: 'hour24', mode: 'withSeconds' }),
+        {
+          message: 'Duration is invalid',
+        },
+      )
       .optional(),
     title: z
       .string()
@@ -103,7 +108,7 @@ const defaultValues: Partial<LessonUpsertFormData> = {
   description: '',
   status: RecordStatus.Draft,
   orderNumber: undefined,
-  durationSeconds: undefined,
+  duration: undefined,
   startDate: undefined,
   startTime: undefined,
   studentIds: undefined,
