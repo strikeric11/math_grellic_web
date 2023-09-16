@@ -12,7 +12,7 @@ import type { LoaderFunctionArgs } from 'react-router-dom';
 export const getLessonBySlugLoader =
   (
     queryClient: QueryClient,
-    queryParams?: { exclude?: string; include?: string },
+    queryParams?: { status?: string; exclude?: string; include?: string },
   ) =>
   async ({ params }: LoaderFunctionArgs) => {
     if (!params?.slug) {

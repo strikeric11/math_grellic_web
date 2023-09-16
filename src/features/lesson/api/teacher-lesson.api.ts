@@ -64,14 +64,14 @@ export function getPaginatedLessonsByCurrentTeacherUser(
 }
 
 export function getLessonBySlugAndCurrentTeacherUser(
-  keys: { slug: string; exclude?: string; include?: string },
+  keys: { slug: string; status?: string; exclude?: string; include?: string },
   options?: Omit<UseQueryOptions<Lesson, Error, Lesson, any>, 'queryFn'>,
 ) {
-  const { slug, exclude, include } = keys;
+  const { slug, status, exclude, include } = keys;
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/${slug}/teachers`;
-    const searchParams = generateSearchParams({ exclude, include });
+    const searchParams = generateSearchParams({ status, exclude, include });
 
     try {
       const lesson = await kyInstance.get(url, { searchParams }).json();
@@ -83,7 +83,7 @@ export function getLessonBySlugAndCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryLessonKey.single, { slug, exclude, include }],
+    queryKey: [...queryLessonKey.single, { slug, status, exclude, include }],
     queryFn,
     ...options,
   };

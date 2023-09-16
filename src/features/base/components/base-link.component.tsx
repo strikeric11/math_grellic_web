@@ -14,6 +14,7 @@ type Props = ComponentProps<typeof Link> & {
   size?: 'base' | 'sm';
   leftIconName?: IconName;
   rightIconName?: IconName;
+  bodyFont?: boolean;
 };
 
 export const BaseLink = memo(
@@ -24,6 +25,7 @@ export const BaseLink = memo(
       size = 'base',
       leftIconName,
       rightIconName,
+      bodyFont,
       children,
       ...moreProps
     },
@@ -39,6 +41,7 @@ export const BaseLink = memo(
           variant === 'solid' &&
             'solid h-[46px] rounded-md border border-primary-border-light bg-white px-5 hover:!border-primary-focus-light',
           size === 'sm' && '!text-base',
+          bodyFont && '!font-body !tracking-normal',
           className,
         )}
         {...moreProps}

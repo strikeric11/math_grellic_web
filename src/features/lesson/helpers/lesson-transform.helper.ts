@@ -6,6 +6,7 @@ import {
 } from '#/utils/time.util';
 import { transformToStudentUserAccount } from '#/user/helpers/user-transform.helper';
 
+import type { StudentUserAccount } from '#/user/models/user.model';
 import type { Lesson, LessonSchedule } from '../models/lesson.model';
 
 export function transformToLesson({
@@ -63,6 +64,7 @@ export function transformToLessonSchedule({
     lesson: transformedLesson,
   };
 }
+
 export function transformToLessonFormData({
   status,
   orderNumber,
@@ -83,7 +85,9 @@ export function transformToLessonFormData({
 
     startDate = dayJsStartDate.toDate();
     startTime = dayJsStartDate.format('hh:mm A');
-    studentIds = schedules[0].students?.map((student: any) => student.id) || [];
+    studentIds =
+      schedules[0].students?.map((student: StudentUserAccount) => student.id) ||
+      [];
   }
 
   return {
@@ -96,6 +100,23 @@ export function transformToLessonFormData({
     startDate,
     startTime,
     studentIds,
+  };
+}
+
+export function transformToLessonScheduleFormData({
+  lesson,
+  startDate,
+  students,
+}: any) {
+  const transformedStudentIds = !students?.length
+    ? null
+    : students.map((student: StudentUserAccount) => student.id);
+
+  return {
+    lessonId: lesson?.id || 0,
+    studentIds: transformedStudentIds,
+    startDate: dayjs(startDate).toDate(),
+    startTime: dayjs(startDate).format('hh:mm A'),
   };
 }
 
@@ -127,7 +148,7 @@ export function transformToLessonUpsertDto({
   };
 }
 
-export function transformToLessonScheduleUpsertDto({
+export function transformToLessonScheduleCreateDto({
   lessonId,
   startDate,
   startTime,
@@ -139,6 +160,21 @@ export function transformToLessonScheduleUpsertDto({
 
   return {
     lessonId,
+    startDate: transformedStartDate,
+    studentIds: transformedStudentsIds,
+  };
+}
+
+export function transformToLessonScheduleUpdateDto({
+  startDate,
+  startTime,
+  studentIds,
+}: any) {
+  const date = dayjs(startDate).format('YYYY-MM-DD');
+  const transformedStartDate = dayjs(`${date} ${startTime}`).toDate();
+  const transformedStudentsIds = !studentIds?.length ? null : studentIds;
+
+  return {
     startDate: transformedStartDate,
     studentIds: transformedStudentsIds,
   };

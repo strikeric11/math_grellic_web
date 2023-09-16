@@ -12,7 +12,7 @@ export function TeacherLessonSinglePage() {
     <BaseDataSuspense resolve={data?.main}>
       {lesson && (
         <TeacherLessonSingle
-          className='mx-auto max-w-compact py-4'
+          className='mx-auto max-w-compact py-5'
           lesson={lesson}
         />
       )}

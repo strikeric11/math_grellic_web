@@ -42,7 +42,7 @@ export function CoreLayout() {
       <CoreMain id='main'>
         <CoreHeader />
         {disabledSceneWrapper ? (
-          <div className='relative z-10'>
+          <div className='relative z-10 flex flex-1 flex-col'>
             <Outlet />
           </div>
         ) : (

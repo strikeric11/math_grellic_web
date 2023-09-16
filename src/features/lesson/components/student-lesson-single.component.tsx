@@ -18,7 +18,7 @@ type Props = ComponentProps<'div'> & {
   preview?: boolean;
 };
 
-export const LessonStudentSingle = memo(function LessonSingle({
+export const StudentLessonSingle = memo(function LessonSingle({
   className,
   lesson,
   isCompleted,

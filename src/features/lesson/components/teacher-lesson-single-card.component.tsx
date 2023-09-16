@@ -129,14 +129,18 @@ export const TeacherLessonSingleCard = memo(function ({
           <Menu.Item as={BaseDropdownButton} iconName='pencil' onClick={onEdit}>
             Edit
           </Menu.Item>
-          <BaseDivider className='my-1' />
-          <Menu.Item
-            as={BaseDropdownButton}
-            iconName='calendar'
-            onClick={onSchedule}
-          >
-            Set Schedule
-          </Menu.Item>
+          {!isDraft && (
+            <>
+              <BaseDivider className='my-1' />
+              <Menu.Item
+                as={BaseDropdownButton}
+                iconName='calendar'
+                onClick={onSchedule}
+              >
+                Set Schedule
+              </Menu.Item>
+            </>
+          )}
         </BaseDropdownMenu>
       </div>
     </BaseSurface>

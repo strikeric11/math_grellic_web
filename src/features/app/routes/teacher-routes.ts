@@ -22,7 +22,7 @@ export const teacherRoutes = {
     editTo: 'edit',
     previewTo: 'preview',
     schedule: {
-      to: 'schedule',
+      to: 'schedules',
       createTo: 'create',
       editTo: 'edit',
     },

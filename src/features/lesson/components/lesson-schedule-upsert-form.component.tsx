@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,13 +7,13 @@ import isTime from 'validator/lib/isTime';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { BaseButton } from '#/base/components/base-button.components';
+import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
 import { BaseControlledTimeInput } from '#/base/components/base-time-input.component';
 import { StudentUserControlledPicker } from '#/user/components/student-user-picker.component';
 
-import type { FieldErrors } from 'react-hook-form';
-import type { FormProps } from '#/base/models/base.model';
+import type { FormProps, IconName } from '#/base/models/base.model';
 import type {
   LessonSchedule,
   LessonScheduleUpsertFormData,
@@ -21,11 +21,11 @@ import type {
 
 type Props = FormProps<'div'> & {
   lessonId: number;
-  onSubmit: (data: LessonScheduleUpsertFormData) => Promise<LessonSchedule>;
+  onSubmit: (
+    data: LessonScheduleUpsertFormData,
+  ) => Promise<LessonSchedule | null>;
   lessonScheduleFormData?: LessonScheduleUpsertFormData;
 };
-
-const LESSONS_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
 
 const calendarSelectorProps = {
   minDate: new Date(`${new Date().getFullYear() - 5}-01-01`),
@@ -34,17 +34,19 @@ const calendarSelectorProps = {
 
 const schema = z.object({
   startDate: z
-    .date()
+    .date({ required_error: 'Start date is required' })
     .min(
       new Date(`${new Date().getFullYear()}-01-01`),
       'Start date is invalid',
     ),
   startTime: z
-    .string()
+    .string({ required_error: 'Start time is required' })
     .refine((value) => isTime(value, { hourFormat: 'hour12' }), {
       message: 'Start time is invalid',
     }),
-  studentIds: z.array(z.number()).nullable().optional(),
+  studentIds: z
+    .array(z.number(), { required_error: 'Assign students' })
+    .nullable(),
 });
 
 const defaultValues: Partial<LessonScheduleUpsertFormData> = {
@@ -65,74 +67,107 @@ export const LessonScheduleUpsertForm = memo(function ({
   const navigate = useNavigate();
 
   const {
-    control,
-    handleSubmit,
     formState: { isSubmitting },
+    control,
+    reset,
+    handleSubmit,
   } = useForm<LessonScheduleUpsertFormData>({
     shouldFocusError: false,
     defaultValues: lessonScheduleFormData || defaultValues,
     resolver: zodResolver(schema),
   });
 
-  const handleSubmitError = useCallback(
-    (errors: FieldErrors<LessonScheduleUpsertFormData>) => {
-      const errorMessage = Object.entries(errors)[0][1].message;
-      toast.error(errorMessage || '');
-    },
-    [],
+  const [scheduleButtonLabel, scheduleButtonIconName] = useMemo(
+    () => [
+      lessonScheduleFormData ? 'Save Changes' : 'Set Schedule',
+      (lessonScheduleFormData
+        ? 'floppy-disk-back'
+        : 'calendar-check') as IconName,
+    ],
+    [lessonScheduleFormData],
   );
+
+  const handleReset = useCallback(() => {
+    reset();
+  }, [reset]);
 
   const submitForm = useCallback(
     async (data: LessonScheduleUpsertFormData) => {
       try {
-        const lessonSchedule = await onSubmit(data);
-
+        await onSubmit({ ...data, lessonId });
         toast.success(
-          // TODO get lesson title or number
-          `Added lesson schedule to Lesson`,
+          !lessonScheduleFormData
+            ? 'Created lesson schedule'
+            : 'Update lesson schedule',
         );
-
         onDone && onDone(true);
-        navigate(LESSONS_PATH);
+        navigate(-1);
       } catch (error: any) {
         toast.error(error.message);
       }
     },
-    [onDone, onSubmit, navigate],
+    [lessonId, lessonScheduleFormData, onSubmit, onDone, navigate],
   );
 
   return (
-    <div className={cx('w-full', className)} {...moreProps}>
-      <form onSubmit={handleSubmit(submitForm, handleSubmitError)}>
-        <fieldset
-          className='group/field flex flex-wrap gap-5'
-          disabled={isSubmitting || isDone}
-        >
-          <div className='flex w-full items-start justify-between gap-5'>
-            <BaseControlledDatePicker
-              name='startDate'
-              label='Start Date'
-              control={control}
-              iconName='calendar'
-              calendarSelectorProps={calendarSelectorProps}
-              fullWidth
-            />
-            <BaseControlledTimeInput
-              name='startTime'
-              label='Start Time'
-              control={control}
-              iconName='clock'
-              fullWidth
-            />
+    <div className={cx('flex w-full items-start', className)} {...moreProps}>
+      <form className='flex-1' onSubmit={handleSubmit(submitForm)}>
+        <div>
+          <BaseDivider className='mb-2.5 pt-2.5' />
+          <div className='flex w-full items-center justify-between'>
+            <BaseButton
+              variant='link'
+              size='sm'
+              rightIconName='arrow-counter-clockwise'
+              onClick={handleReset}
+              disabled={isSubmitting || isDone}
+            >
+              Reset Fields
+            </BaseButton>
+            <BaseButton
+              type='submit'
+              rightIconName={scheduleButtonIconName}
+              loading={isSubmitting}
+              disabled={isDone}
+            >
+              {scheduleButtonLabel}
+            </BaseButton>
           </div>
-          <div className='flex w-full items-start gap-5'>
-            <StudentUserControlledPicker
-              name='studentIds'
-              label='Students'
-              control={control}
-            />
-          </div>
-        </fieldset>
+        </div>
+        <div className='mx-auto w-full max-w-[600px] pt-5'>
+          <fieldset
+            className='group/field flex flex-wrap gap-5'
+            disabled={isSubmitting || isDone}
+          >
+            <div className='flex w-full items-start justify-between gap-5'>
+              <BaseControlledDatePicker
+                name='startDate'
+                label='Start Date'
+                control={control}
+                iconName='calendar'
+                calendarSelectorProps={calendarSelectorProps}
+                fullWidth
+                asterisk
+              />
+              <BaseControlledTimeInput
+                name='startTime'
+                label='Start Time'
+                control={control}
+                iconName='clock'
+                fullWidth
+                asterisk
+              />
+            </div>
+            <div className='flex w-full items-start gap-5'>
+              <StudentUserControlledPicker
+                name='studentIds'
+                label='Students'
+                control={control}
+                asterisk
+              />
+            </div>
+          </fieldset>
+        </div>
       </form>
     </div>
   );

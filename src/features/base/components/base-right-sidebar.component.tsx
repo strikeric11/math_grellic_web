@@ -38,7 +38,6 @@ export const BaseRightSidebar = memo(function ({
       )}
       {...moreProps}
     >
-      {/* TODO border button */}
       <div className='h-full px-2'>
         <div
           className='group/btn flex h-full w-4 justify-center transition-colors hover:bg-primary-focus-light/30'
@@ -48,7 +47,6 @@ export const BaseRightSidebar = memo(function ({
           <BaseDivider vertical />
         </div>
       </div>
-      {/* TODO content button */}
       <div
         className={cx(
           'h-full w-full overflow-hidden transition-[padding]',

@@ -7,6 +7,7 @@ import {
 
 import { queryClient } from '#/config/react-query-client.config';
 
+import { RecordStatus } from '#/core/models/core.model';
 import { coreRouteHandle } from '#/core/core-route-handle';
 import { CorePageNotFound } from '#/core/components/core-page-not-found.component';
 import { CoreStaticLayout } from '#/core/components/core-static-layout.component';
@@ -32,6 +33,7 @@ import { TeacherLessonListPage } from '#/lesson/pages/teacher-lesson-list.page';
 import { TeacherLessonSinglePage } from '#/lesson/pages/teacher-lesson-single.page';
 import { TeacherLessonScheduleListPage } from '#/lesson/pages/teacher-lesson-schedule-list.page';
 import { TeacherLessonScheduleCreatePage } from '#/lesson/pages/teacher-lesson-schedule-create.page';
+import { TeacherLessonScheduleEditPage } from '#/lesson/pages/teacher-lesson-schedule-edit.page';
 import { LessonPreviewSlugPage } from '#/lesson/pages/lesson-preview-slug.page';
 import { LessonPreviewPage } from '#/lesson/pages/lesson-preview.page';
 import { LessonEditPage } from '#/lesson/pages/lesson-edit.page';
@@ -108,11 +110,18 @@ const rootRoutes = createRoutesFromElements(
               path={`${teacherRoutes.lesson.schedule.to}`}
               element={<TeacherLessonScheduleListPage />}
               handle={teacherLessonRouteHandle.schedule}
-              loader={getLessonBySlugLoader(queryClient)}
+              loader={getLessonBySlugLoader(queryClient, {
+                status: RecordStatus.Published,
+              })}
             >
               <Route
                 path={`${teacherRoutes.lesson.schedule.createTo}`}
                 element={<TeacherLessonScheduleCreatePage />}
+                handle={teacherLessonRouteHandle.schedule}
+              />
+              <Route
+                path={`${teacherRoutes.lesson.schedule.editTo}`}
+                element={<TeacherLessonScheduleEditPage />}
                 handle={teacherLessonRouteHandle.schedule}
               />
             </Route>

@@ -128,7 +128,7 @@ export const BaseDataToolbarSorterMenu = memo(function ({
             ref={setButtonRef}
             as={BaseButton}
             className={cx(
-              '!p-2 !font-body !text-sm font-medium !tracking-normal',
+              '!p-2 !text-sm font-medium',
               !currentSelectedSort.field?.trim()
                 ? '!border-transparent'
                 : '!pr-2.5',
@@ -137,6 +137,7 @@ export const BaseDataToolbarSorterMenu = memo(function ({
             variant='border'
             size='sm'
             onClick={handleOpenMenu}
+            bodyFont
             {...moreButtonProps}
           >
             {buttonLabel}

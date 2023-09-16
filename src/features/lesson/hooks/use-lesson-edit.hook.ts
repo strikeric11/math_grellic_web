@@ -63,7 +63,6 @@ export function useLessonEdit(slug?: string): Result {
         : undefined;
 
       const updatedLesson = await mutateAsync({ slug, data, scheduleId });
-
       return updatedLesson;
     },
     [mutateAsync, lesson],
