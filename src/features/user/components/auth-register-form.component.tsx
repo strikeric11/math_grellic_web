@@ -23,7 +23,10 @@ import type { FormProps, SelectOption } from '#/base/models/base.model';
 import type { User } from '../models/user.model';
 import type { AuthRegisterFormData } from '../models/auth.model';
 
-type Props = FormProps<'div'> & {
+type Props = Omit<
+  FormProps<'div', AuthRegisterFormData, Promise<User | null>>,
+  'onSubmit'
+> & {
   userRole: UserRole;
   onSubmit: (
     data: AuthRegisterFormData,

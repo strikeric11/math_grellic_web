@@ -14,6 +14,7 @@ import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
+import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
 import { BaseStepper } from '#/base/components/base-stepper.component';
 import { LessonUpsertFormStep1 } from './lesson-upsert-form-step-1.component';
@@ -23,10 +24,7 @@ import type { FieldErrors } from 'react-hook-form';
 import type { FormProps, IconName } from '#/base/models/base.model';
 import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
 
-type Props = FormProps<'div'> & {
-  lessonFormData?: LessonUpsertFormData;
-  onSubmit: (data: LessonUpsertFormData) => Promise<Lesson>;
-};
+type Props = FormProps<'div', LessonUpsertFormData, Promise<Lesson>>;
 
 const LESSON_PREVIEW_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}/${teacherRoutes.lesson.previewTo}`;
 const LESSONS_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
@@ -116,23 +114,25 @@ const defaultValues: Partial<LessonUpsertFormData> = {
 
 export const LessonUpsertForm = memo(function ({
   className,
-  lessonFormData,
+  formData,
+  loading: formLoading,
   isDone,
   onDone,
   onSubmit,
+  onDelete,
   ...moreProps
 }: Props) {
   const navigate = useNavigate();
   const setLessonFormData = useBoundStore((state) => state.setLessonFormData);
 
   const [isEdit, isEditPublished] = useMemo(
-    () => [!!lessonFormData, lessonFormData?.status === RecordStatus.Published],
-    [lessonFormData],
+    () => [!!formData, formData?.status === RecordStatus.Published],
+    [formData],
   );
 
   const methods = useForm<LessonUpsertFormData>({
     shouldFocusError: false,
-    defaultValues: lessonFormData || defaultValues,
+    defaultValues: formData || defaultValues,
     resolver: zodResolver(schema),
   });
 
@@ -144,6 +144,11 @@ export const LessonUpsertForm = memo(function ({
     handleSubmit,
   } = methods;
 
+  const loading = useMemo(
+    () => formLoading || isSubmitting || isDone,
+    [formLoading, isSubmitting, isDone],
+  );
+
   const [publishButtonLabel, publishButtonIconName] = useMemo(
     () => [
       isEditPublished ? 'Save Changes' : 'Publish Now',
@@ -153,8 +158,8 @@ export const LessonUpsertForm = memo(function ({
   );
 
   const handleReset = useCallback(() => {
-    reset(isEdit ? lessonFormData : defaultValues);
-  }, [isEdit, lessonFormData, reset]);
+    reset(isEdit ? formData : defaultValues);
+  }, [isEdit, formData, reset]);
 
   const handleSubmitError = useCallback(
     (errors: FieldErrors<LessonUpsertFormData>) => {
@@ -208,7 +213,7 @@ export const LessonUpsertForm = memo(function ({
           onSubmit={handleSubmit((data) => submitForm(data), handleSubmitError)}
         >
           <BaseStepper
-            disabled={isSubmitting || isDone}
+            disabled={loading}
             onReset={handleReset}
             controlsRightContent={
               <div className='group-button'>
@@ -223,13 +228,13 @@ export const LessonUpsertForm = memo(function ({
                 >
                   {publishButtonLabel}
                 </BaseButton>
-                <BaseDropdownMenu disabled={isSubmitting || isDone}>
+                <BaseDropdownMenu disabled={loading}>
                   {(!isEdit || !isEditPublished) && (
                     <Menu.Item
                       as={BaseDropdownButton}
                       type='submit'
                       iconName='floppy-disk-back'
-                      disabled={isSubmitting || isDone}
+                      disabled={loading}
                     >
                       Save as Draft
                     </Menu.Item>
@@ -238,20 +243,34 @@ export const LessonUpsertForm = memo(function ({
                     as={BaseDropdownButton}
                     iconName='file-text'
                     onClick={handlePreview}
-                    disabled={isSubmitting || isDone}
+                    disabled={loading}
                   >
                     Preview
                   </Menu.Item>
+                  {isEdit && (
+                    <>
+                      <BaseDivider className='my-1' />
+                      <Menu.Item
+                        as={BaseDropdownButton}
+                        className='text-red-500'
+                        iconName='trash'
+                        onClick={onDelete}
+                        disabled={loading}
+                      >
+                        Delete
+                      </Menu.Item>
+                    </>
+                  )}
                 </BaseDropdownMenu>
               </div>
             }
           >
             <BaseStepperStep label='Lesson Info'>
-              <LessonUpsertFormStep1 disabled={isSubmitting || isDone} />
+              <LessonUpsertFormStep1 disabled={loading} />
             </BaseStepperStep>
             {(!isEdit || !isEditPublished) && (
               <BaseStepperStep label='Lesson Schedule'>
-                <LessonUpsertFormStep2 disabled={isSubmitting || isDone} />
+                <LessonUpsertFormStep2 disabled={loading} />
               </BaseStepperStep>
             )}
           </BaseStepper>

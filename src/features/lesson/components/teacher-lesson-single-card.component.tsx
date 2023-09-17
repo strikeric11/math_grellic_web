@@ -64,7 +64,7 @@ export const TeacherLessonSingleCard = memo(function ({
     >
       <div className='flex flex-1 items-start gap-4'>
         <div className='flex flex-1 items-center gap-4'>
-          <div className='flex h-[68px] w-[121px] items-center justify-center overflow-hidden rounded border border-primary bg-accent/20'>
+          <div className='flex h-[68px] w-[121px] items-center justify-center overflow-hidden rounded border border-primary bg-primary-focus-light/30 text-primary'>
             <BaseIcon name='chalkboard-teacher' size={40} weight='light' />
           </div>
           <div className='flex h-full flex-1 flex-col gap-y-2'>

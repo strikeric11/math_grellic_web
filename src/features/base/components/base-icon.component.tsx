@@ -63,6 +63,7 @@ import {
   TextItalic,
   TextStrikethrough,
   TextUnderline,
+  Trash,
   User,
   UsersFour,
   X,
@@ -202,6 +203,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return TextUnderline;
       case 'text-strikethrough':
         return TextStrikethrough;
+      case 'trash':
+        return Trash;
       case 'user':
         return User;
       case 'users-four':

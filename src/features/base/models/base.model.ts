@@ -69,6 +69,7 @@ export type IconName =
   | 'text-italic'
   | 'text-underline'
   | 'text-strikethrough'
+  | 'trash'
   | 'user'
   | 'users-four'
   | 'x';
@@ -99,7 +100,7 @@ export type GroupLink = {
 
 export type ButtonVariant = 'primary' | 'solid' | 'border' | 'link';
 export type ButtonSize = 'base' | 'sm' | 'xs';
-export type ModalSize = 'base' | 'sm' | 'lg' | 'none';
+export type ModalSize = 'base' | 'xs' | 'sm' | 'lg' | 'none';
 export type SpinnerColor = 'primary' | 'white';
 export type SpinnerSize = ButtonSize;
 
@@ -113,10 +114,16 @@ export type SceneRouteHandle = {
 };
 
 export type FormProps<
-  T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
-> = Omit<ComponentProps<T>, 'onSubmit'> & {
+  TProps extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
+  TData,
+  TDataReturn,
+> = Omit<ComponentProps<TProps>, 'onSubmit'> & {
+  onSubmit: (data: TData) => TDataReturn;
+  formData?: TData;
+  loading?: boolean;
   isDone?: boolean;
   onDone?: (isDone: boolean) => void;
+  onDelete?: () => void;
 };
 
 export type QueryFilterOption = {

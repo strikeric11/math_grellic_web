@@ -36,6 +36,10 @@ const sortOptions = [
     value: 'title',
     label: 'Lesson Title',
   },
+  {
+    value: 'scheduleDate',
+    label: 'Schedule Date',
+  },
 ];
 
 export function TeacherLessonListPage() {
@@ -81,12 +85,14 @@ export function TeacherLessonListPage() {
             onLessonEdit={handleLessonEdit}
             onLessonSchedule={handleLessonSchedule}
           />
-          <BaseDataPagination
-            totalCount={totalCount}
-            pagination={pagination}
-            onNext={nextPage}
-            onPrev={prevPage}
-          />
+          {!!totalCount && (
+            <BaseDataPagination
+              totalCount={totalCount}
+              pagination={pagination}
+              onNext={nextPage}
+              onPrev={prevPage}
+            />
+          )}
         </div>
         {/* TODO sidebar components */}
         <BaseRightSidebar />

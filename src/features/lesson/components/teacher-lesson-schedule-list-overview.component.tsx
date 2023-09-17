@@ -57,15 +57,6 @@ export const TeacherLessonScheduleListOverview = memo(function ({
     );
   }, [pathname]);
 
-  const setScheduleButtonLabel = useMemo(
-    () => (isUpsert ? 'Cancel Schedule' : 'Set Schedule'),
-    [isUpsert],
-  );
-  const editScheduleButtonLabel = useMemo(
-    () => (isUpsert ? 'Cancel Schedule' : 'Edit Schedule'),
-    [isUpsert],
-  );
-
   const handleUpsertSchedule = useCallback(
     (isEdit?: boolean) => () => {
       if (isUpsert) {
@@ -108,7 +99,7 @@ export const TeacherLessonScheduleListOverview = memo(function ({
               {...scheduleButtonProps}
               onClick={handleUpsertSchedule(true)}
             >
-              {editScheduleButtonLabel}
+              {isUpsert ? 'Cancel' : 'Edit Schedule'}
             </BaseButton>
           </>
         ) : (
@@ -118,7 +109,7 @@ export const TeacherLessonScheduleListOverview = memo(function ({
               {...scheduleButtonProps}
               onClick={handleUpsertSchedule()}
             >
-              {setScheduleButtonLabel}
+              {isUpsert ? 'Cancel' : 'Set Schedule'}
             </BaseButton>
           </>
         )}

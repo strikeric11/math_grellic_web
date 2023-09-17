@@ -54,7 +54,6 @@ export const BaseRightSidebar = memo(function ({
         )}
       >
         {children}
-        <div className='h-8 w-8 bg-green-500'>this is a child</div>
       </div>
     </aside>
   );

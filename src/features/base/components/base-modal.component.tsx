@@ -43,6 +43,7 @@ export function BaseModal({
               <Dialog.Panel
                 className={cx(
                   'w-full max-w-[700px] transition-all',
+                  size === 'xs' && '!max-w-sm',
                   size === 'sm' && '!max-w-xl',
                   size === 'lg' && '!max-w-[968px]',
                   size === 'none' && '!max-w-none',

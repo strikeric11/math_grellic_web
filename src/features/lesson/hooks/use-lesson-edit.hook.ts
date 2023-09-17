@@ -10,23 +10,26 @@ import {
 import {
   getLessonBySlugAndCurrentTeacherUser,
   editLesson as editLessonApi,
+  deleteLesson as deleteLessonApi,
 } from '../api/teacher-lesson.api';
 
 import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
 
 type Result = {
+  loading: boolean;
   isDone: boolean;
   setIsDone: (isDone: boolean) => void;
   lessonFormData: LessonUpsertFormData | undefined;
-  editLesson: (slug: string, data: LessonUpsertFormData) => Promise<Lesson>;
+  editLesson: (data: LessonUpsertFormData) => Promise<Lesson>;
+  deleteLesson: () => Promise<boolean>;
 };
 
 export function useLessonEdit(slug?: string): Result {
   const [isDone, setIsDone] = useState(false);
 
-  const { mutateAsync } = useMutation(
+  const { mutateAsync: mutateEditLesson, isLoading } = useMutation(
     editLessonApi({
-      onSuccess: (data: any) =>
+      onSuccess: (data) =>
         Promise.all([
           queryClient.invalidateQueries({
             queryKey: queryLessonKey.list,
@@ -38,7 +41,26 @@ export function useLessonEdit(slug?: string): Result {
     }),
   );
 
-  const { data: lesson } = useQuery(
+  const { mutateAsync: mutateDeleteLesson, isLoading: isDeleteLoading } =
+    useMutation(
+      deleteLessonApi({
+        onSuccess: () =>
+          Promise.all([
+            queryClient.invalidateQueries({
+              queryKey: queryLessonKey.list,
+            }),
+            queryClient.invalidateQueries({
+              queryKey: [...queryLessonKey.single, { slug }],
+            }),
+          ]),
+      }),
+    );
+
+  const {
+    data: lesson,
+    isLoading: isQueryLoading,
+    isFetching: isQueryFetching,
+  } = useQuery(
     getLessonBySlugAndCurrentTeacherUser(
       { slug: slug || '' },
       {
@@ -57,16 +79,35 @@ export function useLessonEdit(slug?: string): Result {
   );
 
   const editLesson = useCallback(
-    async (slug: string, data: LessonUpsertFormData) => {
+    async (data: LessonUpsertFormData) => {
       const scheduleId = lesson?.schedules?.length
         ? lesson?.schedules[0]?.id
         : undefined;
 
-      const updatedLesson = await mutateAsync({ slug, data, scheduleId });
+      const updatedLesson = await mutateEditLesson({
+        slug: slug || '',
+        data,
+        scheduleId,
+      });
       return updatedLesson;
     },
-    [mutateAsync, lesson],
+    [slug, lesson, mutateEditLesson],
   );
 
-  return { isDone, setIsDone, lessonFormData, editLesson };
+  const deleteLesson = useCallback(async () => {
+    if (!slug?.trim()) {
+      return false;
+    }
+
+    return mutateDeleteLesson(slug);
+  }, [slug, mutateDeleteLesson]);
+
+  return {
+    loading: isLoading || isDeleteLoading || isQueryLoading || isQueryFetching,
+    isDone,
+    setIsDone,
+    lessonFormData,
+    editLesson,
+    deleteLesson,
+  };
 }

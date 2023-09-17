@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -52,7 +52,7 @@ export function useTeacherLessonList(): Result {
   const [filters, setFilters] = useState<QueryFilterOption[]>([]);
   const [sort, setSort] = useState<QuerySort>(defaultSort);
   const [skip, setSkip] = useState<number>(0);
-  const [totalCount, setTotalCount] = useState<number>(0);
+  // const [totalCount, setTotalCount] = useState<number>(0);
 
   const status = useMemo(() => {
     if (!filters.length) {
@@ -69,7 +69,7 @@ export function useTeacherLessonList(): Result {
 
   const pagination = useMemo(() => ({ take: PAGINATION_TAKE, skip }), [skip]);
 
-  const { data, isLoading, refetch, isSuccess } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     getPaginatedLessonsByCurrentTeacherUser(
       { q: keyword || undefined, status, sort: querySort, pagination },
       {
@@ -90,13 +90,7 @@ export function useTeacherLessonList(): Result {
     return (items || []) as Lesson[];
   }, [data]);
 
-  useEffect(() => {
-    if (!isSuccess) {
-      return;
-    }
-    setTotalCount(data[1] as number);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess]);
+  const totalCount = useMemo(() => (data ? data[1] : 0) as number, [data]);
 
   const nextPage = useCallback(() => {
     const count = skip + pagination.take;

@@ -19,12 +19,12 @@ import type {
   LessonScheduleUpsertFormData,
 } from '../models/lesson.model';
 
-type Props = FormProps<'div'> & {
+type Props = FormProps<
+  'div',
+  LessonScheduleUpsertFormData,
+  Promise<LessonSchedule | null>
+> & {
   lessonId: number;
-  onSubmit: (
-    data: LessonScheduleUpsertFormData,
-  ) => Promise<LessonSchedule | null>;
-  lessonScheduleFormData?: LessonScheduleUpsertFormData;
 };
 
 const calendarSelectorProps = {
@@ -58,7 +58,7 @@ const defaultValues: Partial<LessonScheduleUpsertFormData> = {
 export const LessonScheduleUpsertForm = memo(function ({
   className,
   lessonId,
-  lessonScheduleFormData,
+  formData,
   isDone,
   onDone,
   onSubmit,
@@ -73,18 +73,16 @@ export const LessonScheduleUpsertForm = memo(function ({
     handleSubmit,
   } = useForm<LessonScheduleUpsertFormData>({
     shouldFocusError: false,
-    defaultValues: lessonScheduleFormData || defaultValues,
+    defaultValues: formData || defaultValues,
     resolver: zodResolver(schema),
   });
 
   const [scheduleButtonLabel, scheduleButtonIconName] = useMemo(
     () => [
-      lessonScheduleFormData ? 'Save Changes' : 'Set Schedule',
-      (lessonScheduleFormData
-        ? 'floppy-disk-back'
-        : 'calendar-check') as IconName,
+      formData ? 'Save Changes' : 'Set Schedule',
+      (formData ? 'floppy-disk-back' : 'calendar-check') as IconName,
     ],
-    [lessonScheduleFormData],
+    [formData],
   );
 
   const handleReset = useCallback(() => {
@@ -96,9 +94,7 @@ export const LessonScheduleUpsertForm = memo(function ({
       try {
         await onSubmit({ ...data, lessonId });
         toast.success(
-          !lessonScheduleFormData
-            ? 'Created lesson schedule'
-            : 'Update lesson schedule',
+          !formData ? 'Created lesson schedule' : 'Update lesson schedule',
         );
         onDone && onDone(true);
         navigate(-1);
@@ -106,7 +102,7 @@ export const LessonScheduleUpsertForm = memo(function ({
         toast.error(error.message);
       }
     },
-    [lessonId, lessonScheduleFormData, onSubmit, onDone, navigate],
+    [lessonId, formData, onSubmit, onDone, navigate],
   );
 
   return (

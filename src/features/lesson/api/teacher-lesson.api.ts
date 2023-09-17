@@ -147,3 +147,21 @@ export function editLesson(
 
   return { mutationFn, ...options };
 }
+
+export function deleteLesson(
+  options?: Omit<UseMutationOptions<boolean, Error, string, any>, 'mutationFn'>,
+) {
+  const mutationFn = async (slug: string): Promise<boolean> => {
+    const url = `${BASE_URL}/${slug}`;
+
+    try {
+      const success: boolean = await kyInstance.delete(url).json();
+      return success;
+    } catch (error) {
+      const errorRes = await (error as HTTPError).response.json();
+      throw new ApiError(errorRes.message, errorRes.statusCode);
+    }
+  };
+
+  return { mutationFn, ...options };
+}
