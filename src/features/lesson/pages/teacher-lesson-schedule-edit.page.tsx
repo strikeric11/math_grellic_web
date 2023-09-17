@@ -28,7 +28,7 @@ export function TeacherLessonScheduleEditPage() {
     lessonScheduleFormData && (
       <LessonScheduleUpsertForm
         lessonId={lessonId}
-        lessonScheduleFormData={lessonScheduleFormData}
+        formData={lessonScheduleFormData}
         isDone={isDone}
         onDone={setIsDone}
         onSubmit={editLessonSchedule}
