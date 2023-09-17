@@ -1,9 +1,8 @@
-import { ApiError } from '#/utils/api.util';
+import { generateApiError } from '#/utils/api.util';
 import { kyInstance } from '#/config/ky.config';
 import { queryCoreKey } from '#/config/react-query-keys.config';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
-import type { HTTPError } from 'ky';
 
 const BASE_URL = 'core';
 
@@ -19,9 +18,9 @@ export function getDateTimeNow(
     try {
       const dateTime = await kyInstance.get(url).json();
       return dateTime;
-    } catch (error) {
-      const errorRes = await (error as HTTPError).response.json();
-      throw new ApiError(errorRes.message, errorRes.statusCode);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
     }
   };
 

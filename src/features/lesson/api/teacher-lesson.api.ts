@@ -1,4 +1,4 @@
-import { ApiError } from '#/utils/api.util';
+import { generateApiError } from '#/utils/api.util';
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
 import { queryLessonKey } from '#/config/react-query-keys.config';
 import {
@@ -10,7 +10,6 @@ import type {
   UseMutationOptions,
   UseQueryOptions,
 } from '@tanstack/react-query';
-import type { HTTPError } from 'ky';
 import type { PaginatedQueryData } from '#/core/models/core.model';
 import type { QueryPagination } from '#/base/models/base.model';
 import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
@@ -50,9 +49,9 @@ export function getPaginatedLessonsByCurrentTeacherUser(
     try {
       const lessons = await kyInstance.get(url, { searchParams }).json();
       return lessons;
-    } catch (error) {
-      const errorRes = await (error as HTTPError).response.json();
-      throw new ApiError(errorRes.message, errorRes.statusCode);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
     }
   };
 
@@ -76,9 +75,9 @@ export function getLessonBySlugAndCurrentTeacherUser(
     try {
       const lesson = await kyInstance.get(url, { searchParams }).json();
       return lesson;
-    } catch (error) {
-      const errorRes = await (error as HTTPError).response.json();
-      throw new ApiError(errorRes.message, errorRes.statusCode);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
     }
   };
 
@@ -101,9 +100,9 @@ export function createLesson(
     try {
       const lesson = await kyInstance.post(BASE_URL, { json }).json();
       return transformToLesson(lesson);
-    } catch (error) {
-      const errorRes = await (error as HTTPError).response.json();
-      throw new ApiError(errorRes.message, errorRes.statusCode);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
     }
   };
 
@@ -139,9 +138,9 @@ export function editLesson(
     try {
       const lesson = await kyInstance.patch(url, { json, searchParams }).json();
       return transformToLesson(lesson);
-    } catch (error) {
-      const errorRes = await (error as HTTPError).response.json();
-      throw new ApiError(errorRes.message, errorRes.statusCode);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
     }
   };
 
@@ -157,9 +156,9 @@ export function deleteLesson(
     try {
       const success: boolean = await kyInstance.delete(url).json();
       return success;
-    } catch (error) {
-      const errorRes = await (error as HTTPError).response.json();
-      throw new ApiError(errorRes.message, errorRes.statusCode);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
     }
   };
 

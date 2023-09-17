@@ -1,4 +1,4 @@
-import { ApiError } from '#/utils/api.util';
+import { generateApiError } from '#/utils/api.util';
 import { kyInstance } from '#/config/ky.config';
 import {
   transformToLessonSchedule,
@@ -7,7 +7,6 @@ import {
 } from '../helpers/lesson-transform.helper';
 
 import type { UseMutationOptions } from '@tanstack/react-query';
-import type { HTTPError } from 'ky';
 import type {
   LessonSchedule,
   LessonScheduleUpsertFormData,
@@ -37,9 +36,9 @@ export function createLessonSchedule(
         .json();
 
       return transformToLessonSchedule(lessonSchedule);
-    } catch (error) {
-      const errorRes = await (error as HTTPError).response.json();
-      throw new ApiError(errorRes.message, errorRes.statusCode);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
     }
   };
 
@@ -70,9 +69,9 @@ export function editLessonSchedule(
     try {
       const lessonSchedule = await kyInstance.patch(url, { json }).json();
       return transformToLessonSchedule(lessonSchedule);
-    } catch (error) {
-      const errorRes = await (error as HTTPError).response.json();
-      throw new ApiError(errorRes.message, errorRes.statusCode);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
     }
   };
 

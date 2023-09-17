@@ -1,4 +1,4 @@
-import { ApiError } from '#/utils/api.util';
+import { generateApiError } from '#/utils/api.util';
 import { queryUserKey } from '#/config/react-query-keys.config';
 import { kyInstance } from '#/config/ky.config';
 import {
@@ -11,7 +11,6 @@ import type {
   UseMutationOptions,
   UseQueryOptions,
 } from '@tanstack/react-query';
-import type { HTTPError } from 'ky';
 import type { User } from '../models/user.model';
 import type { AuthRegisterFormData } from '../models/auth.model';
 
@@ -29,9 +28,9 @@ export function getCurrentUser(
     try {
       const user = await kyInstance.get(url).json();
       return user;
-    } catch (error) {
-      const errorRes = await (error as HTTPError).response.json();
-      throw new ApiError(errorRes.message, errorRes.statusCode);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
     }
   };
 
@@ -55,9 +54,9 @@ export function registerTeacherUser(
     try {
       const user = await kyInstance.post(url, { json }).json();
       return transformToUser(user);
-    } catch (error) {
-      const errorRes = await (error as HTTPError).response.json();
-      throw new ApiError(errorRes.message, errorRes.statusCode);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
     }
   };
 
@@ -77,9 +76,9 @@ export function registerStudentUser(
     try {
       const user = await kyInstance.post(url, { json }).json();
       return transformToUser(user);
-    } catch (error) {
-      const errorRes = await (error as HTTPError).response.json();
-      throw new ApiError(errorRes.message, errorRes.statusCode);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
     }
   };
 
