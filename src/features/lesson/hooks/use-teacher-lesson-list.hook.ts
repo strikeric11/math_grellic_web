@@ -52,7 +52,6 @@ export function useTeacherLessonList(): Result {
   const [filters, setFilters] = useState<QueryFilterOption[]>([]);
   const [sort, setSort] = useState<QuerySort>(defaultSort);
   const [skip, setSkip] = useState<number>(0);
-  // const [totalCount, setTotalCount] = useState<number>(0);
 
   const status = useMemo(() => {
     if (!filters.length) {
@@ -69,7 +68,7 @@ export function useTeacherLessonList(): Result {
 
   const pagination = useMemo(() => ({ take: PAGINATION_TAKE, skip }), [skip]);
 
-  const { data, isLoading, refetch } = useQuery(
+  const { data, isLoading, isRefetching, refetch } = useQuery(
     getPaginatedLessonsByCurrentTeacherUser(
       { q: keyword || undefined, status, sort: querySort, pagination },
       {
@@ -141,7 +140,7 @@ export function useTeacherLessonList(): Result {
 
   return {
     lessons,
-    loading: isLoading,
+    loading: isLoading || isRefetching,
     totalCount,
     pagination,
     setKeyword,

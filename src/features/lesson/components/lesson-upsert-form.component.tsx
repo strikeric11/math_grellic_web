@@ -219,7 +219,7 @@ export const LessonUpsertForm = memo(function ({
               <div className='group-button'>
                 <BaseButton
                   rightIconName={publishButtonIconName}
-                  loading={isSubmitting}
+                  loading={isSubmitting || loading}
                   disabled={isDone}
                   onClick={handleSubmit(
                     (data) => submitForm(data, RecordStatus.Published),

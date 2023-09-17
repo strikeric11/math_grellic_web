@@ -131,7 +131,10 @@ export function transformToLessonUpsertDto({
   startTime,
   studentIds,
 }: any) {
-  const durationSeconds = convertDurationToSeconds(duration);
+  const durationSeconds = duration
+    ? convertDurationToSeconds(duration)
+    : undefined;
+
   const date = dayjs(startDate).format('YYYY-MM-DD');
   const transformedStartDate = dayjs(`${date} ${startTime}`).toDate();
   const transformedStudentsIds = !studentIds?.length ? null : studentIds;

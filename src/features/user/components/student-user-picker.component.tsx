@@ -94,8 +94,8 @@ export const StudentUserPicker = memo(
 
     const {
       data: selectedStudents,
-      isFetching: isSelectStudentsFetching,
       isLoading: isSelectStudentsLoading,
+      isFetching: isSelectStudentsFetching,
       refetch: selectedStudentsRefetch,
     } = useQuery(
       getStudentsByCurrentTeacherUser(
@@ -218,7 +218,7 @@ export const StudentUserPicker = memo(
           required={required}
           {...selectProps}
         />
-        {isSelectStudentsFetching && isSelectStudentsLoading ? (
+        {isSelectStudentsFetching || isSelectStudentsLoading ? (
           <div className='mt-5 flex w-full justify-center'>
             <BaseSpinner />
           </div>
