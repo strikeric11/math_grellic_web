@@ -1,6 +1,11 @@
 import { Fragment, memo, useCallback, useMemo, useState } from 'react';
 import { Popover, Transition } from '@headlessui/react';
-import { usePopper } from 'react-popper';
+import {
+  offset,
+  useClick,
+  useFloating,
+  useInteractions,
+} from '@floating-ui/react';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
@@ -31,21 +36,23 @@ export const BaseDataToolbarFilterMenu = memo(function ({
   onSubmit,
   ...moreProps
 }: Props) {
+  // Set and configure popover
+  const [isOpen, setIsOpen] = useState(false);
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    middleware: [offset(10)],
+    placement: 'bottom-end',
+  });
+  const click = useClick(context);
+  const { getReferenceProps, getFloatingProps } = useInteractions([click]);
+  // --------------------------
+
   const [selectedOptions, setSelectedOptions] = useState<QueryFilterOption[]>(
     defaulSelectedtOptions || [],
   );
   const [currentSelectedOptions, setCurrentSelectedOptions] =
     useState<QueryFilterOption[]>(selectedOptions);
-
-  const [buttonRef, setButtonRef] = useState<any>(undefined);
-  const [popperRef, setPopperRef] = useState<any>(undefined);
-
-  const {
-    styles: { popper: popperStyles },
-    attributes,
-  } = usePopper(buttonRef, popperRef, {
-    placement: 'bottom-end',
-  });
 
   const buttonLabel = useMemo(() => {
     if (!currentSelectedOptions.length) {
@@ -101,7 +108,7 @@ export const BaseDataToolbarFilterMenu = memo(function ({
       {({ open, close }) => (
         <>
           <Popover.Button
-            ref={setButtonRef}
+            ref={refs.setReference}
             as={BaseButton}
             className={cx(
               '!p-2 !text-sm font-medium',
@@ -115,16 +122,17 @@ export const BaseDataToolbarFilterMenu = memo(function ({
             onClick={handleOpenMenu}
             bodyFont
             {...moreButtonProps}
+            {...getReferenceProps()}
           >
             {buttonLabel}
           </Popover.Button>
-          <Popover.Panel
-            ref={setPopperRef}
-            className='absolute z-max mt-2.5'
-            style={popperStyles}
-            {...attributes.popper}
-          >
-            <Transition as={Fragment} show={open} appear>
+          <Transition as={Fragment} show={open} appear>
+            <Popover.Panel
+              ref={refs.setFloating}
+              style={floatingStyles}
+              className='z-max'
+              {...getFloatingProps()}
+            >
               <Transition.Child as='div' {...menuTransition}>
                 <BaseSurface
                   className='min-w-[250px] overflow-hidden !p-2.5 drop-shadow-primary-sm'
@@ -152,8 +160,8 @@ export const BaseDataToolbarFilterMenu = memo(function ({
                   </BaseButton>
                 </BaseSurface>
               </Transition.Child>
-            </Transition>
-          </Popover.Panel>
+            </Popover.Panel>
+          </Transition>
         </>
       )}
     </Popover>

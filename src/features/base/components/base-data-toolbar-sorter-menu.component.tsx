@@ -1,11 +1,17 @@
 import { Fragment, memo, useCallback, useMemo, useState } from 'react';
 import { Popover, Transition } from '@headlessui/react';
-import { usePopper } from 'react-popper';
+import {
+  offset,
+  useClick,
+  useFloating,
+  useInteractions,
+} from '@floating-ui/react';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { menuTransition } from '#/utils/animation.util';
 import { BaseButton } from './base-button.components';
+import { BaseDivider } from './base-divider.component';
 import { BaseSurface } from './base-surface.component';
 import { BaseDropdownButton } from './base-dropdown-button.component';
 
@@ -15,7 +21,6 @@ import type {
   QuerySort,
   QuerySortOption,
 } from '../models/base.model';
-import { BaseDivider } from './base-divider.component';
 
 type Props = ComponentProps<typeof Popover> & {
   options: QuerySortOption[];
@@ -39,21 +44,23 @@ export const BaseDataToolbarSorterMenu = memo(function ({
   onSubmit,
   ...moreProps
 }: Props) {
+  // Set and configure popover
+  const [isOpen, setIsOpen] = useState(false);
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    middleware: [offset(10)],
+    placement: 'bottom-end',
+  });
+  const click = useClick(context);
+  const { getReferenceProps, getFloatingProps } = useInteractions([click]);
+  // --------------------------
+
   const [selectedSort, setSelectedSort] = useState<QuerySort>(
     defaultSelectedSort || ({} as QuerySort),
   );
   const [currentSelectedSort, setCurrentSelectedSort] =
     useState<QuerySort>(selectedSort);
-
-  const [buttonRef, setButtonRef] = useState<any>(undefined);
-  const [popperRef, setPopperRef] = useState<any>(undefined);
-
-  const {
-    styles: { popper: popperStyles },
-    attributes,
-  } = usePopper(buttonRef, popperRef, {
-    placement: 'bottom-end',
-  });
 
   const buttonLabel = useMemo(() => {
     if (!Object.keys(currentSelectedSort)?.length) {
@@ -125,7 +132,7 @@ export const BaseDataToolbarSorterMenu = memo(function ({
       {({ open, close }) => (
         <>
           <Popover.Button
-            ref={setButtonRef}
+            ref={refs.setReference}
             as={BaseButton}
             className={cx(
               '!p-2 !text-sm font-medium',
@@ -139,16 +146,17 @@ export const BaseDataToolbarSorterMenu = memo(function ({
             onClick={handleOpenMenu}
             bodyFont
             {...moreButtonProps}
+            {...getReferenceProps()}
           >
             {buttonLabel}
           </Popover.Button>
-          <Popover.Panel
-            ref={setPopperRef}
-            className='absolute z-max mt-2.5'
-            style={popperStyles}
-            {...attributes.popper}
-          >
-            <Transition as={Fragment} show={open} appear>
+          <Transition as={Fragment} show={open} appear>
+            <Popover.Panel
+              ref={refs.setFloating}
+              style={floatingStyles}
+              className='z-max'
+              {...getFloatingProps()}
+            >
               <Transition.Child as='div' {...menuTransition}>
                 <BaseSurface
                   className='min-w-[250px] overflow-hidden !p-2.5 drop-shadow-primary-sm'
@@ -188,8 +196,8 @@ export const BaseDataToolbarSorterMenu = memo(function ({
                   </BaseButton>
                 </BaseSurface>
               </Transition.Child>
-            </Transition>
-          </Popover.Panel>
+            </Popover.Panel>
+          </Transition>
         </>
       )}
     </Popover>

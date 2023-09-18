@@ -1,3 +1,4 @@
+import { useController } from 'react-hook-form';
 import {
   Fragment,
   forwardRef,
@@ -8,8 +9,12 @@ import {
   useState,
 } from 'react';
 import { Popover, Transition } from '@headlessui/react';
-import { usePopper } from 'react-popper';
-import { useController } from 'react-hook-form';
+import {
+  offset,
+  useFloating,
+  useClick,
+  useInteractions,
+} from '@floating-ui/react';
 import cx from 'classix';
 import dayjs from 'dayjs';
 
@@ -72,20 +77,28 @@ export const BaseDatePicker = memo(
     },
     ref,
   ) {
+    // Set and configure popover
+    const [isOpen, setIsOpen] = useState(false);
+    const {
+      refs,
+      floatingStyles,
+      context,
+      elements: { domReference },
+    } = useFloating({
+      open: isOpen,
+      onOpenChange: setIsOpen,
+      middleware: [offset(10)],
+      placement: 'bottom-start',
+    });
+    const click = useClick(context);
+    const { getReferenceProps, getFloatingProps } = useInteractions([click]);
+    // --------------------------
+
     const [localValue, setLocalValue] = useState<string | undefined>(value);
     const [currentDate, setCurrentDate] = useState<Date>(
       value ? dayjs(value).toDate() : new Date(),
     );
     const [isSelectorExpanded, setIsSelectorExpanded] = useState(false);
-    const [buttonRef, setButtonRef] = useState<any>(undefined);
-    const [popperRef, setPopperRef] = useState<any>(undefined);
-    const {
-      styles: { popper: popperStyles },
-      attributes,
-      state,
-    } = usePopper(buttonRef, popperRef, {
-      placement: 'bottom-start',
-    });
 
     const formattedValue = useMemo(() => {
       if (!localValue && !value) {
@@ -95,13 +108,13 @@ export const BaseDatePicker = memo(
     }, [localValue, value, valueFormat]);
 
     useEffect(() => {
-      if (state) {
+      if (domReference) {
         return;
       }
 
       !dayjs(localValue).isSame(currentDate, 'month') &&
         setCurrentDate(dayjs(localValue).toDate());
-    }, [localValue, currentDate, state]);
+    }, [localValue, currentDate, domReference]);
 
     const handleSelectorExpand = useCallback(
       (isExpand: boolean) => setIsSelectorExpanded(isExpand),
@@ -144,7 +157,7 @@ export const BaseDatePicker = memo(
           {({ open, close }) => (
             <>
               <Popover.Button
-                ref={setButtonRef}
+                ref={refs.setReference}
                 className={cx(
                   `group/dtpicker mb-0.5 flex h-input w-full items-center rounded-md border-2 border-accent/40 bg-white pl-18px pr-4 text-left text-accent !outline-none transition-all
                    focus:!border-primary-focus focus:!ring-1 focus:!ring-primary-focus group-disabled/dtpicker:!bg-backdrop-gray group-disabled/field:!bg-backdrop-gray`,
@@ -155,6 +168,7 @@ export const BaseDatePicker = memo(
                 )}
                 disabled={disabled}
                 {...moreButtonProps}
+                {...getReferenceProps()}
               >
                 <div
                   className={cx(
@@ -190,13 +204,13 @@ export const BaseDatePicker = memo(
                   {formattedValue}
                 </div>
               </Popover.Button>
-              <Popover.Panel
-                ref={setPopperRef}
-                className='absolute z-max mt-2.5'
-                style={popperStyles}
-                {...attributes.popper}
-              >
-                <Transition as={Fragment} show={open} appear>
+              <Transition as={Fragment} show={open} appear>
+                <Popover.Panel
+                  ref={refs.setFloating}
+                  style={floatingStyles}
+                  className='z-max'
+                  {...getFloatingProps()}
+                >
                   <Transition.Child as='div' {...menuTransition}>
                     <BaseSurface
                       className='flex h-[352px] w-[336px] flex-col overflow-hidden !p-0 drop-shadow-primary-sm'
@@ -230,8 +244,8 @@ export const BaseDatePicker = memo(
                       )}
                     </BaseSurface>
                   </Transition.Child>
-                </Transition>
-              </Popover.Panel>
+                </Popover.Panel>
+              </Transition>
             </>
           )}
         </Popover>

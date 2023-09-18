@@ -4,6 +4,7 @@ import cx from 'classix';
 import { BaseButton } from './base-button.components';
 import { BaseSearchInput } from './base-search-input.component';
 import { BaseIconButton } from './base-icon-button.component';
+import { BaseTooltip } from './base-tooltip.component';
 import { BaseDataToolbarFilterMenu } from './base-data-toolbar-filter-menu.component';
 import { BaseDataToolbarSorterMenu } from './base-data-toolbar-sorter-menu.component';
 
@@ -70,12 +71,14 @@ export const BaseDataToolbar = memo(
             buttonProps={sortButtonProps}
             onSubmit={onSort}
           />
-          <BaseIconButton
-            name='arrow-clockwise'
-            variant='link'
-            size='sm'
-            onClick={onRefresh}
-          />
+          <BaseTooltip content='Refresh'>
+            <BaseIconButton
+              name='arrow-clockwise'
+              variant='link'
+              size='sm'
+              onClick={onRefresh}
+            />
+          </BaseTooltip>
         </div>
       </div>
     );
