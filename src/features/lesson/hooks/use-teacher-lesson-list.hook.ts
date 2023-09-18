@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -52,6 +52,7 @@ export function useTeacherLessonList(): Result {
   const [filters, setFilters] = useState<QueryFilterOption[]>([]);
   const [sort, setSort] = useState<QuerySort>(defaultSort);
   const [skip, setSkip] = useState<number>(0);
+  const [totalCount, setTotalCount] = useState<number>(0);
 
   const status = useMemo(() => {
     if (!filters.length) {
@@ -78,6 +79,7 @@ export function useTeacherLessonList(): Result {
           const transformedItems = items.map((item: unknown) =>
             transformToLesson(item),
           );
+
           return [transformedItems, +totalCount];
         },
       },
@@ -89,7 +91,17 @@ export function useTeacherLessonList(): Result {
     return (items || []) as Lesson[];
   }, [data]);
 
-  const totalCount = useMemo(() => (data ? data[1] : 0) as number, [data]);
+  const dataCount = useMemo(
+    () => (data ? data[1] : undefined) as number,
+    [data],
+  );
+
+  useEffect(() => {
+    if (!dataCount) {
+      return;
+    }
+    setTotalCount(dataCount);
+  }, [dataCount]);
 
   const nextPage = useCallback(() => {
     const count = skip + pagination.take;
