@@ -35,7 +35,6 @@ export const BaseRichTextEditor = memo(function ({
   ...moreProps
 }: Props) {
   const editor = useEditor({
-    editable: !disabled,
     extensions: [
       StarterKit.configure({
         heading: {
@@ -66,6 +65,11 @@ export const BaseRichTextEditor = memo(function ({
       !!onChange && onChange(editor.getHTML());
     },
   });
+
+  useEffect(() => {
+    editor?.setEditable(!disabled);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [disabled]);
 
   // If using a controlled field, clear content if current value is empty
   useEffect(() => {
