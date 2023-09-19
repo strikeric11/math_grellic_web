@@ -20,6 +20,7 @@ export function transformToLesson({
   videoUrl,
   durationSeconds,
   description,
+  excerpt,
   schedules,
 }: any): Lesson {
   const transformedSchedules = schedules
@@ -37,6 +38,7 @@ export function transformToLesson({
     videoUrl,
     durationSeconds,
     description,
+    excerpt,
     schedules: transformedSchedules,
   };
 }
@@ -65,6 +67,24 @@ export function transformToLessonSchedule({
   };
 }
 
+export function transformToLessonCompletion({
+  id,
+  createdAt,
+  updatedAt,
+  lesson,
+  student,
+}: any) {
+  const transformedStudent = student ? { id: student.id } : undefined;
+
+  return {
+    id,
+    createdAt: dayjs(createdAt).toDate(),
+    updatedAt: dayjs(updatedAt).toDate(),
+    lesson,
+    student: transformedStudent,
+  };
+}
+
 export function transformToLessonFormData({
   status,
   orderNumber,
@@ -72,6 +92,7 @@ export function transformToLessonFormData({
   videoUrl,
   durationSeconds,
   description,
+  excerpt,
   schedules,
 }: any) {
   const duration = convertSecondsToDuration(durationSeconds);
@@ -97,6 +118,7 @@ export function transformToLessonFormData({
     videoUrl,
     duration,
     description: description || undefined,
+    excerpt,
     startDate,
     startTime,
     studentIds,
@@ -127,6 +149,7 @@ export function transformToLessonUpsertDto({
   videoUrl,
   duration,
   description,
+  excerpt,
   startDate,
   startTime,
   studentIds,
@@ -146,6 +169,7 @@ export function transformToLessonUpsertDto({
     videoUrl,
     durationSeconds,
     description,
+    excerpt,
     startDate: transformedStartDate,
     studentIds: transformedStudentsIds,
   };

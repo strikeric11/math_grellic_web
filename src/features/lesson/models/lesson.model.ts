@@ -12,7 +12,9 @@ export type Lesson = Partial<AuditTrail> & {
   videoUrl: string;
   durationSeconds?: number;
   description?: string;
+  excerpt?: string;
   schedules?: Partial<LessonSchedule>[];
+  completions?: Partial<LessonCompletion>[];
 };
 
 export type LessonSchedule = Partial<AuditTrail> & {
@@ -20,6 +22,11 @@ export type LessonSchedule = Partial<AuditTrail> & {
   startDate: Date;
   lesson: Lesson;
   students: StudentUserAccount[];
+};
+
+export type LessonCompletion = Partial<AuditTrail> & {
+  lesson: Lesson;
+  student: StudentUserAccount;
 };
 
 export type LessonUpsertFormData = {
@@ -30,6 +37,7 @@ export type LessonUpsertFormData = {
   slug?: string;
   duration?: string;
   description?: string;
+  excerpt?: string;
   startDate?: Date;
   startTime?: string;
   studentIds?: number[];
@@ -45,4 +53,10 @@ export type LessonScheduleUpsertFormData = {
 export type LessonSlice = {
   lessonFormData?: LessonUpsertFormData | null;
   setLessonFormData: (lessonFormData?: LessonUpsertFormData) => void;
+};
+
+export type StudentLessonList = {
+  latestLesson: Lesson | null;
+  upcomingLesson: Lesson | null;
+  previousLessons: Lesson[];
 };

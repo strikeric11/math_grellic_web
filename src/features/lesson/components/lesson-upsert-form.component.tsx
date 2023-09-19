@@ -56,6 +56,7 @@ const schema = z
       .url('Video embed url is invalid')
       .max(255, 'Url is too long'),
     description: z.string().optional(),
+    excerpt: z.string().optional(),
     status: z.nativeEnum(RecordStatus),
     startDate: z
       .date()
@@ -104,6 +105,7 @@ const defaultValues: Partial<LessonUpsertFormData> = {
   title: '',
   videoUrl: '',
   description: '',
+  excerpt: '',
   status: RecordStatus.Draft,
   orderNumber: undefined,
   duration: undefined,
@@ -175,7 +177,11 @@ export const LessonUpsertForm = memo(function ({
         const targetData = status ? { ...data, status } : data;
         const lesson = await onSubmit(targetData);
 
-        toast.success(`Created ${lesson.title} (No. ${lesson.orderNumber})`);
+        toast.success(
+          `${isEdit ? 'Updated' : 'Created'} ${lesson.title} (No. ${
+            lesson.orderNumber
+          })`,
+        );
 
         onDone && onDone(true);
         navigate(LESSONS_PATH);
@@ -183,7 +189,7 @@ export const LessonUpsertForm = memo(function ({
         toast.error(error.message);
       }
     },
-    [onSubmit, onDone, navigate],
+    [isEdit, onSubmit, onDone, navigate],
   );
 
   const handlePreview = useCallback(async () => {

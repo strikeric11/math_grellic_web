@@ -58,13 +58,21 @@ export const LessonUpsertFormStep1 = memo(function ({
             fullWidth
           />
         </div>
-        <BaseControlledRichTextEditor
-          className='max-w-[600px]'
-          label='Lesson Description'
-          name='description'
-          control={control}
-          disabled={disabled}
-        />
+        <div className='flex w-full flex-col gap-5'>
+          <BaseControlledRichTextEditor
+            className='max-w-[600px]'
+            label='Lesson Description'
+            name='description'
+            control={control}
+            disabled={disabled}
+          />
+          <BaseControlledInput
+            label='Excerpt'
+            name='excerpt'
+            control={control}
+            fullWidth
+          />
+        </div>
       </fieldset>
     </div>
   );

@@ -32,13 +32,11 @@ export const TeacherLessonSingle = memo(function ({
     [lesson],
   );
   const isDraft = useMemo(() => lesson.status === RecordStatus.Draft, [lesson]);
+  const excerpt = useMemo(() => lesson.excerpt, [lesson]);
 
   const descriptionHtml = useMemo(
     () => ({
-      __html: DOMPurify.sanitize(
-        lesson.description ||
-          "<span class='text-lg font-bold'>No description available</span>",
-      ),
+      __html: DOMPurify.sanitize(lesson.description || ''),
     }),
     [lesson],
   );
@@ -92,7 +90,7 @@ export const TeacherLessonSingle = memo(function ({
           </BaseLink>
         </div>
       </div>
-      <div className='my-4 flex items-center justify-between rounded border border-accent/20 px-4 py-3'>
+      <div className='my-4 flex w-full items-center justify-between rounded border border-accent/20 px-4 py-3'>
         {scheduleDate ? (
           <div className='flex items-center gap-2.5'>
             <span className='mr-2'>Schedule</span>
@@ -110,11 +108,21 @@ export const TeacherLessonSingle = memo(function ({
         )}
       </div>
       <LessonVideo className='my-8' url={videoUrl} title={title} />
-      <div
-        className='base-rich-text rt-output'
-        dangerouslySetInnerHTML={descriptionHtml}
-      />
-      {/* LOAD schedules */}
+      <div className='my-4 w-full rounded border border-accent/20 px-4 py-3'>
+        <span className='block font-bold'>
+          {excerpt ? 'Excerpt' : 'Lesson has no excerpt'}
+        </span>
+        {excerpt}
+      </div>
+      <div className='my-4 w-full rounded border border-accent/20 px-4 py-3'>
+        <span className='block font-bold'>
+          {excerpt ? 'Description' : 'Lesson has no description'}
+        </span>
+        <div
+          className='base-rich-text rt-output'
+          dangerouslySetInnerHTML={descriptionHtml}
+        />
+      </div>
     </div>
   );
 });
