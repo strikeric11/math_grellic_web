@@ -53,7 +53,7 @@ export const BaseDropdownButton = memo(
             center ? 'justify-center' : 'justify-between',
           )}
         >
-          <div className='flex h-full items-center gap-x-2'>
+          <div className='flex h-full items-center gap-2'>
             {!!iconName && (
               <BaseIcon name={iconName} size={size === 'base' ? 18 : 20} />
             )}

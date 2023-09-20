@@ -106,7 +106,7 @@ export const StudentPreviousLessonList = memo(function ({
           {Object.keys(tabCategories).map((category) => (
             <Tab.Panel
               key={category}
-              className='flex w-full flex-1 animate-fastFadeIn flex-col gap-y-2.5 self-stretch'
+              className='flex w-full flex-1 animate-fastFadeIn flex-col gap-2.5 self-stretch'
             >
               <LessonList
                 lessons={previousLessons}

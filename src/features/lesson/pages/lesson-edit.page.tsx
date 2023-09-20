@@ -70,7 +70,7 @@ export function LessonEditPage() {
       </BaseDataSuspense>
       <BaseModal size='xs' open={openModal} onClose={handleSetModal(false)}>
         <div>
-          <div className='mb-4 flex items-center gap-x-2'>
+          <div className='mb-4 flex items-center gap-2'>
             <BaseIcon name='trash' size={28} />
             <span>{deleteMessage}</span>
           </div>

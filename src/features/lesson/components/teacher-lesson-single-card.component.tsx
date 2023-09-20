@@ -58,7 +58,7 @@ export const TeacherLessonSingleCard = memo(function ({
 
   return (
     <BaseSurface
-      className={cx('flex w-full items-center gap-x-5 !p-2.5', className)}
+      className={cx('flex w-full items-center gap-5 !p-2.5', className)}
       rounded='sm'
       {...moreProps}
     >
@@ -67,7 +67,7 @@ export const TeacherLessonSingleCard = memo(function ({
           <div className='flex h-[68px] w-[121px] items-center justify-center overflow-hidden rounded border border-primary bg-primary-focus-light/30 text-primary'>
             <BaseIcon name='chalkboard-teacher' size={40} weight='light' />
           </div>
-          <div className='flex h-full flex-1 flex-col gap-y-2'>
+          <div className='flex h-full flex-1 flex-col gap-2'>
             {/* Info chips */}
             <div className='flex items-center gap-2.5'>
               <BaseChip iconName='chalkboard-teacher'>
@@ -152,12 +152,12 @@ export const TeacherLessonSingleCardSkeleton = memo(function () {
     <div className='flex w-full animate-pulse justify-between rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-4'>
       <div className='flex w-full items-center gap-4'>
         <div className='h-[68px] w-[121px] rounded bg-accent/20' />
-        <div className='flex h-fit flex-1 flex-col gap-y-3'>
+        <div className='flex h-fit flex-1 flex-col gap-3'>
           <div className='h-6 w-[200px] rounded bg-accent/20' />
           <div className='h-6 w-28 rounded bg-accent/20' />
         </div>
       </div>
-      <div className='flex h-full gap-x-5'>
+      <div className='flex h-full gap-5'>
         <div className='h-6 w-[240px] rounded bg-accent/20' />
         <div className='h-full w-5 rounded bg-accent/20' />
       </div>

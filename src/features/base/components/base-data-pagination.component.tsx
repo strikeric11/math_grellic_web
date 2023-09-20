@@ -46,7 +46,7 @@ export const BaseDataPagination = memo(function ({
     >
       <div className='flex min-h-[46px] w-full items-center justify-between'>
         <div className='text-sm'>{entriesText}</div>
-        <div className='flex items-center gap-x-2'>
+        <div className='flex items-center gap-2'>
           <div className='flex items-center'>
             <BaseIconButton
               name='caret-circle-left'

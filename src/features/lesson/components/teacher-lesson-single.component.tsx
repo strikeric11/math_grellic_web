@@ -72,7 +72,7 @@ export const TeacherLessonSingle = memo(function ({
             )}
           </div>
         </div>
-        <div className='flex items-center gap-x-2'>
+        <div className='flex items-center gap-2'>
           <BaseLink
             to={teacherRoutes.lesson.previewTo}
             className='!px-3'

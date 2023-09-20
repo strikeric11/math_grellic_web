@@ -47,7 +47,7 @@ export const StudentUserItem = memo(function ({
       )}
       onClick={onClick}
     >
-      <div className='flex items-center gap-x-4'>
+      <div className='flex items-center gap-4'>
         <div className='flex h-11 w-11 items-center justify-center rounded bg-slate-200'>
           <BaseIcon name='user' className='opacity-60' size={36} />
         </div>
@@ -128,7 +128,7 @@ export const StudentUserPickerList = memo(function ({
           </OverlayScrollbarsComponent>
         </div>
       </div>
-      <div className='flex w-full items-center justify-between gap-x-4'>
+      <div className='flex w-full items-center justify-between gap-4'>
         <BaseButton variant='link' onClick={onCancel}>
           Cancel
         </BaseButton>

@@ -56,7 +56,7 @@ export const BaseDataToolbar = memo(
           placeholder='Find a lesson'
           onChange={onSearchChange}
         />
-        <div className='flex items-center gap-x-2.5'>
+        <div className='flex items-center gap-2.5'>
           <BaseDataToolbarFilterMenu
             options={filterOptions}
             defaulSelectedtOptions={defaulSelectedtFilterOptions}

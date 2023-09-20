@@ -52,7 +52,7 @@ export const StudentLessonSingleCard = memo(function ({
     <Link to={singleTo} className='group'>
       <BaseSurface
         className={cx(
-          'flex w-full flex-col gap-y-2.5 !py-2.5 !pl-2.5 !pr-5 transition-all group-hover:-translate-y-1 group-hover:ring-1',
+          'flex w-full flex-col gap-2.5 !py-2.5 !pl-2.5 !pr-5 transition-all group-hover:-translate-y-1 group-hover:ring-1',
           primary
             ? 'primary !border-accent !bg-primary group-hover:!border-primary-focus group-hover:ring-primary-focus group-hover:drop-shadow-primary'
             : 'group-hover:ring-primary-focus group-hover:drop-shadow-primary',
@@ -61,7 +61,7 @@ export const StudentLessonSingleCard = memo(function ({
         rounded='sm'
         {...moreProps}
       >
-        <div className='flex w-full items-center gap-x-4'>
+        <div className='flex w-full items-center gap-4'>
           {/* Image */}
           <div
             className={`flex h-[90px] w-[161px] items-center justify-center overflow-hidden rounded border
@@ -70,7 +70,7 @@ export const StudentLessonSingleCard = memo(function ({
             <BaseIcon name='chalkboard-teacher' size={40} weight='light' />
           </div>
           <div className='flex flex-1'>
-            <div className='flex flex-1 flex-col gap-y-3'>
+            <div className='flex flex-1 flex-col gap-3'>
               {/* Title and status */}
               <div className='flex w-full items-center'>
                 <h2 className='flex-1 font-body text-lg font-medium tracking-normal text-accent [.primary_&]:text-white'>
@@ -152,12 +152,12 @@ export const StudentLessonSingleCard = memo(function ({
 
 export const StudentLessonSingleCardSkeleton = memo(function () {
   return (
-    <div className='flex w-full animate-pulse items-center justify-between gap-x-4 rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-5'>
+    <div className='flex w-full animate-pulse items-center justify-between gap-4 rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-5'>
       <div className='h-[90px] w-[161px] rounded bg-accent/20' />
-      <div className='flex h-fit flex-1 flex-col gap-y-5'>
+      <div className='flex h-fit flex-1 flex-col gap-5'>
         <div className='h-6 w-[200px] rounded bg-accent/20' />
         <div className='flex items-center justify-between'>
-          <div className='flex items-center gap-x-2.5'>
+          <div className='flex items-center gap-2.5'>
             <div className='h-6 w-28 rounded bg-accent/20' />
             <div className='h-6 w-28 rounded bg-accent/20' />
           </div>
