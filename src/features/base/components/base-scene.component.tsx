@@ -1,8 +1,10 @@
-import { memo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { memo, useCallback, useMemo } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import cx from 'classix';
 
-import { teacherBaseRoute } from '#/app/routes/teacher-routes';
+import { teacherBaseRoute, teacherPath } from '#/app/routes/teacher-routes';
+import { studentBaseRoute, studentPath } from '#/app/routes/student-routes';
+import { UserRole } from '#/user/models/user.model';
 import { BaseControlButton } from './base-control-button.component';
 import { BaseBreadcrumbs } from './base-breadcrumbs.component';
 
@@ -28,15 +30,40 @@ export const BaseScene = memo(function ({
   children,
   ...moreProps
 }: Props) {
+  const { pathname } = useLocation();
   const navigate = useNavigate();
+
+  const [userRole, basePath] = useMemo(() => {
+    const path = pathname.split('/')[1];
+
+    // TODO admin
+    return (
+      {
+        [teacherPath]: [UserRole.Teacher, teacherPath],
+        [studentPath]: [UserRole.Student, studentPath],
+      }[path] || []
+    );
+  }, [pathname]);
 
   const handleBack = useCallback(() => {
     if (window.history.state && window.history.state.idx > 0) {
       navigate(-1);
     } else {
-      navigate(`/${teacherBaseRoute}`, { replace: true });
+      if (!userRole) {
+        return;
+      }
+
+      // TODO admin route
+      const to =
+        {
+          [UserRole.Admin]: teacherBaseRoute,
+          [UserRole.Teacher]: teacherBaseRoute,
+          [UserRole.Student]: studentBaseRoute,
+        }[userRole] || '';
+
+      navigate(`/${to}`, { replace: true });
     }
-  }, [navigate]);
+  }, [userRole, navigate]);
 
   const handleClose = useCallback(() => {
     window.close();
@@ -74,7 +101,11 @@ export const BaseScene = memo(function ({
               </BaseControlButton>
             )}
             {!breadcrumbsHidden && (
-              <BaseBreadcrumbs withtrailingSlash={withtrailingSlash} />
+              <BaseBreadcrumbs
+                pathname={pathname}
+                basePath={basePath}
+                withtrailingSlash={withtrailingSlash}
+              />
             )}
           </div>
           {!!headerRightContent && <div>{headerRightContent}</div>}

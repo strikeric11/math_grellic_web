@@ -11,11 +11,13 @@ import type { SceneRouteHandle } from '#/base/models/base.model';
 
 export function CoreLayout() {
   const matches = useMatches();
+
   // Get current route handle
   const currentHandle = useMemo(
     () => matches[matches.length - 1].handle as SceneRouteHandle,
     [matches],
   );
+
   // Extract handle and create object for BaseScene props
   const sceneProps = useMemo(() => {
     const headerRightContent = currentHandle?.links ? (

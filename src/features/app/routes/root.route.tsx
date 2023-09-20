@@ -28,16 +28,20 @@ import { teacherLessonRouteHandle } from '#/lesson/route/teacher-lesson-handle.r
 import { studentLessonRouteHandle } from '#/lesson/route/student-lesson-handle.route';
 import { LessonCreatePage } from '#/lesson/pages/lesson-create.page';
 import {
-  getPaginatedLessonsLoader,
-  getLessonBySlugLoader,
+  getPaginatedLessonsLoader as getTeacherPaginatedLessonsLoader,
+  getLessonBySlugLoader as getTeacherLessonBySlugLoader,
 } from '#/lesson/route/teacher-lesson-loader.route';
-import { getLessonsLoader } from '#/lesson/route/student-lesson-loader.route';
+import {
+  getLessonsLoader as getStudentLessonsLoader,
+  getLessonBySlugLoader as getStudentLessonBySlugLoader,
+} from '#/lesson/route/student-lesson-loader.route';
 import { TeacherLessonListPage } from '#/lesson/pages/teacher-lesson-list.page';
 import { TeacherLessonSinglePage } from '#/lesson/pages/teacher-lesson-single.page';
 import { TeacherLessonScheduleListPage } from '#/lesson/pages/teacher-lesson-schedule-list.page';
 import { TeacherLessonScheduleCreatePage } from '#/lesson/pages/teacher-lesson-schedule-create.page';
 import { TeacherLessonScheduleEditPage } from '#/lesson/pages/teacher-lesson-schedule-edit.page';
 import { StudentLessonListPage } from '#/lesson/pages/student-lesson-list.page';
+import { StudentLessonSinglePage } from '#/lesson/pages/student-lesson-single.page';
 import { LessonPreviewSlugPage } from '#/lesson/pages/lesson-preview-slug.page';
 import { LessonPreviewPage } from '#/lesson/pages/lesson-preview.page';
 import { LessonEditPage } from '#/lesson/pages/lesson-edit.page';
@@ -87,26 +91,26 @@ const rootRoutes = createRoutesFromElements(
             index
             element={<TeacherLessonListPage />}
             handle={teacherLessonRouteHandle.list}
-            loader={getPaginatedLessonsLoader(queryClient)}
+            loader={getTeacherPaginatedLessonsLoader(queryClient)}
           />
           <Route path=':slug' element={<Outlet />}>
             <Route
               index
               element={<TeacherLessonSinglePage />}
               handle={teacherLessonRouteHandle.single}
-              loader={getLessonBySlugLoader(queryClient)}
+              loader={getTeacherLessonBySlugLoader(queryClient)}
             />
             <Route
               path={teacherRoutes.lesson.editTo}
               element={<LessonEditPage />}
               handle={teacherLessonRouteHandle.edit}
-              loader={getLessonBySlugLoader(queryClient)}
+              loader={getTeacherLessonBySlugLoader(queryClient)}
             />
             <Route
               path={teacherRoutes.lesson.previewTo}
               element={<LessonPreviewSlugPage />}
               handle={teacherLessonRouteHandle.preview}
-              loader={getLessonBySlugLoader(queryClient, {
+              loader={getTeacherLessonBySlugLoader(queryClient, {
                 exclude: 'schedules',
               })}
             />
@@ -114,7 +118,7 @@ const rootRoutes = createRoutesFromElements(
               path={`${teacherRoutes.lesson.schedule.to}`}
               element={<TeacherLessonScheduleListPage />}
               handle={teacherLessonRouteHandle.schedule}
-              loader={getLessonBySlugLoader(queryClient, {
+              loader={getTeacherLessonBySlugLoader(queryClient, {
                 status: RecordStatus.Published,
               })}
             >
@@ -168,7 +172,13 @@ const rootRoutes = createRoutesFromElements(
             index
             element={<StudentLessonListPage />}
             handle={studentLessonRouteHandle.list}
-            loader={getLessonsLoader(queryClient)}
+            loader={getStudentLessonsLoader(queryClient)}
+          />
+          <Route
+            path=':slug'
+            element={<StudentLessonSinglePage />}
+            handle={studentLessonRouteHandle.single}
+            loader={getStudentLessonBySlugLoader(queryClient)}
           />
         </Route>
       </Route>

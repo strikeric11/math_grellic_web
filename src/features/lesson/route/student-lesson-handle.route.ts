@@ -6,4 +6,5 @@ export const studentLessonRouteHandle: { [key: string]: SceneRouteHandle } = {
   list: {
     title: 'Lessons',
   },
+  single: { disabledSceneWrapper: true },
 };

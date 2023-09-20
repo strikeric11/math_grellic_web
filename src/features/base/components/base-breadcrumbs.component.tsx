@@ -1,28 +1,28 @@
 import { Fragment, memo, useMemo } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import cx from 'classix';
-
-import { teacherPath } from '#/app/routes/teacher-routes';
 
 import type { ComponentProps } from 'react';
 
 type Props = ComponentProps<'ol'> & {
+  pathname: string;
+  basePath: string;
   withtrailingSlash?: boolean;
 };
 
 export const BaseBreadcrumbs = memo(function ({
   className,
+  pathname,
+  basePath,
   withtrailingSlash,
   ...moreProps
 }: Props) {
-  const { pathname } = useLocation();
-
   const breadcrumbs = useMemo(() => {
     const labels = pathname
       .split('/')
       .filter((path, index) => index !== 1 && path.trim());
 
-    const link: string[] = [teacherPath];
+    const link: string[] = [basePath];
     return labels.map((label, index) => {
       link.push('/' + labels[index]);
       const itemLink = !withtrailingSlash ? link.join('') : `/${link.join('')}`;
@@ -37,7 +37,7 @@ export const BaseBreadcrumbs = memo(function ({
         </li>
       );
     });
-  }, [pathname, withtrailingSlash]);
+  }, [basePath, withtrailingSlash, pathname]);
 
   return (
     <ol

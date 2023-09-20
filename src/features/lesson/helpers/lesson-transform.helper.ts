@@ -22,9 +22,16 @@ export function transformToLesson({
   description,
   excerpt,
   schedules,
+  completions,
 }: any): Lesson {
   const transformedSchedules = schedules
     ? schedules.map((schedule: any) => transformToLessonSchedule(schedule))
+    : undefined;
+
+  const transformedCompletions = completions
+    ? completions.map((completion: any) =>
+        transformToLessonCompletion(completion),
+      )
     : undefined;
 
   return {
@@ -40,6 +47,7 @@ export function transformToLesson({
     description,
     excerpt,
     schedules: transformedSchedules,
+    completions: transformedCompletions,
   };
 }
 
