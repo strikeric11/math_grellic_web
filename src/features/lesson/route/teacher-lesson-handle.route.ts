@@ -1,4 +1,7 @@
-import { teacherBaseRoute, teacherRoutes } from '../app/routes/teacher-routes';
+import {
+  teacherBaseRoute,
+  teacherRoutes,
+} from '../../app/routes/teacher-routes';
 import type { SceneRouteHandle } from '#/base/models/base.model';
 
 const lessonBaseRoute = `${teacherBaseRoute}/${teacherRoutes.lesson.to}`;

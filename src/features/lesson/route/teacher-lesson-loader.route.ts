@@ -3,8 +3,8 @@ import { defer } from 'react-router-dom';
 import {
   getLessonBySlugAndCurrentTeacherUser,
   getPaginatedLessonsByCurrentTeacherUser,
-} from './api/teacher-lesson.api';
-import { defaultParamKeys } from './hooks/use-teacher-lesson-list.hook';
+} from '../api/teacher-lesson.api';
+import { defaultParamKeys } from '../hooks/use-teacher-lesson-list.hook';
 
 import type { QueryClient } from '@tanstack/react-query';
 import type { LoaderFunctionArgs } from 'react-router-dom';

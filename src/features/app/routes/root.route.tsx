@@ -20,27 +20,31 @@ import { HomePage } from '#/static/pages/home.page';
 import { AboutPage } from '#/static/pages/about.page';
 import { AuthRegisterPage } from '#/user/pages/auth-register.page';
 
-import { dashboardRouteHandle } from '#/dashboard/dashboard-route-handle';
+import { dashboardRouteHandle } from '#/dashboard/route/dashboard-handle.route';
 import { TeacherDashboardPage } from '#/dashboard/pages/teacher-dashboard.page';
+import { StudentDashboardPage } from '#/dashboard/pages/student-dashboard.page';
 
-import { teacherLessonRouteHandle } from '#/lesson/lesson-route-handle';
+import { teacherLessonRouteHandle } from '#/lesson/route/teacher-lesson-handle.route';
+import { studentLessonRouteHandle } from '#/lesson/route/student-lesson-handle.route';
 import { LessonCreatePage } from '#/lesson/pages/lesson-create.page';
 import {
   getPaginatedLessonsLoader,
   getLessonBySlugLoader,
-} from '#/lesson/lesson-route-loader';
+} from '#/lesson/route/teacher-lesson-loader.route';
+import { getLessonsLoader } from '#/lesson/route/student-lesson-loader.route';
 import { TeacherLessonListPage } from '#/lesson/pages/teacher-lesson-list.page';
 import { TeacherLessonSinglePage } from '#/lesson/pages/teacher-lesson-single.page';
 import { TeacherLessonScheduleListPage } from '#/lesson/pages/teacher-lesson-schedule-list.page';
 import { TeacherLessonScheduleCreatePage } from '#/lesson/pages/teacher-lesson-schedule-create.page';
 import { TeacherLessonScheduleEditPage } from '#/lesson/pages/teacher-lesson-schedule-edit.page';
+import { StudentLessonListPage } from '#/lesson/pages/student-lesson-list.page';
 import { LessonPreviewSlugPage } from '#/lesson/pages/lesson-preview-slug.page';
 import { LessonPreviewPage } from '#/lesson/pages/lesson-preview.page';
 import { LessonEditPage } from '#/lesson/pages/lesson-edit.page';
 
 import { staticRoutes } from './static-routes';
 import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
-import { studentBaseRoute } from './student-routes';
+import { studentBaseRoute, studentRoutes } from './student-routes';
 
 const rootRoutes = createRoutesFromElements(
   <>
@@ -145,7 +149,7 @@ const rootRoutes = createRoutesFromElements(
           handle={coreRouteHandle.notFound}
         />
       </Route>
-      {/* TODO Student routes */}
+      {/* Student routes */}
       <Route
         path={studentBaseRoute}
         element={
@@ -153,7 +157,21 @@ const rootRoutes = createRoutesFromElements(
             <Outlet />
           </AuthProtectedRoute>
         }
-      ></Route>
+      >
+        <Route
+          index
+          element={<StudentDashboardPage />}
+          handle={dashboardRouteHandle}
+        />
+        <Route path={studentRoutes.lesson.to} element={<Outlet />}>
+          <Route
+            index
+            element={<StudentLessonListPage />}
+            handle={studentLessonRouteHandle.list}
+            loader={getLessonsLoader(queryClient)}
+          />
+        </Route>
+      </Route>
     </Route>
   </>,
 );
