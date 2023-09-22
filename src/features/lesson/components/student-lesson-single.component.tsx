@@ -4,7 +4,10 @@ import DOMPurify from 'dompurify';
 import toast from 'react-hot-toast';
 import { cx } from 'classix';
 
-import { convertSecondsToDuration } from '#/utils/time.util';
+import {
+  convertSecondsToDuration,
+  generateCountdownDate,
+} from '#/utils/time.util';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
@@ -12,13 +15,14 @@ import { BaseIcon } from '#/base/components/base-icon.component';
 import { LessonVideo } from './lesson-video.component';
 
 import type { ComponentProps } from 'react';
+import type { Duration } from 'dayjs/plugin/duration';
 import type { Lesson, LessonCompletion } from '#/lesson/models/lesson.model';
 
 type Props = ComponentProps<'div'> & {
   lesson: Lesson;
   loading?: boolean;
   preview?: boolean;
-  upcoming?: boolean;
+  upcomingDuration?: Duration | null;
   onSetCompletion?: (isComplete: boolean) => Promise<LessonCompletion | null>;
 };
 
@@ -27,8 +31,7 @@ export const StudentLessonSingle = memo(function LessonSingle({
   loading,
   lesson,
   preview,
-  upcoming,
-  // TODO upcoming countdown
+  upcomingDuration,
   onSetCompletion,
   ...moreProps
 }: Props) {
@@ -65,8 +68,15 @@ export const StudentLessonSingle = memo(function LessonSingle({
     [isCompleted],
   );
 
+  const formattedUpcomingDate = useMemo(() => {
+    if (!upcomingDuration) {
+      return null;
+    }
+    return generateCountdownDate(upcomingDuration);
+  }, [upcomingDuration]);
+
   const handleOnSetCompletion = useCallback(async () => {
-    if (preview || upcoming || !onSetCompletion) {
+    if (preview || upcomingDuration || !onSetCompletion) {
       return;
     }
 
@@ -78,25 +88,24 @@ export const StudentLessonSingle = memo(function LessonSingle({
     } catch (error: any) {
       toast.error(error.message);
     }
-  }, [preview, upcoming, isCompleted, onSetCompletion]);
+  }, [preview, upcomingDuration, isCompleted, onSetCompletion]);
 
   return (
     <div
       className={cx('flex w-full flex-col items-center', className)}
       {...moreProps}
     >
-      {upcoming ? (
+      {formattedUpcomingDate ? (
         <div className='mb-8 mt-5 h-[500px] w-full overflow-hidden rounded-lg bg-black'>
           <div className='mx-auto flex h-full w-full max-w-compact flex-col items-center justify-center bg-blue-100/70'>
             <div className='w-[276px]'>
               <small className='mb-1 block w-full text-right font-medium uppercase text-white'>
-                Available On
+                Available In
               </small>
               <div className='w-full overflow-hidden rounded border border-accent drop-shadow-primary'>
                 <div className='flex min-h-[24px] w-full items-center justify-center bg-primary'>
                   <small className='font-medium uppercase text-white'>
-                    {/* TODO countdown */}
-                    10 days : 16 hrs : 30 mins
+                    {formattedUpcomingDate}
                   </small>
                 </div>
                 <div className='flex w-full items-center justify-center gap-2.5 border-t border-t-accent bg-white'>
@@ -120,7 +129,7 @@ export const StudentLessonSingle = memo(function LessonSingle({
             <BaseDivider className='!h-6' vertical />
             <BaseChip iconName='hourglass'>{duration}</BaseChip>
           </div>
-          {!upcoming && (
+          {!formattedUpcomingDate && (
             <div className='flex items-center gap-2.5'>
               {isCompleted ? (
                 <BaseIcon
@@ -147,7 +156,7 @@ export const StudentLessonSingle = memo(function LessonSingle({
             </div>
           )}
         </div>
-        {upcoming ? (
+        {formattedUpcomingDate ? (
           <div className='w-full'>{excerpt}</div>
         ) : (
           <div

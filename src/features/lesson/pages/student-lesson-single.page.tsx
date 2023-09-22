@@ -6,7 +6,7 @@ import { useStudentLessonSingle } from '../hooks/use-student-lesson-single.hook'
 import { StudentLessonSingle } from '../components/student-lesson-single.component';
 
 export function StudentLessonSinglePage() {
-  const { loading, title, upcoming, lesson, setLessonCompletion } =
+  const { loading, title, lesson, upcomingDayJsDuration, setLessonCompletion } =
     useStudentLessonSingle();
 
   const data: any = useLoaderData();
@@ -18,7 +18,7 @@ export function StudentLessonSinglePage() {
           <StudentLessonSingle
             loading={loading}
             lesson={lesson}
-            upcoming={upcoming}
+            upcomingDuration={upcomingDayJsDuration}
             onSetCompletion={setLessonCompletion}
           />
         )}

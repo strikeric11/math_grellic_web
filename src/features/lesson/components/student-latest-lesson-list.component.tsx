@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import cx from 'classix';
 
+import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import {
   StudentLessonSingleCard,
   StudentLessonSingleCardSkeleton,
@@ -8,11 +9,12 @@ import {
 
 import type { ComponentProps } from 'react';
 import type { Lesson } from '../models/lesson.model';
-import { BaseIconButton } from '#/base/components/base-icon-button.component';
+import type { Duration } from 'dayjs/plugin/duration';
 
 type Props = ComponentProps<'div'> & {
   upcomingLesson: Lesson | null;
   latestLesson: Lesson | null;
+  upcomingDuration?: Duration | null;
   title?: string;
   loading?: boolean;
   onRefresh?: () => void;
@@ -20,12 +22,12 @@ type Props = ComponentProps<'div'> & {
 
 export const StudentLatestLessonList = memo(function ({
   className,
-  title = 'Latest Lessons',
   upcomingLesson,
   latestLesson,
+  upcomingDuration,
+  title = 'Latest Lessons',
   loading,
   onRefresh,
-  // TODO upcoming lessons countdown
   ...moreProps
 }: Props) {
   return (
@@ -55,7 +57,7 @@ export const StudentLatestLessonList = memo(function ({
           {upcomingLesson && (
             <StudentLessonSingleCard
               lesson={upcomingLesson}
-              upcoming
+              upcomingDuration={upcomingDuration}
               primary={!latestLesson}
             />
           )}

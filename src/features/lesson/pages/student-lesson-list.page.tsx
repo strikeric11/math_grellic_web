@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
@@ -8,11 +7,14 @@ import { StudentLatestLessonList } from '../components/student-latest-lesson-lis
 import { StudentPreviousLessonList } from '../components/student-previous-lesson-list.component';
 
 export function StudentLessonListPage() {
-  const { loading, list, refetch } = useStudentLessonList();
-  const { latestLesson, upcomingLesson, previousLessons } = useMemo(
-    () => list,
-    [list],
-  );
+  const {
+    loading,
+    latestLesson,
+    upcomingLesson,
+    previousLessons,
+    upcomingDayJsDuration,
+    refetch,
+  } = useStudentLessonList();
 
   const data: any = useLoaderData();
 
@@ -24,6 +26,7 @@ export function StudentLessonListPage() {
             className='mb-5'
             latestLesson={latestLesson}
             upcomingLesson={upcomingLesson}
+            upcomingDuration={upcomingDayJsDuration}
             loading={loading}
             onRefresh={refetch}
           />

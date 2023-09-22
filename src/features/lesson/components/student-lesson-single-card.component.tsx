@@ -3,27 +3,30 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import cx from 'classix';
 
-import { convertSecondsToDuration } from '#/utils/time.util';
+import {
+  convertSecondsToDuration,
+  generateCountdownDate,
+} from '#/utils/time.util';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 
 import type { ComponentProps } from 'react';
+import type { Duration } from 'dayjs/plugin/duration';
 import type { Lesson } from '../models/lesson.model';
 
 type Props = ComponentProps<typeof BaseSurface> & {
   lesson: Lesson;
   primary?: boolean;
-  upcoming?: boolean;
-  // TODO websocket upcoming countdown
+  upcomingDuration?: Duration | null;
 };
 
 export const StudentLessonSingleCard = memo(function ({
   className,
   lesson,
   primary,
-  upcoming,
+  upcomingDuration,
   ...moreProps
 }: Props) {
   const singleTo = useMemo(() => lesson.slug, [lesson]);
@@ -48,6 +51,13 @@ export const StudentLessonSingleCard = memo(function ({
     ];
   }, [lesson]);
 
+  const formattedUpcomingDate = useMemo(() => {
+    if (!upcomingDuration) {
+      return null;
+    }
+    return generateCountdownDate(upcomingDuration);
+  }, [upcomingDuration]);
+
   return (
     <Link to={singleTo} className='group'>
       <BaseSurface
@@ -65,7 +75,7 @@ export const StudentLessonSingleCard = memo(function ({
           {/* Image */}
           <div
             className={`flex h-[90px] w-[161px] items-center justify-center overflow-hidden rounded border
-            border-primary bg-primary-focus-light/30 text-primary [.primary_&]:border-accent [.primary_&]:bg-white/30 [.primary_&]:text-accent`}
+            border-primary bg-primary-focus-light/30 text-primary [.primary_&]:border-accent [.primary_&]:bg-white/50 [.primary_&]:text-accent`}
           >
             <BaseIcon name='chalkboard-teacher' size={40} weight='light' />
           </div>
@@ -76,7 +86,7 @@ export const StudentLessonSingleCard = memo(function ({
                 <h2 className='flex-1 font-body text-lg font-medium tracking-normal text-accent [.primary_&]:text-white'>
                   {title}
                 </h2>
-                {!upcoming && (
+                {!formattedUpcomingDate && (
                   <div className='flex w-20 justify-center'>
                     {!isCompleted ? (
                       <BaseIcon
@@ -110,22 +120,21 @@ export const StudentLessonSingleCard = memo(function ({
                   />
                   <BaseChip iconName='hourglass'>{duration}</BaseChip>
                 </div>
-                {!upcoming && scheduleDate && (
+                {!formattedUpcomingDate && scheduleDate && (
                   <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
                 )}
               </div>
             </div>
           </div>
-          {upcoming && scheduleDate && (
+          {formattedUpcomingDate && scheduleDate && (
             <div className='w-[276px]'>
               <small className='mb-1 block w-full text-right font-medium uppercase [.primary_&]:text-white'>
-                Available On
+                Available In
               </small>
               <div className='w-full overflow-hidden rounded border border-accent [.primary_&]:border-white'>
                 <div className='flex min-h-[24px] w-full items-center justify-center bg-primary [.primary_&]:bg-white'>
                   <small className='font-medium uppercase text-white [.primary_&]:text-primary'>
-                    {/* TODO countdown */}
-                    10 days : 16 hrs : 30 mins
+                    {formattedUpcomingDate}
                   </small>
                 </div>
                 <div className='flex w-full items-center justify-center gap-2.5 border-t border-t-accent [.primary_&]:border-t-white [.primary_&]:text-white'>
