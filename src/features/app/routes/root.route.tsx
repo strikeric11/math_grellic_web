@@ -71,116 +71,114 @@ const rootRoutes = createRoutesFromElements(
         element={<CorePageNotFound linkLabel='Return to home' />}
       />
     </Route>
-    <Route element={<CoreLayout />}>
-      {/* Teacher routes */}
+    {/* Teacher routes */}
+    <Route
+      path={teacherBaseRoute}
+      element={
+        <AuthProtectedRoute roles={[UserRole.Teacher]}>
+          <CoreLayout />
+        </AuthProtectedRoute>
+      }
+    >
       <Route
-        path={teacherBaseRoute}
-        element={
-          <AuthProtectedRoute roles={[UserRole.Teacher]}>
-            <Outlet />
-          </AuthProtectedRoute>
-        }
-      >
+        index
+        element={<TeacherDashboardPage />}
+        handle={dashboardRouteHandle}
+      />
+      <Route path={teacherRoutes.lesson.to} element={<Outlet />}>
         <Route
           index
-          element={<TeacherDashboardPage />}
-          handle={dashboardRouteHandle}
+          element={<TeacherLessonListPage />}
+          handle={teacherLessonRouteHandle.list}
+          loader={getTeacherPaginatedLessonsLoader(queryClient)}
         />
-        <Route path={teacherRoutes.lesson.to} element={<Outlet />}>
+        <Route path=':slug' element={<Outlet />}>
           <Route
             index
-            element={<TeacherLessonListPage />}
-            handle={teacherLessonRouteHandle.list}
-            loader={getTeacherPaginatedLessonsLoader(queryClient)}
+            element={<TeacherLessonSinglePage />}
+            handle={teacherLessonRouteHandle.single}
+            loader={getTeacherLessonBySlugLoader(queryClient)}
           />
-          <Route path=':slug' element={<Outlet />}>
+          <Route
+            path={teacherRoutes.lesson.editTo}
+            element={<LessonEditPage />}
+            handle={teacherLessonRouteHandle.edit}
+            loader={getTeacherLessonBySlugLoader(queryClient)}
+          />
+          <Route
+            path={teacherRoutes.lesson.previewTo}
+            element={<LessonPreviewSlugPage />}
+            handle={teacherLessonRouteHandle.preview}
+            loader={getTeacherLessonBySlugLoader(queryClient, {
+              exclude: 'schedules',
+            })}
+          />
+          <Route
+            path={`${teacherRoutes.lesson.schedule.to}`}
+            element={<TeacherLessonScheduleListPage />}
+            handle={teacherLessonRouteHandle.schedule}
+            loader={getTeacherLessonBySlugLoader(queryClient, {
+              status: RecordStatus.Published,
+            })}
+          >
             <Route
-              index
-              element={<TeacherLessonSinglePage />}
-              handle={teacherLessonRouteHandle.single}
-              loader={getTeacherLessonBySlugLoader(queryClient)}
-            />
-            <Route
-              path={teacherRoutes.lesson.editTo}
-              element={<LessonEditPage />}
-              handle={teacherLessonRouteHandle.edit}
-              loader={getTeacherLessonBySlugLoader(queryClient)}
-            />
-            <Route
-              path={teacherRoutes.lesson.previewTo}
-              element={<LessonPreviewSlugPage />}
-              handle={teacherLessonRouteHandle.preview}
-              loader={getTeacherLessonBySlugLoader(queryClient, {
-                exclude: 'schedules',
-              })}
-            />
-            <Route
-              path={`${teacherRoutes.lesson.schedule.to}`}
-              element={<TeacherLessonScheduleListPage />}
+              path={`${teacherRoutes.lesson.schedule.createTo}`}
+              element={<TeacherLessonScheduleCreatePage />}
               handle={teacherLessonRouteHandle.schedule}
-              loader={getTeacherLessonBySlugLoader(queryClient, {
-                status: RecordStatus.Published,
-              })}
-            >
-              <Route
-                path={`${teacherRoutes.lesson.schedule.createTo}`}
-                element={<TeacherLessonScheduleCreatePage />}
-                handle={teacherLessonRouteHandle.schedule}
-              />
-              <Route
-                path={`${teacherRoutes.lesson.schedule.editTo}`}
-                element={<TeacherLessonScheduleEditPage />}
-                handle={teacherLessonRouteHandle.schedule}
-              />
-            </Route>
-          </Route>
-          <Route
-            path={teacherRoutes.lesson.createTo}
-            element={<LessonCreatePage />}
-            handle={teacherLessonRouteHandle.create}
-          />
-          <Route path={teacherRoutes.lesson.previewTo} element={<Outlet />}>
+            />
             <Route
-              index
-              element={<LessonPreviewPage />}
-              handle={teacherLessonRouteHandle.preview}
+              path={`${teacherRoutes.lesson.schedule.editTo}`}
+              element={<TeacherLessonScheduleEditPage />}
+              handle={teacherLessonRouteHandle.schedule}
             />
           </Route>
         </Route>
         <Route
-          path='*'
-          element={<CorePageNotFound to={`/${teacherBaseRoute}`} />}
-          handle={coreRouteHandle.notFound}
+          path={teacherRoutes.lesson.createTo}
+          element={<LessonCreatePage />}
+          handle={teacherLessonRouteHandle.create}
         />
-      </Route>
-      {/* Student routes */}
-      <Route
-        path={studentBaseRoute}
-        element={
-          <AuthProtectedRoute roles={[UserRole.Student]}>
-            <Outlet />
-          </AuthProtectedRoute>
-        }
-      >
-        <Route
-          index
-          element={<StudentDashboardPage />}
-          handle={dashboardRouteHandle}
-        />
-        <Route path={studentRoutes.lesson.to} element={<Outlet />}>
+        <Route path={teacherRoutes.lesson.previewTo} element={<Outlet />}>
           <Route
             index
-            element={<StudentLessonListPage />}
-            handle={studentLessonRouteHandle.list}
-            loader={getStudentLessonsLoader(queryClient)}
-          />
-          <Route
-            path=':slug'
-            element={<StudentLessonSinglePage />}
-            handle={studentLessonRouteHandle.single}
-            loader={getStudentLessonBySlugLoader(queryClient)}
+            element={<LessonPreviewPage />}
+            handle={teacherLessonRouteHandle.preview}
           />
         </Route>
+      </Route>
+      <Route
+        path='*'
+        element={<CorePageNotFound to={`/${teacherBaseRoute}`} />}
+        handle={coreRouteHandle.notFound}
+      />
+    </Route>
+    {/* Student routes */}
+    <Route
+      path={studentBaseRoute}
+      element={
+        <AuthProtectedRoute roles={[UserRole.Student]}>
+          <CoreLayout />
+        </AuthProtectedRoute>
+      }
+    >
+      <Route
+        index
+        element={<StudentDashboardPage />}
+        handle={dashboardRouteHandle}
+      />
+      <Route path={studentRoutes.lesson.to} element={<Outlet />}>
+        <Route
+          index
+          element={<StudentLessonListPage />}
+          handle={studentLessonRouteHandle.list}
+          loader={getStudentLessonsLoader(queryClient)}
+        />
+        <Route
+          path=':slug'
+          element={<StudentLessonSinglePage />}
+          handle={studentLessonRouteHandle.single}
+          loader={getStudentLessonBySlugLoader(queryClient)}
+        />
       </Route>
     </Route>
   </>,

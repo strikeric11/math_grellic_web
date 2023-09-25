@@ -74,8 +74,8 @@ export const StudentLessonSingleCard = memo(function ({
         <div className='flex w-full items-center gap-4'>
           {/* Image */}
           <div
-            className={`flex h-[90px] w-[161px] items-center justify-center overflow-hidden rounded border
-            border-primary bg-primary-focus-light/30 text-primary [.primary_&]:border-accent [.primary_&]:bg-white/50 [.primary_&]:text-accent`}
+            className={`flex h-[90px] w-[161px] items-center justify-center overflow-hidden rounded border border-primary bg-primary-focus-light/30 text-primary
+              [.primary_&]:h-[117px] [.primary_&]:w-[209px] [.primary_&]:border-accent [.primary_&]:bg-white/50 [.primary_&]:text-accent`}
           >
             <BaseIcon name='chalkboard-teacher' size={40} weight='light' />
           </div>
@@ -128,14 +128,19 @@ export const StudentLessonSingleCard = memo(function ({
           </div>
           {formattedUpcomingDate && scheduleDate && (
             <div className='w-[276px]'>
-              <small className='mb-1 block w-full text-right font-medium uppercase [.primary_&]:text-white'>
+              <small className='mb-1 flex w-full items-center justify-end font-medium uppercase [.primary_&]:text-white'>
+                <span className='relative mr-4 flex gap-1'>
+                  <span className='relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-primary-focus-light [.primary_&]:bg-white'></span>
+                  <span className='animation-delay-100 relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-primary-focus-light [.primary_&]:bg-white'></span>
+                  <span className='animation-delay-200 relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-primary-focus-light [.primary_&]:bg-white'></span>
+                </span>
                 Available In
               </small>
               <div className='w-full overflow-hidden rounded border border-accent [.primary_&]:border-white'>
                 <div className='flex min-h-[24px] w-full items-center justify-center bg-primary [.primary_&]:bg-white'>
-                  <small className='font-medium uppercase text-white [.primary_&]:text-primary'>
+                  <span className='text-sm font-medium uppercase text-white [.primary_&]:text-primary'>
                     {formattedUpcomingDate}
-                  </small>
+                  </span>
                 </div>
                 <div className='flex w-full items-center justify-center gap-2.5 border-t border-t-accent [.primary_&]:border-t-white [.primary_&]:text-white'>
                   <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>

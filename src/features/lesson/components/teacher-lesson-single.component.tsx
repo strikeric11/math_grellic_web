@@ -34,12 +34,15 @@ export const TeacherLessonSingle = memo(function ({
   const isDraft = useMemo(() => lesson.status === RecordStatus.Draft, [lesson]);
   const excerpt = useMemo(() => lesson.excerpt, [lesson]);
 
-  const descriptionHtml = useMemo(
-    () => ({
+  const descriptionHtml = useMemo(() => {
+    if (!lesson.description) {
+      return null;
+    }
+
+    return {
       __html: DOMPurify.sanitize(lesson.description || ''),
-    }),
-    [lesson],
-  );
+    };
+  }, [lesson]);
 
   const [scheduleDate, scheduleTime] = useMemo(() => {
     if (!lesson.schedules?.length) {
@@ -116,12 +119,14 @@ export const TeacherLessonSingle = memo(function ({
       </div>
       <div className='my-4 w-full rounded border border-accent/20 px-4 py-3'>
         <span className='block font-bold'>
-          {excerpt ? 'Description' : 'Lesson has no description'}
+          {descriptionHtml ? 'Description' : 'Lesson has no description'}
         </span>
-        <div
-          className='base-rich-text rt-output'
-          dangerouslySetInnerHTML={descriptionHtml}
-        />
+        {descriptionHtml && (
+          <div
+            className='base-rich-text rt-output'
+            dangerouslySetInnerHTML={descriptionHtml}
+          />
+        )}
       </div>
     </div>
   );

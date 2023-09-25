@@ -27,7 +27,7 @@ type Result = {
 };
 
 export function useStudentLessonSingle(): Result {
-  const { serverClock, stopClock } = useClockSocket();
+  const { serverClock, startClock, stopClock } = useClockSocket();
   const { slug } = useParams();
 
   const {
@@ -82,9 +82,7 @@ export function useStudentLessonSingle(): Result {
       return;
     }
 
-    if (!upcoming) {
-      stopClock();
-    }
+    upcoming ? startClock() : stopClock();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [upcoming, lesson]);
 

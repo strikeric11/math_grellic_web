@@ -27,6 +27,7 @@ export function generateCountdownDate(value: Duration | null) {
   const days = value.format('DD');
   const hours = value.format('HH');
   const minutes = value.format('mm');
+  const hasSeconds = !!value.seconds();
 
   const countdown = [];
 
@@ -38,8 +39,12 @@ export function generateCountdownDate(value: Duration | null) {
     countdown.push(+hours > 1 ? `${hours} hours` : `${hours} hour`);
   }
 
-  if (+minutes > 0) {
-    countdown.push(+minutes > 1 ? `${minutes} minutes` : `${minutes} minute`);
+  if (+minutes > 0 || hasSeconds) {
+    const mins =
+      +minutes < 59 && hasSeconds
+        ? value.clone().add(1, 'm').format('mm')
+        : minutes;
+    countdown.push(+mins > 1 ? `${mins} minutes` : `${mins} minute`);
   }
 
   return countdown.join(' : ');

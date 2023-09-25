@@ -1,9 +1,11 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Outlet, useMatches } from 'react-router-dom';
+import { io } from 'socket.io-client';
 
+import { createSocket } from '#/config/socket.config';
 import { BaseScene } from '#/base/components/base-scene.component';
 import { BaseGroupLink } from '#/base/components/base-group-link.component';
-import { useClockSocket } from '../hooks/use-clock-socket.hook';
+import { useBoundStore } from '../hooks/use-store.hook';
 import { CoreSidebar } from './core-sidebar.component';
 import { CoreMain } from './core-main.component';
 import { CoreHeader } from './core-header.component';
@@ -11,7 +13,7 @@ import { CoreHeader } from './core-header.component';
 import type { SceneRouteHandle } from '#/base/models/base.model';
 
 export function CoreLayout() {
-  useClockSocket();
+  const setSocket = useBoundStore((state) => state.setSocket);
   const matches = useMatches();
 
   // Get current route handle
@@ -39,6 +41,20 @@ export function CoreLayout() {
     () => currentHandle?.disabledSceneWrapper || false,
     [currentHandle],
   );
+
+  useEffect(() => {
+    // Create socket connection and set zustand socket
+    const [url, options] = createSocket();
+    const socket = io(url, options);
+    setSocket(socket);
+
+    return () => {
+      // Close connection on unmount of core layout
+      if (socket.connected) {
+        socket.close();
+      }
+    };
+  }, [setSocket]);
 
   return (
     <div className='flex items-start justify-start'>

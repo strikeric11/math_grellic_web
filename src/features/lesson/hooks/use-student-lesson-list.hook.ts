@@ -23,7 +23,7 @@ type Result = {
 };
 
 export function useStudentLessonList(): Result {
-  const { serverClock, stopClock } = useClockSocket();
+  const { serverClock, startClock, stopClock } = useClockSocket();
   const [keyword, setKeyword] = useState<string | null>(null);
 
   const {
@@ -82,9 +82,7 @@ export function useStudentLessonList(): Result {
       return;
     }
 
-    if (!upcomingLesson) {
-      stopClock();
-    }
+    upcomingLesson ? startClock() : stopClock();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [upcomingLesson, isLoading, isRefetching]);
 

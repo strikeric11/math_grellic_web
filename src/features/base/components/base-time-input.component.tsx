@@ -45,7 +45,8 @@ export const BaseTimeInput = memo(
       const floatValue = value
         ? parseFloat(value.toString().replace(/[^0-9]/g, ''))
         : undefined;
-      const formattedValue = value?.toString() || '';
+      const formattedValue =
+        value?.toString().replace(/[apm]/gi, '').trim() || '';
       const val = value?.toString().replace(/[^0-9]/g, '') || '';
       setLocalValue({ floatValue, formattedValue, value: val });
     }, [value]);

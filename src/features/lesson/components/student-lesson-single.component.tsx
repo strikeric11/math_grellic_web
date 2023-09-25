@@ -98,15 +98,20 @@ export const StudentLessonSingle = memo(function LessonSingle({
       {formattedUpcomingDate ? (
         <div className='mb-8 mt-5 h-[500px] w-full overflow-hidden rounded-lg bg-black'>
           <div className='mx-auto flex h-full w-full max-w-compact flex-col items-center justify-center bg-blue-100/70'>
-            <div className='w-[276px]'>
-              <small className='mb-1 block w-full text-right font-medium uppercase text-white'>
+            <div className='min-w-[276px]'>
+              <small className='mb-1 flex w-full items-center justify-end text-base font-medium uppercase text-white'>
+                <span className='relative mr-4 flex gap-1'>
+                  <span className='relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-white'></span>
+                  <span className='animation-delay-100 relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-white'></span>
+                  <span className='animation-delay-200 relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-white'></span>
+                </span>
                 Available In
               </small>
               <div className='w-full overflow-hidden rounded border border-accent drop-shadow-primary'>
                 <div className='flex min-h-[24px] w-full items-center justify-center bg-primary'>
-                  <small className='font-medium uppercase text-white'>
+                  <span className='px-5 py-0.5 text-lg font-medium uppercase text-white'>
                     {formattedUpcomingDate}
-                  </small>
+                  </span>
                 </div>
                 <div className='flex w-full items-center justify-center gap-2.5 border-t border-t-accent bg-white'>
                   <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>

@@ -2,9 +2,9 @@ import { memo } from 'react';
 import cx from 'classix';
 
 import { BaseDivider } from '#/base/components/base-divider.component';
+import { useClock } from '../hooks/use-clock.hook';
 
 import type { ComponentProps } from 'react';
-import { useClock } from '../hooks/use-clock.hook';
 
 type Props = ComponentProps<'div'> & { isCompact?: boolean };
 
