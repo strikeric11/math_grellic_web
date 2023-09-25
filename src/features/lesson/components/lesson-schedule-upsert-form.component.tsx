@@ -11,7 +11,6 @@ import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
 import { BaseControlledTimeInput } from '#/base/components/base-time-input.component';
-import { StudentUserControlledPicker } from '#/user/components/student-user-picker.component';
 
 import type { FormProps, IconName } from '#/base/models/base.model';
 import type {
@@ -52,7 +51,7 @@ const schema = z.object({
 const defaultValues: Partial<LessonScheduleUpsertFormData> = {
   startDate: undefined,
   startTime: undefined,
-  studentIds: undefined,
+  studentIds: [],
 };
 
 export const LessonScheduleUpsertForm = memo(function ({
@@ -154,14 +153,14 @@ export const LessonScheduleUpsertForm = memo(function ({
                 asterisk
               />
             </div>
-            <div className='flex w-full items-start gap-5'>
+            {/* <div className='flex w-full items-start gap-5'>
               <StudentUserControlledPicker
                 name='studentIds'
                 label='Students'
                 control={control}
                 asterisk
               />
-            </div>
+            </div> */}
           </fieldset>
         </div>
       </form>

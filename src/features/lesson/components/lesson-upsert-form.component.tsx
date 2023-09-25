@@ -111,7 +111,7 @@ const defaultValues: Partial<LessonUpsertFormData> = {
   duration: undefined,
   startDate: undefined,
   startTime: undefined,
-  studentIds: undefined,
+  studentIds: [],
 };
 
 export const LessonUpsertForm = memo(function ({
