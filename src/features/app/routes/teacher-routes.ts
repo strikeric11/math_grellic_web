@@ -39,6 +39,14 @@ export const teacherRoutes = {
     to: 'exams',
     label: 'Exams',
     iconName: 'exam',
+    createTo: 'create',
+    editTo: 'edit',
+    previewTo: 'preview',
+    schedule: {
+      to: 'schedules',
+      createTo: 'create',
+      editTo: 'edit',
+    },
   },
   calendar: {
     name: 'calendar',
