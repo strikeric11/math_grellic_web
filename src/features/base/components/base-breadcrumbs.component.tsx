@@ -7,14 +7,12 @@ import type { ComponentProps } from 'react';
 type Props = ComponentProps<'ol'> & {
   pathname: string;
   basePath: string;
-  withtrailingSlash?: boolean;
 };
 
 export const BaseBreadcrumbs = memo(function ({
   className,
   pathname,
   basePath,
-  withtrailingSlash,
   ...moreProps
 }: Props) {
   const breadcrumbs = useMemo(() => {
@@ -25,7 +23,7 @@ export const BaseBreadcrumbs = memo(function ({
     const link: string[] = [basePath];
     return labels.map((label, index) => {
       link.push('/' + labels[index]);
-      const itemLink = !withtrailingSlash ? link.join('') : `/${link.join('')}`;
+      const itemLink = `/${link.join('')}`;
 
       if (index === labels.length - 1) {
         return <li>{label}</li>;
@@ -37,7 +35,7 @@ export const BaseBreadcrumbs = memo(function ({
         </li>
       );
     });
-  }, [basePath, withtrailingSlash, pathname]);
+  }, [basePath, pathname]);
 
   return (
     <ol

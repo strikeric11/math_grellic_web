@@ -47,7 +47,6 @@ export function TeacherLessonScheduleListPage() {
       <BaseScene
         title={sceneTitle}
         headerRightContent={<BaseGroupLink links={sceneLinks} />}
-        withtrailingSlash
       >
         {lesson && (
           <div className='w-full py-5'>

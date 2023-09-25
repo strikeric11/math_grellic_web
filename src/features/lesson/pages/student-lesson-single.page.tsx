@@ -13,7 +13,7 @@ export function StudentLessonSinglePage() {
 
   return (
     <BaseDataSuspense resolve={data?.main}>
-      <BaseScene title={title} withtrailingSlash>
+      <BaseScene title={title}>
         {lesson && (
           <StudentLessonSingle
             loading={loading}

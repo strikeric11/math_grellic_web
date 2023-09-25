@@ -15,7 +15,6 @@ type Props = ComponentProps<'div'> & {
   toolbarHidden?: boolean;
   breadcrumbsHidden?: boolean;
   headerRightContent?: ReactNode;
-  withtrailingSlash?: boolean;
   isClose?: boolean;
 };
 
@@ -25,7 +24,6 @@ export const BaseScene = memo(function ({
   toolbarHidden,
   breadcrumbsHidden,
   headerRightContent,
-  withtrailingSlash,
   isClose,
   children,
   ...moreProps
@@ -101,11 +99,7 @@ export const BaseScene = memo(function ({
               </BaseControlButton>
             )}
             {!breadcrumbsHidden && (
-              <BaseBreadcrumbs
-                pathname={pathname}
-                basePath={basePath}
-                withtrailingSlash={withtrailingSlash}
-              />
+              <BaseBreadcrumbs pathname={pathname} basePath={basePath} />
             )}
           </div>
           {!!headerRightContent && <div>{headerRightContent}</div>}

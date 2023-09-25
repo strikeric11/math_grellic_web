@@ -4,7 +4,7 @@ import {
 } from '../../app/routes/teacher-routes';
 import type { SceneRouteHandle } from '#/base/models/base.model';
 
-const lessonBaseRoute = `${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
+const lessonBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
 
 export const teacherLessonRouteHandle: { [key: string]: SceneRouteHandle } = {
   list: {

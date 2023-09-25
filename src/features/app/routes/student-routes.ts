@@ -57,6 +57,6 @@ export function generateStudentRouteLinks() {
 
   return links.map(({ to, ...t }) => ({
     ...t,
-    to: to === studentBaseRoute ? to : `${studentBaseRoute}/${to}`,
+    to: to === studentBaseRoute ? `/${to}` : `/${studentBaseRoute}/${to}`,
   })) as NavItem[];
 }

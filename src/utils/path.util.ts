@@ -15,9 +15,9 @@ export function interceptGetStarted(pathname: string) {
 export function generateDashboardPath(role: UserRole) {
   switch (role) {
     case UserRole.Teacher:
-      return teacherBaseRoute;
+      return `/${teacherBaseRoute}`;
     case UserRole.Student:
-      return studentBaseRoute;
+      return `/${studentBaseRoute}`;
     case UserRole.Admin:
       // TODO admin path
       return '';
