@@ -1,6 +1,4 @@
-import { RecordStatus } from '#/core/models/core.model';
-
-import type { AuditTrail } from '#/core/models/core.model';
+import type { AuditTrail, RecordStatus } from '#/core/models/core.model';
 import type { StudentUserAccount } from '#/user/models/user.model';
 
 export type Lesson = Partial<AuditTrail> & {
@@ -25,6 +23,7 @@ export type LessonSchedule = Partial<AuditTrail> & {
 };
 
 export type LessonCompletion = Partial<AuditTrail> & {
+  id: number;
   lesson: Lesson;
   student: StudentUserAccount;
 };
@@ -38,6 +37,7 @@ export type LessonUpsertFormData = {
   duration?: string;
   description?: string;
   excerpt?: string;
+  // Schedule
   startDate?: Date;
   startTime?: string;
   studentIds?: number[];

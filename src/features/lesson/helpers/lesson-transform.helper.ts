@@ -4,10 +4,17 @@ import {
   convertDurationToSeconds,
   convertSecondsToDuration,
 } from '#/utils/time.util';
+import { transformToBaseModel } from '#/base/helpers/base.helper';
 import { transformToStudentUserAccount } from '#/user/helpers/user-transform.helper';
 
 import type { StudentUserAccount } from '#/user/models/user.model';
-import type { Lesson, LessonSchedule } from '../models/lesson.model';
+import type {
+  Lesson,
+  LessonCompletion,
+  LessonSchedule,
+  LessonScheduleUpsertFormData,
+  LessonUpsertFormData,
+} from '../models/lesson.model';
 
 export function transformToLesson({
   id,
@@ -35,9 +42,6 @@ export function transformToLesson({
     : undefined;
 
   return {
-    id,
-    createdAt: dayjs(createdAt).toDate(),
-    updatedAt: dayjs(updatedAt).toDate(),
     status,
     orderNumber,
     title,
@@ -48,6 +52,7 @@ export function transformToLesson({
     excerpt,
     schedules: transformedSchedules,
     completions: transformedCompletions,
+    ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
 
@@ -66,12 +71,10 @@ export function transformToLessonSchedule({
   const transformedLesson = lesson ? transformToLesson(lesson) : undefined;
 
   return {
-    id,
-    createdAt: dayjs(createdAt).toDate(),
-    updatedAt: dayjs(updatedAt).toDate(),
     startDate: dayjs(startDate).toDate(),
     students: transformedStudents,
     lesson: transformedLesson,
+    ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
 
@@ -81,15 +84,15 @@ export function transformToLessonCompletion({
   updatedAt,
   lesson,
   student,
-}: any) {
-  const transformedStudent = student ? { id: student.id } : undefined;
+}: any): Partial<LessonCompletion> {
+  const transformedStudent = student
+    ? ({ id: student.id } as StudentUserAccount)
+    : undefined;
 
   return {
-    id,
-    createdAt: dayjs(createdAt).toDate(),
-    updatedAt: dayjs(updatedAt).toDate(),
     lesson,
     student: transformedStudent,
+    ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
 
@@ -102,7 +105,7 @@ export function transformToLessonFormData({
   description,
   excerpt,
   schedules,
-}: any) {
+}: any): LessonUpsertFormData {
   const duration = convertSecondsToDuration(durationSeconds);
   // Convert schedule
   let startDate = undefined;
@@ -137,7 +140,7 @@ export function transformToLessonScheduleFormData({
   lesson,
   startDate,
   students,
-}: any) {
+}: any): LessonScheduleUpsertFormData {
   const transformedStudentIds = !students?.length
     ? null
     : students.map((student: StudentUserAccount) => student.id);
