@@ -11,6 +11,7 @@ export const queryUserKey = {
 export const queryLessonKey = {
   list: ['lessons', 'list'],
   single: ['lessons', 'single'],
+  selectedLessonList: ['lessons', 'selected-lesson-list'],
 };
 
 export const queryExamKey = {
