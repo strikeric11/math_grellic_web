@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FieldErrors, FormProvider, useForm } from 'react-hook-form';
 import { Menu } from '@headlessui/react';
-import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import isTime from 'validator/lib/isTime';
@@ -11,53 +11,74 @@ import cx from 'classix';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
-import { BaseButton } from '#/base/components/base-button.components';
-import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
-import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
-import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
 import { BaseStepper } from '#/base/components/base-stepper.component';
-import { LessonUpsertFormStep1 } from './lesson-upsert-form-step-1.component';
-import { LessonUpsertFormStep2 } from './lesson-upsert-form-step-2.component';
+import { BaseButton } from '#/base/components/base-button.components';
+import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
+import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
+import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
+import { defaultQuestion } from '../helpers/exam-form.helper';
+import { ExamUpsertFormStep1 } from './exam-upsert-form-step-1.component';
+import { ExamUpsertFormStep2 } from './exam-upsert-form-step-2.component';
+import { ExamUpsertFormStep3 } from './exam-upsert-form-step-3.component';
 
-import type { FieldErrors } from 'react-hook-form';
 import type { FormProps, IconName } from '#/base/models/base.model';
-import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
+import type { Exam, ExamUpsertFormData } from '../models/exam.model';
 
-type Props = FormProps<'div', LessonUpsertFormData, Promise<Lesson>>;
+type Props = FormProps<'div', ExamUpsertFormData, Promise<Exam>>;
 
-const LESSON_PREVIEW_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}/${teacherRoutes.lesson.previewTo}`;
-const LESSON_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
+const EXAM_PREVIEW_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}/${teacherRoutes.exam.previewTo}`;
+const EXAM_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
+
+const choiceSchema = z.object({
+  id: z.number().optional(),
+  text: z.string().min(1, 'Choice is required'),
+  isExpression: z.boolean(),
+  isCorrect: z.boolean(),
+});
+
+const questionSchema = z.object({
+  id: z.number().optional(),
+  orderNumber: z
+    .number({ required_error: 'Question number is required' })
+    .int()
+    .gt(0, 'Question number is invalid'),
+  text: z.string().min(1, 'Question is required'),
+  experience: z.number().optional(),
+  choices: z.array(choiceSchema).min(2),
+});
 
 const schema = z
   .object({
     orderNumber: z
       .number({
-        required_error: 'Lesson number is required',
-        invalid_type_error: 'Lesson number is invalid ',
+        required_error: 'Exam number is required',
+        invalid_type_error: 'Exam number is invalid ',
       })
       .int()
       .gt(0),
-    duration: z
-      .string()
-      .refine(
-        (value) => isTime(value, { hourFormat: 'hour24', mode: 'withSeconds' }),
-        {
-          message: 'Duration is invalid',
-        },
-      )
-      .optional(),
     title: z
       .string()
-      .min(1, 'Lesson title is required')
+      .min(1, 'Exam title is required')
       .max(255, 'Title is too long'),
-    videoUrl: z
-      .string()
-      .url('Video embed url is invalid')
-      .max(255, 'Url is too long'),
+    coveredLessonIds: z.array(z.number()).optional(),
+    randomizeQuestions: z.boolean(),
+    visibleQuestionsCount: z
+      .number({
+        required_error: 'Visible questions is required',
+        invalid_type_error: 'Visible questions is invalid',
+      })
+      .int()
+      .gt(0, 'Visible questions should be greater than zero'),
+    pointsPerQuestion: z
+      .number()
+      .int()
+      .gt(0, 'Points per question should be greater than zero'),
     description: z.string().optional(),
     excerpt: z.string().optional(),
     status: z.nativeEnum(RecordStatus),
+    questions: z.array(questionSchema).min(1),
+    // Schedule
     startDate: z
       .date()
       .min(
@@ -65,16 +86,51 @@ const schema = z
         'Start date is invalid',
       )
       .optional(),
+    endDate: z
+      .date()
+      .min(new Date(`${new Date().getFullYear()}-01-01`), 'End date is invalid')
+      .optional(),
     startTime: z
       .string()
       .refine((value) => isTime(value, { hourFormat: 'hour12' }), {
         message: 'Start time is invalid',
       })
       .optional(),
+    endTime: z
+      .string()
+      .refine((value) => isTime(value, { hourFormat: 'hour12' }), {
+        message: 'End time is invalid',
+      })
+      .optional(),
     studentIds: z.array(z.number()).nullable().optional(),
   })
   .superRefine((data, ctx) => {
-    if (data.startDate || data.startTime || data.studentIds !== undefined) {
+    if (data.visibleQuestionsCount > data.questions.length) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Visible questions is more than the total questions',
+        path: ['visibleQuestionsCount'],
+      });
+    }
+
+    data.questions.forEach((question, index) => {
+      const isValid = question.choices.some((choice) => choice.isCorrect);
+      if (!isValid) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Pick an answer from the choices',
+          path: [`questions.${index}.choices.0.text`],
+        });
+      }
+    });
+
+    if (
+      data.startDate ||
+      data.endDate ||
+      data.startTime ||
+      data.endTime ||
+      data.studentIds !== undefined
+    ) {
       if (!data.startDate) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -83,11 +139,27 @@ const schema = z
         });
       }
 
+      if (!data.endDate) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'End date is invalid',
+          path: ['endDate'],
+        });
+      }
+
       if (!data.startTime) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Start time is invalid',
           path: ['startTime'],
+        });
+      }
+
+      if (!data.endTime) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'End time is invalid',
+          path: ['endTime'],
         });
       }
 
@@ -101,20 +173,25 @@ const schema = z
     }
   });
 
-const defaultValues: Partial<LessonUpsertFormData> = {
+const defaultValues: Partial<ExamUpsertFormData> = {
   title: '',
-  videoUrl: '',
   description: '',
   excerpt: '',
+  coveredLessonIds: [],
+  pointsPerQuestion: 1,
   status: RecordStatus.Draft,
+  randomizeQuestions: false,
   orderNumber: null,
-  duration: undefined,
+  visibleQuestionsCount: undefined,
+  questions: [defaultQuestion],
   startDate: undefined,
+  endDate: undefined,
   startTime: undefined,
-  studentIds: [],
+  endTime: undefined,
+  studentIds: undefined,
 };
 
-export const LessonUpsertForm = memo(function ({
+export const ExamUpsertForm = memo(function ({
   className,
   formData,
   loading: formLoading,
@@ -125,14 +202,14 @@ export const LessonUpsertForm = memo(function ({
   ...moreProps
 }: Props) {
   const navigate = useNavigate();
-  const setLessonFormData = useBoundStore((state) => state.setLessonFormData);
+  const setExamFormData = useBoundStore((state) => state.setExamFormData);
 
   const [isEdit, isEditPublished] = useMemo(
     () => [!!formData, formData?.status === RecordStatus.Published],
     [formData],
   );
 
-  const methods = useForm<LessonUpsertFormData>({
+  const methods = useForm<ExamUpsertFormData>({
     shouldFocusError: false,
     defaultValues: formData || defaultValues,
     resolver: zodResolver(schema),
@@ -165,27 +242,45 @@ export const LessonUpsertForm = memo(function ({
   }, [isEdit, formData, reset]);
 
   const handleSubmitError = useCallback(
-    (errors: FieldErrors<LessonUpsertFormData>) => {
-      const errorMessage = Object.entries(errors)[0][1].message;
+    (errors: FieldErrors<ExamUpsertFormData>) => {
+      let errorMessage = '';
+      if (errors.questions?.length) {
+        const targetQuestion = (errors.questions as any).filter(
+          (q: any) => q,
+        )[0];
+
+        if (targetQuestion.choices?.length) {
+          const targetChoice = targetQuestion.choices.filter((c: any) => c)[0];
+
+          errorMessage = (Object.entries(targetChoice || {})[0][1] as any)
+            .message;
+        } else {
+          errorMessage = (Object.entries(targetQuestion || {})[0][1] as any)
+            .message;
+        }
+      } else {
+        errorMessage = Object.entries(errors)[0][1]?.message || '';
+      }
+
       toast.error(errorMessage || '');
     },
     [],
   );
 
   const submitForm = useCallback(
-    async (data: LessonUpsertFormData, status?: RecordStatus) => {
+    async (data: ExamUpsertFormData, status?: RecordStatus) => {
       try {
         const targetData = status ? { ...data, status } : data;
-        const lesson = await onSubmit(targetData);
+        const exam = await onSubmit(targetData);
 
         toast.success(
-          `${isEdit ? 'Updated' : 'Created'} ${lesson.title} (No. ${
-            lesson.orderNumber
+          `${isEdit ? 'Updated' : 'Created'} ${exam.title} (No. ${
+            exam.orderNumber
           })`,
         );
 
         onDone && onDone(true);
-        navigate(LESSON_LIST_PATH);
+        navigate(EXAM_LIST_PATH);
       } catch (error: any) {
         toast.error(error.message);
       }
@@ -201,14 +296,14 @@ export const LessonUpsertForm = memo(function ({
       return;
     }
 
-    setLessonFormData(getValues());
-    window.open(LESSON_PREVIEW_PATH, '_blank')?.focus();
-  }, [trigger, getValues, setLessonFormData]);
+    setExamFormData(getValues());
+    window.open(EXAM_PREVIEW_PATH, '_blank')?.focus();
+  }, [trigger, getValues, setExamFormData]);
 
   useEffect(() => {
     // Set lessonFormData to undefined when unmounting component
     return () => {
-      setLessonFormData();
+      setExamFormData();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -272,12 +367,15 @@ export const LessonUpsertForm = memo(function ({
               </div>
             }
           >
-            <BaseStepperStep label='Lesson Info'>
-              <LessonUpsertFormStep1 disabled={loading} />
+            <BaseStepperStep label='Exam Info'>
+              <ExamUpsertFormStep1 disabled={loading} />
+            </BaseStepperStep>
+            <BaseStepperStep label='Questions'>
+              <ExamUpsertFormStep2 disabled={loading} />
             </BaseStepperStep>
             {(!isEdit || !isEditPublished) && (
-              <BaseStepperStep label='Lesson Schedule'>
-                <LessonUpsertFormStep2 disabled={loading} />
+              <BaseStepperStep label='Exam Schedule'>
+                <ExamUpsertFormStep3 disabled={loading} />
               </BaseStepperStep>
             )}
           </BaseStepper>

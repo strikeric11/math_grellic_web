@@ -1,23 +1,21 @@
 import { forwardRef, memo, useCallback, useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { useController } from 'react-hook-form';
+import { useQuery } from '@tanstack/react-query';
 import cx from 'classix';
 
-import { queryUserKey } from '#/config/react-query-keys.config';
-import { BaseSelect } from '#/base/components/base-select.component';
+import { queryClient } from '#/config/react-query-client.config';
+import { queryLessonKey } from '#/config/react-query-keys.config';
 import { BaseModal } from '#/base/components/base-modal.component';
+import { BaseSelect } from '#/base/components/base-select.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
-import { transformToStudentUserAccount } from '../helpers/user-transform.helper';
-import { getStudentsByCurrentTeacherUser } from '../api/user.api';
-import {
-  StudentUserItem,
-  StudentUserPickerList,
-} from './student-user-picker-list.component';
+import { transformToLesson } from '../helpers/lesson-transform.helper';
+import { getLessonsByCurrentTeacherUser } from '../api/teacher-lesson.api';
+import { LessonItem, LessonPickerList } from './lesson-picker-list.component';
 
 import type { ComponentProps } from 'react';
 import type { UseControllerProps } from 'react-hook-form';
 import type { SelectOption } from '#/base/models/base.model';
-import type { StudentUserAccount } from '../models/user.model';
+import type { Lesson } from '../models/lesson.model';
 
 type Props = Omit<ComponentProps<'div'>, 'onChange'> & {
   name?: string;
@@ -33,16 +31,12 @@ type Props = Omit<ComponentProps<'div'>, 'onChange'> & {
 
 const options: SelectOption[] = [
   {
-    label: 'Everyone',
+    label: 'Select lessons...',
     value: '1',
-  },
-  {
-    label: 'Select students...',
-    value: '2',
   },
 ];
 
-export const StudentUserPicker = memo(
+export const LessonPicker = memo(
   forwardRef<HTMLDivElement, Props>(function (
     {
       name,
@@ -62,18 +56,18 @@ export const StudentUserPicker = memo(
     const [keyword, setKeyword] = useState<string | undefined>(undefined);
 
     const {
-      data: students,
+      data: lessons,
       isFetching,
       isLoading,
     } = useQuery(
-      getStudentsByCurrentTeacherUser(
+      getLessonsByCurrentTeacherUser(
         { q: keyword },
         {
           refetchOnWindowFocus: false,
           initialData: [],
           select: (data: unknown) =>
             Array.isArray(data)
-              ? data.map((item: any) => transformToStudentUserAccount(item))
+              ? data.map((item: any) => transformToLesson(item))
               : [],
         },
       ),
@@ -85,23 +79,23 @@ export const StudentUserPicker = memo(
       undefined,
     );
 
-    const [selectedStudentIds, setSelectedStudentIds] = useState<number[]>(
+    const [selectedLessonIds, setSelectedLessonIds] = useState<number[]>(
       value || [],
     );
 
-    const [modalSelectedStudentIds, setModalSelectedStudentIds] =
-      useState<number[]>(selectedStudentIds);
+    const [modalSelectedLessonIds, setModalSelectedLessonIds] =
+      useState<number[]>(selectedLessonIds);
 
     const {
-      data: selectedStudents,
-      isLoading: isSelectStudentsLoading,
-      isFetching: isSelectStudentsFetching,
-      refetch: selectedStudentsRefetch,
+      data: selectedLessons,
+      isLoading: isSelectLessonsLoading,
+      isFetching: isSelectLessonsFetching,
+      refetch: selectedLessonsRefetch,
     } = useQuery(
-      getStudentsByCurrentTeacherUser(
-        { ids: value || selectedStudentIds || [] },
+      getLessonsByCurrentTeacherUser(
+        { ids: value || selectedLessonIds || [] },
         {
-          queryKey: queryUserKey.selectedStudentList,
+          queryKey: queryLessonKey.selectedLessonList,
           refetchOnWindowFocus: false,
           refetchOnMount: false,
           refetchOnReconnect: false,
@@ -109,60 +103,59 @@ export const StudentUserPicker = memo(
           initialData: [],
           select: (data: unknown) =>
             Array.isArray(data)
-              ? data.map((item: any) => transformToStudentUserAccount(item))
+              ? data.map((item: any) => transformToLesson(item))
               : [],
         },
       ),
     );
 
     useEffect(() => {
-      if (value == null) {
+      if ((value && !value?.length) || !selectedLessonIds.length) {
+        queryClient.invalidateQueries(queryLessonKey.selectedLessonList);
         return;
       }
+      console.log(value, selectedLessonIds);
 
-      selectedStudentsRefetch();
+      selectedLessonsRefetch();
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value, selectedStudentIds]);
+    }, [value, selectedLessonIds]);
 
     useEffect(() => {
-      if (value === undefined) {
+      if (value == null || !value?.length) {
+        setSelectValue(undefined);
+        setSelectedLessonIds([]);
         return;
       }
 
-      // Set current BaseSelect value, set to "Everyone" if value is null or empty array.
-      // Else set to second option - "Specify"
-      if (!value?.length) {
-        setSelectValue(options[0].value.toString());
-      } else {
-        setSelectValue(options[1].value.toString());
-      }
+      // Set current BaseSelect option if value is not null or not empty
+      setSelectValue(options[0].value.toString());
     }, [value]);
 
     const handleCloseModal = useCallback(() => setOpenModal(false), []);
 
     // Handle BaseSelect change selected option, open modal if "specify" option is selected.
-    // And sync modalSelectedIds to main selectedStudentIds value
+    // And sync modalSelectedIds to main selectedLessonIds value
     const handleSelectChange = useCallback(
       (val: string) => {
         setSelectValue(val);
 
-        if (val !== '2') {
-          setModalSelectedStudentIds([]);
-          setSelectedStudentIds([]);
-          onChange && onChange([]);
+        if (val !== '1') {
+          setModalSelectedLessonIds([]);
+          setSelectedLessonIds([]);
+          onChange && onChange(null);
           return;
         }
 
-        setModalSelectedStudentIds(selectedStudentIds);
+        setModalSelectedLessonIds(selectedLessonIds);
         setOpenModal(true);
       },
-      [selectedStudentIds, onChange],
+      [selectedLessonIds, onChange],
     );
 
-    // Add or remove id from modalSelectedStudentIds
-    const handleStudentSelect = useCallback(
+    // Add or remove id from modalSelectedLessonIds
+    const handleLessonSelect = useCallback(
       (id: number) => () =>
-        setModalSelectedStudentIds((prev) => {
+        setModalSelectedLessonIds((prev) => {
           const isExisting = prev.some((item) => item === id);
 
           if (isExisting) {
@@ -178,29 +171,29 @@ export const StudentUserPicker = memo(
       setKeyword(value || undefined);
     }, []);
 
-    // Cancel by syncing modalSelectedStudentIds back to selectedStudentIds,
+    // Cancel by syncing modalSelectedLessonIds back to selectedLessonIds,
     // then close modal
     const handleCancel = useCallback(() => {
-      setModalSelectedStudentIds(selectedStudentIds);
+      setModalSelectedLessonIds(selectedLessonIds);
 
-      if (!selectedStudentIds || !selectedStudentIds.length) {
-        setSelectValue('1');
+      if (!selectedLessonIds?.length) {
+        setSelectValue(undefined);
       }
 
       handleCloseModal();
-    }, [selectedStudentIds, handleCloseModal]);
+    }, [selectedLessonIds, handleCloseModal]);
 
-    // Apply modalSelectedStudentIds to main selectedStudentIds, then close modal
+    // Apply modalSelectedLessonIds to main selectedLessonIds, then close modal
     const handleSubmit = useCallback(() => {
-      setSelectedStudentIds(modalSelectedStudentIds);
-      onChange && onChange(modalSelectedStudentIds);
+      setSelectedLessonIds(modalSelectedLessonIds);
+      onChange && onChange(modalSelectedLessonIds);
 
-      if (!modalSelectedStudentIds?.length) {
-        setSelectValue('1');
+      if (!modalSelectedLessonIds?.length) {
+        setSelectValue(undefined);
       }
 
       handleCloseModal();
-    }, [modalSelectedStudentIds, handleCloseModal, onChange]);
+    }, [modalSelectedLessonIds, handleCloseModal, onChange]);
 
     return (
       <div className={cx('w-full', className)} {...moreProps}>
@@ -218,7 +211,7 @@ export const StudentUserPicker = memo(
           required={required}
           {...selectProps}
         />
-        {isSelectStudentsFetching || isSelectStudentsLoading ? (
+        {isSelectLessonsFetching || isSelectLessonsLoading ? (
           <div className='mt-5 flex w-full justify-center'>
             <BaseSpinner />
           </div>
@@ -226,12 +219,12 @@ export const StudentUserPicker = memo(
           <ul
             className={cx('w-full', (isLoading || isFetching) && 'opacity-50')}
           >
-            {(selectedStudents as StudentUserAccount[]).map((student) => (
+            {(selectedLessons as Lesson[]).map((lesson) => (
               <li
-                key={student.id}
+                key={lesson.id}
                 className='w-full border-b border-primary-border-light py-2 last:border-b-0'
               >
-                <StudentUserItem student={student} />
+                <LessonItem lesson={lesson} />
               </li>
             ))}
           </ul>
@@ -242,12 +235,12 @@ export const StudentUserPicker = memo(
           open={openModal}
           onClose={handleCancel}
         >
-          <StudentUserPickerList
-            students={students as StudentUserAccount[]}
-            selectedStudentIds={modalSelectedStudentIds}
+          <LessonPickerList
+            lessons={lessons as Lesson[]}
+            selectedLessonIds={modalSelectedLessonIds}
             loading={isLoading || isFetching}
             onSearchChange={handleSearchChange}
-            onStudentSelect={handleStudentSelect}
+            onLessonSelect={handleLessonSelect}
             onCancel={handleCancel}
             onSubmit={handleSubmit}
           />
@@ -257,15 +250,11 @@ export const StudentUserPicker = memo(
   }),
 );
 
-export function StudentUserControlledPicker(
-  props: Props & UseControllerProps<any>,
-) {
+export function LessonControlledPicker(props: Props & UseControllerProps<any>) {
   const {
     field,
     fieldState: { error },
   } = useController(props);
 
-  return (
-    <StudentUserPicker {...props} {...field} errorMessage={error?.message} />
-  );
+  return <LessonPicker {...props} {...field} errorMessage={error?.message} />;
 }

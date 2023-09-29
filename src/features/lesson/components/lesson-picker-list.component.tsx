@@ -6,38 +6,33 @@ import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSearchInput } from '#/base/components/base-search-input.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
-import { generateFullName } from '../helpers/user.helper';
 
 import type { ComponentProps } from 'react';
-import type { StudentUserAccount } from '../models/user.model';
+import type { Lesson } from '../models/lesson.model';
 
 type Props = ComponentProps<'div'> & {
-  students: StudentUserAccount[];
-  selectedStudentIds?: number[];
+  lessons: Lesson[];
+  selectedLessonIds?: number[];
   onSearchChange: (value: string | null) => void;
-  onStudentSelect: (id: number) => () => void;
+  onLessonSelect: (id: number) => () => void;
   onCancel: () => void;
   onSubmit: () => void;
   loading?: boolean;
 };
 
-type StudentUserItemProps = {
-  student: StudentUserAccount;
+type LessonItemProps = {
+  lesson: Lesson;
   onClick?: () => void;
   selected?: boolean;
 };
 
-export const StudentUserItem = memo(function ({
-  student,
+export const LessonItem = memo(function ({
+  lesson,
   selected,
   onClick,
-}: StudentUserItemProps) {
-  const fullName = useMemo(
-    () =>
-      generateFullName(student.firstName, student.lastName, student.middleName),
-    [student],
-  );
-  const publicId = useMemo(() => student.publicId, [student]);
+}: LessonItemProps) {
+  const title = useMemo(() => lesson.title, [lesson]);
+  const orderNumber = useMemo(() => `No. ${lesson.orderNumber}`, [lesson]);
 
   return (
     <button
@@ -49,7 +44,11 @@ export const StudentUserItem = memo(function ({
     >
       <div className='flex items-center gap-4'>
         <div className='flex h-11 w-11 items-center justify-center rounded bg-slate-200'>
-          <BaseIcon name='user' className='opacity-60' size={36} />
+          <BaseIcon
+            name='chalkboard-teacher'
+            className='opacity-60'
+            size={36}
+          />
         </div>
         <div
           className={cx(
@@ -57,8 +56,8 @@ export const StudentUserItem = memo(function ({
             onClick && 'group-hover/usrpicker:text-white',
           )}
         >
-          <span className='text font-medium'>{fullName}</span>
-          <small>{publicId}</small>
+          <span className='text font-medium'>{title}</span>
+          <small>{orderNumber}</small>
         </div>
       </div>
       <div className='flex h-9 w-9 items-center justify-center'>
@@ -75,21 +74,21 @@ export const StudentUserItem = memo(function ({
   );
 });
 
-export const StudentUserPickerList = memo(function ({
+export const LessonPickerList = memo(function ({
   className,
   loading,
-  students,
-  selectedStudentIds,
+  lessons,
+  selectedLessonIds,
   onSearchChange,
-  onStudentSelect,
+  onLessonSelect,
   onCancel,
   onSubmit,
   ...moreProps
 }: Props) {
-  // Set active props for each student item
+  // Set active props for each lesson item
   const setItemSelected = useCallback(
-    (targetId: number) => !!selectedStudentIds?.find((id) => id === targetId),
-    [selectedStudentIds],
+    (targetId: number) => !!selectedLessonIds?.find((id) => id === targetId),
+    [selectedLessonIds],
   );
 
   return (
@@ -100,7 +99,7 @@ export const StudentUserPickerList = memo(function ({
       <div className='w-full overflow-hidden'>
         <div className='px-4'>
           <BaseSearchInput
-            placeholder='Find a student'
+            placeholder='Find a lesson'
             onChange={onSearchChange}
             fullWidth
           />
@@ -116,15 +115,15 @@ export const StudentUserPickerList = memo(function ({
             defer
           >
             <ul className={cx('w-full', loading && 'opacity-50')}>
-              {(students as StudentUserAccount[]).map((student) => (
+              {(lessons as Lesson[]).map((lesson) => (
                 <li
-                  key={student.id}
+                  key={lesson.id}
                   className='w-full border-b border-primary-border-light py-2 last:border-b-0'
                 >
-                  <StudentUserItem
-                    student={student}
-                    selected={setItemSelected(student.id)}
-                    onClick={onStudentSelect(student.id)}
+                  <LessonItem
+                    lesson={lesson}
+                    selected={setItemSelected(lesson.id)}
+                    onClick={onLessonSelect(lesson.id)}
                   />
                 </li>
               ))}
@@ -136,7 +135,7 @@ export const StudentUserPickerList = memo(function ({
         <BaseButton variant='link' onClick={onCancel}>
           Cancel
         </BaseButton>
-        <BaseButton onClick={onSubmit}>Select Students</BaseButton>
+        <BaseButton onClick={onSubmit}>Select Lessons</BaseButton>
       </div>
     </div>
   );

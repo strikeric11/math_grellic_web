@@ -4,8 +4,8 @@ import { useFormContext } from 'react-hook-form';
 import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
 import { BaseControlledTimeInput } from '#/base/components/base-time-input.component';
 
-import type { LessonUpsertFormData } from '../models/lesson.model';
 import type { ComponentProps } from 'react';
+import type { LessonUpsertFormData } from '../models/lesson.model';
 
 type Props = ComponentProps<'div'> & {
   disabled?: boolean;

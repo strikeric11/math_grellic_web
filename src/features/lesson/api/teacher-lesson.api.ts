@@ -62,6 +62,46 @@ export function getPaginatedLessonsByCurrentTeacherUser(
   };
 }
 
+export function getLessonsByCurrentTeacherUser(
+  keys?: {
+    ids?: number[];
+    q?: string;
+    status?: string;
+    sort?: string;
+  },
+  options?: Omit<UseQueryOptions<Lesson[], Error, Lesson[], any>, 'queryFn'>,
+) {
+  const { ids, q, status, sort } = keys || {};
+  const { queryKey, ...moreOptions } = options || {};
+
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/teachers/list/all`;
+    const searchParams = generateSearchParams({
+      ids: ids?.join(','),
+      q,
+      status,
+      sort,
+    });
+
+    try {
+      const lessons = await kyInstance.get(url, { searchParams }).json();
+      return lessons;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [
+      ...(queryKey?.length ? queryKey : queryLessonKey.list),
+      { q, ids, status, sort },
+    ],
+    queryFn,
+    ...moreOptions,
+  };
+}
+
 export function getLessonBySlugAndCurrentTeacherUser(
   keys: { slug: string; status?: string; exclude?: string; include?: string },
   options?: Omit<UseQueryOptions<Lesson, Error, Lesson, any>, 'queryFn'>,

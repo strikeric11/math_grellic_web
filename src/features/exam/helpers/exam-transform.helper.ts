@@ -85,11 +85,13 @@ export function transformToExamQuestionChoice({
   updatedAt,
   text,
   isCorrect,
+  isExpression,
 }: any): ExamQuestionChoice {
   return {
     ...transformToBaseModel(id, createdAt, updatedAt),
     text,
     isCorrect,
+    isExpression,
   };
 }
 
@@ -199,11 +201,13 @@ export function transformToExamQuestionChoiceFormData({
   id,
   text,
   isCorrect,
+  isExpression,
 }: any): ExamQuestionChoiceFormData {
   return {
     id,
     text,
     isCorrect,
+    isExpression,
   };
 }
 
@@ -270,7 +274,7 @@ export function transformToExamQuestionUpsertDto({
     id,
     orderNumber,
     text,
-    choicesDto: choicesDto,
+    choices: choicesDto,
   };
 }
 
@@ -278,11 +282,13 @@ export function transformToExamQuestionChoiceUpsertDto({
   id,
   text,
   isCorrect,
+  isExpression,
 }: any) {
   return {
     id,
     text,
     isCorrect,
+    isExpression,
   };
 }
 

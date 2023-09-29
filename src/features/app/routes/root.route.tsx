@@ -25,6 +25,7 @@ import { TeacherDashboardPage } from '#/dashboard/pages/teacher-dashboard.page';
 import { StudentDashboardPage } from '#/dashboard/pages/student-dashboard.page';
 
 import { teacherLessonRouteHandle } from '#/lesson/route/teacher-lesson-handle.route';
+import { teacherExamRouteHandle } from '#/exam/route/teacher-exam-handle.route';
 import { studentLessonRouteHandle } from '#/lesson/route/student-lesson-handle.route';
 import { LessonCreatePage } from '#/lesson/pages/lesson-create.page';
 import {
@@ -40,11 +41,14 @@ import { TeacherLessonSinglePage } from '#/lesson/pages/teacher-lesson-single.pa
 import { TeacherLessonScheduleListPage } from '#/lesson/pages/teacher-lesson-schedule-list.page';
 import { TeacherLessonScheduleCreatePage } from '#/lesson/pages/teacher-lesson-schedule-create.page';
 import { TeacherLessonScheduleEditPage } from '#/lesson/pages/teacher-lesson-schedule-edit.page';
+import { TeacherExamListPage } from '#/exam/pages/teacher-exam-list.page';
 import { StudentLessonListPage } from '#/lesson/pages/student-lesson-list.page';
 import { StudentLessonSinglePage } from '#/lesson/pages/student-lesson-single.page';
 import { LessonPreviewSlugPage } from '#/lesson/pages/lesson-preview-slug.page';
 import { LessonPreviewPage } from '#/lesson/pages/lesson-preview.page';
 import { LessonEditPage } from '#/lesson/pages/lesson-edit.page';
+import { ExamCreatePage } from '#/exam/pages/exam-create.page';
+import { ExamPreviewPage } from '#/exam/pages/exam-preview.page';
 
 import { staticRoutes } from './static-routes';
 import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
@@ -71,7 +75,7 @@ const rootRoutes = createRoutesFromElements(
         element={<CorePageNotFound linkLabel='Return to home' />}
       />
     </Route>
-    {/* Teacher routes */}
+    {/* TEACHER */}
     <Route
       path={teacherBaseRoute}
       element={
@@ -85,6 +89,7 @@ const rootRoutes = createRoutesFromElements(
         element={<TeacherDashboardPage />}
         handle={dashboardRouteHandle}
       />
+      {/* TEACHER LESSONS */}
       <Route path={teacherRoutes.lesson.to} element={<Outlet />}>
         <Route
           index
@@ -146,13 +151,36 @@ const rootRoutes = createRoutesFromElements(
           />
         </Route>
       </Route>
+      {/* TEACHER EXAMS */}
+      <Route path={teacherRoutes.exam.to} element={<Outlet />}>
+        {/* TODO list */}
+        <Route
+          index
+          element={<TeacherExamListPage />}
+          handle={teacherExamRouteHandle.list}
+          // loader={getTeacherPaginatedExamsLoader(queryClient)}
+        />
+        {/* TODO slug */}
+        <Route
+          path={teacherRoutes.exam.createTo}
+          element={<ExamCreatePage />}
+          handle={teacherExamRouteHandle.create}
+        />
+        <Route path={teacherRoutes.exam.previewTo} element={<Outlet />}>
+          <Route
+            index
+            element={<ExamPreviewPage />}
+            handle={teacherExamRouteHandle.preview}
+          />
+        </Route>
+      </Route>
       <Route
         path='*'
         element={<CorePageNotFound to={`/${teacherBaseRoute}`} />}
         handle={coreRouteHandle.notFound}
       />
     </Route>
-    {/* Student routes */}
+    {/* STUDENT */}
     <Route
       path={studentBaseRoute}
       element={

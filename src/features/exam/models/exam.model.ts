@@ -28,6 +28,7 @@ export type ExamQuestion = Partial<AuditTrail> & {
 export type ExamQuestionChoice = Partial<AuditTrail> & {
   id: number;
   text: string;
+  isExpression: boolean;
   isCorrect: boolean;
 };
 
@@ -42,6 +43,7 @@ export type ExamSchedule = Partial<AuditTrail> & {
 export type ExamQuestionChoiceFormData = {
   id: number;
   text: string;
+  isExpression: boolean;
   isCorrect: boolean;
 };
 
@@ -53,7 +55,7 @@ export type ExamQuestionFormData = {
 };
 
 export type ExamUpsertFormData = {
-  orderNumber: number;
+  orderNumber: number | null;
   status: RecordStatus;
   title: string;
   randomizeQuestions: boolean;

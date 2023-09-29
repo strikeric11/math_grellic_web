@@ -30,7 +30,7 @@ export type LessonCompletion = Partial<AuditTrail> & {
 
 export type LessonUpsertFormData = {
   status: RecordStatus;
-  orderNumber: number;
+  orderNumber: number | null;
   title: string;
   videoUrl: string;
   slug?: string;
