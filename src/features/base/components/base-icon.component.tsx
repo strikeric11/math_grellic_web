@@ -1,10 +1,13 @@
 import { memo, useMemo } from 'react';
 
 import {
+  ArrowCircleDown,
   ArrowCircleLeft,
   ArrowCircleRight,
+  ArrowCircleUp,
   ArrowClockwise,
   ArrowCounterClockwise,
+  ArrowFatUp,
   ArrowLeft,
   ArrowUUpLeft,
   ArrowUUpRight,
@@ -17,15 +20,18 @@ import {
   CaretCircleLeft,
   CaretCircleRight,
   CaretDown,
+  CaretRight,
   ChalkboardTeacher,
   ChartDonut,
   ChatCenteredText,
   CheckCircle,
   CheckFat,
+  Circle,
   CircleDashed,
   Clock,
   DoorOpen,
   DotsThreeVertical,
+  Equals,
   Exam,
   Eye,
   EyeSlash,
@@ -33,6 +39,7 @@ import {
   FileDashed,
   FileText,
   FloppyDiskBack,
+  Function,
   Funnel,
   GameController,
   GenderFemale,
@@ -45,6 +52,7 @@ import {
   Minus,
   Pencil,
   Plus,
+  PlusCircle,
   RadioButton,
   RocketLaunch,
   ShareFat,
@@ -62,11 +70,13 @@ import {
   TextHTwo,
   TextItalic,
   TextStrikethrough,
+  TextT,
   TextUnderline,
   Trash,
   User,
   UsersFour,
   X,
+  XSquare,
 } from '@phosphor-icons/react';
 
 import type { Icon, IconProps } from '@phosphor-icons/react';
@@ -79,14 +89,20 @@ type Props = IconProps & {
 export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
   const PIcon: Icon | null = useMemo(() => {
     switch (name) {
+      case 'arrow-circle-down':
+        return ArrowCircleDown;
       case 'arrow-circle-left':
         return ArrowCircleLeft;
       case 'arrow-circle-right':
         return ArrowCircleRight;
+      case 'arrow-circle-up':
+        return ArrowCircleUp;
       case 'arrow-clockwise':
         return ArrowClockwise;
       case 'arrow-counter-clockwise':
         return ArrowCounterClockwise;
+      case 'arrow-fat-up':
+        return ArrowFatUp;
       case 'arrow-left':
         return ArrowLeft;
       case 'arrows-in-line-horizontal':
@@ -109,6 +125,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return CaretCircleLeft;
       case 'caret-circle-right':
         return CaretCircleRight;
+      case 'caret-right':
+        return CaretRight;
       case 'caret-down':
         return CaretDown;
       case 'chalkboard-teacher':
@@ -121,6 +139,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return CheckFat;
       case 'check-circle':
         return CheckCircle;
+      case 'circle':
+        return Circle;
       case 'circle-dashed':
         return CircleDashed;
       case 'clock':
@@ -129,6 +149,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return DoorOpen;
       case 'dots-three-vertical':
         return DotsThreeVertical;
+      case 'equals':
+        return Equals;
       case 'exam':
         return Exam;
       case 'eye':
@@ -143,6 +165,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return FileText;
       case 'floppy-disk-back':
         return FloppyDiskBack;
+      case 'function':
+        return Function;
       case 'funnel':
         return Funnel;
       case 'game-controller':
@@ -167,6 +191,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return Pencil;
       case 'plus':
         return Plus;
+      case 'plus-circle':
+        return PlusCircle;
       case 'radio-button':
         return RadioButton;
       case 'rocket-launch':
@@ -203,6 +229,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return TextUnderline;
       case 'text-strikethrough':
         return TextStrikethrough;
+      case 'text-t':
+        return TextT;
       case 'trash':
         return Trash;
       case 'user':
@@ -211,6 +239,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return UsersFour;
       case 'x':
         return X;
+      case 'x-square':
+        return XSquare;
     }
   }, [name]);
 

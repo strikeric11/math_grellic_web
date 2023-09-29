@@ -20,13 +20,23 @@ import {
 import { BaseSurface } from './base-surface.component';
 
 import type { ReactNode } from 'react';
-import type { UseHoverProps } from '@floating-ui/react';
+import type { Placement, UseHoverProps } from '@floating-ui/react';
 
-type Props = UseHoverProps & { content?: ReactNode; children: ReactNode };
+type Props = UseHoverProps & {
+  children: ReactNode;
+  content?: ReactNode;
+  placement?: Placement;
+};
 
 export const BaseTooltip = memo(
   forwardRef<HTMLElement, Props>(function (
-    { content, delay = { open: 800, close: 200 }, children, ...moreProps },
+    {
+      content,
+      delay = { open: 800, close: 200 },
+      placement = 'bottom',
+      children,
+      ...moreProps
+    },
     ref,
   ) {
     // For floating ui tooltip
@@ -34,7 +44,7 @@ export const BaseTooltip = memo(
     const { refs, floatingStyles, context } = useFloating({
       open: isOpen,
       onOpenChange: setIsOpen,
-      placement: 'bottom',
+      placement,
       middleware: [shift(), flip(), offset(10)],
     });
     const hover = useHover(context, { delay, ...moreProps });
@@ -62,7 +72,7 @@ export const BaseTooltip = memo(
           <BaseSurface
             ref={refs.setFloating}
             style={floatingStyles}
-            className='animate-fastFadeIn !rounded !bg-accent !p-0 text-white'
+            className='z-max animate-fastFadeIn !rounded !bg-accent !p-0 text-white'
             {...getFloatingProps()}
           >
             <small className='block px-2 py-1'>{content}</small>

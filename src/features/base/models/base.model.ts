@@ -7,10 +7,13 @@ export enum SidebarMode {
 }
 
 export type IconName =
+  | 'arrow-circle-down'
   | 'arrow-circle-left'
   | 'arrow-circle-right'
+  | 'arrow-circle-up'
   | 'arrow-counter-clockwise'
   | 'arrow-clockwise'
+  | 'arrow-fat-up'
   | 'arrow-left'
   | 'arrows-in-line-horizontal'
   | 'arrows-out-line-horizontal'
@@ -22,16 +25,19 @@ export type IconName =
   | 'calendar-check'
   | 'caret-circle-left'
   | 'caret-circle-right'
+  | 'caret-right'
   | 'caret-down'
   | 'chalkboard-teacher'
   | 'chart-donut'
   | 'chat-centered-text'
   | 'check-fat'
   | 'check-circle'
+  | 'circle'
   | 'circle-dashed'
   | 'clock'
   | 'door-open'
   | 'dots-three-vertical'
+  | 'equals'
   | 'exam'
   | 'eye'
   | 'eye-slash'
@@ -39,6 +45,7 @@ export type IconName =
   | 'file-dashed'
   | 'file-text'
   | 'floppy-disk-back'
+  | 'function'
   | 'funnel'
   | 'game-controller'
   | 'gender-female'
@@ -50,6 +57,7 @@ export type IconName =
   | 'magnifying-glass'
   | 'minus'
   | 'plus'
+  | 'plus-circle'
   | 'pencil'
   | 'radio-button'
   | 'rocket-launch'
@@ -69,10 +77,12 @@ export type IconName =
   | 'text-italic'
   | 'text-underline'
   | 'text-strikethrough'
+  | 'text-t'
   | 'trash'
   | 'user'
   | 'users-four'
-  | 'x';
+  | 'x'
+  | 'x-square';
 
 export type NavItem = {
   name: string;
