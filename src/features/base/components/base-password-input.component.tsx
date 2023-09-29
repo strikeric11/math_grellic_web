@@ -21,6 +21,7 @@ export const BasePasswordInput = memo(
       () => ({
         name: (!showPassword ? 'eye-slash' : 'eye') as IconName,
         isInput: true,
+        tooltip: !showPassword ? 'Show password' : 'Hide password',
         onClick: () => onShowPassword(!showPassword),
       }),
       [showPassword, onShowPassword],

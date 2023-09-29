@@ -11,7 +11,7 @@ type Props = Omit<ComponentProps<typeof BaseInput>, 'onChange'> & {
 
 export const BaseSearchInput = memo(
   forwardRef<HTMLInputElement, Props>(function (
-    { onChange, ...moreProps },
+    { placeholder = 'Find an item', onChange, ...moreProps },
     ref,
   ) {
     const [value, setValue] = useState<string | null>(null);
@@ -29,7 +29,7 @@ export const BaseSearchInput = memo(
       <BaseInput
         ref={ref}
         type='search'
-        placeholder='Find a student'
+        placeholder={placeholder}
         iconName='magnifying-glass'
         onChange={handleChange}
         {...moreProps}

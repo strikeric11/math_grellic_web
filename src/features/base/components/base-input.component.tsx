@@ -5,9 +5,11 @@ import cx from 'classix';
 
 import { BaseIcon } from './base-icon.component';
 import { BaseIconButton } from './base-icon-button.component';
+import { BaseTooltip } from './base-tooltip.component';
 
-import type { ComponentProps, FormEvent } from 'react';
+import type { ComponentProps, FormEvent, ReactNode } from 'react';
 import type { UseControllerProps } from 'react-hook-form';
+import type { Placement } from '@floating-ui/react';
 import type { IconName } from '../models/base.model';
 
 type Props = ComponentProps<'input'> & {
@@ -15,10 +17,14 @@ type Props = ComponentProps<'input'> & {
   description?: string;
   errorMessage?: string;
   iconName?: IconName;
+  leftContent?: ReactNode;
   fullWidth?: boolean;
   asterisk?: boolean;
   wrapperProps?: ComponentProps<'div'>;
-  rightButtonProps?: ComponentProps<typeof BaseIconButton>;
+  rightButtonProps?: ComponentProps<typeof BaseIconButton> & {
+    tooltip?: ReactNode;
+    tooltipPlacement?: Placement;
+  };
 };
 
 type ControlledProps = Props & UseControllerProps<any>;
@@ -35,6 +41,7 @@ export const BaseInput = memo(
       description,
       errorMessage,
       iconName,
+      leftContent,
       fullWidth,
       asterisk,
       required,
@@ -43,6 +50,8 @@ export const BaseInput = memo(
       rightButtonProps: {
         className: rightIconBtnClassName,
         name: rightIconBtnName,
+        tooltip,
+        tooltipPlacement,
         ...moreRightIconBtnProps
       } = {},
       ...moreProps
@@ -60,9 +69,7 @@ export const BaseInput = memo(
         )}
         {...moreWrapperProps}
       >
-        <div
-          className={cx('relative mb-0.5 w-full', label ? 'h-input' : 'h-12')}
-        >
+        <div className={cx('relative w-full', label ? 'h-input' : 'h-12')}>
           <input
             ref={ref}
             name={name}
@@ -72,7 +79,7 @@ export const BaseInput = memo(
               `peer h-full w-full rounded-md border-2 border-accent/40 pb-2 pl-18px pr-5 text-accent !outline-none
               transition-all focus:!border-primary-focus focus:!ring-1 focus:!ring-primary-focus group-disabled/field:!bg-backdrop-gray`,
               label ? 'pt-26px' : 'pt-2',
-              !!iconName && '!pl-43px',
+              (!!leftContent || !!iconName) && '!pl-43px',
               !!errorMessage && '!border-red-500/60',
               !!rightIconBtnName && '!pr-11',
               className,
@@ -84,6 +91,7 @@ export const BaseInput = memo(
             disabled={disabled}
             {...moreProps}
           />
+          {leftContent}
           {!!iconName && (
             <BaseIcon
               name={iconName}
@@ -101,7 +109,7 @@ export const BaseInput = memo(
                 `absolute left-5 top-1/2 -translate-y-1/2 font-bold text-accent/70 transition-all peer-focus:-translate-y-111 peer-focus:text-13px
                 peer-focus:!text-primary after:peer-focus:!top-0`,
                 !!value && '!-translate-y-111 !text-13px after:!top-0',
-                !!iconName && '!left-45px',
+                (!!leftContent || !!iconName) && '!left-45px',
                 !!errorMessage && '!text-red-500',
                 (asterisk || required) &&
                   "after:absolute after:top-0.5 after:pl-1.5 after:text-xl after:text-yellow-500 after:content-['*']",
@@ -111,26 +119,28 @@ export const BaseInput = memo(
             </label>
           )}
           {!!rightIconBtnName && (
-            <BaseIconButton
-              name={rightIconBtnName}
-              variant='link'
-              size='xs'
-              className={cx(
-                'absolute right-1 top-1/2 -translate-y-1/2 !text-accent hover:!text-primary',
-                rightIconBtnClassName,
-              )}
-              disabled={disabled}
-              {...moreRightIconBtnProps}
-            />
+            <BaseTooltip content={tooltip} placement={tooltipPlacement}>
+              <BaseIconButton
+                name={rightIconBtnName}
+                variant='link'
+                size='xs'
+                className={cx(
+                  'absolute right-1 top-1/2 -translate-y-1/2 !text-accent hover:!text-primary',
+                  rightIconBtnClassName,
+                )}
+                disabled={disabled}
+                {...moreRightIconBtnProps}
+              />
+            </BaseTooltip>
           )}
         </div>
         {!!description && !errorMessage && (
-          <small className='inline-block px-1 text-accent/80'>
+          <small className='mt-0.5 inline-block px-1 text-accent/80'>
             {description}
           </small>
         )}
         {!!errorMessage && (
-          <small className='inline-block px-1 text-red-500'>
+          <small className='mt-0.5 inline-block px-1 text-red-500'>
             {errorMessage}
           </small>
         )}
