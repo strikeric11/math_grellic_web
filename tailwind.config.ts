@@ -26,6 +26,8 @@ export default {
           border: '#1c447a',
           'border-light': '#dee8f1',
           shadow: '#1f67a0',
+          'hue-purple': '#634193',
+          'hue-teal': '#1a7d82',
         },
         secondary: '#e04141',
         accent: '#38526d',

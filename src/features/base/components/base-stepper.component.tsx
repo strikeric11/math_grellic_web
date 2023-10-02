@@ -109,7 +109,7 @@ export const BaseStepper = memo(function ({
     <div className={cx('w-full', className)} {...moreProps}>
       <div className='flex w-full items-center justify-center'>
         <BaseDivider />
-        <ol className='mx-4 flex h-5 items-center'>
+        <ol className='mx-4 my-2 flex h-5 items-center'>
           {stepLabels.map((label, index) => (
             <li
               key={index}

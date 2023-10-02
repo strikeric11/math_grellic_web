@@ -60,7 +60,7 @@ export const BaseDataPagination = memo(function ({
             />
           </div>
           <BaseButton
-            className='pointer-events-none !px-3.5 !text-sm !font-medium'
+            className='pointer-events-none !w-28 !px-3.5 !text-sm !font-medium'
             variant='border'
             size='sm'
             bodyFont

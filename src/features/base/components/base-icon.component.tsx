@@ -47,6 +47,7 @@ import {
   Hourglass,
   LinkSimple,
   ListBullets,
+  ListChecks,
   ListNumbers,
   MagnifyingGlass,
   Minus,
@@ -181,6 +182,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return LinkSimple;
       case 'list-bullets':
         return ListBullets;
+      case 'list-checks':
+        return ListChecks;
       case 'list-numbers':
         return ListNumbers;
       case 'magnifying-glass':

@@ -53,6 +53,7 @@ export type IconName =
   | 'hourglass'
   | 'link-simple'
   | 'list-bullets'
+  | 'list-checks'
   | 'list-numbers'
   | 'magnifying-glass'
   | 'minus'
