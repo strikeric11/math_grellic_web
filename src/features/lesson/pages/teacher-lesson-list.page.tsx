@@ -49,7 +49,7 @@ export function TeacherLessonListPage() {
     setKeyword,
     setFilters,
     setSort,
-    refetch,
+    refresh,
     totalCount,
     pagination,
     nextPage,
@@ -73,7 +73,7 @@ export function TeacherLessonListPage() {
             defaultSelectedSort={defaultSort}
             sortOptions={sortOptions}
             onSearchChange={setKeyword}
-            onRefresh={refetch}
+            onRefresh={refresh}
             onFilter={setFilters}
             onSort={setSort}
           />

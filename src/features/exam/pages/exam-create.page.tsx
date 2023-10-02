@@ -5,10 +5,6 @@ export function ExamCreatePage() {
   const { isDone, setIsDone, createExam } = useExamCreate();
 
   return (
-    <ExamUpsertForm
-      isDone={isDone}
-      onDone={setIsDone}
-      onSubmit={createExam}
-    />
+    <ExamUpsertForm isDone={isDone} onDone={setIsDone} onSubmit={createExam} />
   );
 }

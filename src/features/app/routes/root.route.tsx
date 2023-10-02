@@ -33,6 +33,10 @@ import {
   getLessonBySlugLoader as getTeacherLessonBySlugLoader,
 } from '#/lesson/route/teacher-lesson-loader.route';
 import {
+  getPaginatedExamsLoader as getTeacherPaginatedExamsLoader,
+  getExamBySlugLoader as getTeacherExamBySlugLoader,
+} from '#/exam/route/teacher-exam-loader.route';
+import {
   getLessonsLoader as getStudentLessonsLoader,
   getLessonBySlugLoader as getStudentLessonBySlugLoader,
 } from '#/lesson/route/student-lesson-loader.route';
@@ -48,6 +52,7 @@ import { LessonPreviewSlugPage } from '#/lesson/pages/lesson-preview-slug.page';
 import { LessonPreviewPage } from '#/lesson/pages/lesson-preview.page';
 import { LessonEditPage } from '#/lesson/pages/lesson-edit.page';
 import { ExamCreatePage } from '#/exam/pages/exam-create.page';
+import { ExamEditPage } from '#/exam/pages/exam-edit.page';
 import { ExamPreviewPage } from '#/exam/pages/exam-preview.page';
 
 import { staticRoutes } from './static-routes';
@@ -143,36 +148,38 @@ const rootRoutes = createRoutesFromElements(
           element={<LessonCreatePage />}
           handle={teacherLessonRouteHandle.create}
         />
-        <Route path={teacherRoutes.lesson.previewTo} element={<Outlet />}>
-          <Route
-            index
-            element={<LessonPreviewPage />}
-            handle={teacherLessonRouteHandle.preview}
-          />
-        </Route>
+        <Route
+          path={teacherRoutes.lesson.previewTo}
+          element={<LessonPreviewPage />}
+          handle={teacherLessonRouteHandle.preview}
+        />
       </Route>
       {/* TEACHER EXAMS */}
       <Route path={teacherRoutes.exam.to} element={<Outlet />}>
-        {/* TODO list */}
         <Route
           index
           element={<TeacherExamListPage />}
           handle={teacherExamRouteHandle.list}
-          // loader={getTeacherPaginatedExamsLoader(queryClient)}
+          loader={getTeacherPaginatedExamsLoader(queryClient)}
         />
-        {/* TODO slug */}
+        <Route path=':slug' element={<Outlet />}>
+          <Route
+            path={teacherRoutes.exam.editTo}
+            element={<ExamEditPage />}
+            handle={teacherExamRouteHandle.edit}
+            loader={getTeacherExamBySlugLoader(queryClient)}
+          />
+        </Route>
         <Route
           path={teacherRoutes.exam.createTo}
           element={<ExamCreatePage />}
           handle={teacherExamRouteHandle.create}
         />
-        <Route path={teacherRoutes.exam.previewTo} element={<Outlet />}>
-          <Route
-            index
-            element={<ExamPreviewPage />}
-            handle={teacherExamRouteHandle.preview}
-          />
-        </Route>
+        <Route
+          path={teacherRoutes.exam.previewTo}
+          element={<ExamPreviewPage />}
+          handle={teacherExamRouteHandle.preview}
+        />
       </Route>
       <Route
         path='*'

@@ -37,7 +37,7 @@ export function getPaginatedExamsByCurrentTeacherUser(
   const { take, skip } = pagination || {};
 
   const queryFn = async (): Promise<any> => {
-    const url = `${BASE_URL}/exams/list`;
+    const url = `${BASE_URL}/teachers/list`;
     const searchParams = generateSearchParams({
       q,
       status,
@@ -88,7 +88,7 @@ export function getExamBySlugAndCurrentTeacherUser(
   };
 }
 
-export function createExan(
+export function createExam(
   options?: Omit<
     UseMutationOptions<Exam, Error, ExamUpsertFormData, any>,
     'mutationFn'
@@ -109,7 +109,7 @@ export function createExan(
   return { mutationFn, ...options };
 }
 
-export function editLesson(
+export function editExam(
   options?: Omit<
     UseMutationOptions<
       Exam,
@@ -138,6 +138,24 @@ export function editLesson(
     try {
       const exam = await kyInstance.patch(url, { json, searchParams }).json();
       return transformToExam(exam);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return { mutationFn, ...options };
+}
+
+export function deleteExam(
+  options?: Omit<UseMutationOptions<boolean, Error, string, any>, 'mutationFn'>,
+) {
+  const mutationFn = async (slug: string): Promise<boolean> => {
+    const url = `${BASE_URL}/${slug}`;
+
+    try {
+      const success: boolean = await kyInstance.delete(url).json();
+      return success;
     } catch (error: any) {
       const apiError = await generateApiError(error);
       throw apiError;

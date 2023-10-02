@@ -18,6 +18,8 @@ type Props = ComponentProps<'div'> & {
 const FIXED_FIELD_CLASSNAME = 'flex shrink-0 flex-col items-center gap-y-1';
 const FIXED_FIELD_VALUE_CLASSNAME = 'text-2xl font-bold leading-none';
 
+const passingPointsWrapperProps = { className: 'max-w-[203px]' };
+
 export const ExamUpsertFormStep2 = memo(function ({
   disabled,
   ...moreProps
@@ -88,18 +90,31 @@ export const ExamUpsertFormStep2 = memo(function ({
             <span className='text-sm font-medium'>Total Points</span>
           </div>
         </BaseSurface>
-        <div className='flex w-full items-center justify-between gap-5 px-4'>
-          <BaseControlledCheckbox
-            labelClassName='mt-0.5 !text-base'
-            name='agreeTerms'
-            label='Randomize Questions'
+        <BaseSurface
+          className='flex w-full items-center justify-between gap-5'
+          rounded='sm'
+        >
+          <BaseControlledNumberInput
+            wrapperProps={passingPointsWrapperProps}
+            label='Passing Points'
+            name='passingPoints'
             control={control}
+            fullWidth
+            asterisk
           />
-          <div>
-            Total Questions:
-            <span className='ml-2 text-lg'>{totalQuestionCount}</span>
+          <div className='flex flex-col'>
+            <BaseControlledCheckbox
+              labelClassName='mt-0.5 !text-base'
+              name='randomizeQuestions'
+              label='Randomize Questions'
+              control={control}
+            />
+            <div className='text-right'>
+              Total Questions:
+              <span className='ml-2 text-lg'>{totalQuestionCount}</span>
+            </div>
           </div>
-        </div>
+        </BaseSurface>
         <ExamUpsertQuestionList />
       </fieldset>
     </div>

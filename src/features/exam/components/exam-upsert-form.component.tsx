@@ -5,9 +5,11 @@ import { Menu } from '@headlessui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import isTime from 'validator/lib/isTime';
+import dayjs from 'dayjs';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
+import { getDayJsDuration } from '#/utils/time.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
@@ -32,6 +34,10 @@ const EXAM_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
 
 const choiceSchema = z.object({
   id: z.number().optional(),
+  orderNumber: z
+    .number({ required_error: 'Choice number is required' })
+    .int()
+    .gt(0, 'Choice number is invalid'),
   text: z.string().min(1, 'Choice is required'),
   isExpression: z.boolean(),
   isCorrect: z.boolean(),
@@ -74,6 +80,13 @@ const schema = z
       .number()
       .int()
       .gt(0, 'Points per question should be greater than zero'),
+    passingPoints: z
+      .number({
+        required_error: 'Passing points is required',
+        invalid_type_error: 'Passing points is invalid',
+      })
+      .int()
+      .gt(0, 'Passing points should be greater than zero'),
     description: z.string().optional(),
     excerpt: z.string().optional(),
     status: z.nativeEnum(RecordStatus),
@@ -81,10 +94,7 @@ const schema = z
     // Schedule
     startDate: z
       .date()
-      .min(
-        new Date(`${new Date().getFullYear()}-01-01`),
-        'Start date is invalid',
-      )
+      .min(new Date(`${new Date().getFullYear()}-01-01`), 'Date is invalid')
       .optional(),
     endDate: z
       .date()
@@ -105,6 +115,17 @@ const schema = z
     studentIds: z.array(z.number()).nullable().optional(),
   })
   .superRefine((data, ctx) => {
+    if (
+      data.passingPoints >
+      data.pointsPerQuestion * data.visibleQuestionsCount
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Passing points is more that total points',
+        path: ['passingPoints'],
+      });
+    }
+
     if (data.visibleQuestionsCount > data.questions.length) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -131,19 +152,11 @@ const schema = z
       data.endTime ||
       data.studentIds !== undefined
     ) {
-      if (!data.startDate) {
+      if (!data.startDate || !data.endDate) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Start date is invalid',
+          message: 'Date is invalid',
           path: ['startDate'],
-        });
-      }
-
-      if (!data.endDate) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'End date is invalid',
-          path: ['endDate'],
         });
       }
 
@@ -161,6 +174,31 @@ const schema = z
           message: 'End time is invalid',
           path: ['endTime'],
         });
+      }
+
+      if (data.startDate && data.endDate && data.startTime && data.endTime) {
+        const startDateTime = dayjs(
+          `${dayjs(data.startDate).format('YYYY-MM-DD')} ${data.startTime}`,
+          'YYYY-MM-DD hh:mm A',
+        );
+
+        const endDateTime = dayjs(
+          `${dayjs(data.endDate).format('YYYY-MM-DD')} ${data.endTime}`,
+          'YYYY-MM-DD hh:mm A',
+        );
+
+        const duration = getDayJsDuration(
+          endDateTime.toDate(),
+          startDateTime.toDate(),
+        ).asSeconds();
+
+        if (duration <= 0) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Time is invalid',
+            path: ['startTime'],
+          });
+        }
       }
 
       if (data.studentIds === undefined) {
@@ -183,6 +221,7 @@ const defaultValues: Partial<ExamUpsertFormData> = {
   randomizeQuestions: false,
   orderNumber: null,
   visibleQuestionsCount: undefined,
+  passingPoints: undefined,
   questions: [defaultQuestion],
   startDate: undefined,
   endDate: undefined,

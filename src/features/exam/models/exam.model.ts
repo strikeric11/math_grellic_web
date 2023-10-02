@@ -11,6 +11,7 @@ export type Exam = Partial<AuditTrail> & {
   randomizeQuestions: boolean;
   visibleQuestionsCount: number;
   pointsPerQuestion: number;
+  passingPoints: number;
   questions: ExamQuestion[];
   description?: string;
   excerpt?: string;
@@ -27,6 +28,7 @@ export type ExamQuestion = Partial<AuditTrail> & {
 
 export type ExamQuestionChoice = Partial<AuditTrail> & {
   id: number;
+  orderNumber: number;
   text: string;
   isExpression: boolean;
   isCorrect: boolean;
@@ -42,6 +44,7 @@ export type ExamSchedule = Partial<AuditTrail> & {
 
 export type ExamQuestionChoiceFormData = {
   id: number;
+  orderNumber: number;
   text: string;
   isExpression: boolean;
   isCorrect: boolean;
@@ -61,6 +64,7 @@ export type ExamUpsertFormData = {
   randomizeQuestions: boolean;
   visibleQuestionsCount: number;
   pointsPerQuestion: number;
+  passingPoints: number;
   questions: ExamQuestionFormData[];
   slug?: string;
   description?: string;

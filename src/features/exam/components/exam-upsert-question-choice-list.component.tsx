@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import cx from 'classix';
@@ -138,13 +138,25 @@ export const ExamUpsertQuestionChoiceList = memo(function ({
   isCollapsed,
   ...moreProps
 }: Props) {
-  const { control } = useFormContext<ExamUpsertFormData>();
+  const { control, getValues, setValue } = useFormContext<ExamUpsertFormData>();
 
   const { fields, append, remove, update } = useFieldArray({
     control,
     name: `questions.${questionIndex}.choices`,
     keyName: 'key',
   });
+
+  useEffect(() => {
+    const sourceChoices = getValues(`questions.${questionIndex}.choices`);
+
+    fields.forEach((_, index) => {
+      setValue(`questions.${questionIndex}.choices.${index}`, {
+        ...sourceChoices[index],
+        orderNumber: index + 1,
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fields, questionIndex]);
 
   const choices = useWatch({
     control,
@@ -156,10 +168,9 @@ export const ExamUpsertQuestionChoiceList = memo(function ({
     [fields, isCollapsed],
   );
 
-  const hasAnswer = useMemo(
-    () => !!choices.find((choice) => choice.isCorrect),
-    [choices],
-  );
+  const hasAnswer = useMemo(() => {
+    return !!choices.find((choice) => choice.isCorrect);
+  }, [choices]);
 
   const getChoiceName = useCallback(
     (key: string) => {

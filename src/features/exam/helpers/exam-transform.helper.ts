@@ -26,6 +26,7 @@ export function transformToExam({
   randomizeQuestions,
   visibleQuestionsCount,
   pointsPerQuestion,
+  passingPoints,
   description,
   excerpt,
   coveredLessons,
@@ -50,6 +51,7 @@ export function transformToExam({
     randomizeQuestions,
     visibleQuestionsCount,
     pointsPerQuestion,
+    passingPoints,
     description,
     excerpt,
     coveredLessons: transformedCoveredLessons,
@@ -83,12 +85,14 @@ export function transformToExamQuestionChoice({
   id,
   createdAt,
   updatedAt,
+  orderNumber,
   text,
   isCorrect,
   isExpression,
 }: any): ExamQuestionChoice {
   return {
     ...transformToBaseModel(id, createdAt, updatedAt),
+    orderNumber,
     text,
     isCorrect,
     isExpression,
@@ -126,6 +130,7 @@ export function transformToExamFormData({
   randomizeQuestions,
   visibleQuestionsCount,
   pointsPerQuestion,
+  passingPoints,
   description,
   excerpt,
   coveredLessons,
@@ -140,7 +145,7 @@ export function transformToExamFormData({
 
   if (schedules?.length === 1) {
     const dayJsStartDate = dayjs(schedules[0].startDate);
-    const dayJsEndDate = dayjs(schedules[0].startDate);
+    const dayJsEndDate = dayjs(schedules[0].endDate);
 
     startDate = dayJsStartDate.toDate();
     startTime = dayJsStartDate.format('hh:mm A');
@@ -166,6 +171,7 @@ export function transformToExamFormData({
     randomizeQuestions,
     visibleQuestionsCount,
     pointsPerQuestion,
+    passingPoints,
     description,
     excerpt,
     coveredLessonIds,
@@ -199,12 +205,14 @@ export function transformToExamQuestionFormData({
 
 export function transformToExamQuestionChoiceFormData({
   id,
+  orderNumber,
   text,
   isCorrect,
   isExpression,
 }: any): ExamQuestionChoiceFormData {
   return {
     id,
+    orderNumber,
     text,
     isCorrect,
     isExpression,
@@ -218,6 +226,7 @@ export function transformToExamUpsertDto({
   randomizeQuestions,
   visibleQuestionsCount,
   pointsPerQuestion,
+  passingPoints,
   description,
   excerpt,
   coveredLessonIds,
@@ -249,6 +258,7 @@ export function transformToExamUpsertDto({
     randomizeQuestions,
     visibleQuestionsCount,
     pointsPerQuestion,
+    passingPoints,
     description,
     excerpt,
     coveredLessonIds,
@@ -280,12 +290,14 @@ export function transformToExamQuestionUpsertDto({
 
 export function transformToExamQuestionChoiceUpsertDto({
   id,
+  orderNumber,
   text,
   isCorrect,
   isExpression,
 }: any) {
   return {
     id,
+    orderNumber,
     text,
     isCorrect,
     isExpression,

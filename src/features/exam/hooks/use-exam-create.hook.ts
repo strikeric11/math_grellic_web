@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { queryClient } from '#/config/react-query-client.config';
 import { queryExamKey } from '#/config/react-query-keys.config';
-import { createExan as createExamApi } from '../api/teacher-exam.api';
+import { createExam as createExamApi } from '../api/teacher-exam.api';
 
 import type { Exam, ExamUpsertFormData } from '../models/exam.model';
 import { useMutation } from '@tanstack/react-query';

@@ -4,18 +4,18 @@ import { useNavigate } from 'react-router-dom';
 
 import { PAGINATION_TAKE } from '#/utils/api.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
-import { getPaginatedLessonsByCurrentTeacherUser } from '../api/teacher-lesson.api';
-import { transformToLesson } from '../helpers/lesson-transform.helper';
+import { getPaginatedExamsByCurrentTeacherUser } from '../api/teacher-exam.api';
+import { transformToExam } from '../helpers/exam-transform.helper';
 
 import type {
   QueryFilterOption,
   QueryPagination,
   QuerySort,
 } from '#/base/models/base.model';
-import type { Lesson } from '../models/lesson.model';
+import type { Exam } from '../models/exam.model';
 
 type Result = {
-  lessons: Lesson[];
+  exams: Exam[];
   loading: boolean;
   totalCount: number;
   pagination: QueryPagination;
@@ -25,13 +25,13 @@ type Result = {
   refresh: () => void;
   nextPage: () => void;
   prevPage: () => void;
-  handleLessonEdit: (slug: string) => void;
-  handleLessonDetails: (slug: string) => void;
-  handleLessonPreview: (slug: string) => void;
-  handleLessonSchedule: (slug: string) => void;
+  handleExamEdit: (slug: string) => void;
+  handleExamDetails: (slug: string) => void;
+  handleExamPreview: (slug: string) => void;
+  handleExamSchedule: (slug: string) => void;
 };
 
-const LESSONS_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
+const EXAMS_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
 
 export const defaultSort = {
   field: 'orderNumber',
@@ -45,7 +45,7 @@ export const defaultParamKeys = {
   pagination: { take: PAGINATION_TAKE, skip: 0 },
 };
 
-export function useTeacherLessonList(): Result {
+export function useTeacherExamList(): Result {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState<string | null>(null);
   const [filters, setFilters] = useState<QueryFilterOption[]>([]);
@@ -73,14 +73,14 @@ export function useTeacherLessonList(): Result {
   const pagination = useMemo(() => ({ take: PAGINATION_TAKE, skip }), [skip]);
 
   const { data, isLoading, isRefetching, refetch } = useQuery(
-    getPaginatedLessonsByCurrentTeacherUser(
+    getPaginatedExamsByCurrentTeacherUser(
       { q: keyword || undefined, status, sort: querySort, pagination },
       {
         refetchOnWindowFocus: false,
         select: (data: any[]) => {
           const [items, totalCount] = data;
           const transformedItems = items.map((item: unknown) =>
-            transformToLesson(item),
+            transformToExam(item),
           );
 
           return [transformedItems, +totalCount];
@@ -89,9 +89,9 @@ export function useTeacherLessonList(): Result {
     ),
   );
 
-  const lessons = useMemo(() => {
+  const exams = useMemo(() => {
     const [items] = data || [];
-    return (items || []) as Lesson[];
+    return (items || []) as Exam[];
   }, [data]);
 
   const dataCount = useMemo(
@@ -123,32 +123,29 @@ export function useTeacherLessonList(): Result {
     setSkip(Math.max(0, skip - pagination.take));
   }, [skip, pagination]);
 
-  const handleLessonPreview = useCallback((slug: string) => {
+  const handleExamPreview = useCallback((slug: string) => {
     window
-      .open(
-        `${LESSONS_PATH}/${slug}/${teacherRoutes.lesson.previewTo}`,
-        '_blank',
-      )
+      .open(`${EXAMS_PATH}/${slug}/${teacherRoutes.exam.previewTo}`, '_blank')
       ?.focus();
   }, []);
 
-  const handleLessonDetails = useCallback(
+  const handleExamDetails = useCallback(
     (slug: string) => {
-      navigate(`${LESSONS_PATH}/${slug}`);
+      navigate(`${EXAMS_PATH}/${slug}`);
     },
     [navigate],
   );
 
-  const handleLessonEdit = useCallback(
+  const handleExamEdit = useCallback(
     (slug: string) => {
-      navigate(`${LESSONS_PATH}/${slug}/${teacherRoutes.lesson.editTo}`);
+      navigate(`${EXAMS_PATH}/${slug}/${teacherRoutes.exam.editTo}`);
     },
     [navigate],
   );
 
-  const handleLessonSchedule = useCallback(
+  const handleExamSchedule = useCallback(
     (slug: string) => {
-      navigate(`${LESSONS_PATH}/${slug}/${teacherRoutes.lesson.schedule.to}`);
+      navigate(`${EXAMS_PATH}/${slug}/${teacherRoutes.exam.schedule.to}`);
     },
     [navigate],
   );
@@ -159,7 +156,7 @@ export function useTeacherLessonList(): Result {
   }, [refetch]);
 
   return {
-    lessons,
+    exams,
     loading: isLoading || isRefetching,
     totalCount,
     pagination,
@@ -169,9 +166,9 @@ export function useTeacherLessonList(): Result {
     refresh,
     nextPage,
     prevPage,
-    handleLessonPreview,
-    handleLessonDetails,
-    handleLessonEdit,
-    handleLessonSchedule,
+    handleExamPreview,
+    handleExamDetails,
+    handleExamEdit,
+    handleExamSchedule,
   };
 }

@@ -114,7 +114,6 @@ export const LessonPicker = memo(
         queryClient.invalidateQueries(queryLessonKey.selectedLessonList);
         return;
       }
-      console.log(value, selectedLessonIds);
 
       selectedLessonsRefetch();
       // eslint-disable-next-line react-hooks/exhaustive-deps

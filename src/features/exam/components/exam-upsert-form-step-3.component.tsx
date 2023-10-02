@@ -1,5 +1,5 @@
-import { memo, useMemo } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { memo, useEffect, useMemo } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import dayjs from 'dayjs';
 import cx from 'classix';
 
@@ -24,12 +24,18 @@ export const ExamUpsertFormStep3 = memo(function ({
   disabled,
   ...moreProps
 }: Props) {
-  const { control, watch } = useFormContext<ExamUpsertFormData>();
+  const { control, watch, setValue } = useFormContext<ExamUpsertFormData>();
 
-  const watchFields = watch(['startDate', 'endDate', 'startTime', 'endTime']);
+  const scheduleWatchFields = watch([
+    'startDate',
+    'endDate',
+    'startTime',
+    'endTime',
+  ]);
+  const startDate = useWatch({ control, name: 'startDate' });
 
   const [durationText, isDurationValid] = useMemo(() => {
-    const [startDate, endDate, startTime, endTime] = watchFields;
+    const [startDate, endDate, startTime, endTime] = scheduleWatchFields;
 
     const startDateTime = dayjs(
       `${dayjs(startDate).format('YYYY-MM-DD')} ${startTime}`,
@@ -51,7 +57,12 @@ export const ExamUpsertFormStep3 = memo(function ({
     }
 
     return [convertSecondsToDuration(duration), true];
-  }, [watchFields]);
+  }, [scheduleWatchFields]);
+
+  useEffect(() => {
+    setValue('endDate', startDate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startDate]);
 
   return (
     <div {...moreProps}>
@@ -62,30 +73,22 @@ export const ExamUpsertFormStep3 = memo(function ({
         className='group/field flex flex-wrap gap-5'
         disabled={disabled}
       >
-        <div className='flex w-full items-start justify-between gap-5'>
+        <div className='w-full'>
           <BaseControlledDatePicker
             name='startDate'
-            label='Start Date'
+            label='Date'
             control={control}
             iconName='calendar'
             calendarSelectorProps={calendarSelectorProps}
             fullWidth
           />
+        </div>
+        <div className='flex w-full items-start justify-between gap-5'>
           <BaseControlledTimeInput
             name='startTime'
             label='Start Time'
             control={control}
             iconName='clock'
-            fullWidth
-          />
-        </div>
-        <div className='flex w-full items-start justify-between gap-5'>
-          <BaseControlledDatePicker
-            name='endDate'
-            label='End Date'
-            control={control}
-            iconName='calendar'
-            calendarSelectorProps={calendarSelectorProps}
             fullWidth
           />
           <BaseControlledTimeInput
