@@ -17,7 +17,7 @@ import type { IconName } from '#/base/models/base.model';
 import type {
   ExamQuestionChoiceFormData,
   ExamUpsertFormData,
-} from '../models/exam.model';
+} from '../models/exam-form-data.model';
 
 type Props = ComponentProps<'div'> & {
   questionIndex: number;

@@ -1,5 +1,6 @@
 import type { StateCreator } from 'zustand';
-import type { LessonSlice, LessonUpsertFormData } from '../models/lesson.model';
+import type { LessonSlice } from '../models/lesson.model';
+import type { LessonUpsertFormData } from '../models/lesson-form-data.model';
 
 export const createLessonSlice: StateCreator<
   LessonSlice,

@@ -61,8 +61,10 @@ export function useStudentLessonSingle(): Result {
     }),
   );
 
-  const title = useMemo(() => lesson?.title || '', [lesson]);
-  const upcoming = useMemo(() => !!(lesson && !lesson.videoUrl), [lesson]);
+  const [title, upcoming] = useMemo(
+    () => [lesson?.title || '', !!(lesson && !lesson.videoUrl)],
+    [lesson],
+  );
 
   const upcomingDayJsDuration = useMemo(() => {
     if (!upcoming || !lesson?.schedules?.length) {

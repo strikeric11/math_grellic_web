@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { LazyMotion, domAnimation, m } from 'framer-motion';
+import { motion } from 'framer-motion';
 import cx from 'classix';
 
 import {
@@ -143,22 +143,20 @@ export const BaseStepper = memo(function ({
       </BaseStepperControls>
       <div className='relative mx-auto min-h-[700px] w-full max-w-[600px] !overflow-hidden py-5'>
         {!!steps && (
-          <LazyMotion features={domAnimation}>
-            <m.div
-              key={currentIndex}
-              className='h-full w-full'
-              custom={isForward}
-              variants={stepperAnimationVariants}
-              initial='initial'
-              animate='animate'
-              exit='exit'
-              transition={stepperAnimationTransition}
-              onAnimationStart={handleAnimation(true)}
-              onAnimationComplete={handleAnimation(false)}
-            >
-              {steps[currentIndex]}
-            </m.div>
-          </LazyMotion>
+          <motion.div
+            key={currentIndex}
+            className='h-full w-full'
+            custom={isForward}
+            variants={stepperAnimationVariants}
+            initial='initial'
+            animate='animate'
+            exit='exit'
+            transition={stepperAnimationTransition}
+            onAnimationStart={handleAnimation(true)}
+            onAnimationComplete={handleAnimation(false)}
+          >
+            {steps[currentIndex]}
+          </motion.div>
         )}
       </div>
     </div>

@@ -1,6 +1,7 @@
 import type { AuditTrail, RecordStatus } from '#/core/models/core.model';
 import type { Lesson } from '#/lesson/models/lesson.model';
 import type { StudentUserAccount } from '#/user/models/user.model';
+import type { ExamUpsertFormData } from './exam-form-data.model';
 
 export type Exam = Partial<AuditTrail> & {
   id: number;
@@ -42,48 +43,19 @@ export type ExamSchedule = Partial<AuditTrail> & {
   students: StudentUserAccount[];
 };
 
-export type ExamQuestionChoiceFormData = {
+export type ExamCompletion = Partial<AuditTrail> & {
   id: number;
-  orderNumber: number;
-  text: string;
-  isExpression: boolean;
-  isCorrect: boolean;
+  submittedAt: Date;
+  score: number;
+  questionAnswers: ExamCompletionQuestionAnswer[];
+  exam: Exam;
+  student: StudentUserAccount;
 };
 
-export type ExamQuestionFormData = {
+export type ExamCompletionQuestionAnswer = Partial<AuditTrail> & {
   id: number;
-  orderNumber: number;
-  text: string;
-  choices: ExamQuestionChoiceFormData[];
-};
-
-export type ExamUpsertFormData = {
-  orderNumber: number | null;
-  status: RecordStatus;
-  title: string;
-  randomizeQuestions: boolean;
-  visibleQuestionsCount: number;
-  pointsPerQuestion: number;
-  passingPoints: number;
-  questions: ExamQuestionFormData[];
-  slug?: string;
-  description?: string;
-  excerpt?: string;
-  coveredLessonIds?: number[];
-  // Schedule
-  startDate?: Date;
-  startTime?: string;
-  endDate?: Date;
-  endTime?: string;
-  studentIds?: number[];
-};
-
-export type ExamScheduleUpsertFormData = {
-  examId: number;
-  startDate: Date;
-  endDate: Date;
-  startTime: string;
-  studentIds: number[];
+  question: ExamQuestion;
+  selectedQuestionChoice: ExamQuestionChoice;
 };
 
 export type ExamSlice = {

@@ -13,7 +13,8 @@ import {
   deleteExam as deleteExamApi,
 } from '../api/teacher-exam.api';
 
-import type { Exam, ExamUpsertFormData } from '../models/exam.model';
+import type { Exam } from '../models/exam.model';
+import type { ExamUpsertFormData } from '../models/exam-form-data.model';
 
 type Result = {
   loading: boolean;

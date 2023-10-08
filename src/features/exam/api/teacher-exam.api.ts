@@ -12,7 +12,8 @@ import type {
   UseMutationOptions,
   UseQueryOptions,
 } from '@tanstack/react-query';
-import type { Exam, ExamUpsertFormData } from '../models/exam.model';
+import type { Exam } from '../models/exam.model';
+import type { ExamUpsertFormData } from '../models/exam-form-data.model';
 
 const BASE_URL = 'exams';
 

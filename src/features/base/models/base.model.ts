@@ -83,6 +83,7 @@ export type IconName =
   | 'user'
   | 'users-four'
   | 'x'
+  | 'x-circle'
   | 'x-square';
 
 export type NavItem = {

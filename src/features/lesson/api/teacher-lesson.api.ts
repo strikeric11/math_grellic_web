@@ -12,7 +12,8 @@ import type {
 } from '@tanstack/react-query';
 import type { PaginatedQueryData } from '#/core/models/core.model';
 import type { QueryPagination } from '#/base/models/base.model';
-import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
+import type { Lesson } from '../models/lesson.model';
+import type { LessonUpsertFormData } from '../models/lesson-form-data.model';
 
 const BASE_URL = 'lessons';
 

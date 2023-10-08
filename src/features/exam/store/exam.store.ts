@@ -1,5 +1,6 @@
 import type { StateCreator } from 'zustand';
-import type { ExamSlice, ExamUpsertFormData } from '../models/exam.model';
+import type { ExamSlice } from '../models/exam.model';
+import type { ExamUpsertFormData } from '../models/exam-form-data.model';
 
 export const createExamSlice: StateCreator<ExamSlice, [], [], ExamSlice> = (
   set,

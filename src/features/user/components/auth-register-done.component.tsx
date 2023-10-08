@@ -1,7 +1,9 @@
-import { ComponentProps, memo } from 'react';
+import { memo } from 'react';
 import cx from 'classix';
 
 import { BaseLink } from '#/base/components/base-link.component';
+
+import type { ComponentProps } from 'react';
 
 export const AuthRegisterDone = memo(function ({
   className,

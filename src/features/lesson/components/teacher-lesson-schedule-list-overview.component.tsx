@@ -29,11 +29,13 @@ export const TeacherLessonScheduleListOverview = memo(function ({
 }: Props) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const orderNumber = useMemo(() => lesson.orderNumber, [lesson]);
-  const title = useMemo(() => lesson.title, [lesson]);
 
-  const duration = useMemo(
-    () => convertSecondsToDuration(lesson.durationSeconds || 0, true),
+  const [orderNumber, title, duration] = useMemo(
+    () => [
+      lesson.orderNumber,
+      lesson.title,
+      convertSecondsToDuration(lesson.durationSeconds || 0, true),
+    ],
     [lesson],
   );
 

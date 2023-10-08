@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import cx from 'classix';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
-import { LazyMotion, domAnimation, m } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import { BaseDropdownButton } from './base-dropdown-button.component';
 import { BaseIconButton } from './base-icon-button.component';
@@ -170,27 +170,25 @@ export const BaseCalendarSelector = memo(function ({
             </OverlayScrollbarsComponent>
           </div>
           {currentYear !== undefined && (
-            <LazyMotion features={domAnimation}>
-              <m.div className='h-full w-full' {...widthAnimation}>
-                <OverlayScrollbarsComponent
-                  className='h-full w-full border-l border-l-primary-border-light p-2.5'
-                  defer
-                >
-                  {months.map(({ label, value, disabled }) => (
-                    <BaseDropdownButton
-                      key={value}
-                      type='button'
-                      className='items-center'
-                      disabled={disabled}
-                      onClick={handleSpecificChange(value)}
-                      center
-                    >
-                      {label}
-                    </BaseDropdownButton>
-                  ))}
-                </OverlayScrollbarsComponent>
-              </m.div>
-            </LazyMotion>
+            <motion.div className='h-full w-full' {...widthAnimation}>
+              <OverlayScrollbarsComponent
+                className='h-full w-full border-l border-l-primary-border-light p-2.5'
+                defer
+              >
+                {months.map(({ label, value, disabled }) => (
+                  <BaseDropdownButton
+                    key={value}
+                    type='button'
+                    className='items-center'
+                    disabled={disabled}
+                    onClick={handleSpecificChange(value)}
+                    center
+                  >
+                    {label}
+                  </BaseDropdownButton>
+                ))}
+              </OverlayScrollbarsComponent>
+            </motion.div>
           )}
         </div>
       )}

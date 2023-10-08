@@ -22,7 +22,8 @@ import { LessonUpsertFormStep2 } from './lesson-upsert-form-step-2.component';
 
 import type { FieldErrors } from 'react-hook-form';
 import type { FormProps, IconName } from '#/base/models/base.model';
-import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
+import type { Lesson } from '../models/lesson.model';
+import type { LessonUpsertFormData } from '../models/lesson-form-data.model';
 
 type Props = FormProps<'div', LessonUpsertFormData, Promise<Lesson>>;
 

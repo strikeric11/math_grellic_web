@@ -51,6 +51,7 @@ import { StudentLessonSinglePage } from '#/lesson/pages/student-lesson-single.pa
 import { LessonPreviewSlugPage } from '#/lesson/pages/lesson-preview-slug.page';
 import { LessonPreviewPage } from '#/lesson/pages/lesson-preview.page';
 import { LessonEditPage } from '#/lesson/pages/lesson-edit.page';
+import { TeacherExamSinglePage } from '#/exam/pages/teacher-exam-single.page';
 import { ExamCreatePage } from '#/exam/pages/exam-create.page';
 import { ExamEditPage } from '#/exam/pages/exam-edit.page';
 import { ExamPreviewPage } from '#/exam/pages/exam-preview.page';
@@ -77,7 +78,9 @@ const rootRoutes = createRoutesFromElements(
       />
       <Route
         path='*'
-        element={<CorePageNotFound linkLabel='Return to home' />}
+        element={
+          <CorePageNotFound className='!h-screen' linkLabel='Return to home' />
+        }
       />
     </Route>
     {/* TEACHER */}
@@ -163,6 +166,12 @@ const rootRoutes = createRoutesFromElements(
           loader={getTeacherPaginatedExamsLoader(queryClient)}
         />
         <Route path=':slug' element={<Outlet />}>
+          <Route
+            index
+            element={<TeacherExamSinglePage />}
+            handle={teacherExamRouteHandle.single}
+            loader={getTeacherExamBySlugLoader(queryClient)}
+          />
           <Route
             path={teacherRoutes.exam.editTo}
             element={<ExamEditPage />}

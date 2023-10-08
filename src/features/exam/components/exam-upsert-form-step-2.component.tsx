@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { BaseControlledNumberInput } from '#/base/components/base-input.component';
@@ -7,9 +7,8 @@ import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { ExamUpsertQuestionList } from './exam-upsert-question-list.component';
 
-import type { ExamUpsertFormData } from '../models/exam.model';
 import type { ComponentProps } from 'react';
-import type { IconName } from '#/base/models/base.model';
+import type { ExamUpsertFormData } from '../models/exam-form-data.model';
 
 type Props = ComponentProps<'div'> & {
   disabled?: boolean;
@@ -24,7 +23,7 @@ export const ExamUpsertFormStep2 = memo(function ({
   disabled,
   ...moreProps
 }: Props) {
-  const { control, watch, setValue } = useFormContext<ExamUpsertFormData>();
+  const { control, watch } = useFormContext<ExamUpsertFormData>();
 
   const [visibleQuestionsCount, pointsPerQuestion, questions] = watch([
     'visibleQuestionsCount',
@@ -41,20 +40,6 @@ export const ExamUpsertFormStep2 = memo(function ({
     return visibleCount * pointsPerQuestion;
   }, [visibleQuestionsCount, pointsPerQuestion, totalQuestionCount]);
 
-  const setMaxVisibleQuestions = useCallback(() => {
-    setValue('visibleQuestionsCount', totalQuestionCount);
-  }, [totalQuestionCount, setValue]);
-
-  const visibleQuestionsIconButtonProps = useMemo(
-    () => ({
-      name: 'arrow-fat-up' as IconName,
-      isInput: true,
-      tooltip: 'Set to max',
-      onClick: setMaxVisibleQuestions,
-    }),
-    [setMaxVisibleQuestions],
-  );
-
   return (
     <div {...moreProps}>
       <fieldset
@@ -65,20 +50,18 @@ export const ExamUpsertFormStep2 = memo(function ({
           className='flex w-full items-center justify-between gap-5'
           rounded='sm'
         >
-          <BaseControlledNumberInput
-            label='Visible Questions'
-            name='visibleQuestionsCount'
-            control={control}
-            rightButtonProps={visibleQuestionsIconButtonProps}
-            fullWidth
-            asterisk
-          />
+          <div className={FIXED_FIELD_CLASSNAME}>
+            <span className={FIXED_FIELD_VALUE_CLASSNAME}>
+              {visibleQuestionsCount}
+            </span>
+            <small className='uppercase'>Total Questions</small>
+          </div>
           <BaseIcon className='w-11 shrink-0 opacity-40' name='x' size={28} />
           <div className={FIXED_FIELD_CLASSNAME}>
             <span className={FIXED_FIELD_VALUE_CLASSNAME}>
               {pointsPerQuestion}
             </span>
-            <span className='text-sm font-medium'>Pt(s) Per Question</span>
+            <small className='uppercase'>Point Per Question</small>
           </div>
           <BaseIcon
             className='w-11 shrink-0 opacity-40'
@@ -87,7 +70,7 @@ export const ExamUpsertFormStep2 = memo(function ({
           />
           <div className={FIXED_FIELD_CLASSNAME}>
             <span className={FIXED_FIELD_VALUE_CLASSNAME}>{totalPoints}</span>
-            <span className='text-sm font-medium'>Total Points</span>
+            <small className='uppercase'>Total Points</small>
           </div>
         </BaseSurface>
         <BaseSurface
@@ -102,18 +85,12 @@ export const ExamUpsertFormStep2 = memo(function ({
             fullWidth
             asterisk
           />
-          <div className='flex flex-col'>
-            <BaseControlledCheckbox
-              labelClassName='mt-0.5 !text-base'
-              name='randomizeQuestions'
-              label='Randomize Questions'
-              control={control}
-            />
-            <div className='text-right'>
-              Total Questions:
-              <span className='ml-2 text-lg'>{totalQuestionCount}</span>
-            </div>
-          </div>
+          <BaseControlledCheckbox
+            labelClassName='mt-0.5 !text-base'
+            name='randomizeQuestions'
+            label='Randomize Questions'
+            control={control}
+          />
         </BaseSurface>
         <ExamUpsertQuestionList />
       </fieldset>

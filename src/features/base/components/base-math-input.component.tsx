@@ -86,7 +86,7 @@ export const BaseMathInput = memo(
           <EditableMathField
             id={newId}
             className={cx(
-              `mq-editable-field mq-math-mode peer h-full w-full flex-1 !rounded-md border-2 border-accent/40 pl-18px pr-5 pt-0.5 text-accent !outline-none
+              `mq-editable-field mq-math-mode peer h-full w-full flex-1 !rounded-md border-2 border-accent/40 pl-18px pr-5 pt-1 text-accent !outline-none
                 transition-all group-disabled/field:!bg-backdrop-gray [&.mq-focused]:!border-primary-focus [&.mq-focused]:!ring-1 [&.mq-focused]:!ring-primary-focus`,
               (!!leftContent || !!iconName) && '!pl-43px',
               !!errorMessage && '!border-red-500/60',

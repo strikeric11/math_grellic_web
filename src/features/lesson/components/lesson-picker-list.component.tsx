@@ -31,8 +31,10 @@ export const LessonItem = memo(function ({
   selected,
   onClick,
 }: LessonItemProps) {
-  const title = useMemo(() => lesson.title, [lesson]);
-  const orderNumber = useMemo(() => `No. ${lesson.orderNumber}`, [lesson]);
+  const [title, orderNumber] = useMemo(
+    () => [lesson.title, `No. ${lesson.orderNumber}`],
+    [lesson],
+  );
 
   return (
     <button

@@ -13,7 +13,8 @@ import {
   deleteLesson as deleteLessonApi,
 } from '../api/teacher-lesson.api';
 
-import type { Lesson, LessonUpsertFormData } from '../models/lesson.model';
+import type { Lesson } from '../models/lesson.model';
+import type { LessonUpsertFormData } from '../models/lesson-form-data.model';
 
 type Result = {
   loading: boolean;

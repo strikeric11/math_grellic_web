@@ -2,7 +2,7 @@ import { memo, useCallback, useMemo } from 'react';
 import dayjs from 'dayjs';
 import DOMPurify from 'dompurify';
 import toast from 'react-hot-toast';
-import { cx } from 'classix';
+import cx from 'classix';
 
 import {
   convertSecondsToDuration,
@@ -35,19 +35,24 @@ export const StudentLessonSingle = memo(function LessonSingle({
   onSetCompletion,
   ...moreProps
 }: Props) {
-  const orderNumber = useMemo(() => lesson.orderNumber, [lesson]);
-  const title = useMemo(() => lesson.title, [lesson]);
-  const videoUrl = useMemo(() => lesson.videoUrl, [lesson]);
-  const excerpt = useMemo(() => lesson.excerpt, [lesson]);
-  const isCompleted = useMemo(() => !!lesson.completions?.length, [lesson]);
-
-  const duration = useMemo(
-    () => convertSecondsToDuration(lesson.durationSeconds || 0, true),
-    [lesson],
-  );
-
-  const descriptionHtml = useMemo(
-    () => ({ __html: DOMPurify.sanitize(lesson.description || '') }),
+  const [
+    orderNumber,
+    title,
+    videoUrl,
+    excerpt,
+    isCompleted,
+    duration,
+    descriptionHtml,
+  ] = useMemo(
+    () => [
+      lesson.orderNumber,
+      lesson.title,
+      lesson.videoUrl,
+      lesson.excerpt,
+      !!lesson.completions?.length,
+      convertSecondsToDuration(lesson.durationSeconds || 0, true),
+      { __html: DOMPurify.sanitize(lesson.description || '') },
+    ],
     [lesson],
   );
 
@@ -102,8 +107,8 @@ export const StudentLessonSingle = memo(function LessonSingle({
               <small className='mb-1 flex w-full items-center justify-end text-base font-medium uppercase text-white'>
                 <span className='relative mr-4 flex gap-1'>
                   <span className='relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-white'></span>
-                  <span className='animation-delay-100 relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-white'></span>
-                  <span className='animation-delay-200 relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-white'></span>
+                  <span className='relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-white animation-delay-100'></span>
+                  <span className='relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-white animation-delay-200'></span>
                 </span>
                 Available In
               </small>

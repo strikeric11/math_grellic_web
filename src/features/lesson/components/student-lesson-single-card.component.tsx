@@ -29,16 +29,18 @@ export const StudentLessonSingleCard = memo(function ({
   upcomingDuration,
   ...moreProps
 }: Props) {
-  const singleTo = useMemo(() => lesson.slug, [lesson]);
-  const orderNumber = useMemo(() => lesson.orderNumber, [lesson]);
-  const title = useMemo(() => lesson.title, [lesson]);
-  const excerpt = useMemo(() => lesson.excerpt, [lesson]);
-  const isCompleted = useMemo(() => !!lesson.completions?.length, [lesson]);
-
-  const duration = useMemo(
-    () => convertSecondsToDuration(lesson.durationSeconds || 0, true),
-    [lesson],
-  );
+  const [singleTo, orderNumber, title, excerpt, isCompleted, duration] =
+    useMemo(
+      () => [
+        lesson.slug,
+        lesson.orderNumber,
+        lesson.title,
+        lesson.excerpt,
+        !!lesson.completions?.length,
+        convertSecondsToDuration(lesson.durationSeconds || 0, true),
+      ],
+      [lesson],
+    );
 
   const [scheduleDate, scheduleTime] = useMemo(() => {
     if (!lesson.schedules?.length) {
@@ -131,8 +133,8 @@ export const StudentLessonSingleCard = memo(function ({
               <small className='mb-1 flex w-full items-center justify-end font-medium uppercase [.primary_&]:text-white'>
                 <span className='relative mr-4 flex gap-1'>
                   <span className='relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-primary-focus-light [.primary_&]:bg-white'></span>
-                  <span className='animation-delay-100 relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-primary-focus-light [.primary_&]:bg-white'></span>
-                  <span className='animation-delay-200 relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-primary-focus-light [.primary_&]:bg-white'></span>
+                  <span className='relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-primary-focus-light animation-delay-100 [.primary_&]:bg-white'></span>
+                  <span className='relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-primary-focus-light animation-delay-200 [.primary_&]:bg-white'></span>
                 </span>
                 Available In
               </small>

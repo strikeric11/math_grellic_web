@@ -9,7 +9,7 @@ import { BaseControlledTimeInput } from '#/base/components/base-time-input.compo
 import { StudentUserControlledPicker } from '#/user/components/student-user-picker.component';
 
 import type { ComponentProps } from 'react';
-import type { ExamUpsertFormData } from '../models/exam.model';
+import type { ExamUpsertFormData } from '../models/exam-form-data.model';
 
 type Props = ComponentProps<'div'> & {
   disabled?: boolean;

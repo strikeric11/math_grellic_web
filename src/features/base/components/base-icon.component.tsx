@@ -77,6 +77,7 @@ import {
   User,
   UsersFour,
   X,
+  XCircle,
   XSquare,
 } from '@phosphor-icons/react';
 
@@ -242,6 +243,8 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return UsersFour;
       case 'x':
         return X;
+      case 'x-circle':
+        return XCircle;
       case 'x-square':
         return XSquare;
     }

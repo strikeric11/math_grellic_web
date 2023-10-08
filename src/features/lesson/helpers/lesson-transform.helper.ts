@@ -12,9 +12,11 @@ import type {
   Lesson,
   LessonCompletion,
   LessonSchedule,
+} from '../models/lesson.model';
+import type {
   LessonScheduleUpsertFormData,
   LessonUpsertFormData,
-} from '../models/lesson.model';
+} from '../models/lesson-form-data.model';
 
 export function transformToLesson({
   id,

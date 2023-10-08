@@ -37,13 +37,15 @@ export const TeacherLessonSingleCard = memo(function ({
   onSchedule,
   ...moreProps
 }: Props) {
-  const orderNumber = useMemo(() => lesson.orderNumber, [lesson]);
-  const title = useMemo(() => lesson.title, [lesson]);
-  const duration = useMemo(
-    () => convertSecondsToDuration(lesson.durationSeconds || 0, true),
+  const [orderNumber, title, duration, isDraft] = useMemo(
+    () => [
+      lesson.orderNumber,
+      lesson.title,
+      convertSecondsToDuration(lesson.durationSeconds || 0, true),
+      lesson.status === RecordStatus.Draft,
+    ],
     [lesson],
   );
-  const isDraft = useMemo(() => lesson.status === RecordStatus.Draft, [lesson]);
 
   const [scheduleDate, scheduleTime] = useMemo(() => {
     if (!lesson.schedules?.length) {

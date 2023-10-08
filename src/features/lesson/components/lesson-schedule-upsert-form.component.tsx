@@ -13,10 +13,8 @@ import { BaseControlledDatePicker } from '#/base/components/base-date-picker.com
 import { BaseControlledTimeInput } from '#/base/components/base-time-input.component';
 
 import type { FormProps, IconName } from '#/base/models/base.model';
-import type {
-  LessonSchedule,
-  LessonScheduleUpsertFormData,
-} from '../models/lesson.model';
+import type { LessonSchedule } from '../models/lesson.model';
+import type { LessonScheduleUpsertFormData } from '../models/lesson-form-data.model';
 
 type Props = FormProps<
   'div',

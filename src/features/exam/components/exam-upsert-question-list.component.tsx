@@ -15,7 +15,7 @@ import { ExamUpsertQuestionChoiceList } from './exam-upsert-question-choice-list
 import type { ComponentProps } from 'react';
 import type { Control } from 'react-hook-form';
 import type { IconName } from '#/base/models/base.model';
-import type { ExamUpsertFormData } from '../models/exam.model';
+import type { ExamUpsertFormData } from '../models/exam-form-data.model';
 
 type QuestionProps = {
   index: number;
@@ -139,6 +139,8 @@ export const ExamUpsertQuestionList = memo(function ({
         orderNumber: index + 1,
       });
     });
+
+    setValue('visibleQuestionsCount', questions.length);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questions]);
 

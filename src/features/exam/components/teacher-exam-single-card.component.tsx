@@ -36,23 +36,22 @@ export const TeacherExamSingleCard = memo(function ({
   onSchedule,
   ...moreProps
 }: Props) {
-  const orderNumber = useMemo(() => exam.orderNumber, [exam]);
-  const title = useMemo(() => exam.title, [exam]);
-  const questionsCount = useMemo(() => exam.visibleQuestionsCount, [exam]);
-  const isDraft = useMemo(() => exam.status === RecordStatus.Draft, [exam]);
-
-  const questionsCountText = useMemo(
-    () =>
-      questionsCount > 1
-        ? `${questionsCount} Questions`
-        : `${questionsCount} Question`,
-    [questionsCount],
-  );
-
-  const passingPoints = useMemo(() => exam.passingPoints, [exam]);
-
-  const totalPoints = useMemo(
-    () => exam.pointsPerQuestion * exam.visibleQuestionsCount,
+  const [
+    orderNumber,
+    title,
+    questionCount,
+    passingPoints,
+    totalPoints,
+    isDraft,
+  ] = useMemo(
+    () => [
+      exam.orderNumber,
+      exam.title,
+      exam.visibleQuestionsCount,
+      exam.passingPoints,
+      exam.pointsPerQuestion * exam.visibleQuestionsCount,
+      exam.status === RecordStatus.Draft,
+    ],
     [exam],
   );
 
@@ -77,6 +76,12 @@ export const TeacherExamSingleCard = memo(function ({
     return [date, time, convertSecondsToDuration(duration)];
   }, [exam]);
 
+  const questionCountText = useMemo(
+    () =>
+      questionCount > 1 ? `${questionCount} Items` : `${questionCount} Item`,
+    [questionCount],
+  );
+  
   return (
     <BaseSurface
       className={cx(
@@ -106,7 +111,7 @@ export const TeacherExamSingleCard = memo(function ({
             <div className='flex items-center gap-2.5'>
               <BaseChip iconName='exam'>Exam {orderNumber}</BaseChip>
               <BaseDivider className='!h-6' vertical />
-              <BaseChip iconName='list-numbers'>{questionsCountText}</BaseChip>
+              <BaseChip iconName='list-numbers'>{questionCountText}</BaseChip>
               {isDraft && (
                 <>
                   <BaseDivider className='!h-6' vertical />

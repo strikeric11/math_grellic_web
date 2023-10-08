@@ -9,7 +9,7 @@ import { BaseControlledRichTextEditor } from '#/base/components/base-rich-text-e
 import { LessonControlledPicker } from '#/lesson/components/lesson-picker.component';
 
 import type { ComponentProps } from 'react';
-import type { ExamScheduleUpsertFormData } from '../models/exam.model';
+import type { ExamScheduleUpsertFormData } from '../models/exam-form-data.model';
 
 type Props = ComponentProps<'div'> & {
   disabled?: boolean;

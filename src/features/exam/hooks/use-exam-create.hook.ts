@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 
 import { queryClient } from '#/config/react-query-client.config';
 import { queryExamKey } from '#/config/react-query-keys.config';
 import { createExam as createExamApi } from '../api/teacher-exam.api';
 
-import type { Exam, ExamUpsertFormData } from '../models/exam.model';
-import { useMutation } from '@tanstack/react-query';
+import type { Exam } from '../models/exam.model';
+import type { ExamUpsertFormData } from '../models/exam-form-data.model';
 
 type Result = {
   isDone: boolean;

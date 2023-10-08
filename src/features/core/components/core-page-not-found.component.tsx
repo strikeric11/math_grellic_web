@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { cx } from 'classix';
+import cx from 'classix';
 
 import { BaseLink } from '#/base/components/base-link.component';
 
@@ -19,7 +19,7 @@ export const CorePageNotFound = memo(function ({
   return (
     <div
       className={cx(
-        'flex h-screen w-full animate-fadeIn flex-col items-center justify-center pb-8',
+        'flex h-full w-full flex-1 animate-fadeIn flex-col items-center justify-center pb-8',
         className,
       )}
       {...moreProps}

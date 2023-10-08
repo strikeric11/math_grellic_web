@@ -25,7 +25,8 @@ import { ExamUpsertFormStep2 } from './exam-upsert-form-step-2.component';
 import { ExamUpsertFormStep3 } from './exam-upsert-form-step-3.component';
 
 import type { FormProps, IconName } from '#/base/models/base.model';
-import type { Exam, ExamUpsertFormData } from '../models/exam.model';
+import type { Exam } from '../models/exam.model';
+import type { ExamUpsertFormData } from '../models/exam-form-data.model';
 
 type Props = FormProps<'div', ExamUpsertFormData, Promise<Exam>>;
 
@@ -50,7 +51,6 @@ const questionSchema = z.object({
     .int()
     .gt(0, 'Question number is invalid'),
   text: z.string().min(1, 'Question is required'),
-  experience: z.number().optional(),
   choices: z.array(choiceSchema).min(2),
 });
 

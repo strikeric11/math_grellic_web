@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 
 import { transformToBaseModel } from '#/base/helpers/base.helper';
 import { transformToStudentUserAccount } from '#/user/helpers/user-transform.helper';
+import { transformToLesson } from '#/lesson/helpers/lesson-transform.helper';
 
 import type { StudentUserAccount } from '#/user/models/user.model';
 import type { Lesson } from '#/lesson/models/lesson.model';
@@ -9,32 +10,38 @@ import type {
   Exam,
   ExamQuestion,
   ExamQuestionChoice,
+  ExamSchedule,
+} from '../models/exam.model';
+import type {
   ExamQuestionChoiceFormData,
   ExamQuestionFormData,
-  ExamSchedule,
   ExamUpsertFormData,
-} from '../models/exam.model';
+} from '../models/exam-form-data.model';
 
-export function transformToExam({
-  id,
-  createdAt,
-  updatedAt,
-  status,
-  orderNumber,
-  title,
-  slug,
-  randomizeQuestions,
-  visibleQuestionsCount,
-  pointsPerQuestion,
-  passingPoints,
-  description,
-  excerpt,
-  coveredLessons,
-  questions,
-  schedules,
-}: any): Exam {
-  const transformedCoveredLessons =
-    coveredLessons?.map((lesson: any) => ({ id: lesson.id })) || [];
+export function transformToExam(
+  {
+    id,
+    createdAt,
+    updatedAt,
+    status,
+    orderNumber,
+    title,
+    slug,
+    randomizeQuestions,
+    visibleQuestionsCount,
+    pointsPerQuestion,
+    passingPoints,
+    description,
+    excerpt,
+    coveredLessons,
+    questions,
+    schedules,
+  }: any,
+  withLesson?: boolean,
+): Exam {
+  const transformedCoveredLessons = withLesson
+    ? coveredLessons?.map((lesson: any) => transformToLesson(lesson)) || []
+    : coveredLessons?.map((lesson: any) => ({ id: lesson.id })) || [];
 
   const transformedQuestions =
     questions?.map((question: any) => transformToExamQuestion(question)) || [];

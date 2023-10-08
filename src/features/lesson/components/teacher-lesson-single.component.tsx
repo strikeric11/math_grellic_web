@@ -10,6 +10,7 @@ import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
+import { BaseSurface } from '#/base/components/base-surface.component';
 import { LessonVideo } from './lesson-video.component';
 
 import type { ComponentProps } from 'react';
@@ -24,15 +25,17 @@ export const TeacherLessonSingle = memo(function ({
   lesson,
   ...moreProps
 }: Props) {
-  const orderNumber = useMemo(() => lesson.orderNumber, [lesson]);
-  const title = useMemo(() => lesson.title, [lesson]);
-  const videoUrl = useMemo(() => lesson.videoUrl, [lesson]);
-  const duration = useMemo(
-    () => convertSecondsToDuration(lesson.durationSeconds || 0, true),
+  const [orderNumber, title, videoUrl, duration, isDraft, excerpt] = useMemo(
+    () => [
+      lesson.orderNumber,
+      lesson.title,
+      lesson.videoUrl,
+      convertSecondsToDuration(lesson.durationSeconds || 0, true),
+      lesson.status === RecordStatus.Draft,
+      lesson.excerpt,
+    ],
     [lesson],
   );
-  const isDraft = useMemo(() => lesson.status === RecordStatus.Draft, [lesson]);
-  const excerpt = useMemo(() => lesson.excerpt, [lesson]);
 
   const descriptionHtml = useMemo(() => {
     if (!lesson.description) {
@@ -66,7 +69,6 @@ export const TeacherLessonSingle = memo(function ({
             </BaseChip>
             <BaseDivider className='!h-6' vertical />
             <BaseChip iconName='hourglass'>{duration}</BaseChip>
-            <BaseDivider className='!h-6' vertical />
             {isDraft && (
               <>
                 <BaseDivider className='!h-6' vertical />
@@ -93,10 +95,10 @@ export const TeacherLessonSingle = memo(function ({
           </BaseLink>
         </div>
       </div>
-      <div className='my-4 flex w-full items-center justify-between rounded border border-accent/20 px-4 py-3'>
+      <div className='my-4 flex w-full items-center justify-between rounded border-b border-t border-accent/20 px-4 py-3'>
         {scheduleDate ? (
           <div className='flex items-center gap-2.5'>
-            <span className='mr-2'>Schedule</span>
+            <span className='mr-2 font-bold'>Schedule</span>
             <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
             <BaseDivider className='!h-6' vertical />
             <BaseChip iconName='clock'>{scheduleTime}</BaseChip>
@@ -111,22 +113,24 @@ export const TeacherLessonSingle = memo(function ({
         )}
       </div>
       <LessonVideo className='my-8' url={videoUrl} title={title} />
-      <div className='my-4 w-full rounded border border-accent/20 px-4 py-3'>
-        <span className='block font-bold'>
-          {excerpt ? 'Excerpt' : 'Lesson has no excerpt'}
-        </span>
-        {excerpt}
-      </div>
-      <div className='my-4 w-full rounded border border-accent/20 px-4 py-3'>
-        <span className='block font-bold'>
-          {descriptionHtml ? 'Description' : 'Lesson has no description'}
-        </span>
-        {descriptionHtml && (
-          <div
-            className='base-rich-text rt-output'
-            dangerouslySetInnerHTML={descriptionHtml}
-          />
-        )}
+      <div className='my-4 flex flex-col gap-y-3'>
+        <BaseSurface className='w-full rounded !px-4' rounded='sm'>
+          <span className='block font-bold'>
+            {excerpt ? 'Excerpt' : 'Lesson has no excerpt'}
+          </span>
+          {excerpt}
+        </BaseSurface>
+        <BaseSurface className='w-full rounded px-4' rounded='sm'>
+          <span className='block font-bold'>
+            {descriptionHtml ? 'Description' : 'Lesson has no description'}
+          </span>
+          {descriptionHtml && (
+            <div
+              className='base-rich-text rt-output'
+              dangerouslySetInnerHTML={descriptionHtml}
+            />
+          )}
+        </BaseSurface>
       </div>
     </div>
   );
