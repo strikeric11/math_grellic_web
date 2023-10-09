@@ -41,6 +41,7 @@ export type ExamScheduleUpsertFormData = {
   startDate: Date;
   endDate: Date;
   startTime: string;
+  endTime: string;
   studentIds: number[];
 };
 

@@ -120,7 +120,10 @@ export const StudentUserPicker = memo(
         return;
       }
 
-      selectedStudentsRefetch();
+      (async () => {
+        await selectedStudentsRefetch();
+      })();
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value, selectedStudentIds]);
 
@@ -226,14 +229,15 @@ export const StudentUserPicker = memo(
           <ul
             className={cx('w-full', (isLoading || isFetching) && 'opacity-50')}
           >
-            {(selectedStudents as StudentUserAccount[]).map((student) => (
-              <li
-                key={student.id}
-                className='w-full border-b border-primary-border-light py-2 last:border-b-0'
-              >
-                <StudentUserItem student={student} />
-              </li>
-            ))}
+            {value != null &&
+              (selectedStudents as StudentUserAccount[]).map((student) => (
+                <li
+                  key={student.id}
+                  className='w-full border-b border-primary-border-light py-2 last:border-b-0'
+                >
+                  <StudentUserItem student={student} />
+                </li>
+              ))}
           </ul>
         )}
         <BaseModal

@@ -7,10 +7,8 @@ import {
 } from '../helpers/lesson-transform.helper';
 
 import type { UseMutationOptions } from '@tanstack/react-query';
-import type {
-  LessonSchedule,
-  LessonScheduleUpsertFormData,
-} from '../models/lesson.model';
+import type { LessonSchedule } from '../models/lesson.model';
+import type { LessonScheduleUpsertFormData } from '../models/lesson-form-data.model';
 
 const BASE_URL = 'lessons';
 

@@ -15,6 +15,7 @@ import type {
 import type {
   ExamQuestionChoiceFormData,
   ExamQuestionFormData,
+  ExamScheduleUpsertFormData,
   ExamUpsertFormData,
 } from '../models/exam-form-data.model';
 
@@ -308,6 +309,26 @@ export function transformToExamQuestionChoiceUpsertDto({
     text,
     isCorrect,
     isExpression,
+  };
+}
+
+export function transformToExamScheduleFormData({
+  exam,
+  startDate,
+  endDate,
+  students,
+}: any): ExamScheduleUpsertFormData {
+  const transformedStudentIds = !students?.length
+    ? null
+    : students.map((student: StudentUserAccount) => student.id);
+
+  return {
+    examId: exam?.id || 0,
+    studentIds: transformedStudentIds,
+    startDate: dayjs(startDate).toDate(),
+    startTime: dayjs(startDate).format('hh:mm A'),
+    endDate: dayjs(endDate).toDate(),
+    endTime: dayjs(endDate).format('hh:mm A'),
   };
 }
 

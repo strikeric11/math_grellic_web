@@ -22,7 +22,6 @@ export function useTeacherExamSingle(): Result {
         enabled: !!slug,
         refetchOnWindowFocus: false,
         select: (data: any) => {
-          console.log(data);
           return transformToExam(data, true);
         },
       },

@@ -9,10 +9,8 @@ import {
   editLessonSchedule as editScheduleApi,
 } from '../api/teacher-lesson-schedule.api';
 
-import type {
-  LessonSchedule,
-  LessonScheduleUpsertFormData,
-} from '../models/lesson.model';
+import type { LessonSchedule } from '../models/lesson.model';
+import type { LessonScheduleUpsertFormData } from '../models/lesson-form-data.model';
 
 type Result = {
   isDone: boolean;

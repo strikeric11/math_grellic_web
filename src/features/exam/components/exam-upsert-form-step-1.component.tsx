@@ -9,7 +9,7 @@ import { BaseControlledRichTextEditor } from '#/base/components/base-rich-text-e
 import { LessonControlledPicker } from '#/lesson/components/lesson-picker.component';
 
 import type { ComponentProps } from 'react';
-import type { ExamScheduleUpsertFormData } from '../models/exam-form-data.model';
+import type { ExamUpsertFormData } from '../models/exam-form-data.model';
 
 type Props = ComponentProps<'div'> & {
   disabled?: boolean;
@@ -19,7 +19,7 @@ export const ExamUpsertFormStep1 = memo(function ({
   disabled,
   ...moreProps
 }: Props) {
-  const { control } = useFormContext<ExamScheduleUpsertFormData>();
+  const { control } = useFormContext<ExamUpsertFormData>();
 
   return (
     <div {...moreProps}>

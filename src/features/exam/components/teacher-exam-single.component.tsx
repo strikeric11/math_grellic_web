@@ -198,7 +198,7 @@ export const TeacherExamSingle = memo(function ({
           </span>
           <div className='flex flex-col'>
             {coveredLessons?.map((lesson) => (
-              <LessonItem lesson={lesson as Lesson} />
+              <LessonItem key={`li-${lesson.id}`} lesson={lesson as Lesson} />
             ))}
           </div>
         </BaseSurface>

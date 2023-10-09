@@ -8,6 +8,7 @@ import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
+import { BaseSurface } from '#/base/components/base-surface.component';
 
 import type { ComponentProps } from 'react';
 import type { ButtonVariant } from '#/base/models/base.model';
@@ -53,6 +54,7 @@ export const TeacherLessonScheduleListOverview = memo(function ({
   const isUpsert = useMemo(() => {
     const paths = pathname.split('/');
     const currentPath = paths[paths.length - 1];
+    console.log(pathname);
     return (
       currentPath === teacherRoutes.lesson.schedule.editTo ||
       currentPath === teacherRoutes.lesson.schedule.createTo
@@ -62,7 +64,7 @@ export const TeacherLessonScheduleListOverview = memo(function ({
   const handleUpsertSchedule = useCallback(
     (isEdit?: boolean) => () => {
       if (isUpsert) {
-        navigate(-1);
+        navigate('.');
         return;
       }
 
@@ -89,7 +91,10 @@ export const TeacherLessonScheduleListOverview = memo(function ({
         </div>
       </div>
       {/* Lesson schedule */}
-      <div className='my-4 flex h-16 items-center justify-between rounded border border-accent/20 bg-white px-6 py-3'>
+      <BaseSurface
+        className='my-4 flex h-16 items-center justify-between !px-6 !py-3'
+        rounded='xs'
+      >
         {scheduleDate ? (
           <>
             <div className='flex items-center gap-2.5'>
@@ -115,7 +120,7 @@ export const TeacherLessonScheduleListOverview = memo(function ({
             </BaseButton>
           </>
         )}
-      </div>
+      </BaseSurface>
     </div>
   );
 });

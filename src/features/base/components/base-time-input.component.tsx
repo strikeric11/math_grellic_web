@@ -49,6 +49,9 @@ export const BaseTimeInput = memo(
         value?.toString().replace(/[apm]/gi, '').trim() || '';
       const val = value?.toString().replace(/[^0-9]/g, '') || '';
       setLocalValue({ floatValue, formattedValue, value: val });
+      setLocalTimeSuffix(
+        value?.toString().includes(PM_TEXT) ? PM_TEXT : AM_TEXT,
+      );
     }, [value]);
 
     const timeSuffix = useMemo(() => {

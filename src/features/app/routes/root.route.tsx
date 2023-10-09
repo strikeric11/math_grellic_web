@@ -55,6 +55,10 @@ import { TeacherExamSinglePage } from '#/exam/pages/teacher-exam-single.page';
 import { ExamCreatePage } from '#/exam/pages/exam-create.page';
 import { ExamEditPage } from '#/exam/pages/exam-edit.page';
 import { ExamPreviewPage } from '#/exam/pages/exam-preview.page';
+import { ExamPreviewSlugPage } from '#/exam/pages/exam-preview-slug.page';
+import { TeacherExamScheduleListPage } from '#/exam/pages/teacher-exam-schedule-list.page';
+import { TeacherExamScheduleCreatePage } from '#/exam/pages/teacher-exam-schedule-create.page';
+import { TeacherExamScheduleEditPage } from '#/exam/pages/teacher-exam-schedule-edit.page';
 
 import { staticRoutes } from './static-routes';
 import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
@@ -178,6 +182,33 @@ const rootRoutes = createRoutesFromElements(
             handle={teacherExamRouteHandle.edit}
             loader={getTeacherExamBySlugLoader(queryClient)}
           />
+          <Route
+            path={teacherRoutes.exam.previewTo}
+            element={<ExamPreviewSlugPage />}
+            handle={teacherExamRouteHandle.preview}
+            loader={getTeacherExamBySlugLoader(queryClient, {
+              exclude: 'schedules',
+            })}
+          />
+          <Route
+            path={`${teacherRoutes.exam.schedule.to}`}
+            element={<TeacherExamScheduleListPage />}
+            handle={teacherExamRouteHandle.schedule}
+            loader={getTeacherExamBySlugLoader(queryClient, {
+              status: RecordStatus.Published,
+            })}
+          >
+            <Route
+              path={`${teacherRoutes.exam.schedule.createTo}`}
+              element={<TeacherExamScheduleCreatePage />}
+              handle={teacherLessonRouteHandle.schedule}
+            />
+            <Route
+              path={`${teacherRoutes.exam.schedule.editTo}`}
+              element={<TeacherExamScheduleEditPage />}
+              handle={teacherExamRouteHandle.schedule}
+            />
+          </Route>
         </Route>
         <Route
           path={teacherRoutes.exam.createTo}

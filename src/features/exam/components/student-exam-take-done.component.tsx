@@ -62,7 +62,7 @@ export const StudentExamTakeDone = memo(function ({
     () => [
       exam.title,
       exam.orderNumber,
-      exam.questions.length * exam.visibleQuestionsCount,
+      exam.pointsPerQuestion * exam.visibleQuestionsCount,
       exam.passingPoints,
     ],
     [exam],
