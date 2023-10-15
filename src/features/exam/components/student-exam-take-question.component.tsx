@@ -1,6 +1,7 @@
 import { memo, useCallback, useMemo } from 'react';
 import { useController } from 'react-hook-form';
 import { StaticMathField } from 'react-mathquill';
+import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { alphabet } from '#/utils/string.util';
@@ -14,6 +15,7 @@ import type { StudentExamFormData } from '../models/exam-form-data.model';
 
 type Props = ComponentProps<typeof BaseSurface> & {
   question: ExamQuestion;
+  isExpired?: boolean;
   preview?: boolean;
 };
 
@@ -21,6 +23,7 @@ type ControlledProps = Props & UseControllerProps<StudentExamFormData>;
 
 export const StudentExamTakeQuestion = memo(function ({
   className,
+  isExpired,
   question,
   preview,
   name,
@@ -48,6 +51,11 @@ export const StudentExamTakeQuestion = memo(function ({
 
   const handleChange = useCallback(
     (choiceId: number) => () => {
+      if (isExpired) {
+        toast.error(`Time's up. Please submit exam`);
+        return;
+      }
+
       if (isChoiceSelected(choiceId)) {
         onChange(undefined);
         return;
@@ -62,7 +70,14 @@ export const StudentExamTakeQuestion = memo(function ({
         onChange({ questionId, selectedQuestionChoiceId: choiceId });
       }
     },
-    [preview, questionId, questionOrderNumber, onChange, isChoiceSelected],
+    [
+      preview,
+      isExpired,
+      questionId,
+      questionOrderNumber,
+      onChange,
+      isChoiceSelected,
+    ],
   );
 
   return (
@@ -86,7 +101,10 @@ export const StudentExamTakeQuestion = memo(function ({
           >
             <div
               role='button'
-              className='group/choice relative flex w-full items-center'
+              className={cx(
+                'group/choice relative flex w-full items-center',
+                isExpired && 'cursor-default',
+              )}
               onClick={handleChange(preview ? orderNumber : id)}
             >
               {isChoiceSelected(preview ? orderNumber : id) && (
@@ -96,11 +114,12 @@ export const StudentExamTakeQuestion = memo(function ({
               )}
               <div
                 className={cx(
-                  'min-h-[40px] flex-1 pr-5 transition-[padding] group-hover/choice:bg-green-100',
+                  'min-h-[40px] flex-1 pr-5 transition-[padding]',
                   isExpression ? 'pb-1 pt-2' : 'py-2',
                   isChoiceSelected(preview ? orderNumber : id)
                     ? 'bg-green-100 pl-10'
                     : 'bg-white pl-5',
+                  !isExpired && 'group-hover/choice:bg-green-100',
                 )}
               >
                 <span

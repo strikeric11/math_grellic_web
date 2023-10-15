@@ -8,6 +8,8 @@ import type { StudentUserAccount } from '#/user/models/user.model';
 import type { Lesson } from '#/lesson/models/lesson.model';
 import type {
   Exam,
+  ExamCompletion,
+  ExamCompletionQuestionAnswer,
   ExamQuestion,
   ExamQuestionChoice,
   ExamSchedule,
@@ -37,6 +39,8 @@ export function transformToExam(
     coveredLessons,
     questions,
     schedules,
+    scheduleStatus,
+    completions,
   }: any,
   withLesson?: boolean,
 ): Exam {
@@ -49,6 +53,12 @@ export function transformToExam(
 
   const transformedSchedules = schedules
     ? schedules.map((schedule: any) => transformToExamSchedule(schedule))
+    : undefined;
+
+  const transformedCompletions = completions
+    ? completions.map((completion: any) =>
+        transformToExamCompletion(completion),
+      )
     : undefined;
 
   return {
@@ -65,6 +75,8 @@ export function transformToExam(
     coveredLessons: transformedCoveredLessons,
     questions: transformedQuestions,
     schedules: transformedSchedules,
+    scheduleStatus,
+    completions: transformedCompletions,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
@@ -128,6 +140,51 @@ export function transformToExamSchedule({
     endDate: dayjs(endDate).toDate(),
     students: transformedStudents,
     exam: transformedExam,
+  };
+}
+
+export function transformToExamCompletion({
+  id,
+  createdAt,
+  updatedAt,
+  submittedAt,
+  score,
+  questionAnswers,
+  exam,
+  student,
+}: any): Partial<ExamCompletion> {
+  const transformedStudent = student
+    ? ({ id: student.id } as StudentUserAccount)
+    : undefined;
+
+  const transformedQuestionAnswers =
+    questionAnswers?.map((answer: any) =>
+      transformToExamCompletionQuestionAnswer(answer),
+    ) || [];
+
+  return {
+    submittedAt: dayjs(submittedAt).toDate(),
+    score,
+    questionAnswers: transformedQuestionAnswers,
+    exam,
+    student: transformedStudent,
+    ...transformToBaseModel(id, createdAt, updatedAt),
+  };
+}
+
+export function transformToExamCompletionQuestionAnswer({
+  id,
+  createdAt,
+  updatedAt,
+  question,
+  selectedQuestionChoice,
+}: any): Partial<ExamCompletionQuestionAnswer> {
+  return {
+    question: { id: question.id } as ExamQuestion,
+    selectedQuestionChoice: {
+      id: selectedQuestionChoice.id,
+    } as ExamQuestionChoice,
+    ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
 

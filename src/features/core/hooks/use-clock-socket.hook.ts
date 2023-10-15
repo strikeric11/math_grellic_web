@@ -19,12 +19,13 @@ export function useClockSocket(): Result {
   );
 
   const startClock = useCallback(() => {
+    socket?.removeAllListeners('tick');
     socket?.on('tick', setClock);
   }, [socket, setClock]);
 
   const stopClock = useCallback(() => {
-    socket?.off('tick', setClock);
-  }, [socket, setClock]);
+    socket?.removeAllListeners('tick');
+  }, [socket]);
 
   useEffect(() => {
     if (!socket) {

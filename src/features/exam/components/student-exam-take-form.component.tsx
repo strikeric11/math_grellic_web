@@ -1,6 +1,7 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useDebounce } from '@uidotdev/usehooks';
 import toast from 'react-hot-toast';
 import z from 'zod';
 import cx from 'classix';
@@ -11,13 +12,21 @@ import { BaseModal } from '#/base/components/base-modal.component';
 import { StudentExamTakeQuestion } from './student-exam-take-question.component';
 import { StudentExamTakeFooter } from './student-exam-take-footer.component';
 
+import type { Duration } from 'dayjs/plugin/duration';
 import type { FormProps } from '#/base/models/base.model';
 import type { StudentExamFormData } from '../models/exam-form-data.model';
-import type { Exam, ExamCompletion } from '../models/exam.model';
+import type { Exam, ExamCompletion, ExamQuestion } from '../models/exam.model';
 
-type Props = FormProps<'div', StudentExamFormData, Promise<ExamCompletion>> & {
+type Props = FormProps<
+  'div',
+  StudentExamFormData,
+  Promise<ExamCompletion | null>
+> & {
   exam: Exam;
+  ongoingDuration: Duration | null;
+  isExpired?: boolean;
   preview?: boolean;
+  onSyncAnswers?: (data: StudentExamFormData) => Promise<ExamCompletion>;
 };
 
 const answerSchema = z.object({
@@ -39,13 +48,16 @@ const defaultValues: Partial<StudentExamFormData> = {
 
 export const StudentExamTakeForm = memo(function ({
   className,
-  exam,
-  preview,
-  formData,
   loading: formLoading,
+  isExpired,
   isDone,
+  exam,
+  formData,
+  preview,
+  ongoingDuration,
   onDone,
   onSubmit,
+  onSyncAnswers,
   ...moreProps
 }: Props) {
   const {
@@ -53,6 +65,7 @@ export const StudentExamTakeForm = memo(function ({
     control,
     handleSubmit,
     setValue,
+    getValues,
   } = useForm<StudentExamFormData>({
     shouldFocusError: false,
     defaultValues: formData || defaultValues,
@@ -77,7 +90,16 @@ export const StudentExamTakeForm = memo(function ({
 
   const answers = useWatch({ control, name: 'answers' });
 
-  const questions = useMemo(() => exam.questions, [exam]);
+  const questions = useMemo(() => {
+    if (!formData || !formData.answers.length) {
+      return exam.questions;
+    }
+
+    return formData.answers.map((a) => {
+      const question = exam.questions.find((q) => q.id === a.questionId);
+      return question;
+    }) as ExamQuestion[];
+  }, [exam, formData]);
 
   const questionCount = useMemo(() => questions?.length || 0, [questions]);
 
@@ -96,6 +118,8 @@ export const StudentExamTakeForm = memo(function ({
     const itemText = unansweredCount > 1 ? 'items' : 'item';
     return `${unansweredCount} unanswered ${itemText}`;
   }, [questionCount, answerCount]);
+
+  const debouncedAnswers = useDebounce(answers, 3000);
 
   const handleSetModal = useCallback(
     (isOpen: boolean) => () => {
@@ -124,6 +148,17 @@ export const StudentExamTakeForm = memo(function ({
     [onSubmit, onDone],
   );
 
+  useEffect(() => {
+    if (!onSyncAnswers) {
+      return;
+    }
+
+    (async () => {
+      await onSyncAnswers(getValues());
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedAnswers]);
+
   return (
     <>
       <div
@@ -135,6 +170,7 @@ export const StudentExamTakeForm = memo(function ({
             {questions.map((question, index) => (
               <StudentExamTakeQuestion
                 key={`q-${question.orderNumber}`}
+                isExpired={isExpired}
                 question={question}
                 name={`answers.${index}`}
                 control={control}
@@ -155,6 +191,7 @@ export const StudentExamTakeForm = memo(function ({
             className='relative z-20'
             questions={questions}
             answers={answers}
+            ongoingDuration={ongoingDuration}
             preview={preview}
           />
         </form>

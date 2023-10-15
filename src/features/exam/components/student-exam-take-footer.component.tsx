@@ -1,15 +1,18 @@
 import { memo, useMemo } from 'react';
 import cx from 'classix';
 
+import { generateCountdownTime } from '#/utils/time.util';
 import { BaseDivider } from '#/base/components/base-divider.component';
 
 import type { ComponentProps } from 'react';
+import type { Duration } from 'dayjs/plugin/duration';
 import type { ExamQuestion } from '../models/exam.model';
 import type { ExamAnswerFormData } from '../models/exam-form-data.model';
 
 type Props = ComponentProps<'div'> & {
   questions: ExamQuestion[];
   answers: ExamAnswerFormData[];
+  ongoingDuration: Duration | null;
   preview?: boolean;
 };
 
@@ -17,6 +20,7 @@ export const StudentExamTakeFooter = memo(function ({
   className,
   questions,
   answers,
+  ongoingDuration,
   preview,
   ...moreProps
 }: Props) {
@@ -48,6 +52,16 @@ export const StudentExamTakeFooter = memo(function ({
   );
 
   const questionCount = useMemo(() => questions?.length || 0, [questions]);
+
+  const countdownTimer = useMemo(
+    () => (preview ? '00:00' : generateCountdownTime(ongoingDuration)),
+    [ongoingDuration, preview],
+  );
+
+  const isExpired = useMemo(
+    () => ongoingDuration && ongoingDuration.asSeconds() <= 0,
+    [ongoingDuration],
+  );
 
   return (
     <div
@@ -82,7 +96,9 @@ export const StudentExamTakeFooter = memo(function ({
             <small className='uppercase opacity-80'>Total Items</small>
           </div>
           <BaseDivider className='!h-10' vertical />
-          <div className='text-xl'>{preview ? '00:00' : '00:00'}</div>
+          <div className={cx('w-[84px] text-xl', isExpired && 'animate-blink')}>
+            {countdownTimer}
+          </div>
         </div>
       </div>
     </div>

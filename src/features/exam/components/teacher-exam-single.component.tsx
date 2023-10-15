@@ -34,6 +34,7 @@ export const TeacherExamSingle = memo(function ({
     passingPoints,
     totalPoints,
     questions,
+    randomizeQuestions,
     isDraft,
     excerpt,
     coveredLessons,
@@ -45,6 +46,7 @@ export const TeacherExamSingle = memo(function ({
       exam.passingPoints,
       exam.visibleQuestionsCount * exam.pointsPerQuestion,
       exam.questions,
+      exam.randomizeQuestions,
       exam.status === RecordStatus.Draft,
       exam.excerpt,
       exam.coveredLessons,
@@ -114,11 +116,15 @@ export const TeacherExamSingle = memo(function ({
               Exam {orderNumber}
             </BaseChip>
             <BaseDivider className='!h-6' vertical />
-            <BaseChip iconName='list-numbers'>{questionCountText}</BaseChip>
+            <BaseChip iconName='list-numbers'>{totalPointsText}</BaseChip>
             <BaseDivider className='!h-6' vertical />
             <BaseChip iconName='list-checks'>{passingPointsText}</BaseChip>
-            <BaseDivider className='!h-6' vertical />
-            <BaseChip iconName='list-checks'>{totalPointsText}</BaseChip>
+            {randomizeQuestions && (
+              <>
+                <BaseDivider className='!h-6' vertical />
+                <BaseChip iconName='check-square'>Randomized</BaseChip>
+              </>
+            )}
             {isDraft && (
               <>
                 <BaseDivider className='!h-6' vertical />
@@ -177,7 +183,9 @@ export const TeacherExamSingle = memo(function ({
           className='mx-auto w-full max-w-screen-sm !px-4 !pb-5'
           rounded='sm'
         >
-          <span className='mb-4 block font-bold'>Questions</span>
+          <span className='mb-4 block font-bold'>
+            Questions {questionCountText}
+          </span>
           <div className='flex w-full flex-col gap-y-4'>
             {questions.map((question) => (
               <TeacherExamSingleQuestion

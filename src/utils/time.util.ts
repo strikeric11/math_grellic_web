@@ -50,6 +50,22 @@ export function generateCountdownDate(value: Duration | null) {
   return countdown.join(' : ');
 }
 
+export function generateCountdownTime(value: Duration | null) {
+  if (!value) {
+    return null;
+  }
+
+  const hours = value.format('HH');
+  const minutes = value.format('mm');
+  const seconds = value.format('ss');
+
+  if (+hours > 0) {
+    return `${hours}:${minutes}:${seconds}`;
+  }
+
+  return `${minutes}:${seconds}`;
+}
+
 export function getDayJsDuration(targetDate?: Date, sourceDate?: Date) {
   const targetDayJs = dayjs(targetDate);
   const sourceDayJs = dayjs(sourceDate);

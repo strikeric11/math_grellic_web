@@ -33,3 +33,9 @@ export type LessonSlice = {
   lessonFormData?: LessonUpsertFormData | null;
   setLessonFormData: (lessonFormData?: LessonUpsertFormData) => void;
 };
+
+export type StudentLessonList = {
+  latestLesson: Lesson | null;
+  upcomingLesson: Lesson | null;
+  previousLessons: Lesson[];
+};

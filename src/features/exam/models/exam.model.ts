@@ -1,4 +1,9 @@
-import type { AuditTrail, RecordStatus } from '#/core/models/core.model';
+import type { Duration } from 'dayjs/plugin/duration';
+import type {
+  AuditTrail,
+  ExamScheduleStatus,
+  RecordStatus,
+} from '#/core/models/core.model';
 import type { Lesson } from '#/lesson/models/lesson.model';
 import type { StudentUserAccount } from '#/user/models/user.model';
 import type { ExamUpsertFormData } from './exam-form-data.model';
@@ -18,6 +23,13 @@ export type Exam = Partial<AuditTrail> & {
   excerpt?: string;
   coveredLessons?: Partial<Lesson>[];
   schedules?: ExamSchedule[];
+  completions?: ExamCompletion[];
+  scheduleStatus?: ExamScheduleStatus;
+};
+
+export type ExamWithDuration = {
+  exam: Exam | null;
+  duration: Duration | null;
 };
 
 export type ExamQuestion = Partial<AuditTrail> & {
@@ -46,7 +58,7 @@ export type ExamSchedule = Partial<AuditTrail> & {
 export type ExamCompletion = Partial<AuditTrail> & {
   id: number;
   submittedAt: Date;
-  score: number;
+  score: number | null;
   questionAnswers: ExamCompletionQuestionAnswer[];
   exam: Exam;
   student: StudentUserAccount;
@@ -61,4 +73,11 @@ export type ExamCompletionQuestionAnswer = Partial<AuditTrail> & {
 export type ExamSlice = {
   examFormData?: ExamUpsertFormData | null;
   setExamFormData: (examFormData?: ExamUpsertFormData) => void;
+};
+
+export type StudentExamList = {
+  latestExam: Exam | null;
+  upcomingExam: Exam | null;
+  previousExams: Exam[];
+  ongoingExams: Exam[];
 };

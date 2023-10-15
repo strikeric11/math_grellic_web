@@ -26,9 +26,11 @@ import {
   ChatCenteredText,
   CheckCircle,
   CheckFat,
+  CheckSquare,
   Circle,
   CircleDashed,
   Clock,
+  ClockCountdown,
   DoorOpen,
   DotsThreeVertical,
   Equals,
@@ -141,12 +143,16 @@ export const BaseIcon = memo(function ({ name, ...moreProps }: Props) {
         return CheckFat;
       case 'check-circle':
         return CheckCircle;
+      case 'check-square':
+        return CheckSquare;
       case 'circle':
         return Circle;
       case 'circle-dashed':
         return CircleDashed;
       case 'clock':
         return Clock;
+      case 'clock-countdown':
+        return ClockCountdown;
       case 'door-open':
         return DoorOpen;
       case 'dots-three-vertical':

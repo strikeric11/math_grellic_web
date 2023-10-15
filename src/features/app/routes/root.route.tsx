@@ -27,6 +27,7 @@ import { StudentDashboardPage } from '#/dashboard/pages/student-dashboard.page';
 import { teacherLessonRouteHandle } from '#/lesson/route/teacher-lesson-handle.route';
 import { teacherExamRouteHandle } from '#/exam/route/teacher-exam-handle.route';
 import { studentLessonRouteHandle } from '#/lesson/route/student-lesson-handle.route';
+import { studentExamRouteHandle } from '#/exam/route/student-exam-handle.route';
 import { LessonCreatePage } from '#/lesson/pages/lesson-create.page';
 import {
   getPaginatedLessonsLoader as getTeacherPaginatedLessonsLoader,
@@ -40,6 +41,10 @@ import {
   getLessonsLoader as getStudentLessonsLoader,
   getLessonBySlugLoader as getStudentLessonBySlugLoader,
 } from '#/lesson/route/student-lesson-loader.route';
+import {
+  getExamsLoader as getStudentExamsLoader,
+  getExamBySlugLoader as getStudentExamBySlugLoader,
+} from '#/exam/route/student-exam-loader.route';
 import { TeacherLessonListPage } from '#/lesson/pages/teacher-lesson-list.page';
 import { TeacherLessonSinglePage } from '#/lesson/pages/teacher-lesson-single.page';
 import { TeacherLessonScheduleListPage } from '#/lesson/pages/teacher-lesson-schedule-list.page';
@@ -59,6 +64,8 @@ import { ExamPreviewSlugPage } from '#/exam/pages/exam-preview-slug.page';
 import { TeacherExamScheduleListPage } from '#/exam/pages/teacher-exam-schedule-list.page';
 import { TeacherExamScheduleCreatePage } from '#/exam/pages/teacher-exam-schedule-create.page';
 import { TeacherExamScheduleEditPage } from '#/exam/pages/teacher-exam-schedule-edit.page';
+import { StudentExamListPage } from '#/exam/pages/student-exam-list.page';
+import { StudentExamSinglePage } from '#/exam/pages/student-exam-single.page';
 
 import { staticRoutes } from './static-routes';
 import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
@@ -241,6 +248,7 @@ const rootRoutes = createRoutesFromElements(
         element={<StudentDashboardPage />}
         handle={dashboardRouteHandle}
       />
+      {/* STUDENT LESSONS */}
       <Route path={studentRoutes.lesson.to} element={<Outlet />}>
         <Route
           index
@@ -253,6 +261,21 @@ const rootRoutes = createRoutesFromElements(
           element={<StudentLessonSinglePage />}
           handle={studentLessonRouteHandle.single}
           loader={getStudentLessonBySlugLoader(queryClient)}
+        />
+      </Route>
+      {/* STUDENT EXAMS */}
+      <Route path={studentRoutes.exam.to} element={<Outlet />}>
+        <Route
+          index
+          element={<StudentExamListPage />}
+          handle={studentExamRouteHandle.list}
+          loader={getStudentExamsLoader(queryClient)}
+        />
+        <Route
+          path=':slug'
+          element={<StudentExamSinglePage />}
+          handle={studentExamRouteHandle.single}
+          loader={getStudentExamBySlugLoader(queryClient)}
         />
       </Route>
     </Route>

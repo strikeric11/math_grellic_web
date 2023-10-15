@@ -35,20 +35,22 @@ export const TeacherExamScheduleListOverview = memo(function ({
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const [orderNumber, title, questionCount, schedules] = useMemo(
+  const [orderNumber, title, totalPoints, schedules] = useMemo(
     () => [
       exam.orderNumber,
       exam.title,
-      exam.visibleQuestionsCount,
+      exam.pointsPerQuestion * exam.visibleQuestionsCount,
       exam.schedules,
     ],
     [exam],
   );
 
-  const questionCountText = useMemo(
+  const totalPointsText = useMemo(
     () =>
-      questionCount > 1 ? `${questionCount} Items` : `${questionCount} Item`,
-    [questionCount],
+      totalPoints > 1
+        ? `${totalPoints} Total Points`
+        : `${totalPoints} Total Point`,
+    [totalPoints],
   );
 
   const isUpsert = useMemo(() => {
@@ -122,7 +124,7 @@ export const TeacherExamScheduleListOverview = memo(function ({
         <div className='flex items-center gap-2.5'>
           <BaseChip iconName='chalkboard-teacher'>Exam {orderNumber}</BaseChip>
           <BaseDivider className='!h-6' vertical />
-          <BaseChip iconName='list-numbers'>{questionCountText}</BaseChip>
+          <BaseChip iconName='list-numbers'>{totalPointsText}</BaseChip>
         </div>
       </div>
       {/* Exam schedules */}

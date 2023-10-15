@@ -27,6 +27,8 @@ export default {
           'border-light': '#dee8f1',
           shadow: '#1f67a0',
           'hue-purple': '#634193',
+          'hue-purple-dark': '#482d72',
+          'hue-purple-focus': '#815abf',
           'hue-teal': '#1a7d82',
         },
         secondary: '#e04141',
@@ -68,6 +70,9 @@ export default {
         max: '99',
       },
       keyframes: {
+        blink: {
+          '50%': { opacity: 0 },
+        },
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
@@ -79,6 +84,7 @@ export default {
         },
       },
       animation: {
+        blink: 'blink 1s step-start 0s infinite',
         fadeIn: 'fadeIn 0.5s ease-in-out 1',
         fastFadeIn: 'fadeIn 0.2s ease-in-out 1',
         pageChange: 'pageChange 1s ease-out 1',

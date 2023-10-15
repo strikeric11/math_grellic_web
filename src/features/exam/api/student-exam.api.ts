@@ -1,24 +1,25 @@
-import { transformToLessonCompletion } from '../helpers/lesson-transform.helper';
 import { generateApiError } from '#/utils/api.util';
-import { queryLessonKey } from '#/config/react-query-keys.config';
+import { queryExamKey } from '#/config/react-query-keys.config';
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
+import { transformToExamCompletion } from '../helpers/exam-transform.helper';
 
 import type {
   UseMutationOptions,
   UseQueryOptions,
 } from '@tanstack/react-query';
 import type {
-  Lesson,
-  LessonCompletion,
-  StudentLessonList
-} from '../models/lesson.model';
+  Exam,
+  ExamCompletion,
+  StudentExamList,
+} from '../models/exam.model';
+import type { StudentExamFormData } from '../models/exam-form-data.model';
 
-const BASE_URL = 'lessons';
+const BASE_URL = 'exams';
 
-export function getLessonsByCurrentStudentUser(
+export function getExamsByCurrentStudentUser(
   q?: string,
   options?: Omit<
-    UseQueryOptions<StudentLessonList, Error, StudentLessonList, any>,
+    UseQueryOptions<StudentExamList, Error, StudentExamList, any>,
     'queryKey' | 'queryFn'
   >,
 ) {
@@ -27,8 +28,8 @@ export function getLessonsByCurrentStudentUser(
     const searchParams = generateSearchParams({ q });
 
     try {
-      const lessons = await kyInstance.get(url, { searchParams }).json();
-      return lessons;
+      const exams = await kyInstance.get(url, { searchParams }).json();
+      return exams;
     } catch (error: any) {
       const apiError = await generateApiError(error);
       throw apiError;
@@ -36,15 +37,15 @@ export function getLessonsByCurrentStudentUser(
   };
 
   return {
-    queryKey: [...queryLessonKey.list, { q }],
+    queryKey: [...queryExamKey.list, { q }],
     queryFn,
     ...options,
   };
 }
 
-export function getLessonBySlugAndCurrentStudentUser(
+export function getExamBySlugAndCurrentStudentUser(
   keys: { slug: string; exclude?: string; include?: string },
-  options?: Omit<UseQueryOptions<Lesson, Error, Lesson, any>, 'queryFn'>,
+  options?: Omit<UseQueryOptions<Exam, Error, Exam, any>, 'queryFn'>,
 ) {
   const { slug, exclude, include } = keys;
 
@@ -53,8 +54,8 @@ export function getLessonBySlugAndCurrentStudentUser(
     const searchParams = generateSearchParams({ exclude, include });
 
     try {
-      const lesson = await kyInstance.get(url, { searchParams }).json();
-      return lesson;
+      const exam = await kyInstance.get(url, { searchParams }).json();
+      return exam;
     } catch (error: any) {
       const apiError = await generateApiError(error);
       throw apiError;
@@ -62,18 +63,18 @@ export function getLessonBySlugAndCurrentStudentUser(
   };
 
   return {
-    queryKey: [...queryLessonKey.single, { slug, exclude, include }],
+    queryKey: [...queryExamKey.single, { slug, exclude, include }],
     queryFn,
     ...options,
   };
 }
 
-export function setLessonCompletion(
+export function setExamCompletion(
   options?: Omit<
     UseMutationOptions<
-      LessonCompletion | null,
+      ExamCompletion | null,
       Error,
-      { slug: string; isCompleted: boolean },
+      { slug: string; data: StudentExamFormData },
       any
     >,
     'mutationFn'
@@ -81,19 +82,17 @@ export function setLessonCompletion(
 ) {
   const mutationFn = async ({
     slug,
-    isCompleted,
+    data,
   }: {
     slug: string;
-    isCompleted: boolean;
+    data: StudentExamFormData;
   }): Promise<any> => {
     const url = `${BASE_URL}/${slug}/students/completion`;
-    const json = { isCompleted };
+    const json = { questionAnswers: data.answers };
 
     try {
-      const lessonCompletion = await kyInstance.post(url, { json }).json();
-      return lessonCompletion
-        ? transformToLessonCompletion(lessonCompletion)
-        : null;
+      const examCompletion = await kyInstance.post(url, { json }).json();
+      return examCompletion ? transformToExamCompletion(examCompletion) : null;
     } catch (error: any) {
       const apiError = await generateApiError(error);
       throw apiError;

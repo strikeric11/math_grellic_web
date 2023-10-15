@@ -28,6 +28,7 @@ export function ExamPreviewSlugPage() {
               isDone={isDone}
               onSubmit={submitExam}
               onDone={setIsDone}
+              ongoingDuration={null}
               preview
             />
           ))}

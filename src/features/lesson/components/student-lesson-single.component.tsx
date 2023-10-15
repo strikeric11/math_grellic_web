@@ -167,7 +167,7 @@ export const StudentLessonSingle = memo(function LessonSingle({
           )}
         </div>
         {formattedUpcomingDate ? (
-          <div className='w-full'>{excerpt}</div>
+          <div className='w-full py-8'>{excerpt}</div>
         ) : (
           <div
             className='base-rich-text rt-output py-8'

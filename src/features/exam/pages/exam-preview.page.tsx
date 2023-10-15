@@ -27,6 +27,7 @@ export function ExamPreviewPage() {
           className='flex-1 py-5'
           exam={exam}
           isDone={isDone}
+          ongoingDuration={null}
           onSubmit={submitExam}
           onDone={setIsDone}
           preview

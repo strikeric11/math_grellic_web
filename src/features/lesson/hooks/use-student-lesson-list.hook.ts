@@ -70,7 +70,7 @@ export function useStudentLessonList(): Result {
   );
 
   const upcomingDayJsDuration = useMemo(() => {
-    if (!upcomingLesson || !upcomingLesson?.schedules?.length) {
+    if (!upcomingLesson?.schedules?.length) {
       return null;
     }
     return getDayJsDuration(upcomingLesson.schedules[0].startDate, serverClock);

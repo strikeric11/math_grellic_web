@@ -8,8 +8,8 @@ import {
 } from './student-lesson-single-card.component';
 
 import type { ComponentProps } from 'react';
-import type { Lesson } from '../models/lesson.model';
 import type { Duration } from 'dayjs/plugin/duration';
+import type { Lesson } from '../models/lesson.model';
 
 type Props = ComponentProps<'div'> & {
   upcomingLesson: Lesson | null;
