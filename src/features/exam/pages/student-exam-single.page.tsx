@@ -1,11 +1,12 @@
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
-import { ExamScheduleStatus } from '#/core/models/core.model';
 import { BaseScene } from '#/base/components/base-scene.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
+import { ExamScheduleStatus } from '../models/exam.model';
 import { useStudentExamSingle } from '../hooks/use-student-exam-single.hook';
 import { StudentExamSingleUpcomingNote } from '../components/student-exam-single-upcoming-note.component';
+import { StudentExamTakeStart } from '../components/student-exam-take-start.component';
 import { StudentExamTakeForm } from '../components/student-exam-take-form.component';
 import { StudentExamTakeDone } from '../components/student-exam-take-done.component';
 
@@ -34,8 +35,11 @@ const ExamTake = memo(function ({
   onSubmit,
   onDone,
 }: ExamTakeProps) {
-  const [examCompletion, isPast] = useMemo(
+  const [startExam, setStartExam] = useState(false);
+  const [description, coveredLessons, examCompletion, isPast] = useMemo(
     () => [
+      exam.description,
+      exam.coveredLessons,
       exam?.completions?.length ? exam.completions[0] : null,
       exam.scheduleStatus === ExamScheduleStatus.Past,
     ],
@@ -46,6 +50,10 @@ const ExamTake = memo(function ({
     () => ongoingDuration && !!ongoingDuration.asSeconds(),
     [ongoingDuration],
   );
+
+  const handleStartExam = useCallback(() => {
+    setStartExam(true);
+  }, []);
 
   if (examCompletion && (isDone || !isOngoing)) {
     return (
@@ -67,18 +75,27 @@ const ExamTake = memo(function ({
 
   return (
     <>
-      {formData && (
-        <StudentExamTakeForm
-          className='flex-1 py-5'
-          isExpired={isExpired}
-          isDone={isDone}
-          exam={exam}
-          formData={formData}
-          ongoingDuration={ongoingDuration}
-          onSyncAnswers={onSyncAnswers}
-          onSubmit={onSubmit}
-          onDone={onDone}
+      {!startExam ? (
+        <StudentExamTakeStart
+          className='mx-auto max-w-screen-sm'
+          description={description}
+          coveredLessons={coveredLessons}
+          onStart={handleStartExam}
         />
+      ) : (
+        formData && (
+          <StudentExamTakeForm
+            className='flex-1 py-5'
+            isExpired={isExpired}
+            isDone={isDone}
+            exam={exam}
+            formData={formData}
+            ongoingDuration={ongoingDuration}
+            onSyncAnswers={onSyncAnswers}
+            onSubmit={onSubmit}
+            onDone={onDone}
+          />
+        )
       )}
     </>
   );

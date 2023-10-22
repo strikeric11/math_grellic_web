@@ -26,7 +26,7 @@ type Props = ComponentProps<'div'> & {
   onSetCompletion?: (isComplete: boolean) => Promise<LessonCompletion | null>;
 };
 
-export const StudentLessonSingle = memo(function LessonSingle({
+export const StudentLessonSingle = memo(function ({
   className,
   loading,
   lesson,

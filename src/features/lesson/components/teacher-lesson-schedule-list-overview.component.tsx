@@ -54,7 +54,7 @@ export const TeacherLessonScheduleListOverview = memo(function ({
   const isUpsert = useMemo(() => {
     const paths = pathname.split('/');
     const currentPath = paths[paths.length - 1];
-    console.log(pathname);
+
     return (
       currentPath === teacherRoutes.lesson.schedule.editTo ||
       currentPath === teacherRoutes.lesson.schedule.createTo

@@ -18,3 +18,9 @@ export const queryExamKey = {
   list: ['exams', 'list'],
   single: ['exams', 'single'],
 };
+
+export const queryActivityKey = {
+  list: ['activities', 'list'],
+  single: ['activities', 'single'],
+  gameList: ['activities', 'game-list'],
+};

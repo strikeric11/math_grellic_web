@@ -75,8 +75,8 @@ export const TeacherExamList = memo(function ({
         ))
       ) : isEmpty ? (
         <BaseDataEmptyMessage
-          message='No lessons available'
-          linkTo={teacherRoutes.lesson.createTo}
+          message='No exams available'
+          linkTo={teacherRoutes.exam.createTo}
         />
       ) : (
         exams.map((exam) => (

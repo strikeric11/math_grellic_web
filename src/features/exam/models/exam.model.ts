@@ -1,12 +1,14 @@
 import type { Duration } from 'dayjs/plugin/duration';
-import type {
-  AuditTrail,
-  ExamScheduleStatus,
-  RecordStatus,
-} from '#/core/models/core.model';
+import type { AuditTrail, RecordStatus } from '#/core/models/core.model';
 import type { Lesson } from '#/lesson/models/lesson.model';
 import type { StudentUserAccount } from '#/user/models/user.model';
 import type { ExamUpsertFormData } from './exam-form-data.model';
+
+export enum ExamScheduleStatus {
+  Upcoming = 'upcoming',
+  Ongoing = 'ongoing',
+  Past = 'past',
+}
 
 export type Exam = Partial<AuditTrail> & {
   id: number;

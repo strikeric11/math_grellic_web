@@ -4,7 +4,6 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { motion } from 'framer-motion';
 import cx from 'classix';
 
-import { ExamScheduleStatus } from '#/core/models/core.model';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseModal } from '#/base/components/base-modal.component';
@@ -12,6 +11,7 @@ import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
+import { ExamScheduleStatus } from '../models/exam.model';
 import { StudentExamQuestionAnswer } from './student-exam-question-answer.component';
 
 import type { ComponentProps } from 'react';

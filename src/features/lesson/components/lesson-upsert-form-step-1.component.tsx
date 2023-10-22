@@ -9,7 +9,7 @@ import { BaseControlledDurationInput } from '#/base/components/base-duration-inp
 import { BaseControlledRichTextEditor } from '#/base/components/base-rich-text-editor.component';
 
 import type { ComponentProps } from 'react';
-import type { LessonUpsertFormData } from '../models/lesson.model';
+import type { LessonUpsertFormData } from '../models/lesson-form-data.model';
 
 type Props = ComponentProps<'div'> & {
   disabled?: boolean;
@@ -61,7 +61,7 @@ export const LessonUpsertFormStep1 = memo(function ({
         <div className='flex w-full flex-col gap-5'>
           <BaseControlledRichTextEditor
             className='max-w-[600px]'
-            label='Lesson Description'
+            label='Description'
             name='description'
             control={control}
             disabled={disabled}

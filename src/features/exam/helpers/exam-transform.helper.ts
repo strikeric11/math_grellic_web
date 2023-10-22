@@ -94,10 +94,10 @@ export function transformToExamQuestion({
     : [];
 
   return {
-    ...transformToBaseModel(id, createdAt, updatedAt),
     orderNumber,
     text,
     choices: transformedChoices,
+    ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
 
@@ -111,11 +111,11 @@ export function transformToExamQuestionChoice({
   isExpression,
 }: any): ExamQuestionChoice {
   return {
-    ...transformToBaseModel(id, createdAt, updatedAt),
     orderNumber,
     text,
     isCorrect,
     isExpression,
+    ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
 
@@ -135,11 +135,11 @@ export function transformToExamSchedule({
   const transformedExam = exam ? transformToExam(exam) : undefined;
 
   return {
-    ...transformToBaseModel(id, createdAt, updatedAt),
     startDate: dayjs(startDate).toDate(),
     endDate: dayjs(endDate).toDate(),
     students: transformedStudents,
     exam: transformedExam,
+    ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
 
@@ -237,8 +237,8 @@ export function transformToExamFormData({
     visibleQuestionsCount,
     pointsPerQuestion,
     passingPoints,
-    description,
-    excerpt,
+    description: description || undefined,
+    excerpt: excerpt || undefined,
     coveredLessonIds,
     questions: transformedQuestions,
     startDate,
@@ -326,7 +326,7 @@ export function transformToExamUpsertDto({
     passingPoints,
     description,
     excerpt,
-    coveredLessonIds,
+    coveredLessonIds: coveredLessonIds?.length ? coveredLessonIds : undefined,
     questions: questionsDto,
     startDate: transformedStartDate,
     endDate: transformedEndDate,

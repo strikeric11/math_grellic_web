@@ -6,7 +6,6 @@ import dayjs from 'dayjs';
 import { getDayJsDuration } from '#/utils/time.util';
 import { queryClient } from '#/config/react-query-client.config';
 import { queryExamKey } from '#/config/react-query-keys.config';
-import { ExamScheduleStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { useClockSocket } from '#/core/hooks/use-clock-socket.hook';
 import { transformToExam } from '../helpers/exam-transform.helper';
@@ -14,6 +13,7 @@ import {
   getExamBySlugAndCurrentStudentUser,
   setExamCompletion as setExamCompletionApi,
 } from '../api/student-exam.api';
+import { ExamScheduleStatus } from '../models/exam.model';
 
 import type { Duration } from 'dayjs/plugin/duration';
 import type { Exam, ExamCompletion } from '../models/exam.model';
@@ -62,7 +62,7 @@ export function useStudentExamSingle(): Result {
         enabled: !!slug,
         refetchOnWindowFocus: false,
         select: (data: any) => {
-          return transformToExam(data);
+          return transformToExam(data, true);
         },
       },
     ),

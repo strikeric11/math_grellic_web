@@ -283,6 +283,7 @@ export const ExamUpsertForm = memo(function ({
   const handleSubmitError = useCallback(
     (errors: FieldErrors<ExamUpsertFormData>) => {
       let errorMessage = '';
+
       if (errors.questions?.length) {
         const targetQuestion = (errors.questions as any).filter(
           (q: any) => q,

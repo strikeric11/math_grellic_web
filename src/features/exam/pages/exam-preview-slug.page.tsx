@@ -9,6 +9,7 @@ import { StudentExamTakeForm } from '../components/student-exam-take-form.compon
 export function ExamPreviewSlugPage() {
   const { isDone, setIsDone, titlePreview, exam, examCompletion, submitExam } =
     useExamPreviewSlug();
+
   const data: any = useLoaderData();
 
   return (

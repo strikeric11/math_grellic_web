@@ -5,7 +5,7 @@ import { BaseControlledDatePicker } from '#/base/components/base-date-picker.com
 import { BaseControlledTimeInput } from '#/base/components/base-time-input.component';
 
 import type { ComponentProps } from 'react';
-import type { LessonUpsertFormData } from '../models/lesson.model';
+import type { LessonUpsertFormData } from '../models/lesson-form-data.model';
 
 type Props = ComponentProps<'div'> & {
   disabled?: boolean;

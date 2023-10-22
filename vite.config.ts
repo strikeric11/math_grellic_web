@@ -67,6 +67,12 @@ export default defineConfig({
           new URL('./src/features/exam', import.meta.url),
         ),
       },
+      {
+        find: '#/activity',
+        replacement: fileURLToPath(
+          new URL('./src/features/activity', import.meta.url),
+        ),
+      },
     ],
   },
 });

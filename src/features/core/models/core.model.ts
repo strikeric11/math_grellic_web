@@ -6,12 +6,6 @@ export enum RecordStatus {
   Published = 'published',
 }
 
-export enum ExamScheduleStatus {
-  Upcoming = 'upcoming',
-  Ongoing = 'ongoing',
-  Past = 'past',
-}
-
 export type AuditTrail = {
   createdAt: Date;
   updatedAt: Date;

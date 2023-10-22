@@ -53,7 +53,7 @@ export const ExamUpsertFormStep1 = memo(function ({
         <div className='flex w-full flex-col gap-5'>
           <BaseControlledRichTextEditor
             className='max-w-[600px]'
-            label='Exam Description'
+            label='Description'
             name='description'
             control={control}
             disabled={disabled}

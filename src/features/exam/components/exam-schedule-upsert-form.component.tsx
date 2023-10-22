@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import isTime from 'validator/lib/isTime';
@@ -118,8 +118,8 @@ export const ExamScheduleUpsertForm = memo(function ({
     formState: { isSubmitting },
     control,
     reset,
-    handleSubmit,
     watch,
+    handleSubmit,
     setValue,
   } = useForm<ExamScheduleUpsertFormData>({
     shouldFocusError: false,
@@ -127,13 +127,12 @@ export const ExamScheduleUpsertForm = memo(function ({
     resolver: zodResolver(schema),
   });
 
-  const scheduleWatchFields = watch([
+  const [startDate, endDate, startTime, endTime] = watch([
     'startDate',
     'endDate',
     'startTime',
     'endTime',
   ]);
-  const startDate = useWatch({ control, name: 'startDate' });
 
   const loading = useMemo(
     () => formLoading || isSubmitting || isDone,
@@ -141,8 +140,6 @@ export const ExamScheduleUpsertForm = memo(function ({
   );
 
   const [durationText, isDurationValid] = useMemo(() => {
-    const [startDate, endDate, startTime, endTime] = scheduleWatchFields;
-
     const startDateTime = dayjs(
       `${dayjs(startDate).format('YYYY-MM-DD')} ${startTime}`,
       'YYYY-MM-DD hh:mm A',
@@ -163,7 +160,7 @@ export const ExamScheduleUpsertForm = memo(function ({
     }
 
     return [convertSecondsToDuration(duration), true];
-  }, [scheduleWatchFields]);
+  }, [startDate, endDate, startTime, endTime]);
 
   useEffect(() => {
     setValue('endDate', startDate);

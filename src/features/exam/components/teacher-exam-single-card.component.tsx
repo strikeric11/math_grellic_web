@@ -100,7 +100,7 @@ export const TeacherExamSingleCard = memo(function ({
               Passing / Total
             </div>
           </div>
-          <div className='flex h-full flex-1 flex-col justify-center gap-2'>
+          <div className='flex h-full flex-1 flex-col justify-between gap-2 py-2'>
             {/* Info chips */}
             <div className='flex items-center gap-2.5'>
               <BaseChip iconName='exam'>Exam {orderNumber}</BaseChip>

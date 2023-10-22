@@ -26,6 +26,7 @@ import { StudentDashboardPage } from '#/dashboard/pages/student-dashboard.page';
 
 import { teacherLessonRouteHandle } from '#/lesson/route/teacher-lesson-handle.route';
 import { teacherExamRouteHandle } from '#/exam/route/teacher-exam-handle.route';
+import { teacherActivityRouteHandle } from '#/activity/route/teacher-activity-handle.route';
 import { studentLessonRouteHandle } from '#/lesson/route/student-lesson-handle.route';
 import { studentExamRouteHandle } from '#/exam/route/student-exam-handle.route';
 import { LessonCreatePage } from '#/lesson/pages/lesson-create.page';
@@ -37,6 +38,10 @@ import {
   getPaginatedExamsLoader as getTeacherPaginatedExamsLoader,
   getExamBySlugLoader as getTeacherExamBySlugLoader,
 } from '#/exam/route/teacher-exam-loader.route';
+import {
+  getPaginatedActivitiesLoader as getTeacherPaginatedActivitiesLoader,
+  getActivityBySlugLoader as getTeacherActivityBySlugLoader,
+} from '#/activity/route/teacher-activity-loader.route';
 import {
   getLessonsLoader as getStudentLessonsLoader,
   getLessonBySlugLoader as getStudentLessonBySlugLoader,
@@ -66,6 +71,11 @@ import { TeacherExamScheduleCreatePage } from '#/exam/pages/teacher-exam-schedul
 import { TeacherExamScheduleEditPage } from '#/exam/pages/teacher-exam-schedule-edit.page';
 import { StudentExamListPage } from '#/exam/pages/student-exam-list.page';
 import { StudentExamSinglePage } from '#/exam/pages/student-exam-single.page';
+import { TeacherActivityListPage } from '#/activity/pages/teacher-activity-list.page';
+import { ActivityCreatePage } from '#/activity/pages/activity-create.page';
+import { ActivityEditPage } from '#/activity/pages/activity-edit.page';
+import { ActivityPreviewSlugPage } from '#/activity/pages/activity-preview-slug.page';
+import { TeacherActivitySinglePage } from '#/activity/pages/teacher-activity-single.page';
 
 import { staticRoutes } from './static-routes';
 import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
@@ -228,6 +238,45 @@ const rootRoutes = createRoutesFromElements(
           handle={teacherExamRouteHandle.preview}
         />
       </Route>
+      {/* TEACHER ACTIVITIES */}
+      <Route path={teacherRoutes.activity.to} element={<Outlet />}>
+        <Route
+          index
+          element={<TeacherActivityListPage />}
+          handle={teacherActivityRouteHandle.list}
+          loader={getTeacherPaginatedActivitiesLoader(queryClient)}
+        />
+        <Route path=':slug' element={<Outlet />}>
+          <Route
+            index
+            element={<TeacherActivitySinglePage />}
+            handle={teacherActivityRouteHandle.single}
+            loader={getTeacherActivityBySlugLoader(queryClient)}
+          />
+          <Route
+            path={teacherRoutes.activity.editTo}
+            element={<ActivityEditPage />}
+            handle={teacherActivityRouteHandle.edit}
+            loader={getTeacherActivityBySlugLoader(queryClient)}
+          />
+          <Route
+            path={teacherRoutes.activity.previewTo}
+            element={<ActivityPreviewSlugPage />}
+            handle={teacherActivityRouteHandle.preview}
+            loader={getTeacherActivityBySlugLoader(queryClient)}
+          />
+        </Route>
+        <Route
+          path={teacherRoutes.activity.createTo}
+          element={<ActivityCreatePage />}
+          handle={teacherActivityRouteHandle.create}
+        />
+        {/* <Route
+          path={teacherRoutes.activity.previewTo}
+          element={<ActivityPreviewPage />}
+          handle={teacherActivityRouteHandle.preview}
+        /> */}
+      </Route>
       <Route
         path='*'
         element={<CorePageNotFound to={`/${teacherBaseRoute}`} />}
@@ -277,6 +326,15 @@ const rootRoutes = createRoutesFromElements(
           handle={studentExamRouteHandle.single}
           loader={getStudentExamBySlugLoader(queryClient)}
         />
+      </Route>
+      {/* STUDENT EXAMS */}
+      <Route path={studentRoutes.activity.to} element={<Outlet />}>
+        {/* <Route
+          index
+          element={<StudentActivityListPage />}
+          handle={studentActivityRouteHandle.list}
+          loader={getStudentActivitiesLoader(queryClient)}
+        /> */}
       </Route>
     </Route>
   </>,

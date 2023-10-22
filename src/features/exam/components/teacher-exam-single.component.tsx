@@ -10,13 +10,13 @@ import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
+import { BaseSurface } from '#/base/components/base-surface.component';
 import { LessonItem } from '#/lesson/components/lesson-picker-list.component';
 import { TeacherExamSingleQuestion } from './teacher-exam-single-question.component';
 
 import type { ComponentProps } from 'react';
 import type { Exam } from '../models/exam.model';
 import type { Lesson } from '#/lesson/models/lesson.model';
-import { BaseSurface } from '#/base/components/base-surface.component';
 
 type Props = ComponentProps<'div'> & {
   exam: Exam;
@@ -77,13 +77,15 @@ export const TeacherExamSingle = memo(function ({
   );
 
   const descriptionHtml = useMemo(() => {
-    if (!exam.description) {
-      return null;
-    }
+    const isEmpty = !DOMPurify.sanitize(exam.description || '', {
+      ALLOWED_TAGS: [],
+    }).trim();
 
-    return {
-      __html: DOMPurify.sanitize(exam.description || ''),
-    };
+    return !isEmpty
+      ? {
+          __html: DOMPurify.sanitize(exam.description || ''),
+        }
+      : null;
   }, [exam]);
 
   const schedules = useMemo(() => {

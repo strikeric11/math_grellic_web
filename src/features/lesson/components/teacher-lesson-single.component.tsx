@@ -38,13 +38,15 @@ export const TeacherLessonSingle = memo(function ({
   );
 
   const descriptionHtml = useMemo(() => {
-    if (!lesson.description) {
-      return null;
-    }
+    const isEmpty = !DOMPurify.sanitize(lesson.description || '', {
+      ALLOWED_TAGS: [],
+    }).trim();
 
-    return {
-      __html: DOMPurify.sanitize(lesson.description || ''),
-    };
+    return !isEmpty
+      ? {
+          __html: DOMPurify.sanitize(lesson.description || ''),
+        }
+      : null;
   }, [lesson]);
 
   const [scheduleDate, scheduleTime] = useMemo(() => {

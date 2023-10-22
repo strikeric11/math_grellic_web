@@ -32,7 +32,9 @@ export const teacherRoutes = {
     to: 'activities',
     label: 'Activities',
     iconName: 'game-controller',
-    size: 28,
+    createTo: 'create',
+    editTo: 'edit',
+    previewTo: 'preview',
   },
   exam: {
     name: 'exams',

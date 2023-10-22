@@ -131,7 +131,7 @@ export function transformToLessonFormData({
     videoUrl,
     duration,
     description: description || undefined,
-    excerpt,
+    excerpt: excerpt || undefined,
     startDate,
     startTime,
     studentIds,
