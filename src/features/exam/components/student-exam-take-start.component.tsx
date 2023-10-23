@@ -53,7 +53,7 @@ export const StudentExamTakeStart = memo(function ({
         )}
       </BaseSurface>
       {descriptionHtml && (
-        <div>
+        <div className='w-full'>
           <BaseDivider />
           <div
             className='base-rich-text rt-output py-5'

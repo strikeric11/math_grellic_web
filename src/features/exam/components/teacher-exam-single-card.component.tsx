@@ -184,8 +184,9 @@ export const TeacherExamSingleCard = memo(function ({
 
 export const TeacherExamSingleCardSkeleton = memo(function () {
   return (
-    <div className='flex min-h-[106px] w-full animate-pulse justify-between rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-4'>
-      <div className='flex h-fit flex-1 flex-col gap-3'>
+    <div className='flex min-h-[106px] w-full animate-pulse justify-between gap-x-4 rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-4'>
+      <div className='h-full w-[120px] rounded bg-accent/20' />
+      <div className='flex h-full flex-1 flex-col justify-between gap-3 py-2.5'>
         <div className='h-6 w-[200px] rounded bg-accent/20' />
         <div className='h-6 w-28 rounded bg-accent/20' />
       </div>

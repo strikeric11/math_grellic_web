@@ -240,7 +240,7 @@ export const StudentExamTakeDone = memo(function ({
                 {questionAnswers.map(
                   ({ question, selectedQuestionChoiceId }, index) =>
                     question && (
-                      <li className='w-full'>
+                      <li key={`ans-${question.id}`} className='w-full'>
                         <StudentExamQuestionAnswer
                           key={`qa-${index}`}
                           question={question}

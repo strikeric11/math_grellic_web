@@ -97,7 +97,7 @@ export const TeacherActivitySingleCard = memo(function ({
       <div className='flex h-full flex-1 items-start gap-4'>
         <div className='flex h-full flex-1 items-start gap-4'>
           {/* TODO Image */}
-          <div className='flex h-[88px] w-[121px] items-center justify-center overflow-hidden rounded border border-primary bg-primary-hue-teal/30 font-medium'>
+          <div className='flex h-[88px] w-[121px] items-center justify-center overflow-hidden rounded border border-primary-hue-teal bg-primary-hue-teal/30 font-medium'>
             <BaseIcon name='game-controller' size={40} weight='light' />
           </div>
           <div className='flex h-full flex-1 flex-col justify-between gap-2 py-2'>
@@ -175,5 +175,25 @@ export const TeacherActivitySingleCard = memo(function ({
         </BaseDropdownMenu>
       </div>
     </BaseSurface>
+  );
+});
+
+export const TeacherActivitySingleCardSkeleton = memo(function () {
+  return (
+    <div className='flex min-h-[110px] w-full animate-pulse justify-between gap-x-4 rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-4'>
+      <div className='h-full w-[120px] rounded bg-accent/20' />
+      <div className='flex h-full flex-1 flex-col justify-between gap-3 py-2.5'>
+        <div className='h-6 w-[250px] rounded bg-accent/20' />
+        <div className='h-6 w-[130px] rounded bg-accent/20' />
+      </div>
+      <div className='flex h-full gap-5'>
+        <div className='flex flex-col justify-center gap-1.5'>
+          <div className='h-6 w-48 rounded bg-accent/20' />
+          <div className='h-6 w-48 rounded bg-accent/20' />
+          <div className='h-6 w-48 rounded bg-accent/20' />
+        </div>
+        <div className='h-full w-5 rounded bg-accent/20' />
+      </div>
+    </div>
   );
 });

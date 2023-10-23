@@ -53,12 +53,9 @@ const LessonList = memo(function ({
   }, [lessons, category]);
 
   if (loading) {
-    return (
-      <>
-        <StudentLessonSingleCardSkeleton />
-        <StudentLessonSingleCardSkeleton />
-      </>
-    );
+    return [...Array(2)].map((_, index) => (
+      <StudentLessonSingleCardSkeleton key={index} />
+    ));
   }
 
   if (!filteredLessons.length) {

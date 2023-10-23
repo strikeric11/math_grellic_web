@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import isTime from 'validator/lib/isTime';
@@ -118,7 +118,6 @@ export const ExamScheduleUpsertForm = memo(function ({
     formState: { isSubmitting },
     control,
     reset,
-    watch,
     handleSubmit,
     setValue,
   } = useForm<ExamScheduleUpsertFormData>({
@@ -127,12 +126,10 @@ export const ExamScheduleUpsertForm = memo(function ({
     resolver: zodResolver(schema),
   });
 
-  const [startDate, endDate, startTime, endTime] = watch([
-    'startDate',
-    'endDate',
-    'startTime',
-    'endTime',
-  ]);
+  const startDate = useWatch({ control, name: 'startDate' });
+  const endDate = useWatch({ control, name: 'endDate' });
+  const startTime = useWatch({ control, name: 'startTime' });
+  const endTime = useWatch({ control, name: 'endTime' });
 
   const loading = useMemo(
     () => formLoading || isSubmitting || isDone,

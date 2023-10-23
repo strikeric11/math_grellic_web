@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDebounce } from '@uidotdev/usehooks';
 import toast from 'react-hot-toast';
@@ -66,7 +66,6 @@ export const StudentExamTakeForm = memo(function ({
     handleSubmit,
     setValue,
     getValues,
-    watch,
   } = useForm<StudentExamFormData>({
     shouldFocusError: false,
     defaultValues: formData || defaultValues,
@@ -89,7 +88,7 @@ export const StudentExamTakeForm = memo(function ({
 
   const [openModal, setOpenModal] = useState(false);
 
-  const answers = watch('answers');
+  const answers = useWatch({ control, name: 'answers' });
 
   const questions = useMemo(() => {
     if (!formData || !formData.answers.length) {

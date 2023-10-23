@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { memo, useCallback, useMemo } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 
 import {
@@ -24,7 +24,7 @@ export const ActivityUpsertFormStep1 = memo(function ({
   disabled: formDisabled,
   ...moreProps
 }: Props) {
-  const { control, setValue, watch } = useFormContext<ActivityUpsertFormData>();
+  const { control, setValue } = useFormContext<ActivityUpsertFormData>();
 
   const {
     data: games,
@@ -38,7 +38,7 @@ export const ActivityUpsertFormStep1 = memo(function ({
     }),
   );
 
-  const game = watch('game');
+  const game = useWatch({ control, name: 'game' });
 
   const disabled = useMemo(
     () => formDisabled || isFetching || isLoading,

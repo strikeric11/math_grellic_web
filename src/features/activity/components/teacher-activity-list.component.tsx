@@ -3,7 +3,10 @@ import cx from 'classix';
 
 import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseDataEmptyMessage } from '#/base/components/base-data-empty-message.component';
-import { TeacherActivitySingleCard } from './teacher-activity-single-card.component';
+import {
+  TeacherActivitySingleCard,
+  TeacherActivitySingleCardSkeleton,
+} from './teacher-activity-single-card.component';
 
 import type { ComponentProps } from 'react';
 import type { Activity } from '../models/activity.model';
@@ -60,7 +63,7 @@ export const TeacherActivityList = memo(function ({
       {loading ? (
         [...Array(4)].map((_, index) => (
           <div key={index}>
-            {/* <TeacherActivitySingleCardSkeleton key={index} /> */}
+            <TeacherActivitySingleCardSkeleton key={index} />
           </div>
         ))
       ) : isEmpty ? (

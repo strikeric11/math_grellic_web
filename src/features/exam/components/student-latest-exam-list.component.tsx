@@ -47,10 +47,9 @@ export const StudentLatestExamList = memo(function ({
         />
       </div>
       {loading ? (
-        <>
-          <StudentExamSingleCardSkeleton />
-          <StudentExamSingleCardSkeleton />
-        </>
+        [...Array(2)].map((_, index) => (
+          <StudentExamSingleCardSkeleton key={index} />
+        ))
       ) : (
         <>
           {!!ongoingExamsWithDurations.length &&
@@ -72,9 +71,11 @@ export const StudentLatestExamList = memo(function ({
               primary={!latestExam}
             />
           )}
-          {!latestExam && !upcomingExam && (
-            <div className='w-full py-4 text-center'>No exams to show</div>
-          )}
+          {!latestExam &&
+            !upcomingExam &&
+            !ongoingExamsWithDurations?.length && (
+              <div className='w-full py-4 text-center'>No exams to show</div>
+            )}
         </>
       )}
     </div>

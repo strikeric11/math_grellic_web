@@ -3,71 +3,83 @@ import { Tab } from '@headlessui/react';
 import cx from 'classix';
 
 import {
-  StudentExamSingleCard,
-  StudentExamSingleCardSkeleton,
-} from './student-exam-single-card.component';
+  StudentActivitySingleCard,
+  StudentActivitySingleCardSkeleton,
+} from './student-activity-single-card.component';
 
 import type { ComponentProps } from 'react';
-import type { Exam } from '../models/exam.model';
+import type { Activity } from '../models/activity.model';
 
 type Props = ComponentProps<'div'> & {
-  previousExams: Exam[];
+  otherActivities: Activity[];
   title?: string;
   loading?: boolean;
 };
 
-type ExamListProps = {
-  exams: Exam[];
+type ActivityListProps = {
+  activities: Activity[];
   category: string;
   loading?: boolean;
 };
 
 const tabCategories = {
-  all: {
-    name: 'all',
-    label: 'All',
+  incomplete: {
+    name: 'incomplete',
+    label: 'Not Completed',
   },
   complete: {
     name: 'complete',
     label: 'Completed',
   },
-  expired: {
-    name: 'expired',
-    label: 'Expired',
+  all: {
+    name: 'all',
+    label: 'All',
   },
 };
 
-const ExamList = memo(function ({ exams, category, loading }: ExamListProps) {
-  const filteredExams = useMemo(() => {
-    if (category === tabCategories.expired.name) {
-      return exams.filter((exams) => !exams.completions?.length);
+const ActivityList = memo(function ({
+  activities,
+  category,
+  loading,
+}: ActivityListProps) {
+  const filteredActivities = useMemo(() => {
+    if (category === tabCategories.incomplete.name) {
+      return activities.filter(
+        (activity) =>
+          !activity.categories.every((cat) => cat.completions?.length),
+      );
     } else if (category === tabCategories.complete.name) {
-      return exams.filter((exams) => exams.completions?.length);
+      return activities.filter((activity) =>
+        activity.categories.some((cat) => cat.completions?.length),
+      );
     }
 
-    return exams;
-  }, [exams, category]);
+    return activities;
+  }, [activities, category]);
 
   if (loading) {
-    return [...Array(4)].map((_, index) => (
-      <StudentExamSingleCardSkeleton key={index} />
+    return [...Array(2)].map((_, index) => (
+      <StudentActivitySingleCardSkeleton key={index} />
     ));
   }
 
-  if (!filteredExams.length) {
-    return <div className='w-full py-4 text-center'>No exams to show</div>;
+  if (!filteredActivities.length) {
+    return <div className='w-full py-4 text-center'>No activities to show</div>;
   }
 
-  return filteredExams.map((exam) => (
-    <StudentExamSingleCard key={`${category}-${exam.id}`} exam={exam} />
+  return filteredActivities.map((activity) => (
+    <StudentActivitySingleCard
+      key={`${category}-${activity.id}`}
+      activity={activity}
+    />
   ));
 });
 
-export const StudentPreviousExamList = memo(function ({
+export const StudentOtherActivityList = memo(function ({
   className,
-  title = 'Previous Exams',
+  title = 'More Activities',
   loading,
-  previousExams,
+  otherActivities,
   ...moreProps
 }: Props) {
   const setClassName = useCallback(
@@ -101,8 +113,8 @@ export const StudentPreviousExamList = memo(function ({
               key={category}
               className='flex w-full flex-1 animate-fastFadeIn flex-col gap-2.5 self-stretch'
             >
-              <ExamList
-                exams={previousExams}
+              <ActivityList
+                activities={otherActivities}
                 category={category}
                 loading={loading}
               />

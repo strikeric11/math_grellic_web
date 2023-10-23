@@ -45,10 +45,9 @@ export const StudentLatestLessonList = memo(function ({
         />
       </div>
       {loading ? (
-        <>
-          <StudentLessonSingleCardSkeleton />
-          <StudentLessonSingleCardSkeleton />
-        </>
+        [...Array(2)].map((_, index) => (
+          <StudentLessonSingleCardSkeleton key={index} />
+        ))
       ) : (
         <>
           {latestLesson && (

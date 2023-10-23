@@ -297,7 +297,7 @@ export const StudentExamSingleCard = memo(function ({
                     {upcomingCountdown}
                   </span>
                 </div>
-                <div className='flex flex-col px-2.5 py-0.5'>
+                <div className='flex flex-col px-2.5 py-0.5 [.primary_&]:text-white'>
                   <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
                   <BaseChip iconName='clock'>{scheduleTime}</BaseChip>
                   <BaseChip iconName='hourglass'>{scheduleDuration}</BaseChip>

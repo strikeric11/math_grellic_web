@@ -1,5 +1,5 @@
 import { memo, useEffect, useMemo } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import dayjs from 'dayjs';
 import cx from 'classix';
 
@@ -24,14 +24,12 @@ export const ExamUpsertFormStep3 = memo(function ({
   disabled,
   ...moreProps
 }: Props) {
-  const { control, setValue, watch } = useFormContext<ExamUpsertFormData>();
+  const { control, setValue } = useFormContext<ExamUpsertFormData>();
 
-  const [startDate, endDate, startTime, endTime] = watch([
-    'startDate',
-    'endDate',
-    'startTime',
-    'endTime',
-  ]);
+  const startDate = useWatch({ control, name: 'startDate' });
+  const endDate = useWatch({ control, name: 'endDate' });
+  const startTime = useWatch({ control, name: 'startTime' });
+  const endTime = useWatch({ control, name: 'endTime' });
 
   const [durationText, isDurationValid] = useMemo(() => {
     const startDateTime = dayjs(

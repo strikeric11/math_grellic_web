@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useMemo } from 'react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
@@ -138,8 +138,7 @@ export const ExamUpsertQuestionChoiceList = memo(function ({
   isCollapsed,
   ...moreProps
 }: Props) {
-  const { control, getValues, setValue, watch } =
-    useFormContext<ExamUpsertFormData>();
+  const { control, getValues, setValue } = useFormContext<ExamUpsertFormData>();
 
   const { fields, append, remove, update } = useFieldArray({
     control,
@@ -159,7 +158,10 @@ export const ExamUpsertQuestionChoiceList = memo(function ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields, questionIndex]);
 
-  const choices = watch(`questions.${questionIndex}.choices`);
+  const choices = useWatch({
+    control,
+    name: `questions.${questionIndex}.choices`,
+  });
 
   const filteredFields = useMemo(
     () => (isCollapsed ? fields.filter((field) => field.isCorrect) : fields),

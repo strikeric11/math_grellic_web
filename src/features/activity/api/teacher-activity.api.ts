@@ -89,7 +89,6 @@ export function getPaginatedActivitiesByCurrentTeacherUser(
   };
 }
 
-// TODO create
 export function createActivity(
   options?: Omit<
     UseMutationOptions<Activity, Error, ActivityUpsertFormData, any>,

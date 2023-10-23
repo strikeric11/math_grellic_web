@@ -155,7 +155,7 @@ export const TeacherExamSingle = memo(function ({
       </div>
       <BaseDivider />
       <div className='my-4 flex w-full flex-col gap-y-3'>
-        <div className='flex w-full flex-col gap-y-4 px-4'>
+        <div className='flex w-full flex-col gap-y-4'>
           <div className='flex w-full items-center justify-between'>
             <span className='mr-2 font-bold'>Schedules</span>
             {!isDraft && (
@@ -166,8 +166,11 @@ export const TeacherExamSingle = memo(function ({
           </div>
           {schedules.length ? (
             <div className='flex w-full flex-col gap-y-4 px-4'>
-              {schedules.map(({ date, time, duration }) => (
-                <div className='flex items-center gap-2.5'>
+              {schedules.map(({ date, time, duration }, index) => (
+                <div
+                  key={`sched-${index}`}
+                  className='flex items-center gap-2.5'
+                >
                   <BaseChip iconName='calendar-check'>{date}</BaseChip>
                   <BaseDivider className='!h-6' vertical />
                   <BaseChip iconName='clock'>{time}</BaseChip>

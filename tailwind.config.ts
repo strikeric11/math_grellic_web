@@ -30,6 +30,8 @@ export default {
           'hue-purple-dark': '#482d72',
           'hue-purple-focus': '#815abf',
           'hue-teal': '#1a7d82',
+          'hue-teal-dark': '#155959',
+          'hue-teal-focus': '#22a8a4',
         },
         secondary: '#e04141',
         accent: '#38526d',

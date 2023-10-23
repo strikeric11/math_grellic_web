@@ -72,7 +72,7 @@ export const StudentExamTakeFooter = memo(function ({
       {...moreProps}
     >
       <div className='flex w-full items-center justify-between'>
-        <div className='flex w-full max-w-[414px] flex-wrap items-center gap-x-0.5 overflow-hidden rounded-sm'>
+        <div className='flex w-full max-w-[414px] flex-wrap items-center gap-0.5 overflow-hidden rounded-sm'>
           {miniAnswersProgress.map(({ hasAnswer, onClick }, index) => (
             <button
               key={index}

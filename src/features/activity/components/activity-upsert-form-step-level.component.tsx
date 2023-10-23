@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useMemo } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import cx from 'classix';
 
 import { BaseSurface } from '#/base/components/base-surface.component';
@@ -29,19 +29,32 @@ export const ActivityUpsertFormLevel = memo(function ({
   disabled,
   ...moreProps
 }: Props) {
-  const { control, watch, setValue } = useFormContext<ActivityUpsertFormData>();
+  const { control, setValue } = useFormContext<ActivityUpsertFormData>();
 
-  const [game, visibleQuestionsCount, pointsPerQuestion, questions] = watch([
-    'game',
-    `categories.${categoryIndex}.visibleQuestionsCount`,
-    `categories.${categoryIndex}.pointsPerQuestion`,
-    `categories.${categoryIndex}.questions`,
-  ]);
+  const game = useWatch({ control, name: 'game' });
+
+  const visibleQuestionsCount = useWatch({
+    control,
+    name: `categories.${categoryIndex}.visibleQuestionsCount`,
+  });
+
+  const pointsPerQuestion = useWatch({
+    control,
+    name: `categories.${categoryIndex}.pointsPerQuestion`,
+  });
+
+  const questions = useWatch({
+    control,
+    name: `categories.${categoryIndex}.questions`,
+  });
 
   const totalQuestionCount = useMemo(() => questions?.length || 0, [questions]);
 
   const totalPoints = useMemo(() => {
-    const value = visibleQuestionsCount || 0;
+    const value =
+      visibleQuestionsCount == null
+        ? totalQuestionCount
+        : visibleQuestionsCount;
     const visibleCount = Math.max(0, Math.min(value, totalQuestionCount));
 
     return visibleCount * (pointsPerQuestion || 0);
@@ -116,7 +129,7 @@ export const ActivityUpsertFormLevel = memo(function ({
             )}
           >
             <span className={FIXED_FIELD_VALUE_CLASSNAME}>
-              {visibleQuestionsCount}
+              {totalQuestionCount}
             </span>
             <small className='uppercase'>Total Questions</small>
           </div>

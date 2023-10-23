@@ -29,6 +29,7 @@ import { teacherExamRouteHandle } from '#/exam/route/teacher-exam-handle.route';
 import { teacherActivityRouteHandle } from '#/activity/route/teacher-activity-handle.route';
 import { studentLessonRouteHandle } from '#/lesson/route/student-lesson-handle.route';
 import { studentExamRouteHandle } from '#/exam/route/student-exam-handle.route';
+import { studentActivityRouteHandle } from '#/activity/route/student-activity-handle.route';
 import { LessonCreatePage } from '#/lesson/pages/lesson-create.page';
 import {
   getPaginatedLessonsLoader as getTeacherPaginatedLessonsLoader,
@@ -50,6 +51,10 @@ import {
   getExamsLoader as getStudentExamsLoader,
   getExamBySlugLoader as getStudentExamBySlugLoader,
 } from '#/exam/route/student-exam-loader.route';
+import {
+  getActivitiesLoader as getStudentActivitiesLoader,
+  getActivityBySlugLoader as getStudentActivityBySlugLoader,
+} from '#/activity/route/student-activity-loader.route';
 import { TeacherLessonListPage } from '#/lesson/pages/teacher-lesson-list.page';
 import { TeacherLessonSinglePage } from '#/lesson/pages/teacher-lesson-single.page';
 import { TeacherLessonScheduleListPage } from '#/lesson/pages/teacher-lesson-schedule-list.page';
@@ -76,6 +81,8 @@ import { ActivityCreatePage } from '#/activity/pages/activity-create.page';
 import { ActivityEditPage } from '#/activity/pages/activity-edit.page';
 import { ActivityPreviewSlugPage } from '#/activity/pages/activity-preview-slug.page';
 import { TeacherActivitySinglePage } from '#/activity/pages/teacher-activity-single.page';
+import { StudentActivityListPage } from '#/activity/pages/student-activity-list.page';
+import { StudentActivitySinglePage } from '#/activity/pages/student-activity-single.page';
 
 import { staticRoutes } from './static-routes';
 import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
@@ -329,12 +336,18 @@ const rootRoutes = createRoutesFromElements(
       </Route>
       {/* STUDENT EXAMS */}
       <Route path={studentRoutes.activity.to} element={<Outlet />}>
-        {/* <Route
+        <Route
           index
           element={<StudentActivityListPage />}
           handle={studentActivityRouteHandle.list}
           loader={getStudentActivitiesLoader(queryClient)}
-        /> */}
+        />
+        <Route
+          path=':slug'
+          element={<StudentActivitySinglePage />}
+          handle={studentActivityRouteHandle.single}
+          loader={getStudentActivityBySlugLoader(queryClient)}
+        />
       </Route>
     </Route>
   </>,

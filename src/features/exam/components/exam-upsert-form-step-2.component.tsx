@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import { BaseControlledNumberInput } from '#/base/components/base-input.component';
 import { BaseControlledCheckbox } from '#/base/components/base-checkbox.component';
@@ -23,18 +23,22 @@ export const ExamUpsertFormStep2 = memo(function ({
   disabled,
   ...moreProps
 }: Props) {
-  const { control, watch } = useFormContext<ExamUpsertFormData>();
+  const { control } = useFormContext<ExamUpsertFormData>();
 
-  const [visibleQuestionsCount, pointsPerQuestion, questions] = watch([
-    'visibleQuestionsCount',
-    'pointsPerQuestion',
-    'questions',
-  ]);
+  const visibleQuestionsCount = useWatch({
+    control,
+    name: 'visibleQuestionsCount',
+  });
+  const pointsPerQuestion = useWatch({ control, name: 'pointsPerQuestion' });
+  const questions = useWatch({ control, name: 'questions' });
 
   const totalQuestionCount = useMemo(() => questions?.length || 0, [questions]);
 
   const totalPoints = useMemo(() => {
-    const value = visibleQuestionsCount || 0;
+    const value =
+      visibleQuestionsCount == null
+        ? totalQuestionCount
+        : visibleQuestionsCount;
     const visibleCount = Math.max(0, Math.min(value, totalQuestionCount));
 
     return visibleCount * pointsPerQuestion;
@@ -52,7 +56,7 @@ export const ExamUpsertFormStep2 = memo(function ({
         >
           <div className={FIXED_FIELD_CLASSNAME}>
             <span className={FIXED_FIELD_VALUE_CLASSNAME}>
-              {visibleQuestionsCount}
+              {totalQuestionCount}
             </span>
             <small className='uppercase'>Total Questions</small>
           </div>
