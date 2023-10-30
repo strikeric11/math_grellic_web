@@ -8,7 +8,7 @@ import type { IconName } from '../models/base.model';
 
 type Props = ComponentProps<'div'> & {
   iconName?: IconName;
-  iconProps?: Omit<typeof BaseIcon, 'name'>;
+  iconProps?: Omit<ComponentProps<typeof BaseIcon>, 'name'>;
 };
 
 export const BaseChip = memo(function ({
@@ -19,9 +19,12 @@ export const BaseChip = memo(function ({
   ...moreProps
 }: Props) {
   return (
-    <div className={cx(className, 'flex items-center gap-1')} {...moreProps}>
+    <div
+      className={cx(className, 'flex items-center gap-1 uppercase')}
+      {...moreProps}
+    >
       {iconName && <BaseIcon name={iconName} size={20} {...iconProps} />}
-      <span className='uppercase'>{children}</span>
+      <span>{children}</span>
     </div>
   );
 });

@@ -92,7 +92,7 @@ export const TeacherLessonSingleCard = memo(function ({
         </div>
         {/* Earliest lesson schedule */}
         {scheduleDate && (
-          <div className='flex items-center gap-2.5 pt-1'>
+          <div className='flex min-w-[240px] items-center gap-2.5 pt-1'>
             <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
             <BaseDivider className='!h-6' vertical />
             <BaseChip iconName='clock'>{scheduleTime}</BaseChip>

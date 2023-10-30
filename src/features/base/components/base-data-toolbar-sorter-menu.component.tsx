@@ -1,4 +1,11 @@
-import { Fragment, memo, useCallback, useMemo, useState } from 'react';
+import {
+  Fragment,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import {
   offset,
@@ -126,6 +133,11 @@ export const BaseDataToolbarSorterMenu = memo(function ({
     },
     [selectedSort, onSubmit],
   );
+
+  useEffect(() => {
+    setSelectedSort(currentSelectedSort);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   return (
     <Popover className={cx('relative', className)} {...moreProps}>

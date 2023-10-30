@@ -110,7 +110,7 @@ export const TeacherExamSingle = memo(function ({
 
   return (
     <div className={cx('w-full pb-16', className)} {...moreProps}>
-      <div className='mb-4 flex w-full items-center justify-between'>
+      <div className='flex w-full items-center justify-between'>
         <div>
           <h2 className='pb-1 text-xl'>{title}</h2>
           <div className='flex items-center gap-2.5'>
@@ -153,11 +153,11 @@ export const TeacherExamSingle = memo(function ({
           </BaseLink>
         </div>
       </div>
-      <BaseDivider />
-      <div className='my-4 flex w-full flex-col gap-y-3'>
-        <div className='flex w-full flex-col gap-y-4'>
+      <div className='mt-2.5 flex flex-col gap-y-2.5'>
+        <BaseDivider />
+        <BaseSurface className='flex w-full flex-col gap-y-4' rounded='sm'>
           <div className='flex w-full items-center justify-between'>
-            <span className='mr-2 font-bold'>Schedules</span>
+            <h3 className='mr-2 text-base'>Schedules</h3>
             {!isDraft && (
               <BaseLink to={teacherRoutes.exam.schedule.to} size='sm' bodyFont>
                 Set Schedule
@@ -165,7 +165,7 @@ export const TeacherExamSingle = memo(function ({
             )}
           </div>
           {schedules.length ? (
-            <div className='flex w-full flex-col gap-y-4 px-4'>
+            <div className='flex w-full flex-col gap-y-4'>
               {schedules.map(({ date, time, duration }, index) => (
                 <div
                   key={`sched-${index}`}
@@ -180,63 +180,54 @@ export const TeacherExamSingle = memo(function ({
               ))}
             </div>
           ) : (
-            <span>Exam has no schedule</span>
+            <h3 className='text-base'>Exam has no schedule</h3>
           )}
-        </div>
-        <BaseDivider />
-        <BaseSurface
-          className='mx-auto w-full max-w-screen-sm !px-4 !pb-5'
-          rounded='sm'
-        >
-          <span className='mb-4 block font-bold'>
-            Questions {questionCountText}
-          </span>
-          <div className='flex w-full flex-col gap-y-4'>
-            {questions.map((question) => (
-              <TeacherExamSingleQuestion
-                key={question.id}
-                question={question}
-              ></TeacherExamSingleQuestion>
-            ))}
-          </div>
         </BaseSurface>
-        <BaseSurface
-          className='mx-auto w-full max-w-screen-sm px-4'
-          rounded='sm'
-        >
-          <span className='mb-4 block font-bold'>
+        <BaseSurface className='flex flex-col gap-y-2.5' rounded='sm'>
+          <h3 className='text-base'>
             {coveredLessons?.length
               ? 'Covered Lessons'
               : 'Exam has no covered lessons'}
-          </span>
+          </h3>
           <div className='flex flex-col'>
             {coveredLessons?.map((lesson) => (
               <LessonItem key={`li-${lesson.id}`} lesson={lesson as Lesson} />
             ))}
           </div>
-        </BaseSurface>
-        <BaseSurface
-          className='mx-auto w-full max-w-screen-sm px-4'
-          rounded='sm'
-        >
-          <span className='block font-bold'>
-            {descriptionHtml ? 'Description' : 'Exam has no description'}
-          </span>
-          {descriptionHtml && (
-            <div
-              className='base-rich-text rt-output'
-              dangerouslySetInnerHTML={descriptionHtml}
-            />
-          )}
-        </BaseSurface>
-        <BaseSurface
-          className='mx-auto w-full max-w-screen-sm px-4'
-          rounded='sm'
-        >
-          <span className='block font-bold'>
-            {excerpt ? 'Excerpt' : 'Exam has no excerpt'}
-          </span>
-          {excerpt}
+          <BaseDivider />
+          <div className='flex items-start'>
+            <div className='mr-4 flex-1 border-r border-accent/20'>
+              <h3 className='text-base'>
+                {descriptionHtml ? 'Description' : 'Exam has no description'}
+              </h3>
+              {descriptionHtml && (
+                <div
+                  className='base-rich-text rt-output'
+                  dangerouslySetInnerHTML={descriptionHtml}
+                />
+              )}
+            </div>
+            <div className='flex-1'>
+              <h3 className='text-base'>
+                {excerpt ? 'Excerpt' : 'Exam has no excerpt'}
+              </h3>
+              <p className='my-2'>{excerpt}</p>
+            </div>
+          </div>
+          <BaseDivider />
+          <div>
+            <h3 className='mb-2.5 text-base'>
+              Questions ({questionCountText})
+            </h3>
+            <div className='flex w-full flex-col gap-y-4'>
+              {questions.map((question) => (
+                <TeacherExamSingleQuestion
+                  key={question.id}
+                  question={question}
+                ></TeacherExamSingleQuestion>
+              ))}
+            </div>
+          </div>
         </BaseSurface>
       </div>
     </div>

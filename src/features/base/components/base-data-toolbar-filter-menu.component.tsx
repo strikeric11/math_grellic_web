@@ -1,4 +1,11 @@
-import { Fragment, memo, useCallback, useMemo, useState } from 'react';
+import {
+  Fragment,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import {
   offset,
@@ -22,6 +29,7 @@ type Props = ComponentProps<typeof Popover> & {
   defaulSelectedtOptions?: QueryFilterOption[];
   submitButtonLabel?: string;
   allowNoFilters?: boolean;
+  singleFilterOnly?: boolean;
   buttonProps?: ComponentProps<typeof BaseButton>;
   onSubmit?: (options: QueryFilterOption[]) => void;
 };
@@ -32,6 +40,7 @@ export const BaseDataToolbarFilterMenu = memo(function ({
   defaulSelectedtOptions,
   submitButtonLabel = 'Apply',
   allowNoFilters,
+  singleFilterOnly,
   buttonProps: { className: buttonClassName, ...moreButtonProps } = {},
   onSubmit,
   ...moreProps
@@ -51,6 +60,7 @@ export const BaseDataToolbarFilterMenu = memo(function ({
   const [selectedOptions, setSelectedOptions] = useState<QueryFilterOption[]>(
     defaulSelectedtOptions || [],
   );
+
   const [currentSelectedOptions, setCurrentSelectedOptions] =
     useState<QueryFilterOption[]>(selectedOptions);
 
@@ -83,10 +93,10 @@ export const BaseDataToolbarFilterMenu = memo(function ({
         if (isExisting) {
           return prev.filter((op) => op.key !== option.key);
         } else {
-          return [...prev, option];
+          return singleFilterOnly ? [option] : [...prev, option];
         }
       }),
-    [],
+    [singleFilterOnly],
   );
 
   const handleSubmit = useCallback(
@@ -102,6 +112,11 @@ export const BaseDataToolbarFilterMenu = memo(function ({
     },
     [selectedOptions, allowNoFilters, onSubmit],
   );
+
+  useEffect(() => {
+    setSelectedOptions(currentSelectedOptions);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   return (
     <Popover className={cx('relative', className)} {...moreProps}>

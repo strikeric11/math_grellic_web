@@ -1,4 +1,10 @@
-import { AuditTrail } from '#/core/models/core.model';
+import type { AuditTrail } from '#/core/models/core.model';
+import type { ExamCompletion, ExamSchedule } from '#/exam/models/exam.model';
+import type {
+  LessonCompletion,
+  LessonSchedule,
+} from '#/lesson/models/lesson.model';
+import type { ActivityCategoryCompletion } from '#/activity/models/activity.model';
 
 export enum UserApprovalStatus {
   Pending = 'pending',
@@ -31,13 +37,14 @@ export type User = Partial<AuditTrail> & {
 
 type UserAccount = Partial<AuditTrail> & {
   id: number;
-  publicId: string;
   firstName: string;
   lastName: string;
-  middleName?: string;
   birthDate: Date;
   phoneNumber: string;
   gender: UserGender;
+  middleName?: string;
+  email?: string;
+  publicId?: string;
 };
 
 export type TeacherUserAccount = UserAccount & {
@@ -54,6 +61,11 @@ export type TeacherUserAccount = UserAccount & {
 export type StudentUserAccount = UserAccount & {
   teacherId: string;
   aboutMe?: string;
+  lessonSchedules?: LessonSchedule[];
+  examSchedules?: ExamSchedule[];
+  lessonCompletions?: LessonCompletion[];
+  examCompletions?: ExamCompletion[];
+  activityCategoryCompletions?: ActivityCategoryCompletion[];
 };
 
 export type UserSlice = {

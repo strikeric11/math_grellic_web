@@ -59,7 +59,7 @@ export const TeacherActivitySingle = memo(function ({
 
   return (
     <div className={cx('w-full pb-16', className)} {...moreProps}>
-      <div className='mb-4 flex w-full items-center justify-between'>
+      <div className='mb-2.5 flex w-full items-center justify-between'>
         <div>
           <h2 className='pb-1 text-xl'>{title}</h2>
           <div className='flex items-center gap-2.5'>
@@ -94,50 +94,38 @@ export const TeacherActivitySingle = memo(function ({
           </BaseLink>
         </div>
       </div>
-      <BaseDivider />
-      <div className='my-4 flex w-full flex-col gap-y-3'>
+      <BaseDivider className='mb-2.5' />
+      <BaseSurface rounded='sm'>
+        <div className='flex items-start'>
+          <div className='mr-4 flex-1 border-r border-accent/20'>
+            <h3 className='text-base'>
+              {descriptionHtml ? 'Description' : 'Activity has no description'}
+            </h3>
+            {descriptionHtml && (
+              <div
+                className='base-rich-text rt-output'
+                dangerouslySetInnerHTML={descriptionHtml}
+              />
+            )}
+          </div>
+          <div className='flex-1'>
+            <h3 className='text-base'>
+              {excerpt ? 'Excerpt' : 'Activity has no excerpt'}
+            </h3>
+            <p className='my-2'>{excerpt}</p>
+          </div>
+        </div>
+        <BaseDivider className='mb-2.5' />
         {/* Categories */}
         {categories.map((category) => (
           <TeacherActivitySingleCategory
             key={`cat-${category.id}`}
+            className='mb-4 border-b border-accent/20 pb-4 last:mb-0 last:border-none last:pb-0'
             gameType={game.type as ActivityCategoryType}
             category={category}
           />
         ))}
-        <BaseDivider />
-        <BaseSurface
-          className='mx-auto w-full max-w-screen-sm px-4'
-          rounded='sm'
-        >
-          <span className='block font-bold'>
-            {descriptionHtml ? 'Description' : 'Activity has no description'}
-          </span>
-          {descriptionHtml && (
-            <div
-              className='base-rich-text rt-output'
-              dangerouslySetInnerHTML={descriptionHtml}
-            />
-          )}
-        </BaseSurface>
-        <BaseSurface
-          className='mx-auto w-full max-w-screen-sm px-4'
-          rounded='sm'
-        >
-          <span className='block font-bold'>
-            {excerpt ? 'Excerpt' : 'Activity has no excerpt'}
-          </span>
-          {excerpt}
-        </BaseSurface>
-      </div>
+      </BaseSurface>
     </div>
   );
 });
-
-// id: number;
-// level: ActivityCategoryLevel;
-// randomizeQuestions: boolean;
-// visibleQuestionsCount: number;
-// questions: ActivityCategoryQuestion[];
-// typePoint?: ActivityCategoryTypePoint;
-// typeTime?: ActivityCategoryTypeTime;
-// completions?: ActivityCategoryCompletion[];

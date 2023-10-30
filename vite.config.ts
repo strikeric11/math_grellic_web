@@ -73,6 +73,12 @@ export default defineConfig({
           new URL('./src/features/activity', import.meta.url),
         ),
       },
+      {
+        find: '#/performance',
+        replacement: fileURLToPath(
+          new URL('./src/features/performance', import.meta.url),
+        ),
+      },
     ],
   },
 });

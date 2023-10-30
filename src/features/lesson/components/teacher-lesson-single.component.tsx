@@ -97,41 +97,53 @@ export const TeacherLessonSingle = memo(function ({
           </BaseLink>
         </div>
       </div>
-      <div className='my-4 flex w-full items-center justify-between rounded border-b border-t border-accent/20 px-4 py-3'>
-        {scheduleDate ? (
-          <div className='flex items-center gap-2.5'>
-            <span className='mr-2 font-bold'>Schedule</span>
-            <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
-            <BaseDivider className='!h-6' vertical />
-            <BaseChip iconName='clock'>{scheduleTime}</BaseChip>
-          </div>
-        ) : (
-          <span>Lesson has no schedule</span>
-        )}
-        {!isDraft && (
-          <BaseLink to={teacherRoutes.lesson.schedule.to} size='sm' bodyFont>
-            Set Schedule
-          </BaseLink>
-        )}
-      </div>
-      <LessonVideo className='my-8' url={videoUrl} title={title} />
-      <div className='my-4 flex flex-col gap-y-3'>
-        <BaseSurface className='w-full rounded !px-4' rounded='sm'>
-          <span className='block font-bold'>
-            {excerpt ? 'Excerpt' : 'Lesson has no excerpt'}
-          </span>
-          {excerpt}
-        </BaseSurface>
-        <BaseSurface className='w-full rounded px-4' rounded='sm'>
-          <span className='block font-bold'>
-            {descriptionHtml ? 'Description' : 'Lesson has no description'}
-          </span>
-          {descriptionHtml && (
-            <div
-              className='base-rich-text rt-output'
-              dangerouslySetInnerHTML={descriptionHtml}
-            />
+      <div className='mt-2.5 flex flex-col gap-y-2.5'>
+        <BaseDivider />
+        <BaseSurface
+          className='flex w-full items-center justify-between'
+          rounded='sm'
+        >
+          {scheduleDate ? (
+            <div className='flex items-center gap-2.5'>
+              <h3 className='mr-2 text-base'>Schedule</h3>
+              <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
+              <BaseDivider className='!h-6' vertical />
+              <BaseChip iconName='clock'>{scheduleTime}</BaseChip>
+            </div>
+          ) : (
+            <h3 className='text-base'>Lesson has no schedule</h3>
           )}
+          {!isDraft && (
+            <BaseLink to={teacherRoutes.lesson.schedule.to} size='sm' bodyFont>
+              Set Schedule
+            </BaseLink>
+          )}
+        </BaseSurface>
+        <BaseSurface className='flex flex-col gap-y-2.5' rounded='sm'>
+          <div>
+            <h3 className='mb-2.5 text-base'>Video</h3>
+            <LessonVideo url={videoUrl} title={title} />
+          </div>
+          <BaseDivider />
+          <div className='flex items-start'>
+            <div className='mr-4 flex-1 border-r border-accent/20'>
+              <h3 className='block text-base'>
+                {descriptionHtml ? 'Description' : 'Lesson has no description'}
+              </h3>
+              {descriptionHtml && (
+                <div
+                  className='base-rich-text rt-output'
+                  dangerouslySetInnerHTML={descriptionHtml}
+                />
+              )}
+            </div>
+            <div className='flex-1'>
+              <h3 className='text-base'>
+                {excerpt ? 'Excerpt' : 'Lesson has no excerpt'}
+              </h3>
+              <p className='my-2'>{excerpt}</p>
+            </div>
+          </div>
         </BaseSurface>
       </div>
     </div>

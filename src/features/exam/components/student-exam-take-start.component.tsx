@@ -41,7 +41,7 @@ export const StudentExamTakeStart = memo(function ({
       {...moreProps}
     >
       <BaseSurface className='w-full bg-white px-4' rounded='sm'>
-        <span className='mb-4 block font-bold'>Covered Lessons</span>
+        <span className='mb-4 block font-medium'>Covered Lessons</span>
         {coveredLessons?.length ? (
           <div className='flex flex-col'>
             {coveredLessons?.map((lesson) => (

@@ -123,7 +123,7 @@ export const TeacherActivitySingleCard = memo(function ({
         </div>
         {/* Category info */}
         {!!categories.length && (
-          <div>
+          <div className='min-w-[190px]'>
             {categories.map((category, index) => (
               <div
                 key={`cat-${index}`}

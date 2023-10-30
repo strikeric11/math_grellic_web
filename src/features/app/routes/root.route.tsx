@@ -30,6 +30,7 @@ import { teacherActivityRouteHandle } from '#/activity/route/teacher-activity-ha
 import { studentLessonRouteHandle } from '#/lesson/route/student-lesson-handle.route';
 import { studentExamRouteHandle } from '#/exam/route/student-exam-handle.route';
 import { studentActivityRouteHandle } from '#/activity/route/student-activity-handle.route';
+import { teacherStudentPerformanceRouteHandle } from '#/performance/route/teacher-performance-handle.route';
 import { LessonCreatePage } from '#/lesson/pages/lesson-create.page';
 import {
   getPaginatedLessonsLoader as getTeacherPaginatedLessonsLoader,
@@ -43,6 +44,10 @@ import {
   getPaginatedActivitiesLoader as getTeacherPaginatedActivitiesLoader,
   getActivityBySlugLoader as getTeacherActivityBySlugLoader,
 } from '#/activity/route/teacher-activity-loader.route';
+import {
+  getPaginatedStudentPerformancesLoader,
+  getStudentPerformanceByPublicIdLoader,
+} from '#/performance/route/teacher-performance-loader.route';
 import {
   getLessonsLoader as getStudentLessonsLoader,
   getLessonBySlugLoader as getStudentLessonBySlugLoader,
@@ -83,6 +88,9 @@ import { ActivityPreviewSlugPage } from '#/activity/pages/activity-preview-slug.
 import { TeacherActivitySinglePage } from '#/activity/pages/teacher-activity-single.page';
 import { StudentActivityListPage } from '#/activity/pages/student-activity-list.page';
 import { StudentActivitySinglePage } from '#/activity/pages/student-activity-single.page';
+import { StudentPerformanceListPage } from '#/performance/pages/student-performance-list.page';
+import { TeacherStudentPerformanceSinglePage } from '#/performance/pages/teacher-student-performance-single.page';
+import { StudentPerformanceSinglePage } from '#/performance/pages/student-performance-single.page';
 
 import { staticRoutes } from './static-routes';
 import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
@@ -289,6 +297,23 @@ const rootRoutes = createRoutesFromElements(
         element={<CorePageNotFound to={`/${teacherBaseRoute}`} />}
         handle={coreRouteHandle.notFound}
       />
+      {/* TEACHER PERFORMANCE */}
+      <Route path={teacherRoutes.performance.to} element={<Outlet />}>
+        <Route
+          index
+          element={<StudentPerformanceListPage />}
+          handle={teacherStudentPerformanceRouteHandle.list}
+          loader={getPaginatedStudentPerformancesLoader(queryClient)}
+        />
+        <Route path=':publicId' element={<Outlet />}>
+          <Route
+            index
+            element={<TeacherStudentPerformanceSinglePage />}
+            handle={teacherStudentPerformanceRouteHandle.single}
+            loader={getStudentPerformanceByPublicIdLoader(queryClient)}
+          />
+        </Route>
+      </Route>
     </Route>
     {/* STUDENT */}
     <Route
@@ -334,7 +359,7 @@ const rootRoutes = createRoutesFromElements(
           loader={getStudentExamBySlugLoader(queryClient)}
         />
       </Route>
-      {/* STUDENT EXAMS */}
+      {/* STUDENT ACTIVITIES */}
       <Route path={studentRoutes.activity.to} element={<Outlet />}>
         <Route
           index
@@ -347,6 +372,14 @@ const rootRoutes = createRoutesFromElements(
           element={<StudentActivitySinglePage />}
           handle={studentActivityRouteHandle.single}
           loader={getStudentActivityBySlugLoader(queryClient)}
+        />
+      </Route>
+      {/* STUDENT PERFORMANCE */}
+      <Route path={studentRoutes.performance.to} element={<Outlet />}>
+        <Route
+          index
+          element={<StudentPerformanceSinglePage />}
+          handle={studentActivityRouteHandle.list}
         />
       </Route>
     </Route>

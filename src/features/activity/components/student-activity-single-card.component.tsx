@@ -53,10 +53,10 @@ const Score = memo(function ({ game, score }: ScoreProps) {
         </div>
       ) : (
         <div className='flex h-full w-full flex-1 flex-col justify-start text-white'>
-          <div className='flex h-full flex-1 items-center justify-center bg-primary-hue-teal-focus text-6xl font-bold'>
+          <div className='flex h-full flex-1 items-center justify-center bg-primary-hue-teal-focus text-6xl font-medium'>
             {score}
           </div>
-          <small className='py-1 text-center font-bold uppercase'>
+          <small className='py-1 text-center font-medium uppercase'>
             {scoreSuffix}
           </small>
         </div>

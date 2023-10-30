@@ -86,7 +86,7 @@ export const TeacherExamSingleCard = memo(function ({
       {...moreProps}
     >
       <div className='flex h-full flex-1 items-start gap-4'>
-        <div className='flex h-full flex-1 items-start gap-4'>
+        <div className='flex h-full flex-1 items-center gap-4'>
           <div className='flex h-full w-[121px] flex-col items-center overflow-hidden rounded border border-primary bg-primary-hue-purple/30 font-medium'>
             <div className='flex w-full flex-1 items-center justify-center text-2xl text-primary-hue-purple'>
               <div className='flex-1 text-center'>{passingPoints}</div>
@@ -124,7 +124,7 @@ export const TeacherExamSingleCard = memo(function ({
           </div>
           {/* Earliest exam schedule */}
           {scheduleDate && (
-            <div className='flex flex-col gap-1.5'>
+            <div className='flex min-w-[190px] flex-col gap-1'>
               <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
               <BaseChip iconName='clock'>{scheduleTime}</BaseChip>
               <BaseChip iconName='hourglass'>{scheduleDuration}</BaseChip>

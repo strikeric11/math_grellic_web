@@ -24,7 +24,7 @@ export const CorePageNotFound = memo(function ({
       )}
       {...moreProps}
     >
-      <span className='mb-4 font-display text-3xl font-bold tracking-tighter text-primary'>
+      <span className='mb-4 font-display text-3xl font-medium tracking-tighter text-primary'>
         Page Not Found
       </span>
       <span className='text-lg'>

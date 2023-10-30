@@ -189,7 +189,7 @@ export const BaseDatePicker = memo(
                   {!!label && (
                     <span
                       className={cx(
-                        `absolute left-0 top-1/2 -translate-y-1/2 font-bold text-accent/70 transition-all group-focus/dtpicker:!text-primary`,
+                        `absolute left-0 top-1/2 -translate-y-1/2 font-medium text-accent/70 transition-all group-focus/dtpicker:!text-primary`,
                         localValue !== undefined &&
                           '!-translate-y-111 !text-13px after:!top-0',
                         !!iconName && '!left-[31px]',

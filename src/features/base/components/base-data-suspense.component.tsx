@@ -24,7 +24,7 @@ const SuspenseFallback = memo(function () {
 const AwaitError = memo(function ({ message }: { message?: string }) {
   return (
     <div className='flex w-full items-center justify-center px-4 py-20'>
-      <span className='text-lg font-bold'>
+      <span className='text-lg font-medium'>
         {message || "We've encountered an error. Please reload page."}
       </span>
     </div>

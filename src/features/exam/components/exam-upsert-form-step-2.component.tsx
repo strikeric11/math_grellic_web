@@ -15,7 +15,7 @@ type Props = ComponentProps<'div'> & {
 };
 
 const FIXED_FIELD_CLASSNAME = 'flex shrink-0 flex-col items-center gap-y-1';
-const FIXED_FIELD_VALUE_CLASSNAME = 'text-2xl font-bold leading-none';
+const FIXED_FIELD_VALUE_CLASSNAME = 'text-2xl font-medium leading-none';
 
 const passingPointsWrapperProps = { className: 'max-w-[203px]' };
 

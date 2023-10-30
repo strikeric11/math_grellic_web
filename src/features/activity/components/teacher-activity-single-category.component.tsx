@@ -5,7 +5,6 @@ import { convertSecondsToDuration } from '#/utils/time.util';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
-import { BaseSurface } from '#/base/components/base-surface.component';
 import { ActivityCategoryType, categoryLevel } from '../models/activity.model';
 import { TeacherActivitySingleQuestion } from './teacher-activity-single-question.component';
 
@@ -13,7 +12,7 @@ import type { ComponentProps } from 'react';
 import type { IconName } from '#/base/models/base.model';
 import type { ActivityCategory } from '../models/activity.model';
 
-type Props = ComponentProps<typeof BaseSurface> & {
+type Props = ComponentProps<'div'> & {
   gameType: ActivityCategoryType;
   category: ActivityCategory;
 };
@@ -61,22 +60,16 @@ export const TeacherActivitySingleCategory = memo(function ({
   }, [typeTime]);
 
   return (
-    <BaseSurface
-      className={cx('mx-auto w-full max-w-screen-sm !px-4 !pb-5', className)}
-      rounded='sm'
-      {...moreProps}
-    >
+    <div className={cx('mx-auto w-full', className)} {...moreProps}>
       <div className='flex flex-col gap-2.5'>
         <div className='flex items-center gap-2'>
           <BaseIcon
             name={categoryLevel[level].iconName as IconName}
             size={20}
           />
-          <span className='font-bold'>
-            {categoryLevel[level].levelName} Level
-          </span>
+          <h3 className='text-base'>{categoryLevel[level].levelName} Level</h3>
         </div>
-        <div className='mb-2.5 flex items-center gap-2.5 text-sm'>
+        <div className='flex items-center gap-2.5 text-sm'>
           <BaseChip iconName='list-numbers'>{questionsCountText}</BaseChip>
           <BaseDivider className='!h-6' vertical />
           {gameType === ActivityCategoryType.Point ? (
@@ -104,10 +97,10 @@ export const TeacherActivitySingleCategory = memo(function ({
             <TeacherActivitySingleQuestion
               key={question.id}
               question={question}
-            ></TeacherActivitySingleQuestion>
+            />
           ))}
         </div>
       </div>
-    </BaseSurface>
+    </div>
   );
 });

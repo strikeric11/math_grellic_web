@@ -1,5 +1,14 @@
 import dayjs from 'dayjs';
 
+import {
+  transformToLessonCompletion,
+  transformToLessonSchedule,
+} from '#/lesson/helpers/lesson-transform.helper';
+import {
+  transformToExamCompletion,
+  transformToExamSchedule,
+} from '#/exam/helpers/exam-transform.helper';
+import { transformToActivityCategoryCompletion } from '#/activity/helpers/activity-transform.helper';
 import { UserRole } from '../models/user.model';
 
 import type {
@@ -92,11 +101,50 @@ export function transformToStudentUserAccount({
   aboutMe,
   teacherId,
   user,
+  lessonSchedules,
+  examSchedules,
+  lessonCompletions,
+  examCompletions,
+  activityCategoryCompletions,
 }: any): StudentUserAccount {
-  const publicId = user?.publicId || null;
+  const { email, publicId } = user || {};
+
+  const transformedLessonSchedules =
+    lessonSchedules && lessonSchedules.length
+      ? lessonSchedules.map((schedule: any) =>
+          transformToLessonSchedule(schedule),
+        )
+      : undefined;
+
+  const transformedExamSchedules =
+    examSchedules && examSchedules.length
+      ? examSchedules.map((schedule: any) => transformToExamSchedule(schedule))
+      : undefined;
+
+  const transformedLessonCompletions =
+    lessonCompletions && lessonCompletions.length
+      ? lessonCompletions.map((completion: any) =>
+          transformToLessonCompletion(completion),
+        )
+      : undefined;
+
+  const transformedExamCompletions =
+    examCompletions && examCompletions.length
+      ? examCompletions.map((completion: any) =>
+          transformToExamCompletion(completion),
+        )
+      : undefined;
+
+  const transformedActivityCategoryCompletions =
+    activityCategoryCompletions && activityCategoryCompletions.length
+      ? activityCategoryCompletions.map((completion: any) =>
+          transformToActivityCategoryCompletion(completion),
+        )
+      : undefined;
 
   return {
     id,
+    email,
     publicId,
     firstName,
     lastName,
@@ -106,6 +154,11 @@ export function transformToStudentUserAccount({
     gender,
     aboutMe,
     teacherId,
+    lessonSchedules: transformedLessonSchedules,
+    examSchedules: transformedExamSchedules,
+    lessonCompletions: transformedLessonCompletions,
+    examCompletions: transformedExamCompletions,
+    activityCategoryCompletions: transformedActivityCategoryCompletions,
   } as StudentUserAccount;
 }
 

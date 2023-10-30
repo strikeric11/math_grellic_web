@@ -1,6 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { motion } from 'framer-motion';
 import cx from 'classix';
 
@@ -12,7 +11,7 @@ import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { ExamScheduleStatus } from '../models/exam.model';
-import { StudentExamQuestionAnswer } from './student-exam-question-answer.component';
+import { StudentExamQuestionResult } from './student-exam-question-result.component';
 
 import type { ComponentProps } from 'react';
 import type { Exam, ExamCompletion } from '../models/exam.model';
@@ -218,9 +217,10 @@ export const StudentExamTakeDone = memo(function ({
               <BaseButton
                 variant='link'
                 size='sm'
+                rightIconName='subtract-square'
                 onClick={handleSetModal(true)}
               >
-                View Details
+                More Details
               </BaseButton>
             </>
           )}
@@ -228,30 +228,7 @@ export const StudentExamTakeDone = memo(function ({
       </div>
       {examCompletion && isPast && (
         <BaseModal open={openModal} onClose={handleSetModal(false)}>
-          <div className='h-[450px]'>
-            <OverlayScrollbarsComponent
-              className='h-full w-full px-4 pb-2.5'
-              defer
-            >
-              <div className='mb-2.5'>
-                Showing exam questions with your selected choices and answers.
-              </div>
-              <ol className='flex w-full flex-col gap-y-2.5'>
-                {questionAnswers.map(
-                  ({ question, selectedQuestionChoiceId }, index) =>
-                    question && (
-                      <li key={`ans-${question.id}`} className='w-full'>
-                        <StudentExamQuestionAnswer
-                          key={`qa-${index}`}
-                          question={question}
-                          selectedChoiceId={selectedQuestionChoiceId}
-                        />
-                      </li>
-                    ),
-                )}
-              </ol>
-            </OverlayScrollbarsComponent>
-          </div>
+          <StudentExamQuestionResult questionAnswers={questionAnswers} />
         </BaseModal>
       )}
     </>

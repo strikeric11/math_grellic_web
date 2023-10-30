@@ -67,6 +67,7 @@ export const teacherRoutes = {
     to: 'students',
     label: 'Students',
     iconName: 'users-four',
+    editTo: 'edit',
   },
   help: {
     name: 'help',

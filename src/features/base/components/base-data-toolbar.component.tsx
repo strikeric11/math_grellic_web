@@ -20,6 +20,7 @@ type Props = ComponentProps<'div'> & {
   sortOptions: QuerySortOption[];
   defaulSelectedtFilterOptions?: QueryFilterOption[];
   defaultSelectedSort?: QuerySort;
+  singleFilterOnly?: boolean;
   onSearchChange?: (value: string | null) => void;
   onRefresh?: () => void;
   onFilter?: (value: QueryFilterOption[]) => void;
@@ -40,6 +41,7 @@ export const BaseDataToolbar = memo(
     filterOptions,
     defaulSelectedtFilterOptions,
     defaultSelectedSort,
+    singleFilterOnly,
     sortOptions,
     onSearchChange,
     onRefresh,
@@ -61,6 +63,7 @@ export const BaseDataToolbar = memo(
             options={filterOptions}
             defaulSelectedtOptions={defaulSelectedtFilterOptions}
             submitButtonLabel='Apply Filter'
+            singleFilterOnly={singleFilterOnly}
             buttonProps={filterButtonProps}
             onSubmit={onFilter}
           />

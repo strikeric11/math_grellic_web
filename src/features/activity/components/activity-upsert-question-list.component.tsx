@@ -65,7 +65,9 @@ const Question = memo(function ({
   return (
     <BaseSurface className={cx('w-full !px-0 !pb-2.5 !pt-1')} rounded='sm'>
       <div className='mb-2.5 flex w-full items-center justify-between border-b border-b-accent/20 px-5'>
-        <span className='text-xl font-bold text-accent/50'>{orderNumber}</span>
+        <span className='text-xl font-medium text-accent/50'>
+          {orderNumber}
+        </span>
         <div className='flex items-center'>
           <BaseTooltip content='Move Up'>
             <BaseIconButton

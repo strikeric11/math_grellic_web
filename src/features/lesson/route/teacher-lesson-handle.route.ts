@@ -1,12 +1,9 @@
-import {
-  teacherBaseRoute,
-  teacherRoutes,
-} from '../../app/routes/teacher-routes';
+import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import type { GroupLink, SceneRouteHandle } from '#/base/models/base.model';
 
 const lessonBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
 
-const lessonList = {
+const lessonListLink = {
   to: lessonBaseRoute,
   label: 'Lesson List',
   icons: [{ name: 'chalkboard-teacher' }] as GroupLink['icons'],
@@ -34,15 +31,15 @@ export const teacherLessonRouteHandle: { [key: string]: SceneRouteHandle } = {
   },
   single: {
     title: 'Lesson Details',
-    links: [lessonList, createLessonLink],
+    links: [lessonListLink, createLessonLink],
   },
   create: {
     title: 'Create a Lesson',
-    links: [lessonList, calendarLink],
+    links: [lessonListLink, calendarLink],
   },
   edit: {
     title: 'Edit Lesson',
-    links: [lessonList, createLessonLink],
+    links: [lessonListLink, createLessonLink],
   },
   schedule: { disabledSceneWrapper: true },
   preview: { disabledSceneWrapper: true },

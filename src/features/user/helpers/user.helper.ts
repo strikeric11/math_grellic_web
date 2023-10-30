@@ -10,3 +10,7 @@ export function generateFullName(
     return `${lastName}, ${firstName} ${middleInitial}.`;
   }
 }
+
+export function formatPhoneNumber(phoneNumber: string) {
+  return phoneNumber.replace(/^(.{4})(.{3})/, '$1-$2-');
+}

@@ -15,6 +15,7 @@ import {
   ArrowsInLineHorizontal,
   ArrowsOutLineHorizontal,
   Article,
+  At,
   Bell,
   Calendar,
   CalendarCheck,
@@ -32,6 +33,7 @@ import {
   CircleDashed,
   Clock,
   ClockCountdown,
+  DeviceMobile,
   DiceThree,
   DoorOpen,
   DotsThreeVertical,
@@ -49,6 +51,7 @@ import {
   GenderFemale,
   GenderMale,
   Hourglass,
+  IdentificationBadge,
   LinkSimple,
   ListBullets,
   ListChecks,
@@ -69,6 +72,7 @@ import {
   SortAscending,
   SortDescending,
   SquaresFour,
+  SubtractSquare,
   TextAlignCenter,
   TextAlignJustify,
   TextAlignLeft,
@@ -129,6 +133,8 @@ export const BaseIcon = memo(
           return ArrowUUpRight;
         case 'article':
           return Article;
+        case 'at':
+          return At;
         case 'bell':
           return Bell;
         case 'calendar':
@@ -163,10 +169,12 @@ export const BaseIcon = memo(
           return Clock;
         case 'clock-countdown':
           return ClockCountdown;
-        case 'door-open':
-          return DoorOpen;
+        case 'device-mobile':
+          return DeviceMobile;
         case 'dice-three':
           return DiceThree;
+        case 'door-open':
+          return DoorOpen;
         case 'dots-three-vertical':
           return DotsThreeVertical;
         case 'equals':
@@ -197,6 +205,8 @@ export const BaseIcon = memo(
           return GenderMale;
         case 'hourglass':
           return Hourglass;
+        case 'identification-badge':
+          return IdentificationBadge;
         case 'link-simple':
           return LinkSimple;
         case 'list-bullets':
@@ -237,6 +247,8 @@ export const BaseIcon = memo(
           return SortDescending;
         case 'squares-four':
           return SquaresFour;
+        case 'subtract-square':
+          return SubtractSquare;
         case 'text-align-center':
           return TextAlignCenter;
         case 'text-align-justify':

@@ -1,0 +1,99 @@
+import { memo, useCallback, useMemo } from 'react';
+import cx from 'classix';
+
+import { BaseIcon } from '#/base/components/base-icon.component';
+import { BaseTag } from '#/base/components/base-tag.component';
+
+import type { ComponentProps } from 'react';
+import type { Exam } from '#/exam/models/exam.model';
+
+type Props = Omit<ComponentProps<'div'>, 'onClick'> & {
+  exam: Exam;
+  onClick?: (exam?: Exam) => void;
+};
+
+export const StudentExamPerformanceDetails = memo(function ({
+  className,
+  exam,
+  onClick,
+  ...moreProps
+}: Props) {
+  const [orderNumber, title, totalPoints, passingPoints, completion] = useMemo(
+    () => [
+      exam.orderNumber,
+      exam.title,
+      exam.visibleQuestionsCount * exam.pointsPerQuestion,
+      exam.passingPoints,
+      exam.completions?.length ? exam.completions[0] : undefined,
+    ],
+    [exam],
+  );
+
+  const hasPassed = useMemo(
+    () => (completion?.score || 0) >= passingPoints,
+    [completion, passingPoints],
+  );
+
+  const scoreText = useMemo(() => {
+    const totalPointsText = totalPoints.toString().padStart(2, '0');
+
+    if (!completion) {
+      return `-/${totalPointsText}`;
+    }
+
+    const studentScore = (completion.score || 0).toString().padStart(2, '0');
+
+    return `${studentScore}/${totalPointsText}`;
+  }, [completion, totalPoints]);
+
+  const statusText = useMemo(() => {
+    if (!completion) {
+      return 'Expired';
+    }
+    return hasPassed ? 'Passed' : 'Failed';
+  }, [completion, hasPassed]);
+
+  const handleClick = useCallback(() => {
+    onClick && onClick(exam);
+  }, [exam, onClick]);
+
+  return (
+    <div
+      className={cx(
+        'flex w-full items-center justify-between overflow-hidden rounded px-4 py-2',
+        onClick &&
+          'cursor-pointer transition-colors duration-75 hover:bg-primary-hue-purple-focus hover:!text-white',
+        className,
+      )}
+      onClick={handleClick}
+      {...moreProps}
+    >
+      <div className='flex items-center gap-x-2.5'>
+        {hasPassed ? (
+          <BaseIcon
+            className='text-green-500'
+            name='check-circle'
+            size={28}
+            weight='bold'
+          />
+        ) : (
+          <BaseIcon
+            className={completion ? 'text-red-500' : 'text-accent/40'}
+            name='x-circle'
+            size={28}
+            weight='bold'
+          />
+        )}
+        <span>
+          Exam {orderNumber} - {title}
+        </span>
+      </div>
+      <div className='flex items-center gap-x-2.5'>
+        <div className='mr-4 w-24 text-center text-lg font-medium'>
+          {scoreText}
+        </div>
+        <BaseTag className='w-20 !bg-primary-hue-purple'>{statusText}</BaseTag>
+      </div>
+    </div>
+  );
+});

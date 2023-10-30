@@ -52,19 +52,19 @@ const Score = memo(function ({
         <div className='flex h-full w-full flex-1 flex-col justify-start text-white'>
           {score == null ? (
             <>
-              <div className='flex h-full flex-1 items-center justify-center bg-primary-hue-purple-focus text-6xl font-bold'>
+              <div className='flex h-full flex-1 items-center justify-center bg-primary-hue-purple-focus text-6xl font-medium'>
                 -
               </div>
-              <small className='py-1 text-center font-bold uppercase'>
+              <small className='py-1 text-center font-medium uppercase'>
                 Expired
               </small>
             </>
           ) : (
             <>
-              <div className='flex h-full flex-1 items-center justify-center bg-primary-hue-purple-focus text-6xl font-bold'>
+              <div className='flex h-full flex-1 items-center justify-center bg-primary-hue-purple-focus text-6xl font-medium'>
                 {score}
               </div>
-              <small className='py-1 text-center font-bold uppercase'>
+              <small className='py-1 text-center font-medium uppercase'>
                 {hasPassed ? 'Passed' : 'Failed'}
               </small>
             </>

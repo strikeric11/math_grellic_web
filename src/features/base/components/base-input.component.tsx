@@ -106,7 +106,7 @@ export const BaseInput = memo(
             <label
               htmlFor={newId}
               className={cx(
-                `absolute left-5 top-1/2 -translate-y-1/2 font-bold text-accent/70 transition-all peer-focus:-translate-y-111 peer-focus:text-13px
+                `absolute left-5 top-1/2 -translate-y-1/2 font-medium text-accent/70 transition-all peer-focus:-translate-y-111 peer-focus:text-13px
                 peer-focus:!text-primary after:peer-focus:!top-0`,
                 !!value && '!-translate-y-111 !text-13px after:!top-0',
                 (!!leftContent || !!iconName) && '!left-45px',

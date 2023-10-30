@@ -135,7 +135,7 @@ export const BaseSelect = memo(
             {!!label && (
               <span
                 className={cx(
-                  `absolute left-0 top-1/2 -translate-y-1/2 font-bold text-accent/70 transition-all group-focus/select:!text-primary`,
+                  `absolute left-0 top-1/2 -translate-y-1/2 font-medium text-accent/70 transition-all group-focus/select:!text-primary`,
                   targetValue != null &&
                     '!-translate-y-111 !text-13px after:!top-0',
                   !!iconName && '!left-[31px]',
