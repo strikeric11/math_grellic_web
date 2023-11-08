@@ -132,7 +132,7 @@ export const TeacherLessonSingle = memo(function ({
               </h3>
               {descriptionHtml && (
                 <div
-                  className='base-rich-text rt-output'
+                  className='base-rich-text rt-output pr-2.5'
                   dangerouslySetInnerHTML={descriptionHtml}
                 />
               )}
@@ -141,7 +141,7 @@ export const TeacherLessonSingle = memo(function ({
               <h3 className='text-base'>
                 {excerpt ? 'Excerpt' : 'Lesson has no excerpt'}
               </h3>
-              <p className='my-2'>{excerpt}</p>
+              {excerpt && <p className='my-2'>{excerpt}</p>}
             </div>
           </div>
         </BaseSurface>

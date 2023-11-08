@@ -50,11 +50,16 @@ export const teacherRoutes = {
       editTo: 'edit',
     },
   },
-  calendar: {
-    name: 'calendar',
-    to: 'calendar',
-    label: 'Calendar',
+  schedule: {
+    name: 'schedules',
+    to: 'schedules',
+    label: 'Schedules',
     iconName: 'calendar',
+    meeting: {
+      to: 'meetings',
+      createTo: 'create',
+      editTo: 'edit',
+    },
   },
   performance: {
     name: 'performance',

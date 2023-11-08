@@ -16,7 +16,7 @@ const createExamLink = {
 };
 
 const calendarLink = {
-  to: `${teacherBaseRoute}/${teacherRoutes.calendar.to}`,
+  to: `/${teacherBaseRoute}/${teacherRoutes.schedule.to}`,
   label: 'Calendar',
   icons: [{ name: 'calendar' }] as GroupLink['icons'],
 };

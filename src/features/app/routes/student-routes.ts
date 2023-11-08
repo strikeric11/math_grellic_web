@@ -32,11 +32,14 @@ export const studentRoutes = {
     label: 'Exams',
     iconName: 'exam',
   },
-  calendar: {
-    name: 'calendar',
-    to: 'calendar',
-    label: 'Calendar',
+  schedule: {
+    name: 'schedules',
+    to: 'schedules',
+    label: 'Schedules',
     iconName: 'calendar',
+    meeting: {
+      to: 'meetings',
+    },
   },
   performance: {
     name: 'performance',

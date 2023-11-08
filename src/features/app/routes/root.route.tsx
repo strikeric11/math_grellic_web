@@ -31,6 +31,8 @@ import { studentLessonRouteHandle } from '#/lesson/route/student-lesson-handle.r
 import { studentExamRouteHandle } from '#/exam/route/student-exam-handle.route';
 import { studentActivityRouteHandle } from '#/activity/route/student-activity-handle.route';
 import { teacherStudentPerformanceRouteHandle } from '#/performance/route/teacher-performance-handle.route';
+import { teacherScheduleRouteHandle } from '#/schedule/route/teacher-schedule-handle.route';
+import { studentScheduleRouteHandle } from '#/schedule/route/student-schedule-handle.route';
 import { LessonCreatePage } from '#/lesson/pages/lesson-create.page';
 import {
   getPaginatedLessonsLoader as getTeacherPaginatedLessonsLoader,
@@ -49,6 +51,10 @@ import {
   getStudentPerformanceByPublicIdLoader,
 } from '#/performance/route/teacher-performance-loader.route';
 import {
+  getSchedulesByDateRangeLoader as getTeacherSchedulesByDateRangeLoader,
+  getMeetingScheduleByIdLoader as getTeacherMeetingScheduleByIdLoader,
+} from '#/schedule/route/teacher-schedule-loader.route';
+import {
   getLessonsLoader as getStudentLessonsLoader,
   getLessonBySlugLoader as getStudentLessonBySlugLoader,
 } from '#/lesson/route/student-lesson-loader.route';
@@ -60,6 +66,7 @@ import {
   getActivitiesLoader as getStudentActivitiesLoader,
   getActivityBySlugLoader as getStudentActivityBySlugLoader,
 } from '#/activity/route/student-activity-loader.route';
+import { getSchedulesByDateRangeLoader as getStudentSchedulesByDateRangeLoader } from '#/schedule/route/student-schedule-loader.route';
 import { TeacherLessonListPage } from '#/lesson/pages/teacher-lesson-list.page';
 import { TeacherLessonSinglePage } from '#/lesson/pages/teacher-lesson-single.page';
 import { TeacherLessonScheduleListPage } from '#/lesson/pages/teacher-lesson-schedule-list.page';
@@ -91,6 +98,11 @@ import { StudentActivitySinglePage } from '#/activity/pages/student-activity-sin
 import { StudentPerformanceListPage } from '#/performance/pages/student-performance-list.page';
 import { TeacherStudentPerformanceSinglePage } from '#/performance/pages/teacher-student-performance-single.page';
 import { StudentPerformanceSinglePage } from '#/performance/pages/student-performance-single.page';
+import { TeacherScheduleCalendarPage } from '#/schedule/pages/teacher-schedule-calendar.page';
+import { StudentScheduleCalendarPage } from '#/schedule/pages/student-schedule-calendar.page';
+import { MeetingScheduleCreatePage } from '#/schedule/pages/meeting-schedule-create.page';
+import { MeetingScheduleEditPage } from '#/schedule/pages/meeting-schedule-edit.page';
+import { TeacherMeetingScheduleSinglePage } from '#/schedule/pages/teacher-meeting-schedule-single.page';
 
 import { staticRoutes } from './static-routes';
 import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
@@ -314,6 +326,36 @@ const rootRoutes = createRoutesFromElements(
           />
         </Route>
       </Route>
+      {/* TEACHER SCHEDULE */}
+      <Route path={teacherRoutes.schedule.to} element={<Outlet />}>
+        <Route
+          index
+          element={<TeacherScheduleCalendarPage />}
+          handle={teacherScheduleRouteHandle.calendar}
+          loader={getTeacherSchedulesByDateRangeLoader(queryClient)}
+        />
+        <Route path={teacherRoutes.schedule.meeting.to} element={<Outlet />}>
+          <Route
+            path={teacherRoutes.schedule.meeting.createTo}
+            element={<MeetingScheduleCreatePage />}
+            handle={teacherScheduleRouteHandle.create}
+          />
+          <Route path=':id' element={<Outlet />}>
+            <Route
+              index
+              element={<TeacherMeetingScheduleSinglePage />}
+              handle={teacherScheduleRouteHandle.single}
+              loader={getTeacherMeetingScheduleByIdLoader(queryClient)}
+            />
+            <Route
+              path={teacherRoutes.schedule.meeting.editTo}
+              element={<MeetingScheduleEditPage />}
+              handle={teacherScheduleRouteHandle.edit}
+              loader={getTeacherMeetingScheduleByIdLoader(queryClient)}
+            />
+          </Route>
+        </Route>
+      </Route>
     </Route>
     {/* STUDENT */}
     <Route
@@ -380,6 +422,15 @@ const rootRoutes = createRoutesFromElements(
           index
           element={<StudentPerformanceSinglePage />}
           handle={studentActivityRouteHandle.list}
+        />
+      </Route>
+      {/* STUDENT SCHEDULE */}
+      <Route path={studentRoutes.schedule.to} element={<Outlet />}>
+        <Route
+          index
+          element={<StudentScheduleCalendarPage />}
+          handle={studentScheduleRouteHandle.calendar}
+          loader={getStudentSchedulesByDateRangeLoader(queryClient)}
         />
       </Route>
     </Route>

@@ -31,7 +31,7 @@ type Result = {
   handleExamSchedule: (slug: string) => void;
 };
 
-const EXAMS_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
+const EXAM_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
 
 export const defaultSort = {
   field: 'orderNumber',
@@ -125,27 +125,30 @@ export function useTeacherExamList(): Result {
 
   const handleExamPreview = useCallback((slug: string) => {
     window
-      .open(`${EXAMS_PATH}/${slug}/${teacherRoutes.exam.previewTo}`, '_blank')
+      .open(
+        `${EXAM_LIST_PATH}/${slug}/${teacherRoutes.exam.previewTo}`,
+        '_blank',
+      )
       ?.focus();
   }, []);
 
   const handleExamDetails = useCallback(
     (slug: string) => {
-      navigate(`${EXAMS_PATH}/${slug}`);
+      navigate(`${EXAM_LIST_PATH}/${slug}`);
     },
     [navigate],
   );
 
   const handleExamEdit = useCallback(
     (slug: string) => {
-      navigate(`${EXAMS_PATH}/${slug}/${teacherRoutes.exam.editTo}`);
+      navigate(`${EXAM_LIST_PATH}/${slug}/${teacherRoutes.exam.editTo}`);
     },
     [navigate],
   );
 
   const handleExamSchedule = useCallback(
     (slug: string) => {
-      navigate(`${EXAMS_PATH}/${slug}/${teacherRoutes.exam.schedule.to}`);
+      navigate(`${EXAM_LIST_PATH}/${slug}/${teacherRoutes.exam.schedule.to}`);
     },
     [navigate],
   );

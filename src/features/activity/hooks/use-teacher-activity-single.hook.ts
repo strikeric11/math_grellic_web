@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
@@ -8,14 +7,18 @@ import { getActivityBySlugAndCurrentTeacherUser } from '../api/teacher-activity.
 import type { Activity } from '../models/activity.model';
 
 type Result = {
-  title?: string;
+  loading: boolean;
   activity?: Activity | null;
 };
 
 export function useTeacherActivitySingle(): Result {
   const { slug } = useParams();
 
-  const { data: activity } = useQuery(
+  const {
+    data: activity,
+    isLoading,
+    isFetching,
+  } = useQuery(
     getActivityBySlugAndCurrentTeacherUser(
       { slug: slug || '' },
       {
@@ -28,7 +31,5 @@ export function useTeacherActivitySingle(): Result {
     ),
   );
 
-  const title = useMemo(() => activity?.title, [activity]);
-
-  return { title, activity };
+  return { loading: isLoading || isFetching, activity };
 }

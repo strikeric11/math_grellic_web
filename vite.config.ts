@@ -79,6 +79,12 @@ export default defineConfig({
           new URL('./src/features/performance', import.meta.url),
         ),
       },
+      {
+        find: '#/schedule',
+        replacement: fileURLToPath(
+          new URL('./src/features/schedule', import.meta.url),
+        ),
+      },
     ],
   },
 });

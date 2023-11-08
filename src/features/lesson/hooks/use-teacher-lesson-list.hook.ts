@@ -31,7 +31,7 @@ type Result = {
   handleLessonSchedule: (slug: string) => void;
 };
 
-const LESSONS_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
+const LESSON_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
 
 export const defaultSort = {
   field: 'orderNumber',
@@ -126,7 +126,7 @@ export function useTeacherLessonList(): Result {
   const handleLessonPreview = useCallback((slug: string) => {
     window
       .open(
-        `${LESSONS_PATH}/${slug}/${teacherRoutes.lesson.previewTo}`,
+        `${LESSON_LIST_PATH}/${slug}/${teacherRoutes.lesson.previewTo}`,
         '_blank',
       )
       ?.focus();
@@ -134,21 +134,23 @@ export function useTeacherLessonList(): Result {
 
   const handleLessonDetails = useCallback(
     (slug: string) => {
-      navigate(`${LESSONS_PATH}/${slug}`);
+      navigate(`${LESSON_LIST_PATH}/${slug}`);
     },
     [navigate],
   );
 
   const handleLessonEdit = useCallback(
     (slug: string) => {
-      navigate(`${LESSONS_PATH}/${slug}/${teacherRoutes.lesson.editTo}`);
+      navigate(`${LESSON_LIST_PATH}/${slug}/${teacherRoutes.lesson.editTo}`);
     },
     [navigate],
   );
 
   const handleLessonSchedule = useCallback(
     (slug: string) => {
-      navigate(`${LESSONS_PATH}/${slug}/${teacherRoutes.lesson.schedule.to}`);
+      navigate(
+        `${LESSON_LIST_PATH}/${slug}/${teacherRoutes.lesson.schedule.to}`,
+      );
     },
     [navigate],
   );

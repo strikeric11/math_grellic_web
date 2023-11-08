@@ -7,13 +7,18 @@ import { transformToStudentPerformance } from '../helpers/performance-transform.
 import type { StudentPerformance } from '../models/performance.model';
 
 type Result = {
+  loading: boolean;
   student?: StudentPerformance | null;
 };
 
 export function useTeacherStudentPerformanceSingle(): Result {
   const { publicId } = useParams();
 
-  const { data: student } = useQuery(
+  const {
+    data: student,
+    isLoading,
+    isFetching,
+  } = useQuery(
     getStudentPerformanceByPublicIdAndCurrentTeacherUser(
       { publicId: publicId || '' },
       {
@@ -26,5 +31,5 @@ export function useTeacherStudentPerformanceSingle(): Result {
     ),
   );
 
-  return { student };
+  return { loading: isLoading || isFetching, student };
 }

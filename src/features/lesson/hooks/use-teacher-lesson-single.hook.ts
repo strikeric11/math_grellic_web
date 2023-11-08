@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
@@ -8,14 +7,18 @@ import { transformToLesson } from '../helpers/lesson-transform.helper';
 import type { Lesson } from '../models/lesson.model';
 
 type Result = {
-  title?: string;
+  loading: boolean;
   lesson?: Lesson | null;
 };
 
 export function useTeacherLessonSingle(): Result {
   const { slug } = useParams();
 
-  const { data: lesson } = useQuery(
+  const {
+    data: lesson,
+    isLoading,
+    isFetching,
+  } = useQuery(
     getLessonBySlugAndCurrentTeacherUser(
       { slug: slug || '' },
       {
@@ -28,7 +31,5 @@ export function useTeacherLessonSingle(): Result {
     ),
   );
 
-  const title = useMemo(() => lesson?.title, [lesson]);
-
-  return { title, lesson };
+  return { loading: isLoading || isFetching, lesson };
 }

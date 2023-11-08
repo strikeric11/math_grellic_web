@@ -32,6 +32,7 @@ export default {
           'hue-teal': '#1a7d82',
           'hue-teal-dark': '#155959',
           'hue-teal-focus': '#22a8a4',
+          'hue-orange': '#b55906',
         },
         secondary: '#e04141',
         accent: '#38526d',

@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
@@ -8,14 +7,18 @@ import { transformToExam } from '../helpers/exam-transform.helper';
 import type { Exam } from '../models/exam.model';
 
 type Result = {
-  title?: string;
+  loading: boolean;
   exam?: Exam | null;
 };
 
 export function useTeacherExamSingle(): Result {
   const { slug } = useParams();
 
-  const { data: exam } = useQuery(
+  const {
+    data: exam,
+    isLoading,
+    isFetching,
+  } = useQuery(
     getExamBySlugAndCurrentTeacherUser(
       { slug: slug || '' },
       {
@@ -28,7 +31,5 @@ export function useTeacherExamSingle(): Result {
     ),
   );
 
-  const title = useMemo(() => exam?.title, [exam]);
-
-  return { title, exam };
+  return { loading: isLoading || isFetching, exam };
 }

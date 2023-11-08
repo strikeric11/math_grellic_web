@@ -10,7 +10,7 @@ import { BaseButton } from '#/base/components/base-button.components';
 import { LessonUpsertForm } from '../components/lesson-upsert-form.component';
 import { useLessonEdit } from '../hooks/use-lesson-edit.hook';
 
-const LESSONS_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
+const LESSON_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
 
 export function LessonEditPage() {
   const { slug } = useParams();
@@ -50,7 +50,7 @@ export function LessonEditPage() {
       toast.success(
         `Deleted ${lessonFormData.title} (No. ${lessonFormData.orderNumber})`,
       );
-      navigate(LESSONS_PATH);
+      navigate(LESSON_LIST_PATH);
     } catch (error: any) {
       toast.error(error.message);
     }

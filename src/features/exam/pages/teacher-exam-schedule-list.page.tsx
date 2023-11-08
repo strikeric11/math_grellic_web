@@ -24,7 +24,7 @@ const sceneLinks = [
     icons: [{ name: 'plus', size: 16 }, { name: 'exam' }],
   },
   {
-    to: `/${teacherBaseRoute}/${teacherRoutes.calendar.to}`,
+    to: `/${teacherBaseRoute}/${teacherRoutes.schedule.to}`,
     label: 'Calendar',
     icons: [{ name: 'calendar' }],
   },

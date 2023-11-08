@@ -9,7 +9,9 @@ import {
   ArrowCounterClockwise,
   ArrowFatUp,
   ArrowLeft,
+  ArrowSquareOut,
   ArrowSquareUp,
+  ArrowSquareUpRight,
   ArrowUUpLeft,
   ArrowUUpRight,
   ArrowsInLineHorizontal,
@@ -121,16 +123,20 @@ export const BaseIcon = memo(
           return ArrowFatUp;
         case 'arrow-left':
           return ArrowLeft;
+        case 'arrow-square-out':
+          return ArrowSquareOut;
+        case 'arrow-square-up-right':
+          return ArrowSquareUpRight;
+        case 'arrow-u-up-left':
+          return ArrowUUpLeft;
+        case 'arrow-u-up-right':
+          return ArrowUUpRight;
         case 'arrows-in-line-horizontal':
           return ArrowsInLineHorizontal;
         case 'arrows-out-line-horizontal':
           return ArrowsOutLineHorizontal;
         case 'arrows-square-up':
           return ArrowSquareUp;
-        case 'arrow-u-up-left':
-          return ArrowUUpLeft;
-        case 'arrow-u-up-right':
-          return ArrowUUpRight;
         case 'article':
           return Article;
         case 'at':

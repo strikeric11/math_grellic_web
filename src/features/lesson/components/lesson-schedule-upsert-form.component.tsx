@@ -141,16 +141,16 @@ export const LessonScheduleUpsertForm = memo(function ({
                 control={control}
                 iconName='calendar'
                 calendarSelectorProps={calendarSelectorProps}
-                fullWidth
                 asterisk
+                fullWidth
               />
               <BaseControlledTimeInput
                 name='startTime'
                 label='Start Time'
                 control={control}
                 iconName='clock'
-                fullWidth
                 asterisk
+                fullWidth
               />
             </div>
             {/* <div className='flex w-full items-start gap-5'>

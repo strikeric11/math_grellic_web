@@ -10,7 +10,7 @@ import { BaseModal } from '#/base/components/base-modal.component';
 import { useExamEdit } from '../hooks/use-exam-edit.hook';
 import { ExamUpsertForm } from '../components/exam-upsert-form.component';
 
-const EXAMS_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
+const EXAM_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
 
 export function ExamEditPage() {
   const { slug } = useParams();
@@ -44,7 +44,7 @@ export function ExamEditPage() {
       toast.success(
         `Deleted ${examFormData.title} (No. ${examFormData.orderNumber})`,
       );
-      navigate(EXAMS_PATH);
+      navigate(EXAM_LIST_PATH);
     } catch (error: any) {
       toast.error(error.message);
     }

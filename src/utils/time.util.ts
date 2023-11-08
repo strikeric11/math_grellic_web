@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import { Duration } from 'dayjs/plugin/duration';
 
+export const DAYS_PER_WEEK = 7;
+
 export function convertDurationToSeconds(duration: string): number {
   const [s = 0, m = 0, h = 0] = duration.split(':').reverse();
   return +h * 3600 + +m * 60 + +s;
@@ -71,4 +73,19 @@ export function getDayJsDuration(targetDate?: Date, sourceDate?: Date) {
   const sourceDayJs = dayjs(sourceDate);
   const diff = targetDayJs.diff(sourceDayJs);
   return dayjs.duration(Math.max(0, diff) || 0);
+}
+
+export function generateTimelineHours(min: number, max: number) {
+  if (min >= max) {
+    return [];
+  }
+
+  const DEFAULT_MIN_HOUR = 7;
+  const DEFAULT_MAX_HOUR = 17;
+
+  const minHour = min < DEFAULT_MIN_HOUR ? min : DEFAULT_MIN_HOUR;
+  const maxHour = max < DEFAULT_MAX_HOUR ? DEFAULT_MAX_HOUR : max;
+  const count = maxHour - minHour + 1;
+
+  return [...Array(count)].map((_, index) => minHour + index);
 }

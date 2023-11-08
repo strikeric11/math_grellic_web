@@ -30,7 +30,7 @@ type Result = {
   handleActivityPreview: (slug: string) => void;
 };
 
-const ACTIVITIES_PATH = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
+const ACTIVITY_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
 
 export const defaultSort = {
   field: 'orderNumber',
@@ -125,7 +125,7 @@ export function useTeacherActivityList(): Result {
   const handleActivityPreview = useCallback((slug: string) => {
     window
       .open(
-        `${ACTIVITIES_PATH}/${slug}/${teacherRoutes.activity.previewTo}`,
+        `${ACTIVITY_LIST_PATH}/${slug}/${teacherRoutes.activity.previewTo}`,
         '_blank',
       )
       ?.focus();
@@ -133,14 +133,16 @@ export function useTeacherActivityList(): Result {
 
   const handleActivityDetails = useCallback(
     (slug: string) => {
-      navigate(`${ACTIVITIES_PATH}/${slug}`);
+      navigate(`${ACTIVITY_LIST_PATH}/${slug}`);
     },
     [navigate],
   );
 
   const handleActivityEdit = useCallback(
     (slug: string) => {
-      navigate(`${ACTIVITIES_PATH}/${slug}/${teacherRoutes.activity.editTo}`);
+      navigate(
+        `${ACTIVITY_LIST_PATH}/${slug}/${teacherRoutes.activity.editTo}`,
+      );
     },
     [navigate],
   );

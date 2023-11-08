@@ -129,6 +129,7 @@ export const StudentUserPicker = memo(
 
     useEffect(() => {
       if (value === undefined) {
+        setSelectValue(undefined);
         return;
       }
 

@@ -27,3 +27,9 @@ export const queryActivityKey = {
   single: ['activities', 'single'],
   gameList: ['activities', 'game-list'],
 };
+
+export const queryScheduleKey = {
+  timeline: ['schedules', 'timeline'],
+  list: ['schedules', 'list'],
+  single: ['schedules', 'single'],
+};

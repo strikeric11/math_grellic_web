@@ -7,6 +7,7 @@ import {
   generateFullName,
 } from '#/user/helpers/user.helper';
 import { UserAvatarImg } from '#/user/components/user-avatar-img.component';
+import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseLink } from '#/base/components/base-link.component';
@@ -18,7 +19,7 @@ import { StudentPerformanceSingle } from '../components/student-performance-sing
 import type { UserGender } from '#/user/models/user.model';
 
 export const TeacherStudentPerformanceSinglePage = memo(() => {
-  const { student } = useTeacherStudentPerformanceSingle();
+  const { student, loading } = useTeacherStudentPerformanceSingle();
   const data: any = useLoaderData();
 
   const [email, publicId, phoneNumber, gender] = useMemo(
@@ -48,6 +49,7 @@ export const TeacherStudentPerformanceSinglePage = memo(() => {
 
   return (
     <BaseDataSuspense resolve={data?.main}>
+      {loading && <BasePageSpinner />}
       {student && (
         <div className='mx-auto w-full max-w-compact py-5 pb-16'>
           <div className='mb-2.5 flex flex-col gap-y-4'>

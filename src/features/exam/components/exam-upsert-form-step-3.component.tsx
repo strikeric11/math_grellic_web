@@ -20,6 +20,8 @@ const calendarSelectorProps = {
   maxDate: new Date(`${new Date().getFullYear() + 5}-12-31`),
 };
 
+const timeInputRules = { deps: ['startTime', 'endTime'] };
+
 export const ExamUpsertFormStep3 = memo(function ({
   disabled,
   ...moreProps
@@ -82,15 +84,17 @@ export const ExamUpsertFormStep3 = memo(function ({
           <BaseControlledTimeInput
             name='startTime'
             label='Start Time'
-            control={control}
             iconName='clock'
+            control={control}
+            rules={timeInputRules}
             fullWidth
           />
           <BaseControlledTimeInput
             name='endTime'
             label='End Time'
-            control={control}
             iconName='clock'
+            control={control}
+            rules={timeInputRules}
             fullWidth
           />
         </div>

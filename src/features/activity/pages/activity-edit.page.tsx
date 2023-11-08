@@ -10,7 +10,7 @@ import { BaseModal } from '#/base/components/base-modal.component';
 import { useActivityEdit } from '../hooks/use-activity-edit.hook';
 import { ActivityUpsertForm } from '../components/activity-upsert-form.component';
 
-const ACTIVITIES_PATH = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
+const ACTIVITY_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
 
 export function ActivityEditPage() {
   const { slug } = useParams();
@@ -50,7 +50,7 @@ export function ActivityEditPage() {
       toast.success(
         `Deleted ${activityFormData.title} (No. ${activityFormData.orderNumber})`,
       );
-      navigate(ACTIVITIES_PATH);
+      navigate(ACTIVITY_LIST_PATH);
     } catch (error: any) {
       toast.error(error.message);
     }

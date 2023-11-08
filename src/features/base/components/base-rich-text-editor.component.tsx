@@ -20,6 +20,7 @@ type Props = Omit<ComponentProps<'div'>, 'onChange'> & {
   initialValue?: Content;
   value?: string;
   errorMessage?: string;
+  scrollbarsClassName?: string;
   disabled?: boolean;
   onChange?: (value: string) => void;
 };
@@ -30,6 +31,7 @@ export const BaseRichTextEditor = memo(function ({
   value,
   label,
   errorMessage,
+  scrollbarsClassName,
   disabled,
   onChange,
   ...moreProps
@@ -95,7 +97,10 @@ export const BaseRichTextEditor = memo(function ({
         {!!editor && (
           <BaseRichTextEditorMenubar editor={editor} disabled={disabled} />
         )}
-        <OverlayScrollbarsComponent className='h-96 w-full p-18px' defer>
+        <OverlayScrollbarsComponent
+          className={cx('h-96 w-full p-18px', scrollbarsClassName)}
+          defer
+        >
           <EditorContent
             editor={editor}
             className={cx('h-full w-full', disabled && 'pointer-events-none')}

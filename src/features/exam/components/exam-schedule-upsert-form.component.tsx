@@ -35,6 +35,8 @@ const calendarSelectorProps = {
   maxDate: new Date(`${new Date().getFullYear() + 5}-12-31`),
 };
 
+const timeInputRules = { deps: ['startTime', 'endTime'] };
+
 const schema = z
   .object({
     startDate: z
@@ -159,11 +161,6 @@ export const ExamScheduleUpsertForm = memo(function ({
     return [convertSecondsToDuration(duration), true];
   }, [startDate, endDate, startTime, endTime]);
 
-  useEffect(() => {
-    setValue('endDate', startDate);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startDate]);
-
   const [scheduleButtonLabel, scheduleButtonIconName] = useMemo(
     () => [
       formData ? 'Save Changes' : 'Set Schedule',
@@ -171,6 +168,11 @@ export const ExamScheduleUpsertForm = memo(function ({
     ],
     [formData],
   );
+
+  useEffect(() => {
+    setValue('endDate', startDate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startDate]);
 
   const handleReset = useCallback(() => {
     reset();
@@ -244,6 +246,7 @@ export const ExamScheduleUpsertForm = memo(function ({
                 control={control}
                 iconName='calendar'
                 calendarSelectorProps={calendarSelectorProps}
+                asterisk
                 fullWidth
               />
             </div>
@@ -251,15 +254,19 @@ export const ExamScheduleUpsertForm = memo(function ({
               <BaseControlledTimeInput
                 name='startTime'
                 label='Start Time'
-                control={control}
                 iconName='clock'
+                control={control}
+                rules={timeInputRules}
                 fullWidth
+                asterisk
               />
               <BaseControlledTimeInput
                 name='endTime'
                 label='End Time'
-                control={control}
                 iconName='clock'
+                control={control}
+                rules={timeInputRules}
+                asterisk
                 fullWidth
               />
             </div>
@@ -278,6 +285,7 @@ export const ExamScheduleUpsertForm = memo(function ({
                 name='studentIds'
                 label='Students'
                 control={control}
+                asterisk
               />
             </div>
           </fieldset>

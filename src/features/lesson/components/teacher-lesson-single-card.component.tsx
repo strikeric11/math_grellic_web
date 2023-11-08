@@ -42,7 +42,7 @@ export const TeacherLessonSingleCard = memo(function ({
       lesson.orderNumber,
       lesson.title,
       convertSecondsToDuration(lesson.durationSeconds || 0, true),
-      lesson.status === RecordStatus.Draft,
+      (lesson.status === RecordStatus.Draft) as boolean,
     ],
     [lesson],
   );
