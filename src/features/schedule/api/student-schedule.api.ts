@@ -7,6 +7,7 @@ import { queryScheduleKey } from '#/config/react-query-keys.config';
 import type { UseQueryOptions } from '@tanstack/react-query';
 import type {
   MeetingSchedule,
+  StudentMeetingScheduleList,
   TimelineSchedules,
 } from '../models/schedule.model';
 
@@ -49,7 +50,12 @@ export function getSchedulesByDateRangeAndCurrentStudentUser(
 
 export function getMeetingSchedulesByCurrentStudentUser(
   options?: Omit<
-    UseQueryOptions<MeetingSchedule[], Error, MeetingSchedule[], any>,
+    UseQueryOptions<
+      StudentMeetingScheduleList,
+      Error,
+      StudentMeetingScheduleList,
+      any
+    >,
     'queryKey' | 'queryFn'
   >,
 ) {

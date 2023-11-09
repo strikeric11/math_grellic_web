@@ -67,6 +67,7 @@ import {
   Play,
   Plus,
   PlusCircle,
+  Presentation,
   Question,
   RadioButton,
   RocketLaunch,
@@ -239,6 +240,8 @@ export const BaseIcon = memo(
           return Plus;
         case 'plus-circle':
           return PlusCircle;
+        case 'presentation':
+          return Presentation;
         case 'question':
           return Question;
         case 'radio-button':

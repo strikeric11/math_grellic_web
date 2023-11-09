@@ -30,3 +30,9 @@ export type ScheduleCard = (LessonSchedule | ExamSchedule | MeetingSchedule) & {
   isStart: boolean;
   isEnd: boolean;
 };
+
+export type StudentMeetingScheduleList = {
+  upcomingMeetingSchedules: MeetingSchedule[];
+  currentMeetingSchedules: MeetingSchedule[];
+  previousMeetingSchedules: MeetingSchedule[];
+};

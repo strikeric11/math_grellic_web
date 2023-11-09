@@ -4,7 +4,9 @@ import { DAYS_PER_WEEK } from '#/utils/time.util';
 import {
   getSchedulesByDateRangeAndCurrentTeacherUser,
   getMeetingScheduleByIdAndCurrentTeacherUser,
+  getPaginatedMeetingSchedulesByCurrentTeacherUser,
 } from '../api/teacher-schedule.api';
+import { defaultParamKeys } from '../hooks/use-teacher-meeting-schedule-list.hook';
 
 import type { LoaderFunctionArgs } from 'react-router-dom';
 import type { QueryClient } from '@tanstack/react-query';
@@ -21,6 +23,18 @@ export function getMeetingScheduleByIdLoader(
     const keys = { ...queryParams, id: +params.id };
     const query = getMeetingScheduleByIdAndCurrentTeacherUser(keys);
 
+    return defer({
+      main:
+        queryClient.getQueryData(query.queryKey as string[]) ??
+        queryClient.fetchQuery(query),
+    });
+  };
+}
+
+export function getPaginatedMeetingSchedulesLoader(queryClient: QueryClient) {
+  return async () => {
+    const query =
+      getPaginatedMeetingSchedulesByCurrentTeacherUser(defaultParamKeys);
     return defer({
       main:
         queryClient.getQueryData(query.queryKey as string[]) ??

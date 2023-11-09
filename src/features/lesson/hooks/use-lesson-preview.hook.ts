@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 
 import type { Lesson } from '../models/lesson.model';
+import { convertDurationToSeconds } from '#/utils/time.util';
 
 type Result = {
   titlePreview: string;
@@ -16,7 +17,14 @@ export function useLessonPreview(): Result {
     if (!lessonFormData) {
       return lessonFormData;
     }
-    return { ...lessonFormData, id: 0 } as Lesson;
+
+    const { duration, ...moreLessonFormData } = lessonFormData;
+
+    return {
+      ...moreLessonFormData,
+      durationSeconds: convertDurationToSeconds(duration || '0'),
+      id: 0,
+    } as Lesson;
   }, [lessonFormData]);
 
   const titlePreview = useMemo(

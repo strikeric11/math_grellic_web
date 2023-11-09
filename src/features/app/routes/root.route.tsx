@@ -53,6 +53,7 @@ import {
 import {
   getSchedulesByDateRangeLoader as getTeacherSchedulesByDateRangeLoader,
   getMeetingScheduleByIdLoader as getTeacherMeetingScheduleByIdLoader,
+  getPaginatedMeetingSchedulesLoader as getTeacherPaginatedMeetingScheduleLoader,
 } from '#/schedule/route/teacher-schedule-loader.route';
 import {
   getLessonsLoader as getStudentLessonsLoader,
@@ -66,7 +67,11 @@ import {
   getActivitiesLoader as getStudentActivitiesLoader,
   getActivityBySlugLoader as getStudentActivityBySlugLoader,
 } from '#/activity/route/student-activity-loader.route';
-import { getSchedulesByDateRangeLoader as getStudentSchedulesByDateRangeLoader } from '#/schedule/route/student-schedule-loader.route';
+import {
+  getSchedulesByDateRangeLoader as getStudentSchedulesByDateRangeLoader,
+  getMeetingSchedulesLoader as getStudentMeetingSchedulesLoader,
+  getMeetingScheduleByIdLoader as getStudentMeetingScheduleByIdLoader,
+} from '#/schedule/route/student-schedule-loader.route';
 import { TeacherLessonListPage } from '#/lesson/pages/teacher-lesson-list.page';
 import { TeacherLessonSinglePage } from '#/lesson/pages/teacher-lesson-single.page';
 import { TeacherLessonScheduleListPage } from '#/lesson/pages/teacher-lesson-schedule-list.page';
@@ -102,7 +107,10 @@ import { TeacherScheduleCalendarPage } from '#/schedule/pages/teacher-schedule-c
 import { StudentScheduleCalendarPage } from '#/schedule/pages/student-schedule-calendar.page';
 import { MeetingScheduleCreatePage } from '#/schedule/pages/meeting-schedule-create.page';
 import { MeetingScheduleEditPage } from '#/schedule/pages/meeting-schedule-edit.page';
+import { TeacherMeetingScheduleListPage } from '#/schedule/pages/teacher-meeting-schedule-list.page';
 import { TeacherMeetingScheduleSinglePage } from '#/schedule/pages/teacher-meeting-schedule-single.page';
+import { StudentMeetingScheduleSinglePage } from '#/schedule/pages/student-meeting-schedule-single.page';
+import { StudentMeetingScheduleListPage } from '#/schedule/pages/student-meeting-schedule-list.page';
 
 import { staticRoutes } from './static-routes';
 import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
@@ -336,6 +344,12 @@ const rootRoutes = createRoutesFromElements(
         />
         <Route path={teacherRoutes.schedule.meeting.to} element={<Outlet />}>
           <Route
+            index
+            element={<TeacherMeetingScheduleListPage />}
+            handle={teacherScheduleRouteHandle.list}
+            loader={getTeacherPaginatedMeetingScheduleLoader(queryClient)}
+          />
+          <Route
             path={teacherRoutes.schedule.meeting.createTo}
             element={<MeetingScheduleCreatePage />}
             handle={teacherScheduleRouteHandle.create}
@@ -432,6 +446,22 @@ const rootRoutes = createRoutesFromElements(
           handle={studentScheduleRouteHandle.calendar}
           loader={getStudentSchedulesByDateRangeLoader(queryClient)}
         />
+        <Route path={studentRoutes.schedule.meeting.to} element={<Outlet />}>
+          <Route
+            index
+            element={<StudentMeetingScheduleListPage />}
+            handle={studentScheduleRouteHandle.list}
+            loader={getStudentMeetingSchedulesLoader(queryClient)}
+          />
+          <Route path=':id' element={<Outlet />}>
+            <Route
+              index
+              element={<StudentMeetingScheduleSinglePage />}
+              handle={studentScheduleRouteHandle.single}
+              loader={getStudentMeetingScheduleByIdLoader(queryClient)}
+            />
+          </Route>
+        </Route>
       </Route>
     </Route>
   </>,

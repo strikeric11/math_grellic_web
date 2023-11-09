@@ -12,7 +12,7 @@ const calendarLink = {
 const meetingListLink = {
   to: `${scheduleBaseRoute}/${teacherRoutes.schedule.meeting.to}`,
   label: 'Meeting List',
-  icons: [{ name: 'list-bullets' }] as GroupLink['icons'],
+  icons: [{ name: 'presentation' }] as GroupLink['icons'],
 };
 
 const createScheduleLink = {
@@ -28,6 +28,10 @@ export const teacherScheduleRouteHandle: { [key: string]: SceneRouteHandle } = {
   calendar: {
     title: 'Calendar',
     links: [createScheduleLink, meetingListLink],
+  },
+  list: {
+    title: 'Meeting Schedules',
+    links: [createScheduleLink, calendarLink],
   },
   single: {
     title: 'Meeting Schedule',

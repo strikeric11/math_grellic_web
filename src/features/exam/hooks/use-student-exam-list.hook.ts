@@ -9,7 +9,11 @@ import { transformToExam } from '../helpers/exam-transform.helper';
 import { getExamsByCurrentStudentUser } from '../api/student-exam.api';
 
 import type { QueryObserverBaseResult } from '@tanstack/react-query';
-import type { Exam, ExamWithDuration } from '../models/exam.model';
+import type {
+  Exam,
+  ExamWithDuration,
+  StudentExamList,
+} from '../models/exam.model';
 
 type Result = {
   latestExam: Exam | null;
@@ -68,12 +72,7 @@ export function useStudentExamList(): Result {
         upcomingExam: null,
         previousExams: [],
         ongoingExams: [],
-      }) as {
-        latestExam: Exam | null;
-        upcomingExam: Exam | null;
-        previousExams: Exam[];
-        ongoingExams: Exam[];
-      },
+      }) as StudentExamList,
     [list],
   );
 

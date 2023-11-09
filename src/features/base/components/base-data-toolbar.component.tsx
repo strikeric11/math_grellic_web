@@ -16,8 +16,8 @@ import type {
 } from '../models/base.model';
 
 type Props = ComponentProps<'div'> & {
-  filterOptions: QueryFilterOption[];
-  sortOptions: QuerySortOption[];
+  filterOptions?: QueryFilterOption[];
+  sortOptions?: QuerySortOption[];
   defaulSelectedtFilterOptions?: QueryFilterOption[];
   defaultSelectedSort?: QuerySort;
   singleFilterOnly?: boolean;
@@ -59,21 +59,25 @@ export const BaseDataToolbar = memo(
           onChange={onSearchChange}
         />
         <div className='flex items-center gap-2.5'>
-          <BaseDataToolbarFilterMenu
-            options={filterOptions}
-            defaulSelectedtOptions={defaulSelectedtFilterOptions}
-            submitButtonLabel='Apply Filter'
-            singleFilterOnly={singleFilterOnly}
-            buttonProps={filterButtonProps}
-            onSubmit={onFilter}
-          />
-          <BaseDataToolbarSorterMenu
-            options={sortOptions}
-            defaultSelectedSort={defaultSelectedSort}
-            submitButtonLabel='Apply Sort'
-            buttonProps={sortButtonProps}
-            onSubmit={onSort}
-          />
+          {filterOptions && (
+            <BaseDataToolbarFilterMenu
+              options={filterOptions}
+              defaulSelectedtOptions={defaulSelectedtFilterOptions}
+              submitButtonLabel='Apply Filter'
+              singleFilterOnly={singleFilterOnly}
+              buttonProps={filterButtonProps}
+              onSubmit={onFilter}
+            />
+          )}
+          {sortOptions && (
+            <BaseDataToolbarSorterMenu
+              options={sortOptions}
+              defaultSelectedSort={defaultSelectedSort}
+              submitButtonLabel='Apply Sort'
+              buttonProps={sortButtonProps}
+              onSubmit={onSort}
+            />
+          )}
           <BaseTooltip content='Refresh'>
             <BaseIconButton
               name='arrow-clockwise'

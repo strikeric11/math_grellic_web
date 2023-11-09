@@ -32,15 +32,14 @@ export const ScheduleCalendarCard = memo(function ({
   );
 
   const iconName: IconName | null = useMemo(() => {
-    if (type === ScheduleType.Meeting) {
-      return null;
+    switch (type) {
+      case ScheduleType.Lesson:
+        return 'chalkboard-teacher';
+      case ScheduleType.Exam:
+        return 'exam';
+      default:
+        return 'presentation';
     }
-
-    if (type === ScheduleType.Lesson) {
-      return 'chalkboard-teacher';
-    }
-
-    return 'exam';
   }, [type]);
 
   const title = useMemo(() => {
@@ -57,7 +56,7 @@ export const ScheduleCalendarCard = memo(function ({
 
       return isCompact ? orderNumber : `Exam ${orderNumber}`;
     } else {
-      return 'Meeting';
+      return isCompact ? '' : 'Meeting';
     }
   }, [schedule, isCompact]);
 
