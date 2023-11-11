@@ -7,6 +7,7 @@ import localeData from 'dayjs/plugin/localeData';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import isBetween from 'dayjs/plugin/isBetween';
 
 // Initialize dayjs
 dayjs.extend(relativeTime);
@@ -25,3 +26,5 @@ dayjs.updateLocale('en', {
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault('Asia/Manila');
+// Other plugins
+dayjs.extend(isBetween);

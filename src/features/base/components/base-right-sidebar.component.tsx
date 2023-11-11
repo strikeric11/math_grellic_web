@@ -47,14 +47,16 @@ export const BaseRightSidebar = memo(function ({
           <BaseDivider vertical />
         </div>
       </div>
-      <div
-        className={cx(
-          'h-full w-full overflow-hidden transition-[padding]',
-          isScrollTop ? 'pt-0' : 'pt-16',
-        )}
-      >
-        {children}
-      </div>
+      {rightSidebarMode === SidebarMode.Expanded && (
+        <div
+          className={cx(
+            'h-full w-full overflow-hidden opacity-100 transition-[padding,opacity]',
+            isScrollTop ? 'pt-0' : 'pt-16',
+          )}
+        >
+          {children}
+        </div>
+      )}
     </aside>
   );
 });

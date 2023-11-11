@@ -40,9 +40,9 @@ export const BaseCalendar = memo(function ({
   return (
     <div className={cx('flex w-full flex-col', className)} {...moreProps}>
       <div className='flex w-full items-center'>
-        {rows[0].map(({ value }, i) => (
+        {rows[0].map(({ value }, index) => (
           <div
-            key={i}
+            key={`rh-${index}`}
             className='flex h-10 w-full items-center justify-center border-r border-primary-border-light text-sm last:border-transparent'
           >
             {value.format('dd')}
@@ -52,15 +52,15 @@ export const BaseCalendar = memo(function ({
       <div className='flex w-full flex-1 flex-col'>
         {rows.map((cells, rowIndex) => (
           <div
-            key={rowIndex}
+            key={`r-${rowIndex}`}
             className={cx(
               'group/row flex w-full flex-1 items-center',
               dateRowClassName,
             )}
           >
-            {cells.map(({ text, value, isPresent }, i) => (
+            {cells.map(({ text, value, isPresent }, index) => (
               <button
-                key={`${value}-${i}`}
+                key={`c-${value}-${index}`}
                 type='button'
                 className={cx(
                   `h-full w-full border border-b-primary-border-light border-l-transparent border-r-primary-border-light border-t-transparent p-[3px] text-sm transition-transform

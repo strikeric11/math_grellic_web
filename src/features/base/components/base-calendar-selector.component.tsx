@@ -109,9 +109,13 @@ export const BaseCalendarSelector = memo(function ({
         ? dayjs(currentDate).add(1, 'month')
         : dayjs(currentDate).subtract(1, 'month');
 
+      if (isNext ? date.isAfter(maxDate) : date.isBefore(minDate)) {
+        return;
+      }
+
       changeCurrentDate(date.toDate());
     },
-    [currentDate, changeCurrentDate],
+    [maxDate, minDate, currentDate, changeCurrentDate],
   );
 
   const handleSpecificChange = useCallback(
@@ -127,7 +131,11 @@ export const BaseCalendarSelector = memo(function ({
     <div className={cx('flex w-full flex-col', className)} {...moreProps}>
       <div className='flex w-full items-center justify-between px-2.5'>
         <BaseButton
-          className='!font-body !text-base !tracking-normal'
+          className={cx(
+            '!font-body !text-base !font-medium !tracking-normal',
+            !onExpand &&
+              '!text-accent hover:!cursor-default hover:!text-accent active:!scale-100',
+          )}
           variant='link'
           size='sm'
           leftIconName='calendar'

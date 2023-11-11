@@ -1,15 +1,44 @@
-import { useCallback, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
-import { useTeacherScheduleCalendar } from '../hooks/use-teacher-schedule-calendar.hook';
+import { useTeacherScheduleTimelineCalendar } from '../hooks/use-teacher-schedule-timeline-calendar.hook';
+import { useTeacherScheduleMonthlyCalendar } from '../hooks/use-teacher-schedule-monthly-calendar.hook';
 import { ScheduleWeeklyCalendarSelector } from '../components/schedule-weekly-calendar-selector.component';
 import { ScheduleWeeklyCalendar } from '../components/schedule-weekly-calendar.component';
 import { ScheduleCalendarInfo } from '../components/schedule-calendar-info.component';
+import { ScheduleMonthlyCalendar } from '../components/schedule-monthly-calendar.component';
 
 import type { ScheduleCard } from '../models/schedule.model';
+
+type ScheduleMonthlyCalendarProps = {
+  today: Date;
+  weekIndex: number;
+  onWeekChange?: (value: number) => void;
+};
+
+const TeacherScheduleMonthlyCalendar = memo(function ({
+  today,
+  weekIndex,
+  onWeekChange,
+}: ScheduleMonthlyCalendarProps) {
+  const { loading, currentDate, setCurrentDate, timelineSchedules } =
+    useTeacherScheduleMonthlyCalendar(today);
+
+  return (
+    <ScheduleMonthlyCalendar
+      loading={loading}
+      today={today}
+      currentDate={currentDate || today}
+      weekIndex={weekIndex}
+      timelineSchedules={timelineSchedules}
+      onDateChange={setCurrentDate}
+      onWeekChange={onWeekChange}
+    />
+  );
+});
 
 export function TeacherScheduleCalendarPage() {
   const {
@@ -17,9 +46,10 @@ export function TeacherScheduleCalendarPage() {
     timelineSchedules,
     today,
     weekIndex,
-    handleWeekIndexChange,
+    handleWeekChange,
     refresh,
-  } = useTeacherScheduleCalendar();
+  } = useTeacherScheduleTimelineCalendar();
+
   const data: any = useLoaderData();
 
   const [openModal, setOpenModal] = useState(false);
@@ -54,7 +84,7 @@ export function TeacherScheduleCalendarPage() {
                   loading={loading}
                   today={today}
                   weekIndex={weekIndex}
-                  onWeekIndexChange={handleWeekIndexChange}
+                  onWeekChange={handleWeekChange}
                   onRefresh={refresh}
                 />
                 {!!timelineSchedules && (
@@ -69,8 +99,15 @@ export function TeacherScheduleCalendarPage() {
               </>
             )}
           </div>
-          {/* TODO sidebar components */}
-          <BaseRightSidebar />
+          <BaseRightSidebar>
+            {today && (
+              <TeacherScheduleMonthlyCalendar
+                today={today}
+                weekIndex={weekIndex}
+                onWeekChange={handleWeekChange}
+              />
+            )}
+          </BaseRightSidebar>
         </div>
       </BaseDataSuspense>
       <BaseModal size='sm' open={openModal} onClose={handleSetModal(false)}>

@@ -13,7 +13,7 @@ type Props = ComponentProps<'div'> & {
   loading: boolean;
   today: Date;
   weekIndex: number;
-  onWeekIndexChange: (index: number) => void;
+  onWeekChange: (value: number) => void;
   onRefresh: () => void;
 };
 
@@ -22,18 +22,10 @@ export const ScheduleWeeklyCalendarSelector = memo(function ({
   loading,
   today,
   weekIndex,
-  onWeekIndexChange,
+  onWeekChange,
   onRefresh,
   ...moreProps
 }: Props) {
-  const handleChange = useCallback(
-    (isNext: boolean) => () => {
-      const valueToAdd = isNext ? 1 : -1;
-      onWeekIndexChange(valueToAdd);
-    },
-    [onWeekIndexChange],
-  );
-
   const [firstDay, lastDay] = useMemo(() => {
     const value = DAYS_PER_WEEK * weekIndex;
     return [
@@ -67,6 +59,14 @@ export const ScheduleWeeklyCalendarSelector = memo(function ({
 
     return `${firstDayLabel} — ${lastDayLabel}`;
   }, [firstDay, lastDay]);
+
+  const handleChange = useCallback(
+    (isNext: boolean) => () => {
+      const valueToAdd = isNext ? 1 : -1;
+      onWeekChange(valueToAdd);
+    },
+    [onWeekChange],
+  );
 
   return (
     <div

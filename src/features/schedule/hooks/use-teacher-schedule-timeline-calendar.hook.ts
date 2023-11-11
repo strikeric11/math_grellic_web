@@ -1,11 +1,11 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
 import { DAYS_PER_WEEK } from '#/utils/time.util';
 import { getDateTimeNow } from '#/core/api/core.api';
+import { getSchedulesByDateRangeAndCurrentTeacherUser } from '../api/teacher-schedule.api';
 import { transformToTimelineSchedules } from '../helpers/schedule-transform.helper';
-import { getSchedulesByDateRangeAndCurrentStudentUser } from '../api/student-schedule.api';
 
 import type { TimelineSchedules } from '../models/schedule.model';
 
@@ -13,12 +13,12 @@ type Result = {
   loading: boolean;
   today: Date | null;
   weekIndex: number;
-  handleWeekIndexChange: (valueToAdd: number) => void;
+  handleWeekChange: (valueToAdd: number) => void;
   refresh: () => void;
   timelineSchedules?: TimelineSchedules;
 };
 
-export function useStudentScheduleCalendar(): Result {
+export function useTeacherScheduleTimelineCalendar(): Result {
   const [weekIndex, setWeekIndex] = useState(0);
 
   const [from, to] = useMemo(() => {
@@ -39,7 +39,7 @@ export function useStudentScheduleCalendar(): Result {
     getDateTimeNow({
       refetchOnWindowFocus: false,
       initialData: null,
-      select: (data: any) => data || null,
+      select: (data: any) => (data ? dayjs(data).toDate() : null),
     }),
   );
 
@@ -49,7 +49,7 @@ export function useStudentScheduleCalendar(): Result {
     isRefetching,
     refetch,
   } = useQuery(
-    getSchedulesByDateRangeAndCurrentStudentUser(
+    getSchedulesByDateRangeAndCurrentTeacherUser(
       { from, to },
       {
         refetchOnWindowFocus: false,
@@ -58,16 +58,21 @@ export function useStudentScheduleCalendar(): Result {
     ),
   );
 
-  const handleWeekIndexChange = useCallback((valueToAdd: number) => {
+  const handleWeekChange = useCallback((valueToAdd: number) => {
     setWeekIndex((prev) => prev + valueToAdd);
   }, []);
+
+  const refresh = useCallback(() => {
+    setWeekIndex(0);
+    refetch();
+  }, [refetch]);
 
   return {
     loading: isTodayLoading || isTodayRefetching || isLoading || isRefetching,
     timelineSchedules,
     today: today as Date | null,
     weekIndex,
-    handleWeekIndexChange,
-    refresh: refetch,
+    handleWeekChange,
+    refresh,
   };
 }
