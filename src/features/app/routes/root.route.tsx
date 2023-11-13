@@ -33,6 +33,7 @@ import { studentActivityRouteHandle } from '#/activity/route/student-activity-ha
 import { teacherStudentPerformanceRouteHandle } from '#/performance/route/teacher-performance-handle.route';
 import { teacherScheduleRouteHandle } from '#/schedule/route/teacher-schedule-handle.route';
 import { studentScheduleRouteHandle } from '#/schedule/route/student-schedule-handle.route';
+import { studentUserRouteHandle } from '#/user/route/student-user-handle';
 import { LessonCreatePage } from '#/lesson/pages/lesson-create.page';
 import {
   getPaginatedLessonsLoader as getTeacherPaginatedLessonsLoader,
@@ -72,6 +73,10 @@ import {
   getMeetingSchedulesLoader as getStudentMeetingSchedulesLoader,
   getMeetingScheduleByIdLoader as getStudentMeetingScheduleByIdLoader,
 } from '#/schedule/route/student-schedule-loader.route';
+import {
+  getPaginatedStudentUserLoader,
+  getStudentUserBySlugLoader,
+} from '#/user/route/student-user-loader';
 import { TeacherLessonListPage } from '#/lesson/pages/teacher-lesson-list.page';
 import { TeacherLessonSinglePage } from '#/lesson/pages/teacher-lesson-single.page';
 import { TeacherLessonScheduleListPage } from '#/lesson/pages/teacher-lesson-schedule-list.page';
@@ -111,6 +116,7 @@ import { TeacherMeetingScheduleListPage } from '#/schedule/pages/teacher-meeting
 import { TeacherMeetingScheduleSinglePage } from '#/schedule/pages/teacher-meeting-schedule-single.page';
 import { StudentMeetingScheduleSinglePage } from '#/schedule/pages/student-meeting-schedule-single.page';
 import { StudentMeetingScheduleListPage } from '#/schedule/pages/student-meeting-schedule-list.page';
+import { StudentUserListPage } from '#/user/pages/student-user-list.page';
 
 import { staticRoutes } from './static-routes';
 import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
@@ -369,6 +375,25 @@ const rootRoutes = createRoutesFromElements(
             />
           </Route>
         </Route>
+      </Route>
+      {/* TEACHER STUDENT */}
+      <Route path={teacherRoutes.student.to} element={<Outlet />}>
+        <Route
+          index
+          element={<StudentUserListPage />}
+          handle={studentUserRouteHandle.list}
+          loader={getPaginatedStudentUserLoader(queryClient)}
+        />
+      </Route>
+      {/* create */}
+      <Route path=':publicId' element={<Outlet />}>
+        {/* <Route
+            index
+            element={<TeacherStudentPerformanceSinglePage />}
+            handle={studentUserRouteHandle.single}
+            loader={getStudentUserBySlugLoader(queryClient)}
+          /> */}
+        {/* edit */}
       </Route>
     </Route>
     {/* STUDENT */}

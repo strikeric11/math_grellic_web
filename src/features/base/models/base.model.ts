@@ -66,6 +66,7 @@ export type IconName =
   | 'list-numbers'
   | 'magnifying-glass'
   | 'minus'
+  | 'minus-square'
   | 'number-square-one'
   | 'number-square-two'
   | 'number-square-three'

@@ -1,6 +1,9 @@
 import { generateApiError } from '#/utils/api.util';
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
-import { queryExamKey, queryUserKey } from '#/config/react-query-keys.config';
+import {
+  queryExamKey,
+  queryStudentPerformanceKey,
+} from '#/config/react-query-keys.config';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 import type { Exam } from '#/exam/models/exam.model';
@@ -30,7 +33,7 @@ export function getStudentPerformanceByCurrentStudentUser(
   };
 
   return {
-    queryKey: [...queryUserKey.studentPerformanceSingle, { exclude, include }],
+    queryKey: [...queryStudentPerformanceKey.single, { exclude, include }],
     queryFn,
     ...options,
   };

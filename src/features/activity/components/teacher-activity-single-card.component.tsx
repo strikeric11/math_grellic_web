@@ -94,7 +94,7 @@ export const TeacherActivitySingleCard = memo(function ({
       rounded='sm'
       {...moreProps}
     >
-      <div className='flex h-full flex-1 items-start gap-4'>
+      <div className='flex h-full flex-1 items-center gap-4'>
         <div className='flex h-full flex-1 items-start gap-4'>
           {/* TODO Image */}
           <div className='flex h-[88px] w-[121px] items-center justify-center overflow-hidden rounded border border-primary-hue-teal bg-primary-hue-teal/30 font-medium'>
@@ -123,12 +123,9 @@ export const TeacherActivitySingleCard = memo(function ({
         </div>
         {/* Category info */}
         {!!categories.length && (
-          <div className='min-w-[190px]'>
+          <div className='flex min-w-[190px] flex-col gap-1'>
             {categories.map((category, index) => (
-              <div
-                key={`cat-${index}`}
-                className='flex items-center gap-2.5 pt-1'
-              >
+              <div key={`cat-${index}`} className='flex items-center gap-2.5'>
                 <BaseChip iconName={getLevelIconName(category.level)}>
                   {getCategoryValue(category)}
                 </BaseChip>

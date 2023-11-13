@@ -68,11 +68,13 @@ export function transformToTeacherUserAccount({
   emails,
   user,
 }: any): TeacherUserAccount {
-  const publicId = user?.publicId || null;
+  const { email, publicId, approvalStatus } = user || {};
 
   return {
     id,
+    email,
     publicId,
+    approvalStatus,
     firstName,
     lastName,
     middleName,
@@ -107,7 +109,7 @@ export function transformToStudentUserAccount({
   examCompletions,
   activityCategoryCompletions,
 }: any): StudentUserAccount {
-  const { email, publicId } = user || {};
+  const { email, publicId, approvalStatus } = user || {};
 
   const transformedLessonSchedules =
     lessonSchedules && lessonSchedules.length
@@ -146,6 +148,7 @@ export function transformToStudentUserAccount({
     id,
     email,
     publicId,
+    approvalStatus,
     firstName,
     lastName,
     middleName,

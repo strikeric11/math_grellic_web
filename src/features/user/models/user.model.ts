@@ -45,6 +45,7 @@ type UserAccount = Partial<AuditTrail> & {
   middleName?: string;
   email?: string;
   publicId?: string;
+  approvalStatus?: UserApprovalStatus;
 };
 
 export type TeacherUserAccount = UserAccount & {

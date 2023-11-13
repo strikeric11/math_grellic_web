@@ -60,6 +60,7 @@ import {
   ListNumbers,
   MagnifyingGlass,
   Minus,
+  MinusSquare,
   NumberSquareOne,
   NumberSquareThree,
   NumberSquareTwo,
@@ -226,6 +227,8 @@ export const BaseIcon = memo(
           return MagnifyingGlass;
         case 'minus':
           return Minus;
+        case 'minus-square':
+          return MinusSquare;
         case 'number-square-one':
           return NumberSquareOne;
         case 'number-square-two':

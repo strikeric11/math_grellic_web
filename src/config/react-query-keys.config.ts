@@ -5,9 +5,14 @@ export const queryCoreKey = {
 export const queryUserKey = {
   currentUser: ['users', 'current-user'],
   studentList: ['users', 'student-list'],
+  studentSingle: ['users', 'student-single'],
+  allStudentList: ['users', 'all-student-list'],
   selectedStudentList: ['users', 'selected-student-list'],
-  studentPerformanceList: ['users', 'student-performance-list'],
-  studentPerformanceSingle: ['users', 'student-performance-single'],
+};
+
+export const queryStudentPerformanceKey = {
+  list: ['performances', 'list'],
+  single: ['performances', 'single'],
 };
 
 export const queryLessonKey = {

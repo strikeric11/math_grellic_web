@@ -1,5 +1,8 @@
 import { generateApiError } from '#/utils/api.util';
-import { queryExamKey, queryUserKey } from '#/config/react-query-keys.config';
+import {
+  queryExamKey,
+  queryStudentPerformanceKey,
+} from '#/config/react-query-keys.config';
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
@@ -40,7 +43,9 @@ export function getPaginatedStudentPerformancesByCurrentTeacherUser(
     });
 
     try {
-      const students = await kyInstance.get(BASE_URL, { searchParams }).json();
+      const students = await kyInstance
+        .get(`${BASE_URL}/list`, { searchParams })
+        .json();
       return students;
     } catch (error: any) {
       const apiError = await generateApiError(error);
@@ -50,7 +55,7 @@ export function getPaginatedStudentPerformancesByCurrentTeacherUser(
 
   return {
     queryKey: [
-      ...queryUserKey.studentPerformanceList,
+      ...queryStudentPerformanceKey.list,
       { q, performance, sort, skip, take },
     ],
     queryFn,
@@ -83,7 +88,7 @@ export function getStudentPerformanceByPublicIdAndCurrentTeacherUser(
 
   return {
     queryKey: [
-      ...queryUserKey.studentPerformanceSingle,
+      ...queryStudentPerformanceKey.single,
       { publicId, exclude, include },
     ],
     queryFn,
