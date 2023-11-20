@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 import toast from 'react-hot-toast';
 
 import { BaseModal } from '#/base/components/base-modal.component';

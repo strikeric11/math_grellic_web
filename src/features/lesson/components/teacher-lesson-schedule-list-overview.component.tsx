@@ -1,6 +1,6 @@
 import { memo, useCallback, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
 
 import { convertSecondsToDuration } from '#/utils/time.util';

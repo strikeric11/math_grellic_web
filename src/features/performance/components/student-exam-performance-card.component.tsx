@@ -117,10 +117,14 @@ export const StudentExamPerformanceCard = memo(function ({
                   <PerformanceRankAwardImg rank={overallExamRank} />
                 )}
               </div>
-              <BaseDivider className='!h-10' vertical />
-              <span className='font-display text-2xl tracking-tighter'>
-                {overallExamScoreText}
-              </span>
+              {!!overallExamScore && (
+                <>
+                  <BaseDivider className='!h-10' vertical />
+                  <span className='font-display text-2xl tracking-tighter'>
+                    {overallExamScoreText}
+                  </span>
+                </>
+              )}
             </div>
             <BaseProgressCircle
               percent={overallExamCompletionPercent}

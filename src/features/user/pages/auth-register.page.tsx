@@ -16,6 +16,7 @@ export function AuthRegisterPage() {
     handleRoleChange,
     handleLogin,
   } = useAuthRegister();
+
   const { register } = useAuth();
 
   return (

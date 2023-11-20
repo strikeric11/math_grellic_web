@@ -5,7 +5,7 @@ import { Menu } from '@headlessui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import isTime from 'validator/lib/isTime';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 

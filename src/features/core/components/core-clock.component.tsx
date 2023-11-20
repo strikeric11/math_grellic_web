@@ -15,6 +15,8 @@ export const CoreClock = memo(function ({
 }: Props) {
   const { loading, time, date, dayName } = useClock();
 
+  console.log('time', time)
+
   return (
     !loading && (
       <div

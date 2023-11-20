@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 
 import { transformToBaseModel } from '#/base/helpers/base.helper';
 import { transformToStudentUserAccount } from '#/user/helpers/user-transform.helper';

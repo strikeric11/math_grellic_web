@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 
 import { DAYS_PER_WEEK } from '#/utils/time.util';
 import { transformToTimelineSchedules } from '../helpers/schedule-transform.helper';

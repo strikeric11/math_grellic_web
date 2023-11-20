@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 
 import { convertSecondsToDuration, getDayJsDuration } from '#/utils/time.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';

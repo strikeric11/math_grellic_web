@@ -1,4 +1,4 @@
-import { UserGender } from './user.model';
+import type { UserApprovalStatus, UserGender } from './user.model';
 
 export type AuthCredentials = {
   email: string;
@@ -16,4 +16,5 @@ export type AuthRegisterFormData = {
   gender: UserGender;
   middleName?: string;
   teacherId?: string;
+  approvalStatus?: UserApprovalStatus;
 };

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 
 import { useBoundStore } from './use-store.hook';
 

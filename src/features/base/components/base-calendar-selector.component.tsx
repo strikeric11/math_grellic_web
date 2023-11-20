@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { motion } from 'framer-motion';

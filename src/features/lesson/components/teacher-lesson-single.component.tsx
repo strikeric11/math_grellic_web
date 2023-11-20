@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react';
 import DOMPurify from 'dompurify';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
 
 import { convertSecondsToDuration } from '#/utils/time.util';

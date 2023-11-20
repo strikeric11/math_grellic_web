@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 
 import {
   transformToLessonCompletion,
@@ -16,6 +16,7 @@ import type {
   TeacherUserAccount,
   User,
 } from '../models/user.model';
+import type { AuthRegisterFormData } from '../models/auth.model';
 
 export function transformToUser({
   id,
@@ -205,6 +206,42 @@ export function transformToTeacherUserCreateDto({
   };
 }
 
+export function transformToTeacherUserUpdateDto({
+  approvalStatus,
+  profileImageUrl,
+  firstName,
+  lastName,
+  middleName,
+  birthDate,
+  phoneNumber,
+  gender,
+  aboutMe,
+  educationalBackground,
+  teachingExperience,
+  teachingCertifications,
+  website,
+  socialMediaLinks,
+  emails,
+}: any) {
+  return {
+    approvalStatus,
+    profileImageUrl,
+    firstName,
+    lastName,
+    middleName,
+    birthDate,
+    phoneNumber: phoneNumber.replace(/\D/g, ''),
+    gender,
+    aboutMe,
+    educationalBackground,
+    teachingExperience,
+    teachingCertifications,
+    website,
+    socialMediaLinks,
+    emails,
+  };
+}
+
 export function transformToStudentUserCreateDto({
   email,
   password,
@@ -232,5 +269,57 @@ export function transformToStudentUserCreateDto({
     gender,
     aboutMe,
     teacherId: teacherId ? teacherId.toUpperCase() : undefined,
+  };
+}
+
+export function transformToStudentUserUpdateDto({
+  approvalStatus,
+  profileImageUrl,
+  firstName,
+  lastName,
+  middleName,
+  birthDate,
+  phoneNumber,
+  gender,
+  aboutMe,
+  teacherId,
+}: any) {
+  return {
+    approvalStatus,
+    profileImageUrl,
+    firstName,
+    lastName,
+    middleName,
+    birthDate,
+    phoneNumber: phoneNumber.replace(/\D/g, ''),
+    gender,
+    aboutMe,
+    teacherId: teacherId ? teacherId.toUpperCase() : undefined,
+  };
+}
+
+export function transformToAuthRegisterFormData({
+  firstName,
+  lastName,
+  middleName,
+  birthDate,
+  phoneNumber,
+  gender,
+  teacherId,
+  email,
+  approvalStatus,
+}: any): AuthRegisterFormData {
+  return {
+    email,
+    firstName,
+    lastName,
+    birthDate,
+    phoneNumber,
+    gender,
+    middleName,
+    teacherId,
+    approvalStatus,
+    password: 'xxxxxxxxxxxx',
+    confirmPassword: 'xxxxxxxxxxxx',
   };
 }

@@ -6,7 +6,7 @@ import { BaseDataEmptyMessage } from '#/base/components/base-data-empty-message.
 import {
   StudentUserSingleCard,
   StudentUserSingleCardSkeleton,
-} from '#/performance/components/student-user-single-card.component';
+} from '../components/student-user-single-card.component';
 
 import type { ComponentProps } from 'react';
 import type { StudentUserAccount } from '../models/user.model';
@@ -14,8 +14,8 @@ import type { StudentUserAccount } from '../models/user.model';
 type Props = ComponentProps<'div'> & {
   students: StudentUserAccount[];
   loading?: boolean;
-  onStudentDetails?: (publicId: string) => void;
-  onStudentEdit?: (publicId: string) => void;
+  onStudentDetails?: (student: StudentUserAccount) => void;
+  onStudentEdit?: (id: number) => void;
 };
 
 export const StudentUserList = memo(function ({
@@ -29,15 +29,15 @@ export const StudentUserList = memo(function ({
   const isEmpty = useMemo(() => !students?.length, [students]);
 
   const handleStudentDetails = useCallback(
-    (publicId?: string) => () => {
-      !!publicId && onStudentDetails && onStudentDetails(publicId);
+    (student: StudentUserAccount) => () => {
+      onStudentDetails && onStudentDetails(student);
     },
     [onStudentDetails],
   );
 
   const handleStudentEdit = useCallback(
-    (publicId?: string) => () => {
-      !!publicId && onStudentEdit && onStudentEdit(publicId);
+    (id: number) => () => {
+      onStudentEdit && onStudentEdit(id);
     },
     [onStudentEdit],
   );
@@ -58,6 +58,7 @@ export const StudentUserList = memo(function ({
       ) : isEmpty ? (
         <BaseDataEmptyMessage
           message='No students available'
+          linkLabel='Enroll'
           linkTo={teacherRoutes.exam.createTo}
         />
       ) : (
@@ -65,8 +66,8 @@ export const StudentUserList = memo(function ({
           <StudentUserSingleCard
             key={`s-${student.publicId?.toLowerCase() || index}`}
             student={student}
-            onDetails={handleStudentDetails(student.publicId)}
-            onEdit={handleStudentEdit(student.publicId)}
+            onDetails={handleStudentDetails(student)}
+            onEdit={handleStudentEdit(student.id)}
             role='row'
           />
         ))

@@ -1,6 +1,6 @@
 import { memo, useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
 
 import { convertSecondsToDuration, getDayJsDuration } from '#/utils/time.util';

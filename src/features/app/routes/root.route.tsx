@@ -75,7 +75,7 @@ import {
 } from '#/schedule/route/student-schedule-loader.route';
 import {
   getPaginatedStudentUserLoader,
-  getStudentUserBySlugLoader,
+  getStudentUserByIdLoader,
 } from '#/user/route/student-user-loader';
 import { TeacherLessonListPage } from '#/lesson/pages/teacher-lesson-list.page';
 import { TeacherLessonSinglePage } from '#/lesson/pages/teacher-lesson-single.page';
@@ -117,6 +117,9 @@ import { TeacherMeetingScheduleSinglePage } from '#/schedule/pages/teacher-meeti
 import { StudentMeetingScheduleSinglePage } from '#/schedule/pages/student-meeting-schedule-single.page';
 import { StudentMeetingScheduleListPage } from '#/schedule/pages/student-meeting-schedule-list.page';
 import { StudentUserListPage } from '#/user/pages/student-user-list.page';
+import { StudentUserSinglePage } from '#/user/pages/student-user-single.page';
+import { StudentUserCreatePage } from '#/user/pages/student-user-create.page';
+import { StudentUserEditPage } from '#/user/pages/student-user-edit.page';
 
 import { staticRoutes } from './static-routes';
 import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
@@ -384,16 +387,25 @@ const rootRoutes = createRoutesFromElements(
           handle={studentUserRouteHandle.list}
           loader={getPaginatedStudentUserLoader(queryClient)}
         />
-      </Route>
-      {/* create */}
-      <Route path=':publicId' element={<Outlet />}>
-        {/* <Route
+        <Route path=':id' element={<Outlet />}>
+          <Route
             index
-            element={<TeacherStudentPerformanceSinglePage />}
+            element={<StudentUserSinglePage />}
             handle={studentUserRouteHandle.single}
-            loader={getStudentUserBySlugLoader(queryClient)}
-          /> */}
-        {/* edit */}
+            loader={getStudentUserByIdLoader(queryClient)}
+          />
+          <Route
+            path={teacherRoutes.student.editTo}
+            element={<StudentUserEditPage />}
+            handle={studentUserRouteHandle.edit}
+            loader={getStudentUserByIdLoader(queryClient)}
+          />
+        </Route>
+        <Route
+          path={teacherRoutes.student.createTo}
+          element={<StudentUserCreatePage />}
+          handle={studentUserRouteHandle.create}
+        />
       </Route>
     </Route>
     {/* STUDENT */}

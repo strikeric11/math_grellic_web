@@ -1,7 +1,7 @@
 import { memo, useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
-import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import {
   formatPhoneNumber,
   generateFullName,
@@ -17,6 +17,8 @@ import { useTeacherStudentPerformanceSingle } from '../hooks/use-teacher-student
 import { StudentPerformanceSingle } from '../components/student-performance-single.component';
 
 import type { UserGender } from '#/user/models/user.model';
+
+const STUDENT_USER_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 
 export const TeacherStudentPerformanceSinglePage = memo(() => {
   const { student, loading } = useTeacherStudentPerformanceSingle();
@@ -47,6 +49,14 @@ export const TeacherStudentPerformanceSinglePage = memo(() => {
     [student],
   );
 
+  const editTo = useMemo(
+    () =>
+      `${STUDENT_USER_PATH}/${publicId?.toLowerCase()}/${
+        teacherRoutes.student.editTo
+      }`,
+    [publicId],
+  );
+
   return (
     <BaseDataSuspense resolve={data?.main}>
       {loading && <BasePageSpinner />}
@@ -62,11 +72,7 @@ export const TeacherStudentPerformanceSinglePage = memo(() => {
                 </div>
               </div>
               <div>
-                <BaseLink
-                  to={teacherRoutes.student.editTo}
-                  className='!px-3'
-                  variant='solid'
-                >
+                <BaseLink to={editTo} className='!px-3' variant='solid'>
                   <BaseIcon name='pencil' size={24} />
                 </BaseLink>
               </div>

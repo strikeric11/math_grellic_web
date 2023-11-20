@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 
 import { useClockSocket } from './use-clock-socket.hook';
 

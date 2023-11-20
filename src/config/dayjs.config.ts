@@ -28,3 +28,16 @@ dayjs.extend(timezone);
 dayjs.tz.setDefault('Asia/Manila');
 // Other plugins
 dayjs.extend(isBetween);
+
+const tzDayjs = (...args: any[]) => {
+  return dayjs(...args).tz();
+};
+
+const tzUnix = (value: number) => {
+  return dayjs.unix(value).tz();
+};
+
+tzDayjs.unix = tzUnix;
+tzDayjs.duration = dayjs.duration;
+
+export default tzDayjs;

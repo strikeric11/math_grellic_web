@@ -1,22 +1,32 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
+import { queryClient } from '#/config/react-query-client.config';
+import { queryUserKey } from '#/config/react-query-keys.config';
 import { PAGINATION_TAKE } from '#/utils/api.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { transformToStudentUserAccount } from '../helpers/user-transform.helper';
-import { getPaginatedStudentsByCurrentTeacherUser } from '../api/user.api';
+import {
+  getPaginatedStudentsByCurrentTeacherUser,
+  setStudentApprovalStatus as setStudentApprovalStatusApi,
+  deleteStudent as deleteStudentApi,
+} from '../api/user.api';
 
 import type {
   QueryFilterOption,
   QueryPagination,
   QuerySort,
 } from '#/base/models/base.model';
-import type { StudentUserAccount } from '../models/user.model';
+import type {
+  StudentUserAccount,
+  UserApprovalStatus,
+} from '../models/user.model';
 
 type Result = {
   students: StudentUserAccount[];
   loading: boolean;
+  isMutateLoading: boolean;
   totalCount: number;
   pagination: QueryPagination;
   setKeyword: (keyword: string | null) => void;
@@ -25,8 +35,13 @@ type Result = {
   refresh: () => void;
   nextPage: () => void;
   prevPage: () => void;
-  handleStudentEdit: (publicId: string) => void;
-  handleStudentDetails: (publicId: string) => void;
+  handleStudentEdit: (id: number) => void;
+  handleStudentDetails: (id: number) => void;
+  setStudentApprovalStatus: (
+    id: number,
+    approvalStatus: UserApprovalStatus,
+  ) => Promise<any>;
+  deleteStudent: (id: number) => Promise<boolean | undefined>;
 };
 
 const STUDENT_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
@@ -43,7 +58,7 @@ export const defaultParamKeys = {
   pagination: { take: PAGINATION_TAKE, skip: 0 },
 };
 
-export function useStudentList(): Result {
+export function useStudentUserList(): Result {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState<string | null>(null);
   const [filters, setFilters] = useState<QueryFilterOption[]>([]);
@@ -87,6 +102,14 @@ export function useStudentList(): Result {
     ),
   );
 
+  const {
+    mutateAsync: mutateSetStudentApprovalStatus,
+    isLoading: isStatusLoading,
+  } = useMutation(setStudentApprovalStatusApi());
+
+  const { mutateAsync: mutateDeleteStudent, isLoading: isDeleteLoading } =
+    useMutation(deleteStudentApi());
+
   const students = useMemo(() => {
     const [items] = data || [];
     return (items || []) as StudentUserAccount[];
@@ -103,6 +126,11 @@ export function useStudentList(): Result {
     }
     setTotalCount(dataCount);
   }, [dataCount]);
+
+  const refresh = useCallback(() => {
+    setSkip(0);
+    refetch();
+  }, [refetch]);
 
   const nextPage = useCallback(() => {
     const count = skip + pagination.take;
@@ -122,31 +150,60 @@ export function useStudentList(): Result {
   }, [skip, pagination]);
 
   const handleStudentDetails = useCallback(
-    (publicId: string) => {
-      navigate(`${STUDENT_LIST_PATH}/${publicId.toLowerCase()}`);
+    (id: number) => {
+      navigate(`${STUDENT_LIST_PATH}/${id}`);
     },
     [navigate],
   );
 
   const handleStudentEdit = useCallback(
-    (publicId: string) => {
-      navigate(
-        `${STUDENT_LIST_PATH}/${publicId.toLowerCase()}/${
-          teacherRoutes.student.editTo
-        }`,
-      );
+    (id: number) => {
+      navigate(`${STUDENT_LIST_PATH}/${id}/${teacherRoutes.student.editTo}`);
     },
     [navigate],
   );
 
-  const refresh = useCallback(() => {
-    setSkip(0);
-    refetch();
-  }, [refetch]);
+  const setStudentApprovalStatus = useCallback(
+    async (id: number, approvalStatus: UserApprovalStatus) => {
+      const result = await mutateSetStudentApprovalStatus({
+        studentId: id,
+        approvalStatus,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryUserKey.studentList,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [...queryUserKey.studentSingle, { id }],
+      });
+
+      return result;
+    },
+    [mutateSetStudentApprovalStatus],
+  );
+
+  const deleteStudent = useCallback(
+    async (id: number) => {
+      const result = await mutateDeleteStudent(id);
+
+      queryClient.invalidateQueries({
+        queryKey: queryUserKey.studentList,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [...queryUserKey.studentSingle, { id }],
+      });
+
+      return result;
+    },
+    [mutateDeleteStudent],
+  );
 
   return {
     students,
     loading: isLoading || isRefetching,
+    isMutateLoading: isStatusLoading || isDeleteLoading,
     totalCount,
     pagination,
     setKeyword,
@@ -157,5 +214,7 @@ export function useStudentList(): Result {
     prevPage,
     handleStudentDetails,
     handleStudentEdit,
+    setStudentApprovalStatus,
+    deleteStudent,
   };
 }

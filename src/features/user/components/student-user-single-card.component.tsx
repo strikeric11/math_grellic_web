@@ -38,7 +38,7 @@ export const StudentUserSingleCard = memo(function ({
 }: Props) {
   const [publicId, email, approvalStatus, gender, phoneNumber] = useMemo(
     () => [
-      student.publicId,
+      student.publicId || '—',
       student.email,
       student.approvalStatus,
       student.gender,
@@ -78,7 +78,7 @@ export const StudentUserSingleCard = memo(function ({
             <div className='flex items-center gap-2.5'>
               <BaseChip iconName='identification-badge'>{publicId}</BaseChip>
               <BaseDivider className='!h-6' vertical />
-              <BaseChip iconName='identification-badge'>{phoneNumber}</BaseChip>
+              <BaseChip iconName='device-mobile'>{phoneNumber}</BaseChip>
               <BaseDivider className='!h-6' vertical />
               <BaseChip iconName={statusIconName as IconName}>
                 {statusLabel}
@@ -120,7 +120,7 @@ export const StudentUserSingleCard = memo(function ({
               iconName='pencil'
               onClick={onEdit}
             >
-              Edit
+              Update
             </Menu.Item>
           </BaseDropdownMenu>
         </div>

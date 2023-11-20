@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 import DOMPurify from 'dompurify';
 import cx from 'classix';
 

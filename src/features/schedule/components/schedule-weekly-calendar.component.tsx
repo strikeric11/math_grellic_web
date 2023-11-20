@@ -1,5 +1,5 @@
 import { Fragment, memo, useCallback, useMemo } from 'react';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
 
 import { DAYS_PER_WEEK, generateTimelineHours } from '#/utils/time.util';

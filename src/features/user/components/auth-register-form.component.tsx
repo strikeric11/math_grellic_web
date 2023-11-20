@@ -17,7 +17,7 @@ import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseControlledSelect } from '#/base/components/base-select.component';
 import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
 import { BaseControlledCheckbox } from '#/base/components/base-checkbox.component';
-import { UserGender, UserRole } from '../models/user.model';
+import { UserApprovalStatus, UserGender, UserRole } from '../models/user.model';
 
 import type { FormProps, SelectOption } from '#/base/models/base.model';
 import type { User } from '../models/user.model';
@@ -80,6 +80,7 @@ const schema = z
       required_error: 'Provide your gender',
     }),
     agreeTerms: z.boolean(),
+    approvalStatus: z.nativeEnum(UserApprovalStatus).optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Password does not match',
@@ -97,6 +98,7 @@ const defaultValues: Partial<AuthRegisterFormData> = {
   phoneNumber: '',
   gender: undefined,
   teacherId: '',
+  approvalStatus: UserApprovalStatus.Pending,
 };
 
 export const AuthRegisterForm = memo(function ({

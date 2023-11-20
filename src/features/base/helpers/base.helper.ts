@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 
 export function transformToBaseModel(
   id: number,

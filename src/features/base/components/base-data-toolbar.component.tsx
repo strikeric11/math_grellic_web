@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import cx from 'classix';
 
 import { BaseButton } from './base-button.components';
@@ -49,6 +49,17 @@ export const BaseDataToolbar = memo(
     onSort,
     ...moreProps
   }: Props) => {
+    useEffect(() => {
+      if (onFilter && defaulSelectedtFilterOptions) {
+        onFilter(defaulSelectedtFilterOptions);
+      }
+
+      if (onSort && defaultSelectedSort) {
+        onSort(defaultSelectedSort);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
       <div
         className={cx('flex w-full items-center justify-between', className)}

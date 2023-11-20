@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 import { Duration } from 'dayjs/plugin/duration';
 
 export const DAYS_PER_WEEK = 7;

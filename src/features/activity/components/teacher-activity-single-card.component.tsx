@@ -123,7 +123,7 @@ export const TeacherActivitySingleCard = memo(function ({
         </div>
         {/* Category info */}
         {!!categories.length && (
-          <div className='flex min-w-[190px] flex-col gap-1'>
+          <div className='flex min-w-[190px] flex-col'>
             {categories.map((category, index) => (
               <div key={`cat-${index}`} className='flex items-center gap-2.5'>
                 <BaseChip iconName={getLevelIconName(category.level)}>

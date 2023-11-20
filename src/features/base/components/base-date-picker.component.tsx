@@ -16,7 +16,7 @@ import {
   useInteractions,
 } from '@floating-ui/react';
 import cx from 'classix';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 
 import { menuTransition } from '#/utils/animation.util';
 import { BaseCalendarSelector } from './base-calendar-selector.component';

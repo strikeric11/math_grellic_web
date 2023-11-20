@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo } from 'react';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
 
 import { BaseSpinner } from '#/base/components/base-spinner.component';

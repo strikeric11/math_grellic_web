@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 
 import { getDayJsDuration } from '#/utils/time.util';
 import { queryClient } from '#/config/react-query-client.config';

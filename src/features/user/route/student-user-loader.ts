@@ -2,24 +2,24 @@ import { defer } from 'react-router-dom';
 
 import {
   getPaginatedStudentsByCurrentTeacherUser,
-  getStudentByPublicIdAndCurrentTeacherUser,
+  getStudentByIdAndCurrentTeacherUser,
 } from '../api/user.api';
-import { defaultParamKeys } from '../hooks/use-student-list.hook';
+import { defaultParamKeys } from '../hooks/use-student-user-list.hook';
 
 import type { LoaderFunctionArgs } from 'react-router-dom';
 import type { QueryClient } from '@tanstack/react-query';
 
-export function getStudentUserBySlugLoader(
+export function getStudentUserByIdLoader(
   queryClient: QueryClient,
   queryParams?: { exclude?: string; include?: string },
 ) {
   return async ({ params }: LoaderFunctionArgs) => {
-    if (!params?.publicId) {
+    if (!params?.id) {
       return;
     }
 
-    const keys = { ...queryParams, publicId: params.publicId };
-    const query = getStudentByPublicIdAndCurrentTeacherUser(keys);
+    const keys = { ...queryParams, id: +params.id };
+    const query = getStudentByIdAndCurrentTeacherUser(keys);
 
     return defer({
       main:

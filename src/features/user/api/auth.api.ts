@@ -6,6 +6,7 @@ import {
   transformToTeacherUserCreateDto,
   transformToUser,
 } from '../helpers/user-transform.helper';
+import { UserApprovalStatus } from '../models/user.model';
 
 import type {
   UseMutationOptions,
@@ -49,7 +50,11 @@ export function registerTeacherUser(
 ) {
   const mutationFn = async (data: AuthRegisterFormData): Promise<any> => {
     const url = `${BASE_URL}/teachers/register`;
-    const json = transformToTeacherUserCreateDto(data);
+    // TEMP
+    const json = transformToTeacherUserCreateDto({
+      ...data,
+      approvalStatus: UserApprovalStatus.Approved,
+    });
 
     try {
       const user = await kyInstance.post(url, { json }).json();

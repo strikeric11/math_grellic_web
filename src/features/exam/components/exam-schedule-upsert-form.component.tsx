@@ -4,7 +4,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import isTime from 'validator/lib/isTime';
-import dayjs from 'dayjs';
+import dayjs from '#/config/dayjs.config';
 import { Menu } from '@headlessui/react';
 import toast from 'react-hot-toast';
 import cx from 'classix';
