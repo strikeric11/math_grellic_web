@@ -39,5 +39,6 @@ const tzUnix = (value: number) => {
 
 tzDayjs.unix = tzUnix;
 tzDayjs.duration = dayjs.duration;
+tzDayjs.months = dayjs.months;
 
 export default tzDayjs;
