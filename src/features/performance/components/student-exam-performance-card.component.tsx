@@ -108,7 +108,7 @@ export const StudentExamPerformanceCard = memo(function ({
             {openDetails ? 'Less' : 'More'} Details
           </BaseButton>
         </div>
-        <div className='flex w-full items-stretch'>
+        <div className='flex min-h-[200px] w-full items-stretch'>
           <div className='flex flex-1 flex-col items-center justify-center gap-y-8'>
             <div className='flex items-center justify-center gap-5 font-bold text-primary-hue-purple'>
               <div className='flex items-center gap-x-2.5'>

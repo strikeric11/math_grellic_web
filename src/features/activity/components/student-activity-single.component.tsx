@@ -85,7 +85,7 @@ export const StudentActivitySingle = memo(function ({
   const handleStartActivity = useCallback(() => setStartActivity(true), []);
 
   return (
-    <div className={cx('w-full', className)}>
+    <div className={cx('flex w-full flex-col items-center', className)}>
       {localLoading || loading ? (
         <div className='flex h-full w-full flex-1 items-center justify-center'>
           <BaseSpinner />
@@ -94,7 +94,7 @@ export const StudentActivitySingle = memo(function ({
         <>
           {!startActivity ? (
             <motion.div
-              className='flex w-full flex-col items-center gap-y-8 p-4'
+              className='flex w-full max-w-compact flex-col items-center gap-y-8 p-4'
               variants={scoreShowVariants}
               initial='hidden'
               animate='show'

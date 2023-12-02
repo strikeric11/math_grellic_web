@@ -16,7 +16,7 @@ export function StudentActivitySinglePage() {
       <BaseScene title={title}>
         {activity && (
           <StudentActivitySingle
-            className='mx-auto max-w-compact py-5'
+            className='mx-auto py-5'
             activity={activity}
             loading={loading}
           />

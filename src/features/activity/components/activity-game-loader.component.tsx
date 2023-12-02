@@ -1,17 +1,25 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import cx from 'classix';
 
 import type { ComponentProps } from 'react';
-import type { Activity } from '../models/activity.model';
+import { ActivityGame, type Activity } from '../models/activity.model';
 
 type Props = ComponentProps<'div'> & {
   activity: Activity;
 };
 
+const gameSrc = {
+  [ActivityGame.CarRacing as string]: '/game-car-racing/index.html',
+  [ActivityGame.SlidePuzzle as string]: '/game-slide-puzzle/index.html',
+};
+
 export const ActivityGameLoader = memo(function ({
   className,
+  activity,
   ...moreProps
 }: Props) {
+  const gameName = useMemo(() => activity.game.name, [activity]);
+
   return (
     <div
       className={cx(
@@ -20,10 +28,9 @@ export const ActivityGameLoader = memo(function ({
       )}
       {...moreProps}
     >
-      <iframe
-        className='aspect-video w-full'
-        src='/game-car-racing/index.html'
-      />
+      {gameName && (
+        <iframe className='aspect-video w-full' src={gameSrc[gameName]} />
+      )}
     </div>
   );
 });
