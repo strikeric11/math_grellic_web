@@ -31,6 +31,7 @@ import { studentLessonRouteHandle } from '#/lesson/route/student-lesson-handle.r
 import { studentExamRouteHandle } from '#/exam/route/student-exam-handle.route';
 import { studentActivityRouteHandle } from '#/activity/route/student-activity-handle.route';
 import { teacherStudentPerformanceRouteHandle } from '#/performance/route/teacher-performance-handle.route';
+import { studentPerformanceRouteHandle } from '#/performance/route/student-performance-handle.route';
 import { teacherScheduleRouteHandle } from '#/schedule/route/teacher-schedule-handle.route';
 import { studentScheduleRouteHandle } from '#/schedule/route/student-schedule-handle.route';
 import { studentUserRouteHandle } from '#/user/route/student-user-handle';
@@ -472,7 +473,7 @@ const rootRoutes = createRoutesFromElements(
         <Route
           index
           element={<StudentPerformanceSinglePage />}
-          handle={studentActivityRouteHandle.list}
+          handle={studentPerformanceRouteHandle.single}
         />
       </Route>
       {/* STUDENT SCHEDULE */}
