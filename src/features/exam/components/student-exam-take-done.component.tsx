@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import cx from 'classix';
 
+import {
+  scoreShowVariants,
+  scoreShowItemVariants,
+} from '#/utils/animation.util';
+import { generateOrdinalSuffix } from '#/utils/string.util';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseModal } from '#/base/components/base-modal.component';
@@ -15,6 +20,7 @@ import { StudentExamQuestionResult } from './student-exam-question-result.compon
 
 import type { ComponentProps } from 'react';
 import type { Exam, ExamCompletion } from '../models/exam.model';
+import { PerformanceRankAwardImg } from '#/performance/components/performance-rank-award-img.component';
 
 type Props = ComponentProps<'div'> & {
   exam: Exam;
@@ -26,24 +32,6 @@ type Props = ComponentProps<'div'> & {
 const FIELD_WRAPPER_CLASSNAME = 'flex flex-col items-center gap-1.5';
 const FIELD_VALUE_CLASSNAME = 'text-xl leading-none';
 const FIELD_LABEL_CLASSNAME = 'uppercase';
-
-const scoreShowVariants = {
-  hidden: {
-    opacity: 0,
-  },
-  show: {
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      staggerChildren: 0.5,
-    },
-  },
-};
-
-const scoreShowItemVariants = {
-  hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0 },
-};
 
 export const StudentExamTakeDone = memo(function ({
   className,
@@ -67,18 +55,26 @@ export const StudentExamTakeDone = memo(function ({
     };
   }, []);
 
-  const [title, orderNumber, totalPoints, passingPoints, isPast, questions] =
-    useMemo(
-      () => [
-        exam.title,
-        exam.orderNumber,
-        exam.pointsPerQuestion * exam.visibleQuestionsCount,
-        exam.passingPoints,
-        exam.scheduleStatus === ExamScheduleStatus.Past,
-        exam.questions,
-      ],
-      [exam],
-    );
+  const [
+    title,
+    orderNumber,
+    totalPoints,
+    passingPoints,
+    isPast,
+    questions,
+    rank,
+  ] = useMemo(
+    () => [
+      exam.title,
+      exam.orderNumber,
+      exam.pointsPerQuestion * exam.visibleQuestionsCount,
+      exam.passingPoints,
+      exam.scheduleStatus === ExamScheduleStatus.Past,
+      exam.questions,
+      exam.rank,
+    ],
+    [exam],
+  );
 
   const totalPointsLabel = useMemo(
     () => `Total ${totalPoints > 1 ? 'Points' : 'Point'}`,
@@ -90,11 +86,21 @@ export const StudentExamTakeDone = memo(function ({
     [passingPoints],
   );
 
-  const score = useMemo(() => examCompletion?.score || 0, [examCompletion]);
+  const score = useMemo(() => examCompletion?.score || null, [examCompletion]);
+
+  const scoreSuffix = useMemo(
+    () => ((score || 0) > 1 ? 'Points' : 'Point'),
+    [score],
+  );
 
   const hasPassed = useMemo(
-    () => score >= passingPoints,
+    () => (score || 0) >= passingPoints,
     [score, passingPoints],
+  );
+
+  const rankText = useMemo(
+    () => (rank == null ? '-' : generateOrdinalSuffix(rank)),
+    [rank],
   );
 
   const questionAnswers = useMemo(
@@ -155,7 +161,7 @@ export const StudentExamTakeDone = memo(function ({
           </div>
         </div>
         <BaseSurface
-          className='flex min-h-[220px] flex-col items-center !py-8'
+          className='flex min-h-[200px] flex-col items-center !py-8'
           rounded='sm'
         >
           {localLoading || loading ? (
@@ -170,13 +176,30 @@ export const StudentExamTakeDone = memo(function ({
               animate='show'
             >
               <motion.div
-                className='mb-5 flex w-full flex-col items-center text-primary'
+                className='mb-8 flex items-center justify-center gap-5 px-5 text-primary'
                 variants={scoreShowItemVariants}
               >
-                <span className='text-7xl font-medium'>
-                  {isExpired ? '-' : score}
-                </span>
-                <small className={FIELD_LABEL_CLASSNAME}>Your Score</small>
+                {score != null && rank != null && (
+                  <>
+                    <div className='flex items-center gap-x-2.5'>
+                      <span className='text-[40px] font-bold'>{rankText}</span>
+                      {rank <= 10 && (
+                        <PerformanceRankAwardImg rank={rank} size='lg' />
+                      )}
+                    </div>
+                    <BaseDivider className='!h-14' vertical />
+                  </>
+                )}
+                <div className='flex items-center gap-2.5 font-display text-4xl font-medium tracking-tighter'>
+                  {isExpired ? (
+                    <span>-</span>
+                  ) : (
+                    <>
+                      <span>{score}</span>
+                      <span>{scoreSuffix}</span>
+                    </>
+                  )}
+                </div>
               </motion.div>
               {hasPassed ? (
                 <motion.div

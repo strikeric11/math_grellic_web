@@ -67,9 +67,7 @@ export function useActivityEdit(slug?: string): Result {
       {
         enabled: !!slug,
         refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToActivity(data);
-        },
+        select: (data: any) => transformToActivity(data),
       },
     ),
   );

@@ -1,20 +1,15 @@
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import cx from 'classix';
 
-import { BaseButton } from '#/base/components/base-button.components';
-import { BaseIconButton } from '#/base/components/base-icon-button.component';
-import { BaseSurface } from '#/base/components/base-surface.component';
-import { BaseTooltip } from '#/base/components/base-tooltip.component';
-import { BaseControlledTextArea } from '#/base/components/base-textarea.component';
+import { liAnimation } from '#/utils/animation.util';
 import { defaultQuestion } from '#/exam/helpers/exam-form.helper';
-import { ActivityUpsertQuestionChoiceList } from './activity-upsert-question-choice-list.component';
+import { BaseButton } from '#/base/components/base-button.components';
+import { ActivityUpsertPointTimeQuestion } from './activity-upsert-point-time-question.component';
 
 import type { ComponentProps } from 'react';
-import type { Control } from 'react-hook-form';
-import type { IconName } from '#/base/models/base.model';
 import type {
   ActivityCategoryQuestionFormData,
   ActivityUpsertFormData,
@@ -23,107 +18,6 @@ import type {
 type Props = ComponentProps<'div'> & {
   categoryIndex: number;
 };
-
-type QuestionProps = {
-  index: number;
-  categoryIndex: number;
-  control: Control<ActivityUpsertFormData, any>;
-  onRemove: (index: number) => () => void;
-  onMoveUp: () => void;
-  onMoveDown: () => void;
-  moveUpDisabled?: boolean;
-  moveDownDisabled?: boolean;
-};
-
-const liAnimation = {
-  type: 'spring',
-  damping: 30,
-  stiffness: 200,
-};
-
-const Question = memo(function ({
-  index,
-  categoryIndex,
-  control,
-  onRemove,
-  onMoveDown,
-  onMoveUp,
-  moveUpDisabled,
-  moveDownDisabled,
-}: QuestionProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
-  const orderNumber = useMemo(
-    () => (index + 1).toString().padStart(2, '0'),
-    [index],
-  );
-
-  const handleIsCollapsed = useCallback(() => {
-    setIsCollapsed((prev) => !prev);
-  }, []);
-
-  return (
-    <BaseSurface className={cx('w-full !px-0 !pb-2.5 !pt-1')} rounded='sm'>
-      <div className='mb-2.5 flex w-full items-center justify-between border-b border-b-accent/20 px-5'>
-        <span className='text-xl font-medium text-accent/50'>
-          {orderNumber}
-        </span>
-        <div className='flex items-center'>
-          <BaseTooltip content='Move Up'>
-            <BaseIconButton
-              name='arrow-circle-up'
-              variant='link'
-              className='!w-8'
-              disabled={moveUpDisabled}
-              onClick={onMoveUp}
-            />
-          </BaseTooltip>
-          <BaseTooltip content='Move Down'>
-            <BaseIconButton
-              name='arrow-circle-down'
-              variant='link'
-              className='!w-8'
-              disabled={moveDownDisabled}
-              onClick={onMoveDown}
-            />
-          </BaseTooltip>
-        </div>
-      </div>
-      <div className='px-2.5'>
-        <div className='flex items-start gap-x-2.5'>
-          <div className='flex h-input items-center justify-center'>
-            <BaseIconButton
-              name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
-              variant='link'
-              size='sm'
-              onClick={handleIsCollapsed}
-            />
-          </div>
-          <BaseControlledTextArea
-            name={`categories.${categoryIndex}.questions.${index}.text`}
-            placeholder='Question'
-            control={control}
-            fullWidth
-          />
-          <div className='flex h-input items-center justify-center'>
-            <BaseIconButton
-              name='x'
-              variant='link'
-              size='sm'
-              onClick={onRemove(index)}
-            />
-          </div>
-        </div>
-        <ActivityUpsertQuestionChoiceList
-          className='mt-4'
-          categoryIndex={categoryIndex}
-          questionIndex={index}
-          isCollapsed={isCollapsed}
-        />
-      </div>
-    </BaseSurface>
-  );
-});
 
 export const ActivityUpsertQuestionList = memo(function ({
   className,
@@ -148,12 +42,12 @@ export const ActivityUpsertQuestionList = memo(function ({
     const sourceQuestions = getValues(`categories.${categoryIndex}.questions`);
 
     questions.forEach((_, index) => {
-      const targetQuestions = (
+      const targetQuestion = (
         sourceQuestions ? sourceQuestions[index] : {}
       ) as ActivityCategoryQuestionFormData;
 
       setValue(`categories.${categoryIndex}.questions.${index}`, {
-        ...targetQuestions,
+        ...targetQuestion,
         orderNumber: index + 1,
       });
     });
@@ -172,7 +66,7 @@ export const ActivityUpsertQuestionList = memo(function ({
   const handleRemove = useCallback(
     (index: number) => () => {
       if (questions?.length <= 1) {
-        toast.error('Exam must have at least 1 question');
+        toast.error('Activity must have at least 1 question');
         return;
       }
 
@@ -208,11 +102,10 @@ export const ActivityUpsertQuestionList = memo(function ({
             transition={liAnimation}
             layout
           >
-            <Question
+            <ActivityUpsertPointTimeQuestion
               index={index}
               categoryIndex={categoryIndex}
-              control={control}
-              onRemove={handleRemove}
+              onRemove={handleRemove(index)}
               onMoveUp={handleMove(index, true)}
               onMoveDown={handleMove(index, false)}
               moveUpDisabled={index <= 0}

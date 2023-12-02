@@ -8,6 +8,7 @@ import isTime from 'validator/lib/isTime';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
+import { getErrorMessage } from '#/utils/string.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
@@ -167,7 +168,7 @@ export const LessonUpsertForm = memo(function ({
 
   const handleSubmitError = useCallback(
     (errors: FieldErrors<LessonUpsertFormData>) => {
-      const errorMessage = Object.entries(errors)[0][1].message;
+      const errorMessage = getErrorMessage(errors);
       toast.error(errorMessage || '');
     },
     [],

@@ -19,3 +19,20 @@ export function generateOrdinalSuffix(value: number) {
 }
 
 export const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
+export function getErrorMessage(value: { [key: string]: any }): string | null {
+  let errorMessage = null;
+
+  const getMessage = (value: { [key: string]: any }) => {
+    for (const key in value) {
+      if (key === 'message') {
+        errorMessage = value[key] as string;
+      } else if (typeof value[key] === 'object') {
+        getMessage(value[key]);
+      }
+    }
+  };
+
+  getMessage(value);
+  return errorMessage;
+}

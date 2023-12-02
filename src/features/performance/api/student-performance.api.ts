@@ -1,12 +1,14 @@
 import { generateApiError } from '#/utils/api.util';
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
 import {
+  queryActivityKey,
   queryExamKey,
   queryStudentPerformanceKey,
 } from '#/config/react-query-keys.config';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 import type { Exam } from '#/exam/models/exam.model';
+import type { Activity } from '#/activity/models/activity.model';
 import type { StudentPerformance } from '../models/performance.model';
 
 const BASE_URL = 'performances/students';
@@ -65,6 +67,35 @@ export function getStudentExamsByCurrentStudentUser(
   };
 }
 
+export function getStudentActivitiesByCurrentStudentUser(
+  keys: { exclude?: string; include?: string },
+  options?: Omit<
+    UseQueryOptions<Activity[], Error, Activity[], any>,
+    'queryFn'
+  >,
+) {
+  const { exclude, include } = keys;
+
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/activities`;
+    const searchParams = generateSearchParams({ exclude, include });
+
+    try {
+      const activities = await kyInstance.get(url, { searchParams }).json();
+      return activities;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [...queryActivityKey.studentPerformance, { exclude, include }],
+    queryFn,
+    ...options,
+  };
+}
+
 export function getStudentExamWithCompletionsBySlugAndCurrentStudentUser(
   keys: { slug: string; exclude?: string; include?: string },
   options?: Omit<UseQueryOptions<Exam, Error, Exam, any>, 'queryFn'>,
@@ -86,6 +117,32 @@ export function getStudentExamWithCompletionsBySlugAndCurrentStudentUser(
 
   return {
     queryKey: [...queryExamKey.single, { slug, exclude, include }],
+    queryFn,
+    ...options,
+  };
+}
+
+export function getStudentActivityWithCompletionsBySlugAndCurrentStudentUser(
+  keys: { slug: string; exclude?: string; include?: string },
+  options?: Omit<UseQueryOptions<Activity, Error, Activity, any>, 'queryFn'>,
+) {
+  const { slug, exclude, include } = keys;
+
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/activities/${slug}`;
+    const searchParams = generateSearchParams({ exclude, include });
+
+    try {
+      const activity = await kyInstance.get(url, { searchParams }).json();
+      return activity;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [...queryActivityKey.single, { slug, exclude, include }],
     queryFn,
     ...options,
   };

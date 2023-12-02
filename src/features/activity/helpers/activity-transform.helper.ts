@@ -15,6 +15,7 @@ import type {
   ActivityCategoryQuestion,
   ActivityCategoryQuestionChoice,
   ActivityCategoryTypePoint,
+  ActivityCategoryTypeStage,
   ActivityCategoryTypeTime,
 } from '../models/activity.model';
 import type {
@@ -36,6 +37,8 @@ export function transformToActivity({
   excerpt,
   game,
   categories,
+  score,
+  rank,
 }: any): Activity {
   const transformedCategories =
     categories?.map((category: any) => transformToActivityCategory(category)) ||
@@ -50,6 +53,8 @@ export function transformToActivity({
     excerpt,
     game,
     categories: transformedCategories,
+    score,
+    rank,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
@@ -64,6 +69,7 @@ export function transformToActivityCategory({
   questions,
   typePoint,
   typeTime,
+  typeStage,
   completions,
 }: any): ActivityCategory {
   const transformedQuestions =
@@ -79,6 +85,10 @@ export function transformToActivityCategory({
     ? transformToActivityCategoryTypeTime(typeTime)
     : undefined;
 
+  const transformedTypeStage = typeStage
+    ? transformToActivityCategoryTypeStage(typeStage)
+    : undefined;
+
   const transformedCompletions = completions
     ? completions.map((completion: any) =>
         transformToActivityCategoryCompletion(completion),
@@ -92,6 +102,7 @@ export function transformToActivityCategory({
     questions: transformedQuestions,
     typePoint: transformedTypePoint,
     typeTime: transformedTypeTime,
+    typeStage: transformedTypeStage,
     completions: transformedCompletions,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
@@ -104,6 +115,7 @@ export function transformToActivityCategoryQuestion({
   orderNumber,
   text,
   choices,
+  stageNumber,
 }: any): ActivityCategoryQuestion {
   const transformedChoices = choices
     ? choices.map((choice: any) =>
@@ -115,6 +127,7 @@ export function transformToActivityCategoryQuestion({
     orderNumber,
     text,
     choices: transformedChoices,
+    stageNumber,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
@@ -159,6 +172,18 @@ export function transformToActivityCategoryTypeTime({
 }: any): ActivityCategoryTypeTime {
   return {
     correctAnswerCount,
+    ...transformToBaseModel(id, createdAt, updatedAt),
+  };
+}
+
+export function transformToActivityCategoryTypeStage({
+  id,
+  createdAt,
+  updatedAt,
+  totalStageCount,
+}: any): ActivityCategoryTypeStage {
+  return {
+    totalStageCount,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
@@ -244,9 +269,11 @@ export function transformToCategoryFormData({
   questions,
   typePoint,
   typeTime,
+  typeStage,
 }: any): ActivityCategoryFormData {
   const { pointsPerQuestion, durationSeconds } = typePoint || {};
   const { correctAnswerCount } = typeTime || {};
+  const { totalStageCount } = typeStage || {};
 
   const duration = durationSeconds
     ? convertSecondsToDuration(durationSeconds)
@@ -257,6 +284,10 @@ export function transformToCategoryFormData({
       transformToCategoryQuestionFormData(question),
     ) || [];
 
+  const stageQuestions = totalStageCount
+    ? transformToCategoryStageQuestionsFormData(totalStageCount, questions)
+    : undefined;
+
   return {
     id,
     level,
@@ -266,7 +297,22 @@ export function transformToCategoryFormData({
     pointsPerQuestion,
     duration,
     correctAnswerCount,
+    totalStageCount,
+    stageQuestions,
   };
+}
+
+export function transformToCategoryStageQuestionsFormData(
+  totalStageCount: number,
+  sourceQuestions: ActivityCategoryQuestion[],
+) {
+  return [...Array(totalStageCount)].map((_, index) => {
+    const questions = sourceQuestions
+      .filter((question) => question.stageNumber === index + 1)
+      .sort((qA, qB) => qA.orderNumber - qB.orderNumber);
+
+    return { questions };
+  });
 }
 
 export function transformToCategoryQuestionFormData({
@@ -274,6 +320,7 @@ export function transformToCategoryQuestionFormData({
   orderNumber,
   text,
   choices,
+  stageNumber,
 }: any): ActivityCategoryQuestionFormData {
   const transformedChoices =
     choices?.map((choice: any) =>
@@ -285,6 +332,7 @@ export function transformToCategoryQuestionFormData({
     orderNumber,
     text,
     choices: transformedChoices,
+    stageNumber: stageNumber || undefined,
   };
 }
 
@@ -337,6 +385,7 @@ export function transformToCategoryUpsertDto({
   correctAnswerCount,
   pointsPerQuestion,
   duration,
+  totalStageCount,
   questions,
 }: any) {
   const durationSeconds = duration
@@ -356,6 +405,7 @@ export function transformToCategoryUpsertDto({
     correctAnswerCount,
     pointsPerQuestion,
     durationSeconds,
+    totalStageCount,
     questions: questionsDto,
   };
 }
@@ -365,6 +415,7 @@ export function transformToCategoryQuestionUpsertDto({
   orderNumber,
   text,
   choices,
+  stageNumber,
 }: any) {
   const choicesDto =
     choices?.map((choice: any) =>
@@ -376,6 +427,7 @@ export function transformToCategoryQuestionUpsertDto({
     orderNumber,
     text,
     choices: choicesDto,
+    stageNumber,
   };
 }
 

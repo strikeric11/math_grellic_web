@@ -2,6 +2,7 @@ import { memo, useMemo } from 'react';
 import { Menu } from '@headlessui/react';
 import cx from 'classix';
 
+import { generateOrdinalSuffix } from '#/utils/string.util';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
@@ -61,7 +62,7 @@ export const StudentPerformanceSingleCard = memo(function ({
   );
 
   const overallRankText = useMemo(
-    () => (overallRank == null ? '-' : overallRank),
+    () => (overallRank == null ? '-' : generateOrdinalSuffix(overallRank)),
     [overallRank],
   );
 
@@ -111,7 +112,7 @@ export const StudentPerformanceSingleCard = memo(function ({
         >
           <div className='flex items-center gap-x-2.5'>
             <span className='text-4xl'>{overallRankText}</span>
-            {overallRank != null && (
+            {overallRank != null && overallRank <= 10 && (
               <PerformanceRankAwardImg rank={overallRank} />
             )}
           </div>

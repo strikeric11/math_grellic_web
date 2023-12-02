@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import cx from 'classix';
 
-import { BaseSurface } from '#/base/components/base-surface.component';
 import { StudentExamPerformanceCard } from './student-exam-performance-card.component';
+import { StudentActivityPerformanceCard } from './student-activity-performance-card.component';
 
 import type { ComponentProps } from 'react';
 import type { StudentPerformance } from '../models/performance.model';
@@ -24,9 +24,7 @@ export const StudentPerformanceSingle = memo(function ({
       {...moreProps}
     >
       <StudentExamPerformanceCard student={student} isStudent={isStudent} />
-      <BaseSurface rounded='sm'>
-        <h3 className='text-base'>Activities</h3>
-      </BaseSurface>
+      <StudentActivityPerformanceCard student={student} isStudent={isStudent} />
     </div>
   );
 });

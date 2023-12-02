@@ -35,12 +35,14 @@ type ScoreProps = {
 
 const Score = memo(function ({ game, score }: ScoreProps) {
   const scoreSuffix = useMemo(() => {
-    const isPoint = game.type === ActivityCategoryType.Point;
+    const isPlural = (score || 0) > 1;
 
-    if (isPoint) {
-      return (score || 0) > 1 ? 'Points' : 'Point';
+    if (game.type === ActivityCategoryType.Point) {
+      return isPlural ? 'Points' : 'Point';
+    } else if (game.type === ActivityCategoryType.Time) {
+      return isPlural ? 'Seconds' : 'Second';
     } else {
-      return (score || 0) > 1 ? 'Seconds' : 'Second';
+      return isPlural ? 'Levels' : 'Level';
     }
   }, [game, score]);
 
@@ -71,14 +73,14 @@ export const StudentActivitySingleCard = memo(function ({
   primary,
   ...moreProps
 }: Props) {
-  const [singleTo, orderNumber, title, game, categories, isCompleted] = useMemo(
+  const [singleTo, orderNumber, title, game, categories, score] = useMemo(
     () => [
       activity.slug,
       activity.orderNumber,
       activity.title,
       activity.game,
       activity.categories,
-      !!activity.categories.some((cat) => cat.completions?.length),
+      activity.score != null ? activity.score : null,
     ],
     [activity],
   );
@@ -88,28 +90,10 @@ export const StudentActivitySingleCard = memo(function ({
     [game],
   );
 
-  const score = useMemo(() => {
-    if (!isCompleted) {
-      return null;
-    }
-
-    if (game.type === ActivityCategoryType.Point) {
-      return categories.reduce((total, category) => {
-        if (!category.completions?.length) {
-          return total;
-        }
-
-        const currentScore = category.completions.reduce(
-          (total, completion) => total + (completion.score || 0),
-          0,
-        );
-        return total + currentScore;
-      }, 0);
-    } else {
-      // TODO type time
-      return 1;
-    }
-  }, [game, categories, isCompleted]);
+  const isGameTypeStage = useMemo(
+    () => game.type === ActivityCategoryType.Stage,
+    [game],
+  );
 
   const getCategoryValue = useCallback(
     (category: ActivityCategory) => {
@@ -138,6 +122,21 @@ export const StudentActivitySingleCard = memo(function ({
     [],
   );
 
+  const generateStageText = useCallback((category: ActivityCategory) => {
+    const totalStageCount = category.typeStage?.totalStageCount || 0;
+    return `${totalStageCount} ${totalStageCount > 1 ? 'Levels' : 'Level'}`;
+  }, []);
+
+  const generateStagQuestionCountText = useCallback(
+    (category: ActivityCategory) => {
+      const visibleQuestionsCount = category.visibleQuestionsCount;
+      return `${visibleQuestionsCount} ${
+        visibleQuestionsCount > 1 ? 'Questions' : 'Question'
+      }`;
+    },
+    [],
+  );
+
   return (
     <Link to={singleTo} className='group'>
       <BaseSurface
@@ -161,7 +160,7 @@ export const StudentActivitySingleCard = memo(function ({
               </h2>
               {/* status */}
               <div className='flex w-20 justify-center'>
-                {!isCompleted ? (
+                {score == null ? (
                   <BaseIcon
                     name='circle-dashed'
                     size={44}
@@ -194,12 +193,25 @@ export const StudentActivitySingleCard = memo(function ({
                     key={`cat-${index}`}
                     className='flex items-center gap-2.5'
                   >
-                    <BaseChip iconName={getLevelIconName(category.level)}>
-                      {getCategoryValue(category)}
-                    </BaseChip>
-                    <span className='text-sm uppercase'>
-                      ({getLevelName(category.level)})
-                    </span>
+                    {!isGameTypeStage ? (
+                      <>
+                        <BaseChip iconName={getLevelIconName(category.level)}>
+                          {getCategoryValue(category)}
+                        </BaseChip>
+                        <span className='text-sm uppercase'>
+                          ({getLevelName(category.level)})
+                        </span>
+                      </>
+                    ) : (
+                      <div>
+                        <BaseChip iconName='stack'>
+                          {generateStageText(category)}
+                        </BaseChip>
+                        <BaseChip iconName='list-bullets'>
+                          {generateStagQuestionCountText(category)}
+                        </BaseChip>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

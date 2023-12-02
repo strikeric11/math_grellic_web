@@ -13,6 +13,7 @@ export enum ActivityGame {
 export enum ActivityCategoryType {
   Point = 'point',
   Time = 'time',
+  Stage = 'stage',
 }
 
 export enum ActivityCategoryLevel {
@@ -56,6 +57,8 @@ export type Activity = Partial<AuditTrail> & {
   categories: ActivityCategory[];
   description?: string;
   excerpt?: string;
+  score?: number | null;
+  rank?: number | null;
 };
 
 export type ActivityCategory = Partial<AuditTrail> & {
@@ -66,6 +69,7 @@ export type ActivityCategory = Partial<AuditTrail> & {
   questions: ActivityCategoryQuestion[];
   typePoint?: ActivityCategoryTypePoint;
   typeTime?: ActivityCategoryTypeTime;
+  typeStage?: ActivityCategoryTypeStage;
   completions?: ActivityCategoryCompletion[];
 };
 
@@ -74,6 +78,7 @@ export type ActivityCategoryQuestion = Partial<AuditTrail> & {
   orderNumber: number;
   text: string;
   choices: ActivityCategoryQuestionChoice[];
+  stageNumber?: number;
 };
 
 export type ActivityCategoryQuestionChoice = Partial<AuditTrail> & {
@@ -93,6 +98,11 @@ export type ActivityCategoryTypePoint = Partial<AuditTrail> & {
 export type ActivityCategoryTypeTime = Partial<AuditTrail> & {
   id: number;
   correctAnswerCount: number;
+};
+
+export type ActivityCategoryTypeStage = Partial<AuditTrail> & {
+  id: number;
+  totalStageCount: number;
 };
 
 export type ActivityCategoryCompletion = Partial<AuditTrail> & {

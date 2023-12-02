@@ -10,10 +10,11 @@ import { BaseLink } from '#/base/components/base-link.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { activityGameLabel } from '../models/activity.model';
-import { TeacherActivitySingleCategory } from './teacher-activity-single-category.component';
+import { TeacherActivitySinglePointTimeCategory } from './teacher-activity-single-point-time-category.component';
+import { TeacherActivitySingleStageCategory } from './teacher-activity-single-stage-category.component';
 
 import type { ComponentProps } from 'react';
-import type {
+import {
   Activity,
   ActivityCategoryType,
   ActivityGame,
@@ -45,6 +46,23 @@ export const TeacherActivitySingle = memo(function ({
     [game],
   );
 
+  const isGameTypeStage = useMemo(
+    () => game.type === ActivityCategoryType.Stage,
+    [game],
+  );
+
+  const totalStageCountText = useMemo(() => {
+    const totalStageCount = categories[0].typeStage?.totalStageCount || 0;
+    return `${totalStageCount} ${totalStageCount > 1 ? 'Levels' : 'Level'}`;
+  }, [categories]);
+
+  const totalQuestionCounText = useMemo(() => {
+    const visibleQuestionsCount = categories[0].visibleQuestionsCount;
+    return `${visibleQuestionsCount} ${
+      visibleQuestionsCount > 1 ? 'Questions' : 'Question'
+    }`;
+  }, [categories]);
+
   const descriptionHtml = useMemo(() => {
     const isEmpty = !DOMPurify.sanitize(activity.description || '', {
       ALLOWED_TAGS: [],
@@ -68,6 +86,16 @@ export const TeacherActivitySingle = memo(function ({
             </BaseChip>
             <BaseDivider className='!h-6' vertical />
             <BaseChip iconName='dice-three'>{gameName}</BaseChip>
+            {isGameTypeStage && (
+              <>
+                <BaseDivider className='!h-6' vertical />
+                <BaseChip iconName='stack'>{totalStageCountText}</BaseChip>
+                <BaseDivider className='!h-6' vertical />
+                <BaseChip iconName='list-bullets'>
+                  {totalQuestionCounText}
+                </BaseChip>
+              </>
+            )}
             {isDraft && (
               <>
                 <BaseDivider className='!h-6' vertical />
@@ -96,7 +124,7 @@ export const TeacherActivitySingle = memo(function ({
       </div>
       <BaseDivider className='mb-2.5' />
       <BaseSurface rounded='sm'>
-        <div className='flex items-start'>
+        <div className='mb-2.5 flex items-start'>
           <div className='mr-4 flex-1 border-r border-accent/20'>
             <h3 className='text-base'>
               {descriptionHtml ? 'Description' : 'Activity has no description'}
@@ -117,14 +145,22 @@ export const TeacherActivitySingle = memo(function ({
         </div>
         <BaseDivider className='mb-2.5' />
         {/* Categories */}
-        {categories.map((category) => (
-          <TeacherActivitySingleCategory
-            key={`cat-${category.id}`}
-            className='mb-4 border-b border-accent/20 pb-4 last:mb-0 last:border-none last:pb-0'
-            gameType={game.type as ActivityCategoryType}
-            category={category}
-          />
-        ))}
+        {!isGameTypeStage
+          ? categories.map((category) => (
+              <TeacherActivitySinglePointTimeCategory
+                key={`cat-${category.id}`}
+                className='mb-4 border-b border-accent/20 pb-4 last:mb-0 last:border-none last:pb-0'
+                gameType={game.type as ActivityCategoryType}
+                category={category}
+              />
+            ))
+          : categories.map((category) => (
+              <TeacherActivitySingleStageCategory
+                key={`cat-${category.id}`}
+                className='mb-4 border-b border-accent/20 pb-4 last:mb-0 last:border-none last:pb-0'
+                category={category}
+              />
+            ))}
       </BaseSurface>
     </div>
   );

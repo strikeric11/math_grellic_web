@@ -1,5 +1,6 @@
 import { generateApiError } from '#/utils/api.util';
 import {
+  queryActivityKey,
   queryExamKey,
   queryStudentPerformanceKey,
 } from '#/config/react-query-keys.config';
@@ -9,6 +10,7 @@ import type { UseQueryOptions } from '@tanstack/react-query';
 import type { QueryPagination } from '#/base/models/base.model';
 import type { PaginatedQueryData } from '#/core/models/core.model';
 import type { Exam } from '#/exam/models/exam.model';
+import type { Activity } from '#/activity/models/activity.model';
 import type { StudentPerformance } from '../models/performance.model';
 
 const BASE_URL = 'performances/teachers/students';
@@ -126,6 +128,39 @@ export function getStudentExamsByPublicIdAndCurrentTeacherUser(
   };
 }
 
+export function getStudentActivitiesByPublicIdAndCurrentTeacherUser(
+  keys: { publicId: string; exclude?: string; include?: string },
+  options?: Omit<
+    UseQueryOptions<Activity[], Error, Activity[], any>,
+    'queryFn'
+  >,
+) {
+  const { publicId: pId, exclude, include } = keys;
+  const publicId = pId.toLowerCase();
+
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/${publicId}/activities`;
+    const searchParams = generateSearchParams({ exclude, include });
+
+    try {
+      const activities = await kyInstance.get(url, { searchParams }).json();
+      return activities;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [
+      ...queryActivityKey.studentPerformance,
+      { publicId, exclude, include },
+    ],
+    queryFn,
+    ...options,
+  };
+}
+
 export function getStudentExamWithCompletionsByPublicIdAndSlug(
   keys: { publicId: string; slug: string; exclude?: string; include?: string },
   options?: Omit<UseQueryOptions<Exam, Error, Exam, any>, 'queryFn'>,
@@ -148,6 +183,36 @@ export function getStudentExamWithCompletionsByPublicIdAndSlug(
 
   return {
     queryKey: [...queryExamKey.single, { publicId, slug, exclude, include }],
+    queryFn,
+    ...options,
+  };
+}
+
+export function getStudentActivityWithCompletionsByPublicIdAndSlug(
+  keys: { publicId: string; slug: string; exclude?: string; include?: string },
+  options?: Omit<UseQueryOptions<Activity, Error, Activity, any>, 'queryFn'>,
+) {
+  const { publicId: pId, slug, exclude, include } = keys;
+  const publicId = pId.toLowerCase();
+
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/${publicId}/activities/${slug}`;
+    const searchParams = generateSearchParams({ exclude, include });
+
+    try {
+      const activity = await kyInstance.get(url, { searchParams }).json();
+      return activity;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [
+      ...queryActivityKey.single,
+      { publicId, slug, exclude, include },
+    ],
     queryFn,
     ...options,
   };

@@ -27,15 +27,6 @@ export const teacherRoutes = {
       editTo: 'edit',
     },
   },
-  activity: {
-    name: 'activities',
-    to: 'activities',
-    label: 'Activities',
-    iconName: 'game-controller',
-    createTo: 'create',
-    editTo: 'edit',
-    previewTo: 'preview',
-  },
   exam: {
     name: 'exams',
     to: 'exams',
@@ -49,6 +40,15 @@ export const teacherRoutes = {
       createTo: 'create',
       editTo: 'edit',
     },
+  },
+  activity: {
+    name: 'activities',
+    to: 'activities',
+    label: 'Activities',
+    iconName: 'game-controller',
+    createTo: 'create',
+    editTo: 'edit',
+    previewTo: 'preview',
   },
   schedule: {
     name: 'schedules',

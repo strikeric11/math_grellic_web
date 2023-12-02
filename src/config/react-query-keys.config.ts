@@ -30,6 +30,7 @@ export const queryExamKey = {
 export const queryActivityKey = {
   list: ['activities', 'list'],
   single: ['activities', 'single'],
+  studentPerformance: ['activities', 'student-performance'],
   gameList: ['activities', 'game-list'],
 };
 

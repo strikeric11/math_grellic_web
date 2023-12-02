@@ -1,8 +1,10 @@
 import { memo, useCallback, useMemo } from 'react';
 import cx from 'classix';
 
+import { generateOrdinalSuffix } from '#/utils/string.util';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseTag } from '#/base/components/base-tag.component';
+import { PerformanceRankAwardImg } from './performance-rank-award-img.component';
 
 import type { ComponentProps } from 'react';
 import type { Exam } from '#/exam/models/exam.model';
@@ -18,16 +20,18 @@ export const StudentExamPerformanceDetails = memo(function ({
   onClick,
   ...moreProps
 }: Props) {
-  const [orderNumber, title, totalPoints, passingPoints, completion] = useMemo(
-    () => [
-      exam.orderNumber,
-      exam.title,
-      exam.visibleQuestionsCount * exam.pointsPerQuestion,
-      exam.passingPoints,
-      exam.completions?.length ? exam.completions[0] : undefined,
-    ],
-    [exam],
-  );
+  const [orderNumber, title, totalPoints, passingPoints, completion, rank] =
+    useMemo(
+      () => [
+        exam.orderNumber,
+        exam.title,
+        exam.visibleQuestionsCount * exam.pointsPerQuestion,
+        exam.passingPoints,
+        exam.completions?.length ? exam.completions[0] : undefined,
+        exam.rank,
+      ],
+      [exam],
+    );
 
   const hasPassed = useMemo(
     () => (completion?.score || 0) >= passingPoints,
@@ -53,6 +57,11 @@ export const StudentExamPerformanceDetails = memo(function ({
     return hasPassed ? 'Passed' : 'Failed';
   }, [completion, hasPassed]);
 
+  const rankText = useMemo(
+    () => (rank == null ? '-' : generateOrdinalSuffix(rank)),
+    [rank],
+  );
+
   const handleClick = useCallback(() => {
     onClick && onClick(exam);
   }, [exam, onClick]);
@@ -62,7 +71,7 @@ export const StudentExamPerformanceDetails = memo(function ({
       className={cx(
         'flex w-full items-center justify-between overflow-hidden rounded px-4 py-2',
         onClick &&
-          'cursor-pointer transition-colors duration-75 hover:bg-primary-hue-purple-focus hover:!text-white',
+          'group cursor-pointer transition-colors duration-75 hover:bg-primary-hue-purple-focus hover:!text-white',
         className,
       )}
       onClick={handleClick}
@@ -88,11 +97,15 @@ export const StudentExamPerformanceDetails = memo(function ({
           Exam {orderNumber} - {title}
         </span>
       </div>
-      <div className='flex items-center gap-x-2.5'>
-        <div className='mr-4 w-24 text-center text-lg font-medium'>
-          {scoreText}
-        </div>
+      <div className='flex items-center gap-x-4 text-primary-hue-purple group-hover:text-white'>
+        <div className='w-20 text-center text-lg font-medium'>{scoreText}</div>
         <BaseTag className='w-20 !bg-primary-hue-purple'>{statusText}</BaseTag>
+        <div className='flex min-w-[104px] items-center justify-center gap-x-2.5'>
+          <span className='text-2xl font-bold'>{rankText}</span>
+          {rank != null && rank <= 10 && (
+            <PerformanceRankAwardImg rank={rank} size='sm' />
+          )}
+        </div>
       </div>
     </div>
   );

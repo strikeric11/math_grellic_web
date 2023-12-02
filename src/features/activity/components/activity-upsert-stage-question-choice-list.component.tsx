@@ -21,6 +21,7 @@ import type {
 
 type Props = ComponentProps<'div'> & {
   categoryIndex: number;
+  stageIndex: number;
   questionIndex: number;
   isCollapsed?: boolean;
 };
@@ -133,9 +134,10 @@ const Choice = memo(function ({
   );
 });
 
-export const ActivityUpsertQuestionChoiceList = memo(function ({
+export const ActivityUpsertStageQuestionChoiceList = memo(function ({
   className,
   categoryIndex,
+  stageIndex,
   questionIndex,
   isCollapsed,
   ...moreProps
@@ -145,18 +147,18 @@ export const ActivityUpsertQuestionChoiceList = memo(function ({
 
   const { fields, append, remove, update } = useFieldArray({
     control,
-    name: `categories.${categoryIndex}.questions.${questionIndex}.choices`,
+    name: `categories.${categoryIndex}.stageQuestions.${stageIndex}.questions.${questionIndex}.choices`,
     keyName: 'key',
   });
 
   useEffect(() => {
     const sourceChoices = getValues(
-      `categories.${categoryIndex}.questions.${questionIndex}.choices`,
+      `categories.${categoryIndex}.stageQuestions.${stageIndex}.questions.${questionIndex}.choices`,
     );
 
     fields.forEach((_, index) => {
       setValue(
-        `categories.${categoryIndex}.questions.${questionIndex}.choices.${index}`,
+        `categories.${categoryIndex}.stageQuestions.${stageIndex}.questions.${questionIndex}.choices.${index}`,
         {
           ...sourceChoices[index],
           orderNumber: index + 1,
@@ -168,7 +170,7 @@ export const ActivityUpsertQuestionChoiceList = memo(function ({
 
   const choices = useWatch({
     control,
-    name: `categories.${categoryIndex}.questions.${questionIndex}.choices`,
+    name: `categories.${categoryIndex}.stageQuestions.${stageIndex}.questions.${questionIndex}.choices`,
   });
 
   const filteredFields = useMemo(
@@ -183,9 +185,9 @@ export const ActivityUpsertQuestionChoiceList = memo(function ({
   const getChoiceName = useCallback(
     (key: string) => {
       const choiceIndex = fields.findIndex((field) => field.key === key);
-      return `categories.${categoryIndex}.questions.${questionIndex}.choices.${choiceIndex}.text`;
+      return `categories.${categoryIndex}.stageQuestions.${stageIndex}.questions.${questionIndex}.choices.${choiceIndex}.text`;
     },
-    [fields, categoryIndex, questionIndex],
+    [fields, categoryIndex, questionIndex, stageIndex],
   );
 
   const getChoiceLabel = useCallback(

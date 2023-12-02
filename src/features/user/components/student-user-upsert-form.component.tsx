@@ -8,6 +8,7 @@ import isMobilePhone from 'validator/lib/isMobilePhone';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
+import { getErrorMessage } from '#/utils/string.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDivider } from '#/base/components/base-divider.component';
@@ -141,8 +142,7 @@ export const StudentUserUpsertForm = memo(function ({
 
   const handleSubmitError = useCallback(
     (errors: FieldErrors<AuthRegisterFormData>) => {
-      console.log(errors);
-      const errorMessage = Object.entries(errors)[0][1].message;
+      const errorMessage = getErrorMessage(errors);
       toast.error(errorMessage || '');
     },
     [],

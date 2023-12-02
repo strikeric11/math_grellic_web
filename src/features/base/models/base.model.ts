@@ -80,6 +80,7 @@ export type IconName =
   | 'rocket-launch'
   | 'share-fat'
   | 'squares-four'
+  | 'stack'
   | 'sort-ascending'
   | 'sort-descending'
   | 'subtract-square'

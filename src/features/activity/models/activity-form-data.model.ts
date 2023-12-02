@@ -14,6 +14,11 @@ export type ActivityCategoryQuestionFormData = {
   orderNumber: number;
   text: string;
   choices: ActivityCategoryQuestionChoiceFormData[];
+  stageNumber?: number;
+};
+
+export type ActivityCategoryStageQuestionsFormData = {
+  questions: ActivityCategoryQuestionFormData[];
 };
 
 export type ActivityCategoryFormData = {
@@ -22,8 +27,10 @@ export type ActivityCategoryFormData = {
   randomizeQuestions: boolean;
   visibleQuestionsCount: number;
   questions: ActivityCategoryQuestionFormData[];
+  stageQuestions?: ActivityCategoryStageQuestionsFormData[];
   correctAnswerCount?: number;
   pointsPerQuestion?: number;
+  totalStageCount?: number;
   duration?: string;
 };
 

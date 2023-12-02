@@ -9,6 +9,7 @@ import dayjs from '#/config/dayjs.config';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
+import { getErrorMessage } from '#/utils/string.util';
 import { getDayJsDuration } from '#/utils/time.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { RecordStatus } from '#/core/models/core.model';
@@ -282,26 +283,7 @@ export const ExamUpsertForm = memo(function ({
 
   const handleSubmitError = useCallback(
     (errors: FieldErrors<ExamUpsertFormData>) => {
-      let errorMessage = '';
-
-      if (errors.questions?.length) {
-        const targetQuestion = (errors.questions as any).filter(
-          (q: any) => q,
-        )[0];
-
-        if (targetQuestion.choices?.length) {
-          const targetChoice = targetQuestion.choices.filter((c: any) => c)[0];
-
-          errorMessage = (Object.entries(targetChoice || {})[0][1] as any)
-            .message;
-        } else {
-          errorMessage = (Object.entries(targetQuestion || {})[0][1] as any)
-            .message;
-        }
-      } else {
-        errorMessage = Object.entries(errors)[0][1]?.message || '';
-      }
-
+      const errorMessage = getErrorMessage(errors);
       toast.error(errorMessage || '');
     },
     [],

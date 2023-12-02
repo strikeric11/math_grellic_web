@@ -113,7 +113,7 @@ export const StudentExamPerformanceCard = memo(function ({
             <div className='flex items-center justify-center gap-5 font-bold text-primary-hue-purple'>
               <div className='flex items-center gap-x-2.5'>
                 <span className='text-4xl'>{overallExamRankText}</span>
-                {overallExamRank != null && (
+                {overallExamRank != null && overallExamRank <= 10 && (
                   <PerformanceRankAwardImg rank={overallExamRank} />
                 )}
               </div>
@@ -133,7 +133,7 @@ export const StudentExamPerformanceCard = memo(function ({
             />
           </div>
           <BaseDivider className='!h-auto' vertical />
-          <div className='flex flex-1 flex-col items-center font-medium'>
+          <div className='flex flex-1 flex-col items-center justify-center font-medium'>
             <div className='grid w-fit grid-cols-2 gap-y-5'>
               <div className={EXAM_WRAPPER_CLASSNAME}>
                 <span className={EXAM_VALUE_CLASSNAME}>{currentExamCount}</span>

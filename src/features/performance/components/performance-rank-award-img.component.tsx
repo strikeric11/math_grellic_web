@@ -25,7 +25,7 @@ import type { ComponentProps } from 'react';
 
 type Props = ComponentProps<'img'> & {
   rank: number;
-  lg?: boolean;
+  size?: 'lg' | 'base' | 'sm';
 };
 
 const rankAwardSrc = [
@@ -54,19 +54,26 @@ const rankAwardSmSrc = [
   rankAward10Sm,
 ];
 
-export const PerformanceRankAwardImg = ({ rank, lg, ...moreProps }: Props) => {
+export const PerformanceRankAwardImg = ({
+  rank,
+  size = 'base',
+  ...moreProps
+}: Props) => {
   const src = useMemo(
-    () => (lg ? rankAwardSrc[rank - 1] : rankAwardSmSrc[rank - 1]),
-    [lg, rank],
+    () => (size === 'lg' ? rankAwardSrc[rank - 1] : rankAwardSmSrc[rank - 1]),
+    [size, rank],
   );
 
-  const size = useMemo(() => {
-    if (lg) {
-      return { width: 106, height: 93 };
+  const imgSize = useMemo(() => {
+    switch (size) {
+      case 'lg':
+        return { width: 74, height: 65 };
+      case 'sm':
+        return { width: 34, height: 29 };
+      default:
+        return { width: 42, height: 37 };
     }
+  }, [size]);
 
-    return { width: 42, height: 37 };
-  }, [lg]);
-
-  return <img src={src} {...size} {...moreProps} />;
+  return <img src={src} {...imgSize} {...moreProps} />;
 };

@@ -27,6 +27,7 @@ export type Exam = Partial<AuditTrail> & {
   schedules?: ExamSchedule[];
   completions?: ExamCompletion[];
   scheduleStatus?: ExamScheduleStatus;
+  rank?: number | null;
 };
 
 export type ExamWithDuration = {

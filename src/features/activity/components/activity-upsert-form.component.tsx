@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FieldErrors, FormProvider, useForm } from 'react-hook-form';
+import { FieldErrors, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { Menu } from '@headlessui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
@@ -8,6 +8,7 @@ import isTime from 'validator/lib/isTime';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
+import { getErrorMessage } from '#/utils/string.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
@@ -17,9 +18,13 @@ import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
-import { defaultQuestion } from '#/exam/helpers/exam-form.helper';
+import {
+  createDefaultStageQuestion,
+  defaultQuestion,
+} from '#/exam/helpers/exam-form.helper';
 import { ActivityUpsertFormStep1 } from './activity-upsert-form-step-1.component';
-import { ActivityUpsertFormLevel } from './activity-upsert-form-step-level.component';
+import { ActivityUpsertFormStepPointTimeLevel } from './activity-upsert-form-step-point-time-level.component';
+import { ActivityUpsertFormStepStageLevel } from './activity-upsert-form-step-stage-level.component';
 import {
   ActivityCategoryLevel,
   ActivityCategoryType,
@@ -28,7 +33,10 @@ import {
 
 import type { FormProps, IconName } from '#/base/models/base.model';
 import type { Activity } from '../models/activity.model';
-import type { ActivityUpsertFormData } from '../models/activity-form-data.model';
+import type {
+  ActivityCategoryQuestionFormData,
+  ActivityUpsertFormData,
+} from '../models/activity-form-data.model';
 
 type Props = FormProps<'div', ActivityUpsertFormData, Promise<Activity>>;
 
@@ -53,6 +61,11 @@ const questionSchema = z.object({
     .gt(0, 'Question number is invalid'),
   text: z.string().min(1, 'Question is required'),
   choices: z.array(choiceSchema).min(2),
+  stageNumber: z.number().optional(),
+});
+
+const stageQuestionsSchema = z.object({
+  questions: z.array(questionSchema).min(1),
 });
 
 const categorySchema = z.object({
@@ -67,6 +80,7 @@ const categorySchema = z.object({
     .int()
     .gt(0, 'Visible questions should be greater than zero'),
   questions: z.array(questionSchema).min(1),
+  stageQuestions: z.array(stageQuestionsSchema).min(1).optional(),
   correctAnswerCount: z
     .number()
     .int()
@@ -86,20 +100,25 @@ const categorySchema = z.object({
       },
     )
     .optional(),
+  totalStageCount: z
+    .number()
+    .int()
+    .gt(0, 'Stage count should be greater than zero')
+    .optional(),
 });
 
 const schema = z
   .object({
     orderNumber: z
       .number({
-        required_error: 'Exam number is required',
-        invalid_type_error: 'Exam number is invalid ',
+        required_error: 'Activity number is required',
+        invalid_type_error: 'Activity number is invalid ',
       })
       .int()
       .gt(0),
     title: z
       .string()
-      .min(1, 'Exam title is required')
+      .min(1, 'Activity title is required')
       .max(255, 'Title is too long'),
     status: z.nativeEnum(RecordStatus),
     game: z.object(
@@ -132,18 +151,105 @@ const schema = z
           });
         }
       });
-    } else {
+    } else if (data.game.type === ActivityCategoryType.Time) {
       data.categories?.forEach((category, index) => {
         if (!category.correctAnswerCount) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: 'Correct answer could should be greater than zero',
+            message: 'Correct answer should be greater than zero',
             path: [`categories.${index}.correctAnswerCount`],
           });
         }
       });
+    } else {
+      data.categories?.forEach((category, index) => {
+        if (!category.totalStageCount) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Total stage count should be greater than zero',
+            path: [`categories.${index}.totalStageCount`],
+          });
+        }
+      });
+    }
+
+    if (data.game.type === ActivityCategoryType.Stage) {
+      data.categories?.forEach((category, index) => {
+        category.stageQuestions?.forEach((stageQuestion, sIndex) => {
+          stageQuestion.questions.forEach((question, qIndex) => {
+            const isValid = question.choices.some((choice) => choice.isCorrect);
+            if (!isValid) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Pick an answer from the choices',
+                path: [
+                  `categories.${index}.stageQuestions.${sIndex}.questions.${qIndex}.choices.0.text`,
+                ],
+              });
+            }
+
+            if (question.stageNumber == null) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Stage number should be greater than zero',
+                path: [
+                  `categories.${index}.stageQuestions.${sIndex}.questions.${qIndex}.stageNumber`,
+                ],
+              });
+            }
+          });
+        });
+      });
+    } else {
+      data.categories?.forEach((category, index) => {
+        category.questions.forEach((question, qIndex) => {
+          const isValid = question.choices.some((choice) => choice.isCorrect);
+          if (!isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Pick an answer from the choices',
+              path: [`categories.${index}.questions.${qIndex}.choices.0.text`],
+            });
+          }
+        });
+      });
     }
   });
+
+const defaultPointTimeCategories = [
+  {
+    level: ActivityCategoryLevel.Easy,
+    questions: [defaultQuestion],
+    stageQuestions: undefined,
+    randomizeQuestions: false,
+  },
+  {
+    level: ActivityCategoryLevel.Average,
+    questions: [defaultQuestion],
+    stageQuestions: undefined,
+    randomizeQuestions: false,
+  },
+  {
+    level: ActivityCategoryLevel.Difficult,
+    questions: [defaultQuestion],
+    stageQuestions: undefined,
+    randomizeQuestions: false,
+  },
+];
+
+const defaultStageCategories = [
+  {
+    level: ActivityCategoryLevel.Average,
+    questions: [],
+    stageQuestions: [
+      {
+        questions: [createDefaultStageQuestion(1)],
+      },
+    ],
+    randomizeQuestions: false,
+    totalStageCount: 1,
+  },
+];
 
 const defaultValues: Partial<ActivityUpsertFormData> = {
   title: '',
@@ -152,23 +258,7 @@ const defaultValues: Partial<ActivityUpsertFormData> = {
   status: RecordStatus.Draft,
   orderNumber: null,
   game: undefined,
-  categories: [
-    {
-      level: ActivityCategoryLevel.Easy,
-      questions: [defaultQuestion],
-      randomizeQuestions: false,
-    },
-    {
-      level: ActivityCategoryLevel.Average,
-      questions: [defaultQuestion],
-      randomizeQuestions: false,
-    },
-    {
-      level: ActivityCategoryLevel.Difficult,
-      questions: [defaultQuestion],
-      randomizeQuestions: false,
-    },
-  ],
+  categories: [],
 };
 
 export const ActivityUpsertForm = memo(function ({
@@ -198,9 +288,12 @@ export const ActivityUpsertForm = memo(function ({
   });
 
   const {
+    control,
+    getValues,
     formState: { isSubmitting },
     reset,
     handleSubmit,
+    setValue,
   } = methods;
 
   const loading = useMemo(
@@ -217,29 +310,31 @@ export const ActivityUpsertForm = memo(function ({
       [isEditPublished],
     );
 
+  const gameType = useWatch({ control, name: 'game.type' });
+
+  const activityLevelComponent = useMemo(() => {
+    if (gameType == null) {
+      return (
+        <div className='flex w-full justify-center'>
+          <span>No game selected</span>
+        </div>
+      );
+    }
+
+    if (gameType !== ActivityCategoryType.Stage) {
+      return <ActivityUpsertFormStepPointTimeLevel categoryIndex={0} />;
+    }
+
+    return <ActivityUpsertFormStepStageLevel categoryIndex={0} />;
+  }, [gameType]);
+
   const handleReset = useCallback(() => {
     reset(isEdit ? formData : defaultValues);
   }, [isEdit, formData, reset]);
 
   const handleSubmitError = useCallback(
     (errors: FieldErrors<ActivityUpsertFormData>) => {
-      let errorMessage = '';
-
-      if (errors.categories?.length) {
-        const filteredCategories = (errors.categories as any)?.filter(
-          (c: any) => !!c,
-        );
-
-        if (filteredCategories[0].questions?.length) {
-          errorMessage = 'Invalid level question';
-        } else {
-          errorMessage =
-            (Object.entries(filteredCategories[0])[0][1] as any)?.message || '';
-        }
-      } else {
-        errorMessage = Object.entries(errors)[0][1]?.message || '';
-      }
-
+      const errorMessage = getErrorMessage(errors);
       toast.error(errorMessage || '');
     },
     [],
@@ -266,6 +361,37 @@ export const ActivityUpsertForm = memo(function ({
     [isEdit, onSubmit, onDone, navigate],
   );
 
+  const doSubmit = useCallback(
+    (status?: RecordStatus) => () => {
+      if (gameType === ActivityCategoryType.Stage) {
+        const stageQuestions = getValues('categories.0.stageQuestions');
+
+        const questions =
+          stageQuestions?.reduce(
+            (total, stageQuestion) => [...total, ...stageQuestion.questions],
+            [] as ActivityCategoryQuestionFormData[],
+          ) || [];
+
+        const transformedQuestions = questions.map((question, index) => ({
+          ...question,
+          orderNumber: index + 1,
+        }));
+
+        setValue('categories.0.questions', transformedQuestions);
+      }
+
+      handleSubmit((data) => submitForm(data, status), handleSubmitError)();
+    },
+    [
+      gameType,
+      submitForm,
+      handleSubmit,
+      handleSubmitError,
+      setValue,
+      getValues,
+    ],
+  );
+
   // const handlePreview = useCallback(async () => {
   //   const isValid = await trigger();
 
@@ -279,6 +405,36 @@ export const ActivityUpsertForm = memo(function ({
   // }, [trigger, getValues, setActivityFormData]);
 
   useEffect(() => {
+    switch (gameType) {
+      case ActivityCategoryType.Point:
+      case ActivityCategoryType.Time: {
+        const categories =
+          formData?.categories &&
+          formData?.game.type !== ActivityCategoryType.Stage
+            ? formData.categories
+            : defaultPointTimeCategories;
+
+        setValue('categories', categories);
+        break;
+      }
+      case ActivityCategoryType.Stage: {
+        const categories =
+          formData?.categories &&
+          formData?.game.type === ActivityCategoryType.Stage
+            ? formData.categories
+            : defaultStageCategories;
+
+        setValue('categories', categories);
+        break;
+      }
+      default:
+        setValue('categories', []);
+        break;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameType]);
+
+  useEffect(() => {
     // Set lessonFormData to undefined when unmounting component
     return () => {
       setActivityFormData();
@@ -289,9 +445,7 @@ export const ActivityUpsertForm = memo(function ({
   return (
     <div className={cx('w-full', className)} {...moreProps}>
       <FormProvider {...methods}>
-        <form
-          onSubmit={handleSubmit((data) => submitForm(data), handleSubmitError)}
-        >
+        <form onSubmit={doSubmit()}>
           <BaseStepper
             disabled={loading}
             onReset={handleReset}
@@ -301,10 +455,7 @@ export const ActivityUpsertForm = memo(function ({
                   rightIconName={publishButtonIconName}
                   loading={loading}
                   disabled={isDone}
-                  onClick={handleSubmit(
-                    (data) => submitForm(data, RecordStatus.Published),
-                    handleSubmitError,
-                  )}
+                  onClick={doSubmit(RecordStatus.Published)}
                 >
                   {publishButtonLabel}
                 </BaseButton>
@@ -348,15 +499,28 @@ export const ActivityUpsertForm = memo(function ({
             <BaseStepperStep label='Activity Info'>
               <ActivityUpsertFormStep1 />
             </BaseStepperStep>
-            <BaseStepperStep label='Easy Questions'>
-              <ActivityUpsertFormLevel categoryIndex={0} />
+            <BaseStepperStep
+              label={
+                gameType === ActivityCategoryType.Point ||
+                gameType === ActivityCategoryType.Time
+                  ? 'Easy Questions'
+                  : 'Questions'
+              }
+            >
+              {activityLevelComponent}
             </BaseStepperStep>
-            <BaseStepperStep label='Average Questions'>
-              <ActivityUpsertFormLevel categoryIndex={1} />
-            </BaseStepperStep>
-            <BaseStepperStep label='Difficult Questions'>
-              <ActivityUpsertFormLevel categoryIndex={2} />
-            </BaseStepperStep>
+            {(gameType === ActivityCategoryType.Point ||
+              gameType === ActivityCategoryType.Time) && (
+              <BaseStepperStep label='Average Questions'>
+                <ActivityUpsertFormStepPointTimeLevel categoryIndex={1} />
+              </BaseStepperStep>
+            )}
+            {(gameType === ActivityCategoryType.Point ||
+              gameType === ActivityCategoryType.Time) && (
+              <BaseStepperStep label='Difficult Questions'>
+                <ActivityUpsertFormStepPointTimeLevel categoryIndex={2} />
+              </BaseStepperStep>
+            )}
           </BaseStepper>
         </form>
       </FormProvider>

@@ -61,6 +61,11 @@ export const TeacherActivitySingleCard = memo(function ({
     [game],
   );
 
+  const isGameTypeStage = useMemo(
+    () => game.type === ActivityCategoryType.Stage,
+    [game],
+  );
+
   const getCategoryValue = useCallback(
     (category: ActivityCategory) => {
       if (game.type === ActivityCategoryType.Point) {
@@ -85,6 +90,21 @@ export const TeacherActivitySingleCard = memo(function ({
 
   const getLevelName = useCallback(
     (level: ActivityCategoryLevel) => categoryLevel[level].levelName,
+    [],
+  );
+
+  const generateStageText = useCallback((category: ActivityCategory) => {
+    const totalStageCount = category.typeStage?.totalStageCount || 0;
+    return `${totalStageCount} ${totalStageCount > 1 ? 'Levels' : 'Level'}`;
+  }, []);
+
+  const generateStagQuestionCountText = useCallback(
+    (category: ActivityCategory) => {
+      const visibleQuestionsCount = category.visibleQuestionsCount;
+      return `${visibleQuestionsCount} ${
+        visibleQuestionsCount > 1 ? 'Questions' : 'Question'
+      }`;
+    },
     [],
   );
 
@@ -126,12 +146,25 @@ export const TeacherActivitySingleCard = memo(function ({
           <div className='flex min-w-[190px] flex-col'>
             {categories.map((category, index) => (
               <div key={`cat-${index}`} className='flex items-center gap-2.5'>
-                <BaseChip iconName={getLevelIconName(category.level)}>
-                  {getCategoryValue(category)}
-                </BaseChip>
-                <span className='text-sm uppercase'>
-                  ({getLevelName(category.level)})
-                </span>
+                {!isGameTypeStage ? (
+                  <>
+                    <BaseChip iconName={getLevelIconName(category.level)}>
+                      {getCategoryValue(category)}
+                    </BaseChip>
+                    <span className='text-sm uppercase'>
+                      ({getLevelName(category.level)})
+                    </span>
+                  </>
+                ) : (
+                  <div>
+                    <BaseChip iconName='stack'>
+                      {generateStageText(category)}
+                    </BaseChip>
+                    <BaseChip iconName='list-bullets'>
+                      {generateStagQuestionCountText(category)}
+                    </BaseChip>
+                  </div>
+                )}
               </div>
             ))}
           </div>

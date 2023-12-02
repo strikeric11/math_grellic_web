@@ -18,6 +18,7 @@ export function StudentActivitySinglePage() {
           <StudentActivitySingle
             className='mx-auto max-w-compact py-5'
             activity={activity}
+            loading={loading}
           />
         )}
       </BaseScene>

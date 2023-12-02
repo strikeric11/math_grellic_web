@@ -10,37 +10,28 @@ import { TeacherActivitySingleQuestion } from './teacher-activity-single-questio
 
 import type { ComponentProps } from 'react';
 import type { IconName } from '#/base/models/base.model';
-import type { ActivityCategory } from '../models/activity.model';
+import type {
+  ActivityCategory,
+  ActivityCategoryTypePoint,
+  ActivityCategoryTypeTime,
+} from '../models/activity.model';
 
 type Props = ComponentProps<'div'> & {
   gameType: ActivityCategoryType;
   category: ActivityCategory;
 };
 
-export const TeacherActivitySingleCategory = memo(function ({
-  className,
+type TypeChipProps = {
+  gameType: ActivityCategoryType;
+  typePoint?: ActivityCategoryTypePoint;
+  typeTime?: ActivityCategoryTypeTime;
+};
+
+const TypeChip = memo(function ({
   gameType,
-  category,
-  ...moreProps
-}: Props) {
-  const [level, questionsCount, randomizeQuestions, typePoint, typeTime] =
-    useMemo(
-      () => [
-        category.level,
-        category.visibleQuestionsCount,
-        category.randomizeQuestions,
-        category.typePoint,
-        category.typeTime,
-      ],
-      [category],
-    );
-
-  const questionsCountText = useMemo(
-    () =>
-      questionsCount > 1 ? `${questionsCount} Items` : `${questionsCount} Item`,
-    [questionsCount],
-  );
-
+  typePoint,
+  typeTime,
+}: TypeChipProps) {
   const typePointDurationText = useMemo(
     () => convertSecondsToDuration(typePoint?.durationSeconds || 0, true),
     [typePoint],
@@ -54,10 +45,63 @@ export const TeacherActivitySingleCategory = memo(function ({
   const typeTimeCorrectAnswerCountText = useMemo(() => {
     const answerText =
       (typeTime?.correctAnswerCount || 0) > 1 ? 'Answers' : 'Answer';
+
     return `${
       typeTime?.correctAnswerCount || 0
     } Correct ${answerText} To Finish`;
   }, [typeTime]);
+
+  if (gameType === ActivityCategoryType.Point) {
+    return (
+      <>
+        <BaseChip iconName='list-checks'>
+          {typePointPointsPerQuestionText}
+        </BaseChip>
+        <BaseDivider className='!h-6' vertical />
+        <BaseChip iconName='hourglass'>{typePointDurationText}</BaseChip>
+      </>
+    );
+  }
+
+  if (gameType === ActivityCategoryType.Time) {
+    <BaseChip iconName='list-checks'>
+      {typeTimeCorrectAnswerCountText}
+    </BaseChip>;
+  }
+
+  return null;
+});
+
+export const TeacherActivitySinglePointTimeCategory = memo(function ({
+  className,
+  gameType,
+  category,
+  ...moreProps
+}: Props) {
+  const [
+    level,
+    questionsCount,
+    randomizeQuestions,
+    questions,
+    typePoint,
+    typeTime,
+  ] = useMemo(
+    () => [
+      category.level,
+      category.visibleQuestionsCount,
+      category.randomizeQuestions,
+      category.questions,
+      category.typePoint,
+      category.typeTime,
+    ],
+    [category],
+  );
+
+  const questionsCountText = useMemo(
+    () =>
+      questionsCount > 1 ? `${questionsCount} Items` : `${questionsCount} Item`,
+    [questionsCount],
+  );
 
   return (
     <div className={cx('mx-auto w-full', className)} {...moreProps}>
@@ -72,19 +116,11 @@ export const TeacherActivitySingleCategory = memo(function ({
         <div className='flex items-center gap-2.5 text-sm'>
           <BaseChip iconName='list-numbers'>{questionsCountText}</BaseChip>
           <BaseDivider className='!h-6' vertical />
-          {gameType === ActivityCategoryType.Point ? (
-            <>
-              <BaseChip iconName='list-checks'>
-                {typePointPointsPerQuestionText}
-              </BaseChip>
-              <BaseDivider className='!h-6' vertical />
-              <BaseChip iconName='hourglass'>{typePointDurationText}</BaseChip>
-            </>
-          ) : (
-            <BaseChip iconName='list-checks'>
-              {typeTimeCorrectAnswerCountText}
-            </BaseChip>
-          )}
+          <TypeChip
+            gameType={gameType}
+            typePoint={typePoint}
+            typeTime={typeTime}
+          />
           {randomizeQuestions && (
             <>
               <BaseDivider className='!h-6' vertical />
@@ -93,7 +129,7 @@ export const TeacherActivitySingleCategory = memo(function ({
           )}
         </div>
         <div className='flex w-full flex-col gap-y-4'>
-          {category.questions.map((question) => (
+          {questions.map((question) => (
             <TeacherActivitySingleQuestion
               key={question.id}
               question={question}

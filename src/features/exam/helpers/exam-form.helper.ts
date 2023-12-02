@@ -6,3 +6,7 @@ export const defaultQuestion = {
     isCorrect: false,
   })) as any[],
 } as any;
+
+export function createDefaultStageQuestion(stageNumber: number) {
+  return { ...defaultQuestion, stageNumber };
+}

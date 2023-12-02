@@ -76,6 +76,7 @@ import {
   SortAscending,
   SortDescending,
   SquaresFour,
+  Stack,
   SubtractSquare,
   TextAlignCenter,
   TextAlignJustify,
@@ -259,6 +260,8 @@ export const BaseIcon = memo(
           return SortDescending;
         case 'squares-four':
           return SquaresFour;
+        case 'stack':
+          return Stack;
         case 'subtract-square':
           return SubtractSquare;
         case 'text-align-center':

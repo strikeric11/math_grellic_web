@@ -41,6 +41,7 @@ export function transformToExam(
     schedules,
     scheduleStatus,
     completions,
+    rank,
   }: any,
   withLesson?: boolean,
 ): Exam {
@@ -77,6 +78,7 @@ export function transformToExam(
     schedules: transformedSchedules,
     scheduleStatus,
     completions: transformedCompletions,
+    rank,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }

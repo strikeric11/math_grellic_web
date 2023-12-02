@@ -19,18 +19,18 @@ export const studentRoutes = {
     label: 'Lessons',
     iconName: 'chalkboard-teacher',
   },
+  exam: {
+    name: 'exams',
+    to: 'exams',
+    label: 'Exams',
+    iconName: 'exam',
+  },
   activity: {
     name: 'activities',
     to: 'activities',
     label: 'Activities',
     iconName: 'game-controller',
     size: 28,
-  },
-  exam: {
-    name: 'exams',
-    to: 'exams',
-    label: 'Exams',
-    iconName: 'exam',
   },
   schedule: {
     name: 'schedules',

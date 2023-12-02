@@ -24,10 +24,11 @@ export const TeacherStudentPerformanceSinglePage = memo(() => {
   const { student, loading } = useTeacherStudentPerformanceSingle();
   const data: any = useLoaderData();
 
-  const [email, publicId, phoneNumber, gender] = useMemo(
+  const [id, email, publicId, phoneNumber, gender] = useMemo(
     () =>
       student
         ? [
+            student.id,
             student.email,
             student.publicId,
             formatPhoneNumber(student.phoneNumber),
@@ -50,11 +51,8 @@ export const TeacherStudentPerformanceSinglePage = memo(() => {
   );
 
   const editTo = useMemo(
-    () =>
-      `${STUDENT_USER_PATH}/${publicId?.toLowerCase()}/${
-        teacherRoutes.student.editTo
-      }`,
-    [publicId],
+    () => `${STUDENT_USER_PATH}/${id}/${teacherRoutes.student.editTo}`,
+    [id],
   );
 
   return (
