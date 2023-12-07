@@ -14,6 +14,7 @@ import type {
 } from '@tanstack/react-query';
 import type { User } from '../models/user.model';
 import type { AuthRegisterFormData } from '../models/auth.model';
+import ky from 'ky';
 
 const BASE_URL = 'users';
 
@@ -57,7 +58,7 @@ export function registerTeacherUser(
     });
 
     try {
-      const user = await kyInstance.post(url, { json }).json();
+      const user = await ky.post(url, { json }).json();
       return transformToUser(user);
     } catch (error: any) {
       const apiError = await generateApiError(error);
@@ -79,7 +80,7 @@ export function registerStudentUser(
     const json = transformToStudentUserCreateDto(data);
 
     try {
-      const user = await kyInstance.post(url, { json }).json();
+      const user = await ky.post(url, { json }).json();
       return transformToUser(user);
     } catch (error: any) {
       const apiError = await generateApiError(error);
