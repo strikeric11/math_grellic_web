@@ -3,6 +3,7 @@ import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
 
 import { DAYS_PER_WEEK, generateTimelineHours } from '#/utils/time.util';
+import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { ScheduleType } from '../models/schedule.model';
 import { ScheduleCalendarCard } from './schedule-calendar-card.component';
 
@@ -18,8 +19,17 @@ type Props = ComponentProps<'div'> & {
   loading: boolean;
   today: Date;
   weekIndex: number;
-  timelineSchedules: TimelineSchedules;
+  timelineSchedules?: TimelineSchedules;
   onScheduleClick?: (schedule: ScheduleCardType) => void;
+};
+
+const DEFAULT_MIN_HOUR = 7;
+const DEFAULT_MAX_HOUR = 17;
+
+const defaultTimelineSchedules = {
+  lessonSchedules: [],
+  examSchedules: [],
+  meetingSchedules: [],
 };
 
 function generateSchedulesByHour(schedulesByDay: any, hour: number): any[] {
@@ -60,7 +70,7 @@ export const ScheduleWeeklyCalendar = memo(function ({
   loading,
   today,
   weekIndex,
-  timelineSchedules,
+  timelineSchedules = defaultTimelineSchedules,
   onScheduleClick,
   ...moreProps
 }: Props) {
@@ -89,16 +99,21 @@ export const ScheduleWeeklyCalendar = memo(function ({
       )
       .sort((timeA, timeB) => (timeA >= timeB ? -1 : 1));
 
-    let min = 7;
-    let max = 17;
+    let min = DEFAULT_MIN_HOUR;
+    let max = DEFAULT_MAX_HOUR;
 
     if (scheduleHours.length) {
-      min = ~~scheduleHours[0];
-      max =
+      const scheduleMinHour = ~~scheduleHours[0];
+      const scheduleMaxHour =
         scheduleHours.length &&
         scheduleEndHours[0] > scheduleHours[scheduleHours.length - 1]
           ? scheduleEndHours[0]
           : scheduleHours[scheduleHours.length - 1];
+
+      min =
+        DEFAULT_MIN_HOUR < scheduleMinHour ? DEFAULT_MIN_HOUR : scheduleMinHour;
+      max =
+        DEFAULT_MAX_HOUR < scheduleMaxHour ? scheduleMaxHour : DEFAULT_MAX_HOUR;
     }
 
     return generateTimelineHours(min, Math.ceil(max));
@@ -217,74 +232,82 @@ export const ScheduleWeeklyCalendar = memo(function ({
 
   return (
     <div className={cx('flex w-full items-start', className)} {...moreProps}>
-      {/* Hour labels */}
-      <div>
-        <div className='h-[86px]' />
-        <div>
-          {hoursLabel.map((hour, index) => (
-            <div
-              key={`label-h-${index}`}
-              className='relative flex h-16 animate-fastFadeIn flex-col justify-center'
-            >
-              <div className='flex items-center'>
-                <div className='flex h-[26px] w-[76px] items-center justify-center rounded border border-accent bg-white text-sm'>
-                  {hour}
+      {loading ? (
+        <div className='flex min-h-[200px] w-full items-center justify-center'>
+          <BaseSpinner />
+        </div>
+      ) : (
+        <>
+          {/* Hour labels */}
+          <div>
+            <div className='h-[86px]' />
+            <div>
+              {hoursLabel.map((hour, index) => (
+                <div
+                  key={`label-h-${index}`}
+                  className='relative flex h-16 animate-fastFadeIn flex-col justify-center'
+                >
+                  <div className='flex items-center'>
+                    <div className='flex h-[26px] w-[76px] items-center justify-center rounded border border-accent bg-white text-sm'>
+                      {hour}
+                    </div>
+                    <div className='h-px w-[30px] bg-accent' />
+                  </div>
                 </div>
-                <div className='h-px w-[30px] bg-accent' />
+              ))}
+            </div>
+          </div>
+          {dates.map((date, index) => (
+            <div
+              key={index}
+              className={cx(
+                'min-w-[105px] flex-1 animate-fastFadeIn',
+                dayjs(today).isSame(date, 'date') && 'now group',
+              )}
+            >
+              {/* Day */}
+              <div className='flex flex-col items-center px-1.5'>
+                <div className=' flex h-[62px] w-full flex-col items-center justify-center overflow-hidden rounded-md border border-primary-border-light bg-white font-medium leading-tight group-[.now]:!border-primary group-[.now]:!text-primary'>
+                  <span className='text-sm'>{date.format('dddd')}</span>
+                  <span>{date.format('DD')}</span>
+                </div>
+                <div className='h-6 w-px bg-primary-border-light group-[.now]:!bg-primary' />
+              </div>
+              {/* Schedule */}
+              <div>
+                {timeline[date.day()].map(({ isNn, schedules }: any, index) => (
+                  <div
+                    key={`tl-h-${index}`}
+                    className={cx(
+                      'flex h-16 w-full items-center justify-center gap-x-1 border-b border-l border-b-primary-border border-t-primary-border p-1 first:border-t last:border-b-primary-border-light group-[.now]:!bg-primary-focus-light/20',
+                      date.day() !== 0 && date.day() !== 1
+                        ? 'border-l-primary-border-light'
+                        : 'flex- border-l-primary-border',
+                      date.day() !== 0 && !isNn && 'bg-white',
+                    )}
+                  >
+                    {schedules.map((schedule: any, sIndex: number) => (
+                      <Fragment key={`tls-${sIndex}`}>
+                        {schedule === null ? (
+                          <div className='h-full w-full flex-1' />
+                        ) : (
+                          <ScheduleCalendarCard
+                            className='flex-1'
+                            schedule={schedule}
+                            isCompact={schedules.length > 1}
+                            disabled={loading}
+                            onClick={handleScheduleClick(schedule)}
+                          />
+                        )}
+                      </Fragment>
+                    ))}
+                  </div>
+                ))}
               </div>
             </div>
           ))}
-        </div>
-      </div>
-      {dates.map((date, index) => (
-        <div
-          key={index}
-          className={cx(
-            'min-w-[105px] flex-1 animate-fastFadeIn',
-            dayjs(today).isSame(date, 'date') && 'now group',
-          )}
-        >
-          {/* Day */}
-          <div className='flex flex-col items-center px-1.5'>
-            <div className=' flex h-[62px] w-full flex-col items-center justify-center overflow-hidden rounded-md border border-primary-border-light bg-white font-medium leading-tight group-[.now]:!border-primary group-[.now]:!text-primary'>
-              <span className='text-sm'>{date.format('dddd')}</span>
-              <span>{date.format('DD')}</span>
-            </div>
-            <div className='h-6 w-px bg-primary-border-light group-[.now]:!bg-primary' />
-          </div>
-          {/* Schedule */}
-          <div>
-            {timeline[date.day()].map(({ isNn, schedules }: any, index) => (
-              <div
-                key={`tl-h-${index}`}
-                className={cx(
-                  'flex h-16 w-full items-center justify-center gap-x-1 border-b border-l border-b-primary-border border-t-primary-border p-1 first:border-t last:border-b-primary-border-light group-[.now]:!bg-primary-focus-light/20',
-                  date.day() !== 0 && date.day() !== 1
-                    ? 'border-l-primary-border-light'
-                    : 'flex- border-l-primary-border',
-                  date.day() !== 0 && !isNn && 'bg-white',
-                )}
-              >
-                {schedules.map((schedule: any, sIndex: number) => (
-                  <Fragment key={`tls-${sIndex}`}>
-                    {schedule === null ? (
-                      <div className='h-full w-full flex-1' />
-                    ) : (
-                      <ScheduleCalendarCard
-                        className='flex-1'
-                        schedule={schedule}
-                        isCompact={schedules.length > 1}
-                        disabled={loading}
-                        onClick={handleScheduleClick(schedule)}
-                      />
-                    )}
-                  </Fragment>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
+        </>
+      )}
     </div>
   );
 });

@@ -53,9 +53,11 @@ export const ScheduleMonthlyCalendar = memo(function ({
         return;
       }
 
-      const value = dayjs(date)
+      const targetDateText = dayjs(date).format('YYYY-MM-DD');
+      const todayDateText = dayjs(today).format('YYYY-MM-DD');
+      const value = dayjs(targetDateText)
         .weekday(0)
-        .diff(dayjs(today).weekday(0), 'week');
+        .diff(dayjs(todayDateText).weekday(0), 'week');
 
       onWeekChange(value - weekIndex);
     },

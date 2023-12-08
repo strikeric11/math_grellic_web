@@ -87,15 +87,13 @@ export function TeacherScheduleCalendarPage() {
                   onWeekChange={handleWeekChange}
                   onRefresh={refresh}
                 />
-                {!!timelineSchedules && (
-                  <ScheduleWeeklyCalendar
-                    loading={loading}
-                    today={today}
-                    weekIndex={weekIndex}
-                    timelineSchedules={timelineSchedules}
-                    onScheduleClick={handleScheduleClick}
-                  />
-                )}
+                <ScheduleWeeklyCalendar
+                  loading={loading}
+                  today={today}
+                  weekIndex={weekIndex}
+                  timelineSchedules={timelineSchedules}
+                  onScheduleClick={handleScheduleClick}
+                />
               </>
             )}
           </div>
