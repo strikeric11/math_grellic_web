@@ -12,6 +12,7 @@ import { BaseModal } from '#/base/components/base-modal.component';
 import { StudentExamTakeQuestion } from './student-exam-take-question.component';
 import { StudentExamTakeFooter } from './student-exam-take-footer.component';
 
+import type { MouseEvent } from 'react';
 import type { Duration } from 'dayjs/plugin/duration';
 import type { FormProps } from '#/base/models/base.model';
 import type { StudentExamFormData } from '../models/exam-form-data.model';
@@ -121,6 +122,11 @@ export const StudentExamTakeForm = memo(function ({
 
   const debouncedAnswers = useDebounce(answers, 3000);
 
+  // Prevent right click
+  const handleContextMenu = useCallback((event: MouseEvent) => {
+    event.preventDefault();
+  }, []);
+
   const handleSetModal = useCallback(
     (isOpen: boolean) => () => {
       if (formLoading || isSubmitting) {
@@ -163,6 +169,7 @@ export const StudentExamTakeForm = memo(function ({
     <>
       <div
         className={cx('flex h-full w-full flex-col', className)}
+        onContextMenu={handleContextMenu}
         {...moreProps}
       >
         <form className='flex w-full flex-1 flex-col justify-between'>
@@ -196,7 +203,12 @@ export const StudentExamTakeForm = memo(function ({
           />
         </form>
       </div>
-      <BaseModal size='xs' open={openModal} onClose={handleSetModal(false)}>
+      <BaseModal
+        size='xs'
+        open={openModal}
+        onClose={handleSetModal(false)}
+        onContextMenu={handleContextMenu}
+      >
         <div>
           <div className='mb-4 mt-2.5 flex w-full items-center justify-center gap-x-4 border-y border-accent/20 bg-white py-2.5 font-medium text-primary'>
             <div className='flex flex-col items-center'>

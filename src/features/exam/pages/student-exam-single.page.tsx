@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { BaseScene } from '#/base/components/base-scene.component';
@@ -117,6 +117,23 @@ export function StudentExamSinglePage() {
   } = useStudentExamSingle();
 
   const data: any = useLoaderData();
+
+  // Prevent student from copy and pasting questions and choices
+  useEffect(() => {
+    const handleCopyPaste = (event: ClipboardEvent) => {
+      event.preventDefault();
+    };
+
+    document.addEventListener('copy', handleCopyPaste);
+    document.addEventListener('cut', handleCopyPaste);
+    document.addEventListener('paste', handleCopyPaste);
+
+    return () => {
+      document.removeEventListener('copy', handleCopyPaste);
+      document.removeEventListener('cut', handleCopyPaste);
+      document.removeEventListener('paste', handleCopyPaste);
+    };
+  }, []);
 
   if (!exam) {
     return null;
