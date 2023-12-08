@@ -195,14 +195,14 @@ const schema = z
           });
         }
       }
-    }
 
-    if (data.studentIds === undefined) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Assign students',
-        path: ['studentIds'],
-      });
+      if (data.studentIds === undefined) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Assign students',
+          path: ['studentIds'],
+        });
+      }
     }
   });
 

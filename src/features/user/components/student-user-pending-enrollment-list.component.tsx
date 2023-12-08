@@ -151,22 +151,24 @@ export const StudentUserPendingEnrollmentList = memo(
           </BaseSurface>
         )}
         <div className='flex w-full items-center justify-between'>
-          <div className='flex items-center'>
-            <BaseIconButton
-              name='caret-circle-left'
-              variant='link'
-              className='w-9'
-              disabled={loading}
-              onClick={handlePrev}
-            />
-            <BaseIconButton
-              name='caret-circle-right'
-              variant='link'
-              className='w-9'
-              disabled={loading}
-              onClick={handleNext}
-            />
-          </div>
+          {!!pendingStudents.length && (
+            <div className='flex items-center'>
+              <BaseIconButton
+                name='caret-circle-left'
+                variant='link'
+                className='w-9'
+                disabled={loading}
+                onClick={handlePrev}
+              />
+              <BaseIconButton
+                name='caret-circle-right'
+                variant='link'
+                className='w-9'
+                disabled={loading}
+                onClick={handleNext}
+              />
+            </div>
+          )}
           <div className='flex items-center gap-[5px]'>
             {pendingStudents.map((_, index) => (
               <div
