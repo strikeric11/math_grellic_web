@@ -132,7 +132,7 @@ export const StudentUserPendingEnrollmentList = memo(
             role={onStudentDetails ? 'button' : 'article'}
           >
             {loading ? (
-              <div className='flex w-full items-center justify-center'>
+              <div className='flex w-full h-full items-center justify-center'>
                 <BaseSpinner size='sm' />
               </div>
             ) : (
