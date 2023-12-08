@@ -1,6 +1,9 @@
 /*
   Access-Control-Allow-Origin: *
-  Access-Control-Allow-Headers: Access-Control-Allow-Origin, Origin, X-Requested-With, Accept, Content-Type, Authorization
+  Access-Control-Allow-Headers: Origin, X-Requested-With, Accept, Content-Type, Authorization
   Access-Control-Expose-Headers: Authorization
   Access-Control-Allow-Credentials: true
   Access-Control-Allow-Methods: GET, PUT, PATCH, OPTIONS, POST, DELETE
+
+https://math-grellic-web.pages.dev/*
+  X-Robots-Tag: noindex
