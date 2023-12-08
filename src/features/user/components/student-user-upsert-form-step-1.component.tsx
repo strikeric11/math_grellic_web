@@ -8,6 +8,7 @@ import {
 } from '#/base/components/base-input.component';
 import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
 import { BaseControlledSelect } from '#/base/components/base-select.component';
+import { BaseDivider } from '#/base/components/base-divider.component';
 import { UserGender } from '../models/user.model';
 
 import type { ComponentProps } from 'react';
@@ -41,7 +42,7 @@ export const StudentUserUpsertFormStep1 = memo(function ({
         className='group/field flex flex-wrap gap-5'
         disabled={disabled}
       >
-        <div className='flex w-full items-start justify-between gap-5'>
+        <div className='w-full'>
           <BaseControlledInput
             label='First Name'
             name='firstName'
@@ -49,6 +50,8 @@ export const StudentUserUpsertFormStep1 = memo(function ({
             fullWidth
             asterisk
           />
+        </div>
+        <div className='flex w-full items-start justify-between gap-5'>
           <BaseControlledInput
             label='Last Name'
             name='lastName'
@@ -56,8 +59,6 @@ export const StudentUserUpsertFormStep1 = memo(function ({
             fullWidth
             asterisk
           />
-        </div>
-        <div className='flex w-full items-start justify-between gap-5'>
           <BaseControlledInput
             label='Middle Name'
             name='middleName'
@@ -65,6 +66,8 @@ export const StudentUserUpsertFormStep1 = memo(function ({
             fullWidth
             asterisk
           />
+        </div>
+        <div className='flex w-full items-start justify-between gap-5'>
           <BaseControlledSelect
             name='gender'
             label='Gender'
@@ -73,13 +76,22 @@ export const StudentUserUpsertFormStep1 = memo(function ({
             fullWidth
             asterisk
           />
-        </div>
-        <div className='flex w-full items-start justify-between gap-5'>
           <BaseControlledDatePicker
             name='birthDate'
             label='Date of Birth'
             control={control}
             iconName='calendar'
+            fullWidth
+            asterisk
+          />
+        </div>
+        <BaseDivider />
+        <div className='flex w-full items-start justify-between gap-5'>
+          <BaseControlledInput
+            type='email'
+            name='email'
+            label='Email'
+            control={control}
             fullWidth
             asterisk
           />

@@ -18,7 +18,6 @@ import { BaseStepper } from '#/base/components/base-stepper.component';
 import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
 import { UserApprovalStatus, UserGender } from '../models/user.model';
 import { StudentUserUpsertFormStep1 } from './student-user-upsert-form-step-1.component';
-import { StudentUserUpsertFormStep2 } from './student-user-upsert-form-step-2.component';
 
 import type { FieldErrors } from 'react-hook-form';
 import type { FormProps, IconName } from '#/base/models/base.model';
@@ -34,51 +33,37 @@ type Props = Omit<
 
 const STUDENT_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 
-const schema = z
-  .object({
-    email: z.string().email('Provide your email address'),
-    password: z
-      .string()
-      .min(8, 'Password should be minimum of 8 characters')
-      .max(100, 'Password is too long'),
-    confirmPassword: z.string(),
-    firstName: z
-      .string()
-      .min(2, 'Name is too short')
-      .max(50, 'Name is too long'),
-    lastName: z
-      .string()
-      .min(2, 'Name is too short')
-      .max(50, 'Name is too long'),
-    middleName: z
-      .string()
-      .min(1, 'Name is too short')
-      .max(50, 'Name is too long')
-      .optional(),
-    birthDate: z
-      .date({ required_error: 'Provide your date of birth' })
-      .min(new Date('1900-01-01'), 'Date of birth is too old')
-      .max(new Date(), 'Date of birth is too young'),
-    phoneNumber: z
-      .string()
-      .refine((value) => isMobilePhone(value.replace(/[^0-9]/g, ''), 'en-PH'), {
-        message: 'Phone number is invalid',
-      }),
-    teacherId: z.string().optional(),
-    gender: z.nativeEnum(UserGender, {
-      required_error: 'Provide your gender',
+const stepWrapperProps = {
+  className: '!overflow-visible',
+};
+
+const schema = z.object({
+  email: z.string().email('Provide your email address'),
+  firstName: z.string().min(2, 'Name is too short').max(50, 'Name is too long'),
+  lastName: z.string().min(2, 'Name is too short').max(50, 'Name is too long'),
+  middleName: z
+    .string()
+    .min(1, 'Name is too short')
+    .max(50, 'Name is too long')
+    .optional(),
+  birthDate: z
+    .date({ required_error: 'Provide your date of birth' })
+    .min(new Date('1900-01-01'), 'Date of birth is too old')
+    .max(new Date(), 'Date of birth is too young'),
+  phoneNumber: z
+    .string()
+    .refine((value) => isMobilePhone(value.replace(/[^0-9]/g, ''), 'en-PH'), {
+      message: 'Phone number is invalid',
     }),
-    approvalStatus: z.nativeEnum(UserApprovalStatus).optional(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Password does not match',
-    path: ['confirmPassword'],
-  });
+  teacherId: z.string().optional(),
+  gender: z.nativeEnum(UserGender, {
+    required_error: 'Provide your gender',
+  }),
+  approvalStatus: z.nativeEnum(UserApprovalStatus).optional(),
+});
 
 const defaultValues: Partial<AuthRegisterFormData> = {
   email: '',
-  password: '',
-  confirmPassword: '',
   firstName: '',
   lastName: '',
   middleName: '',
@@ -185,6 +170,7 @@ export const StudentUserUpsertForm = memo(function ({
           <BaseStepper
             disabled={loading}
             onReset={handleReset}
+            stepWrapperProps={stepWrapperProps}
             controlsRightContent={
               <div className='group-button'>
                 <BaseButton
@@ -257,11 +243,11 @@ export const StudentUserUpsertForm = memo(function ({
             <BaseStepperStep label='Student Info'>
               <StudentUserUpsertFormStep1 disabled={loading} />
             </BaseStepperStep>
-            {!isEdit && (
-              <BaseStepperStep label='Lesson Schedule'>
+            {/* {!isEdit && (
+              <BaseStepperStep label='Student Credentials'>
                 <StudentUserUpsertFormStep2 disabled={loading} />
               </BaseStepperStep>
-            )}
+            )} */}
           </BaseStepper>
         </form>
       </FormProvider>

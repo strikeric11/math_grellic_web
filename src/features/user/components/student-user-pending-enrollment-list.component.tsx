@@ -125,16 +125,15 @@ export const StudentUserPendingEnrollmentList = memo(
             className={cx(
               'flex min-h-[125px] flex-col justify-between !p-3',
               onStudentDetails && 'cursor-pointer hover:!border-primary',
-              loading && 'pointer-events-none',
+              loading &&
+                'pointer-events-none w-full !items-center !justify-center',
             )}
             rounded='sm'
             onClick={handleStudentDetails}
             role={onStudentDetails ? 'button' : 'article'}
           >
             {loading ? (
-              <div className='flex w-full h-full items-center justify-center'>
-                <BaseSpinner size='sm' />
-              </div>
+              <BaseSpinner size='sm' />
             ) : (
               <>
                 <div className='flex items-start gap-2.5'>

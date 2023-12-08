@@ -28,6 +28,7 @@ type Props = ComponentProps<'div'> & {
   onReset?: StepperControlsProps['onReset'];
   onPrev?: StepperControlsProps['onPrev'];
   onNext?: StepperControlsProps['onNext'];
+  stepWrapperProps?: ComponentProps<'div'>;
 };
 
 export const BaseStepper = memo(function ({
@@ -38,11 +39,15 @@ export const BaseStepper = memo(function ({
   onReset,
   onPrev,
   onNext,
+  stepWrapperProps,
   ...moreProps
 }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState(currentIndex);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  const { className: stepWrapperClassName, ...moreStepWrapperProps } =
+    stepWrapperProps || {};
 
   const steps = useMemo(
     () =>
@@ -141,7 +146,13 @@ export const BaseStepper = memo(function ({
       >
         {controlsRightContent}
       </BaseStepperControls>
-      <div className='relative mx-auto min-h-[700px] w-full max-w-[600px] !overflow-hidden py-5'>
+      <div
+        className={cx(
+          'relative mx-auto min-h-[700px] w-full max-w-[600px] overflow-hidden py-5',
+          stepWrapperClassName,
+        )}
+        {...moreStepWrapperProps}
+      >
         {!!steps && (
           <motion.div
             key={currentIndex}
