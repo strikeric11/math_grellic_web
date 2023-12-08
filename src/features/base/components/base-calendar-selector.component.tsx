@@ -120,7 +120,7 @@ export const BaseCalendarSelector = memo(function ({
 
   const handleSpecificChange = useCallback(
     (month: number) => () => {
-      const date = dayjs(`${month}-01-${currentYear}`).toDate();
+      const date = dayjs(`${currentYear}-${month}-02`).toDate();
       changeCurrentDate(date);
       setCurrentYear(undefined);
     },
