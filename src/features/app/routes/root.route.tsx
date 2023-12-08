@@ -135,7 +135,7 @@ const rootRoutes = createRoutesFromElements(
         path={staticRoutes.training.to}
         element={
           // TODO training page
-          <div>TRAINING PAGE</div>
+          <div className='hidden'>TRAINING PAGE</div>
         }
       />
       <Route
