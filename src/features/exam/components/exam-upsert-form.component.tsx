@@ -146,13 +146,7 @@ const schema = z
       }
     });
 
-    if (
-      data.startDate ||
-      data.endDate ||
-      data.startTime ||
-      data.endTime ||
-      data.studentIds !== undefined
-    ) {
+    if (data.startDate || data.endDate || data.startTime || data.endTime) {
       if (!data.startDate || !data.endDate) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -201,14 +195,14 @@ const schema = z
           });
         }
       }
+    }
 
-      if (data.studentIds === undefined) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Assign students',
-          path: ['studentIds'],
-        });
-      }
+    if (data.studentIds === undefined) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Assign students',
+        path: ['studentIds'],
+      });
     }
   });
 

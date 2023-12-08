@@ -76,7 +76,7 @@ const schema = z
     studentIds: z.array(z.number()).nullable().optional(),
   })
   .superRefine((data, ctx) => {
-    if (data.startDate || data.startTime || data.studentIds !== undefined) {
+    if (data.startDate || data.startTime) {
       if (!data.startDate) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -92,14 +92,14 @@ const schema = z
           path: ['startTime'],
         });
       }
+    }
 
-      if (data.studentIds === undefined) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Assign students',
-          path: ['studentIds'],
-        });
-      }
+    if (data.studentIds === undefined) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Assign students',
+        path: ['studentIds'],
+      });
     }
   });
 
