@@ -1,9 +1,12 @@
 import { memo } from 'react';
+import { Menu } from '@headlessui/react';
 import cx from 'classix';
 
 import { useAuth } from '#/user/hooks/use-auth.hook';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
+import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
+import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
 import { useScroll } from '../hooks/use-scroll.hook';
 import { CoreClock } from './core-clock.component';
 
@@ -17,8 +20,8 @@ export const CoreHeader = memo(function ({
   const { logout } = useAuth();
 
   // TODO notification and user menu
-  // TEMP
-  const handleUserClick = () => {
+
+  const handleLogout = () => {
     logout();
   };
 
@@ -31,15 +34,38 @@ export const CoreHeader = memo(function ({
       )}
       {...moreProps}
     >
-      <div className='flex h-[48px] items-center justify-center gap-2.5 overflow-hidden'>
+      <div className='flex h-[48px] items-center justify-center gap-2.5'>
         <div className='flex items-center gap-1.5'>
-          <BaseIconButton name='bell' variant='solid' size='sm' />
-          <BaseIconButton
-            name='user'
-            variant='solid'
-            size='sm'
-            onClick={handleUserClick}
-          />
+          {/* <BaseIconButton name='bell' variant='solid' size='sm' /> */}
+          <BaseDropdownMenu
+            customMenuButton={
+              <div>
+                <Menu.Button
+                  as={BaseIconButton}
+                  name='user'
+                  variant='solid'
+                  size='sm'
+                />
+              </div>
+            }
+          >
+            <Menu.Item
+              as={BaseDropdownButton}
+              iconName='person-arms-spread'
+              onClick={handleLogout}
+              disabled
+            >
+              Account
+            </Menu.Item>
+            <BaseDivider className='my-1' />
+            <Menu.Item
+              as={BaseDropdownButton}
+              iconName='sign-out'
+              onClick={handleLogout}
+            >
+              Logout
+            </Menu.Item>
+          </BaseDropdownMenu>
         </div>
         <BaseDivider vertical />
         <CoreClock className='h-full' isCompact={!isScrollTop} />

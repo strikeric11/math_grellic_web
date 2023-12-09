@@ -1,4 +1,4 @@
-import { memo, forwardRef } from 'react';
+import { memo, forwardRef, useMemo } from 'react';
 import cx from 'classix';
 
 import { BaseIcon } from './base-icon.component';
@@ -25,12 +25,16 @@ export const BaseDropdownButton = memo(
       checked,
       alwaysShowCheck,
       center,
-      disabled,
       children,
       ...moreProps
     },
     ref,
   ) {
+    const disabled = useMemo(
+      () => moreProps.disabled || (moreProps as any)['aria-disabled'],
+      [moreProps],
+    );
+
     return (
       <button
         ref={ref}

@@ -65,6 +65,7 @@ import {
   NumberSquareThree,
   NumberSquareTwo,
   Pencil,
+  PersonArmsSpread,
   Play,
   Plus,
   PlusCircle,
@@ -73,6 +74,7 @@ import {
   RadioButton,
   RocketLaunch,
   ShareFat,
+  SignOut,
   SortAscending,
   SortDescending,
   SquaresFour,
@@ -238,6 +240,8 @@ export const BaseIcon = memo(
           return NumberSquareThree;
         case 'pencil':
           return Pencil;
+        case 'person-arms-spread':
+          return PersonArmsSpread;
         case 'play':
           return Play;
         case 'plus':
@@ -254,6 +258,8 @@ export const BaseIcon = memo(
           return RocketLaunch;
         case 'share-fat':
           return ShareFat;
+        case 'sign-out':
+          return SignOut;
         case 'sort-ascending':
           return SortAscending;
         case 'sort-descending':
