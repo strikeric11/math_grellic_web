@@ -25,7 +25,7 @@ export const BaseDataEmptyMessage = memo(function ({
       {...moreProps}
     >
       <span>{message}</span>
-      <BaseDivider className='mx-2 h-6' vertical />
+      <BaseDivider className='!mx-2 !h-6' vertical />
       <BaseLink to={linkTo} size='sm' bodyFont>
         {linkLabel}
       </BaseLink>

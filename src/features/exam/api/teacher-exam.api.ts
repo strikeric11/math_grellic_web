@@ -63,6 +63,30 @@ export function getPaginatedExamsByCurrentTeacherUser(
   };
 }
 
+export function getExamSnippetsByCurrentTeacherUser(
+  take?: number,
+  options?: Omit<UseQueryOptions<Exam[], Error, Exam[], any>, 'queryFn'>,
+) {
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/teachers/list/snippets`;
+    const searchParams = generateSearchParams({ take: take?.toString() });
+
+    try {
+      const exams = await kyInstance.get(url, { searchParams }).json();
+      return exams;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [...queryExamKey.list, { take }],
+    queryFn,
+    ...options,
+  };
+}
+
 export function getExamBySlugAndCurrentTeacherUser(
   keys: { slug: string; status?: string; exclude?: string; include?: string },
   options?: Omit<UseQueryOptions<Exam, Error, Exam, any>, 'queryFn'>,

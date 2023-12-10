@@ -21,8 +21,8 @@ type Result = {
   studentRankingsPerformances: StudentPerformance[];
   currentRankingsPerformance: StudentPerformanceType;
   setCurrentRankingsPerformance: (type: StudentPerformanceType) => void;
-  refetchClass: QueryObserverBaseResult['refetch'];
-  refetchRanking: QueryObserverBaseResult['refetch'];
+  refreshClass: QueryObserverBaseResult['refetch'];
+  refreshRanking: QueryObserverBaseResult['refetch'];
 };
 
 export function useTeacherClassPerformance(): Result {
@@ -34,7 +34,7 @@ export function useTeacherClassPerformance(): Result {
     data: teacherClassPerformance,
     isLoading: isClassLoading,
     isRefetching: isClassRefetching,
-    refetch: refetchClass,
+    refetch: refreshClass,
   } = useQuery(
     getClassPerformanceByCurrentTeacherUser({
       refetchOnWindowFocus: false,
@@ -45,7 +45,7 @@ export function useTeacherClassPerformance(): Result {
     data,
     isLoading: isRankingsLoading,
     isRefetching: isRankingsRefetching,
-    refetch: refetchRanking,
+    refetch: refreshRanking,
   } = useQuery(
     getPaginatedStudentPerformancesByCurrentTeacherUser(
       {
@@ -81,7 +81,7 @@ export function useTeacherClassPerformance(): Result {
     studentRankingsPerformances,
     currentRankingsPerformance,
     setCurrentRankingsPerformance,
-    refetchClass,
-    refetchRanking,
+    refreshClass,
+    refreshRanking,
   };
 }

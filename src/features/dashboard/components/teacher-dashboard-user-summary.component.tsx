@@ -98,7 +98,7 @@ export const TeacherDashboardUserSummary = memo(function ({
     <BaseSurface
       className={cx(
         'flex gap-4',
-        loading ? 'items-center justify-center' : '!w-fit items-stretch',
+        loading ? 'items-center justify-center' : 'items-stretch',
         className,
       )}
       {...moreProps}

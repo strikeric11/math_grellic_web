@@ -103,6 +103,30 @@ export function getLessonsByCurrentTeacherUser(
   };
 }
 
+export function getLessonSnippetsByCurrentTeacherUser(
+  take?: number,
+  options?: Omit<UseQueryOptions<Lesson[], Error, Lesson[], any>, 'queryFn'>,
+) {
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/teachers/list/snippets`;
+    const searchParams = generateSearchParams({ take: take?.toString() });
+
+    try {
+      const lessons = await kyInstance.get(url, { searchParams }).json();
+      return lessons;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [...queryLessonKey.list, { take }],
+    queryFn,
+    ...options,
+  };
+}
+
 export function getLessonBySlugAndCurrentTeacherUser(
   keys: { slug: string; status?: string; exclude?: string; include?: string },
   options?: Omit<UseQueryOptions<Lesson, Error, Lesson, any>, 'queryFn'>,

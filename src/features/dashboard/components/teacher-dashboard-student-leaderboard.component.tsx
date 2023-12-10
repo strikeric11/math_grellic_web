@@ -27,14 +27,14 @@ type StudentRankCardProps = {
   performance: StudentPerformanceType;
 };
 
-const STUDENT_PERFORMANCE_LIST_LINK = `/${teacherBaseRoute}/${teacherRoutes.performance.to}`;
+const STUDENT_PERFORMANCE_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.performance.to}`;
 
 const tabCategories = {
-  incomplete: {
+  exam: {
     name: StudentPerformanceType.Exam,
     label: 'Exam',
   },
-  complete: {
+  activity: {
     name: StudentPerformanceType.Activity,
     label: 'Activity',
   },
@@ -122,7 +122,10 @@ export const TeacherDashboardStudentLeaderboard = memo(function ({
   );
 
   return (
-    <BaseSurface className={cx('!w-fit !py-2.5', className)} {...moreProps}>
+    <BaseSurface
+      className={cx('flex flex-col justify-between !py-2.5', className)}
+      {...moreProps}
+    >
       <Tab.Group>
         <div className='relative flex w-full items-baseline justify-between'>
           <div className='absolute bottom-0 left-0 h-0.5 w-full bg-primary/20' />
@@ -173,7 +176,7 @@ export const TeacherDashboardStudentLeaderboard = memo(function ({
       </Tab.Group>
       <div className='w-full pt-2.5 text-right'>
         <BaseLink
-          to={STUDENT_PERFORMANCE_LIST_LINK}
+          to={STUDENT_PERFORMANCE_LIST_PATH}
           rightIconName='arrow-circle-right'
           size='xs'
         >

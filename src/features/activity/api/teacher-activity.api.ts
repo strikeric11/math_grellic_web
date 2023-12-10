@@ -89,6 +89,33 @@ export function getPaginatedActivitiesByCurrentTeacherUser(
   };
 }
 
+export function getActivitySnippetsByCurrentTeacherUser(
+  take?: number,
+  options?: Omit<
+    UseQueryOptions<Activity[], Error, Activity[], any>,
+    'queryFn'
+  >,
+) {
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/teachers/list/snippets`;
+    const searchParams = generateSearchParams({ take: take?.toString() });
+
+    try {
+      const activities = await kyInstance.get(url, { searchParams }).json();
+      return activities;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [...queryActivityKey.list, { take }],
+    queryFn,
+    ...options,
+  };
+}
+
 export function createActivity(
   options?: Omit<
     UseMutationOptions<Activity, Error, ActivityUpsertFormData, any>,
