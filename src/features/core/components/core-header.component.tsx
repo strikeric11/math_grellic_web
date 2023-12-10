@@ -1,12 +1,14 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { Menu } from '@headlessui/react';
 import cx from 'classix';
 
 import { useAuth } from '#/user/hooks/use-auth.hook';
 import { BaseDivider } from '#/base/components/base-divider.component';
+import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
+import { useBoundStore } from '../hooks/use-store.hook';
 import { useScroll } from '../hooks/use-scroll.hook';
 import { CoreClock } from './core-clock.component';
 
@@ -16,8 +18,11 @@ export const CoreHeader = memo(function ({
   className,
   ...moreProps
 }: ComponentProps<'header'>) {
+  const user = useBoundStore((state) => state.user);
   const { isScrollTop } = useScroll();
   const { logout } = useAuth();
+
+  const publicId = useMemo(() => user?.publicId, [user]);
 
   // TODO notification and user menu
 
@@ -49,6 +54,11 @@ export const CoreHeader = memo(function ({
               </div>
             }
           >
+            <div className='flex items-center justify-end gap-1 py-1 pr-2.5 text-sm opacity-80'>
+              <BaseIcon name='identification-badge' size={20} />
+              {publicId}
+            </div>
+            <BaseDivider className='my-1' />
             <Menu.Item
               as={BaseDropdownButton}
               iconName='person-arms-spread'
@@ -57,7 +67,6 @@ export const CoreHeader = memo(function ({
             >
               Account
             </Menu.Item>
-            <BaseDivider className='my-1' />
             <Menu.Item
               as={BaseDropdownButton}
               iconName='sign-out'

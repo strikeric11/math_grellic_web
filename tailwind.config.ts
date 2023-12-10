@@ -55,6 +55,7 @@ export default {
         '28px': '28px',
       },
       borderRadius: {
+        '4px': '4px',
         '20px': '20px',
       },
       spacing: {

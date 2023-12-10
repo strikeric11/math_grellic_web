@@ -3,6 +3,7 @@ import {
   queryActivityKey,
   queryExamKey,
   queryStudentPerformanceKey,
+  queryTeacherPerformanceKey,
 } from '#/config/react-query-keys.config';
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
 
@@ -11,9 +12,40 @@ import type { QueryPagination } from '#/base/models/base.model';
 import type { PaginatedQueryData } from '#/core/models/core.model';
 import type { Exam } from '#/exam/models/exam.model';
 import type { Activity } from '#/activity/models/activity.model';
-import type { StudentPerformance } from '../models/performance.model';
+import type {
+  StudentPerformance,
+  TeacherClassPerformance,
+} from '../models/performance.model';
 
-const BASE_URL = 'performances/teachers/students';
+const BASE_URL = 'performances/teachers';
+
+export function getClassPerformanceByCurrentTeacherUser(
+  options?: Omit<
+    UseQueryOptions<
+      TeacherClassPerformance,
+      Error,
+      TeacherClassPerformance,
+      any
+    >,
+    'queryKey' | 'queryFn'
+  >,
+) {
+  const queryFn = async (): Promise<any> => {
+    try {
+      const classPerformance = await kyInstance.get(`${BASE_URL}/class`).json();
+      return classPerformance;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [...queryTeacherPerformanceKey.class],
+    queryFn,
+    ...options,
+  };
+}
 
 export function getPaginatedStudentPerformancesByCurrentTeacherUser(
   keys?: {
@@ -46,7 +78,7 @@ export function getPaginatedStudentPerformancesByCurrentTeacherUser(
 
     try {
       const students = await kyInstance
-        .get(`${BASE_URL}/list`, { searchParams })
+        .get(`${BASE_URL}/students/list`, { searchParams })
         .json();
       return students;
     } catch (error: any) {
@@ -76,7 +108,7 @@ export function getStudentPerformanceByPublicIdAndCurrentTeacherUser(
   const publicId = pId.toLowerCase();
 
   const queryFn = async (): Promise<any> => {
-    const url = `${BASE_URL}/${publicId}`;
+    const url = `${BASE_URL}/students/${publicId}`;
     const searchParams = generateSearchParams({ exclude, include });
 
     try {
@@ -106,7 +138,7 @@ export function getStudentExamsByPublicIdAndCurrentTeacherUser(
   const publicId = pId.toLowerCase();
 
   const queryFn = async (): Promise<any> => {
-    const url = `${BASE_URL}/${publicId}/exams`;
+    const url = `${BASE_URL}/students/${publicId}/exams`;
     const searchParams = generateSearchParams({ exclude, include });
 
     try {
@@ -139,7 +171,7 @@ export function getStudentActivitiesByPublicIdAndCurrentTeacherUser(
   const publicId = pId.toLowerCase();
 
   const queryFn = async (): Promise<any> => {
-    const url = `${BASE_URL}/${publicId}/activities`;
+    const url = `${BASE_URL}/students/${publicId}/activities`;
     const searchParams = generateSearchParams({ exclude, include });
 
     try {
@@ -169,7 +201,7 @@ export function getStudentExamWithCompletionsByPublicIdAndSlug(
   const publicId = pId.toLowerCase();
 
   const queryFn = async (): Promise<any> => {
-    const url = `${BASE_URL}/${publicId}/exams/${slug}`;
+    const url = `${BASE_URL}/students/${publicId}/exams/${slug}`;
     const searchParams = generateSearchParams({ exclude, include });
 
     try {
@@ -196,7 +228,7 @@ export function getStudentActivityWithCompletionsByPublicIdAndSlug(
   const publicId = pId.toLowerCase();
 
   const queryFn = async (): Promise<any> => {
-    const url = `${BASE_URL}/${publicId}/activities/${slug}`;
+    const url = `${BASE_URL}/students/${publicId}/activities/${slug}`;
     const searchParams = generateSearchParams({ exclude, include });
 
     try {

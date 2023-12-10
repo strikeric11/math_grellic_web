@@ -11,7 +11,7 @@ type Variant = Omit<ButtonVariant, 'primary' | 'border'>;
 
 type Props = ComponentProps<typeof Link> & {
   variant?: Variant;
-  size?: 'base' | 'sm';
+  size?: 'base' | 'sm' | 'xs';
   leftIconName?: IconName;
   rightIconName?: IconName;
   bodyFont?: boolean;
@@ -31,7 +31,7 @@ export const BaseLink = memo(
     },
     ref,
   ) {
-    const iconSize = size === 'sm' ? 24 : 30;
+    const iconSize = size === 'base' ? 30 : 24;
 
     return (
       <Link
@@ -41,6 +41,7 @@ export const BaseLink = memo(
           variant === 'solid' &&
             'solid h-[46px] rounded-md border border-primary-border-light bg-white px-5 hover:!border-primary-focus-light',
           size === 'sm' && '!text-base',
+          size === 'xs' && '!text-sm',
           bodyFont && '!font-body !tracking-normal',
           className,
         )}

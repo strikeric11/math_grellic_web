@@ -1,6 +1,7 @@
 import type { StudentUserAccount } from '#/user/models/user.model';
 
 export enum StudentPerformanceType {
+  Lesson = 'lesson',
   Exam = 'exam',
   Activity = 'activity',
 }
@@ -19,4 +20,10 @@ export type StudentPerformance = StudentUserAccount & {
   overallActivityCompletionPercent: number;
   overallActivityRank: number;
   overallActivityScore: number | null;
+};
+
+export type TeacherClassPerformance = {
+  overallLessonCompletionPercent: number;
+  overallExamCompletionPercent: number;
+  overallActivityCompletionPercent: number;
 };

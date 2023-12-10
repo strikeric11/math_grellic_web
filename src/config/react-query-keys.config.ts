@@ -10,6 +10,10 @@ export const queryUserKey = {
   selectedStudentList: ['users', 'selected-student-list'],
 };
 
+export const queryTeacherPerformanceKey = {
+  class: ['performances', 'class'],
+};
+
 export const queryStudentPerformanceKey = {
   list: ['performances', 'list'],
   single: ['performances', 'single'],

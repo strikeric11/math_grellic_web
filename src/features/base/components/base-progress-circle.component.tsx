@@ -12,6 +12,7 @@ type Props = ComponentProps<'div'> & {
   label?: string;
   size?: Size;
   performance?: StudentPerformanceType;
+  bottomLabelPosition?: boolean;
 };
 
 type CircleProps = ComponentProps<'circle'> & {
@@ -54,6 +55,7 @@ export const BaseProgressCircle = memo(function ({
   percent,
   label,
   performance,
+  bottomLabelPosition,
   size = 'base',
   ...moreProps
 }: Props) {
@@ -87,7 +89,14 @@ export const BaseProgressCircle = memo(function ({
   }, [performance]);
 
   return (
-    <div className={cx('flex items-center', className)} {...moreProps}>
+    <div
+      className={cx(
+        'flex items-center',
+        bottomLabelPosition && 'flex-col',
+        className,
+      )}
+      {...moreProps}
+    >
       <div className='relative z-10'>
         <svg {...svgSize}>
           <g className='origin-center' transform='rotate(-90)'>
@@ -109,9 +118,16 @@ export const BaseProgressCircle = memo(function ({
         </span>
       </div>
       {label && (
-        <div className='flex items-center'>
-          <div className='h-0.5 w-8 bg-accent' />
-          <div className='overflow-hidden rounded-md border-2 border-accent px-2.5 py-1 font-medium'>
+        <div
+          className={cx('flex items-center', bottomLabelPosition && 'flex-col')}
+        >
+          <div
+            className={cx(
+              'bg-accent',
+              bottomLabelPosition ? 'h-4 w-0.5' : 'h-0.5 w-8',
+            )}
+          />
+          <div className='rounded-4px overflow-hidden border-2 border-accent px-2.5 py-1 text-sm font-medium'>
             {label}
           </div>
         </div>
