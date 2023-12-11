@@ -56,20 +56,24 @@ export const TeacherMeetingScheduleSingleCard = memo(function ({
   return (
     <BaseSurface
       className={cx(
-        'flex h-[106px] w-full items-center gap-5 !p-2.5',
+        'pointer-events-none flex h-[106px] w-full items-center gap-5 !p-2.5 transition-all hover:cursor-pointer hover:!border-primary-hue-orange-focus hover:shadow-md hover:ring-1 hover:ring-primary-hue-orange-focus',
         className,
       )}
       rounded='sm'
       {...moreProps}
     >
-      <div className='flex h-full flex-1 items-start gap-4'>
+      <div
+        className='group pointer-events-auto flex h-full flex-1 items-start gap-4'
+        tabIndex={0}
+        onClick={onDetails}
+      >
         <div className='flex h-full flex-1 items-center gap-4'>
           <div className='flex h-full w-[121px] items-center justify-center overflow-hidden rounded border border-primary bg-primary-focus-light/30 text-primary'>
             <BaseIcon name='presentation' size={40} weight='light' />
           </div>
           <div className='flex h-full flex-1 flex-col justify-between gap-2 py-1.5'>
             {/* Title */}
-            <h2 className='font-body text-lg font-medium tracking-normal text-accent'>
+            <h2 className='font-body text-lg font-medium tracking-normal text-accent group-hover:text-primary-hue-orange-focus'>
               {title}
             </h2>
             <div className='flex justify-start'>
@@ -91,7 +95,7 @@ export const TeacherMeetingScheduleSingleCard = memo(function ({
           <BaseChip iconName='hourglass'>{scheduleDuration}</BaseChip>
         </div>
       </div>
-      <div className='relative h-12 w-7'>
+      <div className='pointer-events-auto relative h-12 w-7'>
         <BaseDropdownMenu
           customMenuButton={
             <div className='relative h-12 w-7'>

@@ -90,11 +90,24 @@ export const StudentPerformanceSingleCard = memo(function ({
 
   return (
     <BaseSurface
-      className={cx('flex w-full items-center gap-5 !p-2.5', className)}
+      className={cx(
+        'pointer-events-none flex w-full items-center gap-5 !p-2.5 transition-all hover:cursor-pointer hover:shadow-md hover:ring-1',
+        performance === StudentPerformanceType.Exam &&
+          'hover:!border-primary-hue-purple-focus hover:ring-primary-hue-purple-focus',
+        performance === StudentPerformanceType.Activity &&
+          'hover:!border-primary-hue-teal-focus hover:ring-primary-hue-teal-focus',
+        performance === StudentPerformanceType.Lesson &&
+          'hover:!border-primary-focus hover:ring-primary-focus',
+        className,
+      )}
       rounded='sm'
       {...moreProps}
     >
-      <div className='flex flex-1 items-center gap-4'>
+      <div
+        className='group pointer-events-auto flex flex-1 items-center gap-4'
+        tabIndex={0}
+        onClick={onDetails}
+      >
         <div className='flex flex-1 items-center gap-4'>
           <UserAvatarImg gender={gender} />
           <div className='flex h-full flex-1 flex-col gap-2'>
@@ -107,7 +120,17 @@ export const StudentPerformanceSingleCard = memo(function ({
               </BaseChip>
             </div>
             {/* Title */}
-            <h2 className='font-body text-lg font-medium tracking-normal text-accent'>
+            <h2
+              className={cx(
+                'font-body text-lg font-medium tracking-normal text-accent',
+                performance === StudentPerformanceType.Exam &&
+                  'group-hover:text-primary-hue-purple-focus',
+                performance === StudentPerformanceType.Activity &&
+                  'group-hover:text-primary-hue-teal-focus',
+                performance === StudentPerformanceType.Lesson &&
+                  'group-hover:text-primary-focus',
+              )}
+            >
               {fullName}
             </h2>
           </div>
@@ -147,7 +170,7 @@ export const StudentPerformanceSingleCard = memo(function ({
           )}
         </div>
       </div>
-      <div className='relative h-12 w-7'>
+      <div className='pointer-events-auto relative h-12 w-7'>
         <BaseDropdownMenu
           customMenuButton={
             <div className='relative h-12 w-7'>

@@ -79,13 +79,17 @@ export const TeacherExamSingleCard = memo(function ({
   return (
     <BaseSurface
       className={cx(
-        'flex h-[106px] w-full items-center gap-5 !p-2.5',
+        'pointer-events-none flex h-[106px] w-full items-center gap-5 !p-2.5 transition-all hover:cursor-pointer hover:!border-primary-hue-purple-focus hover:shadow-md hover:ring-1 hover:ring-primary-hue-purple-focus',
         className,
       )}
       rounded='sm'
       {...moreProps}
     >
-      <div className='flex h-full flex-1 items-start gap-4'>
+      <div
+        className='group pointer-events-auto flex h-full flex-1 items-start gap-4'
+        tabIndex={0}
+        onClick={onDetails}
+      >
         <div className='flex h-full flex-1 items-center gap-4'>
           <div className='flex h-full w-[121px] flex-col items-center overflow-hidden rounded border border-primary bg-primary-hue-purple/30 font-medium'>
             <div className='flex w-full flex-1 items-center justify-center text-2xl text-primary-hue-purple'>
@@ -118,7 +122,7 @@ export const TeacherExamSingleCard = memo(function ({
               )}
             </div>
             {/* Title */}
-            <h2 className='font-body text-lg font-medium tracking-normal text-accent'>
+            <h2 className='font-body text-lg font-medium tracking-normal text-accent group-hover:text-primary-hue-purple-focus'>
               {title}
             </h2>
           </div>
@@ -132,7 +136,7 @@ export const TeacherExamSingleCard = memo(function ({
           )}
         </div>
       </div>
-      <div className='relative h-12 w-7'>
+      <div className='pointer-events-auto relative h-12 w-7'>
         <BaseDropdownMenu
           customMenuButton={
             <div className='relative h-12 w-7'>

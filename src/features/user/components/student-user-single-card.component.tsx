@@ -66,12 +66,19 @@ export const StudentUserSingleCard = memo(function ({
 
   return (
     <BaseSurface
-      className={cx('flex w-full items-center gap-5 !p-2.5', className)}
+      className={cx(
+        'pointer-events-none flex w-full items-center gap-5 !p-2.5 transition-all hover:cursor-pointer hover:!border-primary-focus hover:shadow-md hover:ring-1 hover:ring-primary-focus',
+        className,
+      )}
       rounded='sm'
       {...moreProps}
     >
       <div className='flex flex-1 items-center gap-4'>
-        <div className='flex flex-1 items-center gap-4'>
+        <div
+          className='group pointer-events-auto flex flex-1 items-center gap-4'
+          tabIndex={0}
+          onClick={onDetails}
+        >
           <UserAvatarImg gender={gender} size='lg' />
           <div className='flex h-full flex-1 flex-col gap-2'>
             {/* Info chips */}
@@ -86,14 +93,14 @@ export const StudentUserSingleCard = memo(function ({
             </div>
             {/* Title + email */}
             <div>
-              <h2 className='font-body text-lg font-medium leading-tight tracking-normal text-accent'>
+              <h2 className='font-body text-lg font-medium leading-tight tracking-normal text-accent group-hover:text-primary-focus'>
                 {fullName}
               </h2>
               <span className='text-sm font-medium'>{email}</span>
             </div>
           </div>
         </div>
-        <div className='relative h-12 w-7'>
+        <div className='pointer-events-auto relative h-12 w-7'>
           <BaseDropdownMenu
             customMenuButton={
               <div className='relative h-12 w-7'>

@@ -8,7 +8,7 @@ import type { ComponentProps } from 'react';
 type Size = 'sm' | 'base';
 
 type Props = ComponentProps<'div'> & {
-  percent: number;
+  percent: number | null;
   label?: string;
   size?: Size;
   performance?: StudentPerformanceType;
@@ -103,7 +103,7 @@ export const BaseProgressCircle = memo(function ({
             <Circle className={circleClassname} size={targetSize} />
             <Circle
               className={circleClassname}
-              percent={percent}
+              percent={percent || undefined}
               size={targetSize}
             />
           </g>
@@ -114,7 +114,7 @@ export const BaseProgressCircle = memo(function ({
             textClassname,
           )}
         >
-          {percent}%
+          {percent || 0}%
         </span>
       </div>
       {label && (
@@ -127,7 +127,7 @@ export const BaseProgressCircle = memo(function ({
               bottomLabelPosition ? 'h-4 w-0.5' : 'h-0.5 w-8',
             )}
           />
-          <div className='rounded-4px overflow-hidden border-2 border-accent px-2.5 py-1 text-sm font-medium'>
+          <div className='overflow-hidden rounded-4px border-2 border-accent px-2.5 py-1 text-sm font-medium'>
             {label}
           </div>
         </div>

@@ -1,8 +1,8 @@
 import { memo, useMemo } from 'react';
 import { Menu } from '@headlessui/react';
-import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
 
+import dayjs from '#/config/dayjs.config';
 import { convertSecondsToDuration } from '#/utils/time.util';
 import { RecordStatus } from '#/core/models/core.model';
 import { BaseIcon } from '#/base/components/base-icon.component';
@@ -60,11 +60,18 @@ export const TeacherLessonSingleCard = memo(function ({
 
   return (
     <BaseSurface
-      className={cx('flex w-full items-center gap-5 !p-2.5', className)}
+      className={cx(
+        'pointer-events-none flex w-full items-center gap-5 !p-2.5 transition-all hover:cursor-pointer hover:!border-primary-focus hover:shadow-md hover:ring-1 hover:ring-primary-focus',
+        className,
+      )}
       rounded='sm'
       {...moreProps}
     >
-      <div className='flex flex-1 items-start gap-4'>
+      <div
+        className='group pointer-events-auto flex flex-1 items-start gap-4'
+        tabIndex={0}
+        onClick={onDetails}
+      >
         <div className='flex flex-1 items-center gap-4'>
           <div className='flex h-[68px] w-[121px] items-center justify-center overflow-hidden rounded border border-primary bg-primary-focus-light/30 text-primary'>
             <BaseIcon name='chalkboard-teacher' size={40} weight='light' />
@@ -85,7 +92,7 @@ export const TeacherLessonSingleCard = memo(function ({
               )}
             </div>
             {/* Title */}
-            <h2 className='font-body text-lg font-medium tracking-normal text-accent'>
+            <h2 className='font-body text-lg font-medium tracking-normal text-accent group-hover:text-primary-focus'>
               {title}
             </h2>
           </div>
@@ -99,7 +106,7 @@ export const TeacherLessonSingleCard = memo(function ({
           </div>
         )}
       </div>
-      <div className='relative h-12 w-7'>
+      <div className='pointer-events-auto relative h-12 w-7'>
         <BaseDropdownMenu
           customMenuButton={
             <div className='relative h-12 w-7'>

@@ -110,11 +110,18 @@ export const TeacherActivitySingleCard = memo(function ({
 
   return (
     <BaseSurface
-      className={cx('flex w-full items-center gap-5 !p-2.5', className)}
+      className={cx(
+        'pointer-events-none flex w-full items-center gap-5 !p-2.5 transition-all hover:cursor-pointer hover:!border-primary-hue-teal-focus hover:shadow-md hover:ring-1 hover:ring-primary-hue-teal-focus',
+        className,
+      )}
       rounded='sm'
       {...moreProps}
     >
-      <div className='flex h-full flex-1 items-center gap-4'>
+      <div
+        className='group pointer-events-auto flex h-full flex-1 items-center gap-4'
+        tabIndex={0}
+        onClick={onDetails}
+      >
         <div className='flex h-full flex-1 items-start gap-4'>
           {/* TODO Image */}
           <div className='flex h-[88px] w-[121px] items-center justify-center overflow-hidden rounded border border-primary-hue-teal bg-primary-hue-teal/30 font-medium'>
@@ -136,7 +143,7 @@ export const TeacherActivitySingleCard = memo(function ({
               )}
             </div>
             {/* Title */}
-            <h2 className='font-body text-lg font-medium tracking-normal text-accent'>
+            <h2 className='font-body text-lg font-medium tracking-normal text-accent group-hover:text-primary-hue-teal-focus'>
               {title}
             </h2>
           </div>
@@ -170,7 +177,7 @@ export const TeacherActivitySingleCard = memo(function ({
           </div>
         )}
       </div>
-      <div className='relative h-12 w-7'>
+      <div className='pointer-events-auto relative h-12 w-7'>
         <BaseDropdownMenu
           customMenuButton={
             <div className='relative h-12 w-7'>
