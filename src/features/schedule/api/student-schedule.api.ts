@@ -1,5 +1,4 @@
 import dayjs from '#/config/dayjs.config';
-
 import { generateApiError } from '#/utils/api.util';
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
 import { queryScheduleKey } from '#/config/react-query-keys.config';

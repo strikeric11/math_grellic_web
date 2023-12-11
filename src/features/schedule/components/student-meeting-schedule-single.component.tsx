@@ -1,8 +1,8 @@
 import { memo, useMemo } from 'react';
 import DOMPurify from 'dompurify';
-import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
 
+import dayjs from '#/config/dayjs.config';
 import { getDayJsDuration, convertSecondsToDuration } from '#/utils/time.util';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseLink } from '#/base/components/base-link.component';

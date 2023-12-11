@@ -1,7 +1,7 @@
 import { memo, useCallback, useMemo } from 'react';
 import cx from 'classix';
-import dayjs from '#/config/dayjs.config';
 
+import dayjs from '#/config/dayjs.config';
 import { generateOrdinalSuffix } from '#/utils/string.util';
 import { DAYS_PER_WEEK } from '#/utils/time.util';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';

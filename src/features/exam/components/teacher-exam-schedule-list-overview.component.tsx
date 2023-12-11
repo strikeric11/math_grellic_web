@@ -1,8 +1,8 @@
 import { memo, useCallback, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
 
+import dayjs from '#/config/dayjs.config';
 import { getDayJsDuration, convertSecondsToDuration } from '#/utils/time.util';
 import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseChip } from '#/base/components/base-chip.component';

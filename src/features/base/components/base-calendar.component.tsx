@@ -1,6 +1,7 @@
 import { memo, useCallback, useMemo } from 'react';
-import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
+
+import dayjs from '#/config/dayjs.config';
 
 import type { ComponentProps } from 'react';
 import type { Dayjs } from 'dayjs';

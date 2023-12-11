@@ -1,8 +1,8 @@
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
 
+import dayjs from '#/config/dayjs.config';
 import {
   convertSecondsToDuration,
   generateCountdownDate,

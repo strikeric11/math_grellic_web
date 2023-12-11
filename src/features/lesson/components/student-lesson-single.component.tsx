@@ -1,9 +1,9 @@
 import { memo, useCallback, useMemo } from 'react';
-import dayjs from '#/config/dayjs.config';
 import DOMPurify from 'dompurify';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
+import dayjs from '#/config/dayjs.config';
 import {
   convertSecondsToDuration,
   generateCountdownDate,

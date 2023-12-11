@@ -6,9 +6,9 @@ import {
   useMemo,
   useState,
 } from 'react';
-import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
 
+import dayjs from '#/config/dayjs.config';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseTooltip } from '#/base/components/base-tooltip.component';

@@ -1,7 +1,7 @@
 import { memo, useMemo } from 'react';
 import cx from 'classix';
-import dayjs from '#/config/dayjs.config';
 
+import dayjs from '#/config/dayjs.config';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { ScheduleType } from '../models/schedule.model';
 

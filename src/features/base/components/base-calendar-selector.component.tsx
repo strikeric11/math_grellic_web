@@ -1,9 +1,9 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { motion } from 'framer-motion';
 
+import dayjs from '#/config/dayjs.config';
 import { BaseDropdownButton } from './base-dropdown-button.component';
 import { BaseIconButton } from './base-icon-button.component';
 import { BaseButton } from './base-button.components';

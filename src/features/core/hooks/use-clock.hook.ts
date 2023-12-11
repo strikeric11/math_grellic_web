@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
-import dayjs from '#/config/dayjs.config';
 
+import dayjs from '#/config/dayjs.config';
 import { useClockSocket } from './use-clock-socket.hook';
 
 type Result = {

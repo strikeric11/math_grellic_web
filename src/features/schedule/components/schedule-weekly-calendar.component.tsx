@@ -1,7 +1,7 @@
 import { Fragment, memo, useCallback, useMemo } from 'react';
-import dayjs from '#/config/dayjs.config';
 import cx from 'classix';
 
+import dayjs from '#/config/dayjs.config';
 import { DAYS_PER_WEEK, generateTimelineHours } from '#/utils/time.util';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { ScheduleType } from '../models/schedule.model';

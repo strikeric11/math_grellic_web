@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react';
-import dayjs from '#/config/dayjs.config';
 
+import dayjs from '#/config/dayjs.config';
 import { convertSecondsToDuration, getDayJsDuration } from '#/utils/time.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';

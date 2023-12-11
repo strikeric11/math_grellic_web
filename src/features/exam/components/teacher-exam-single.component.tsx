@@ -1,8 +1,8 @@
 import { memo, useMemo } from 'react';
-import dayjs from '#/config/dayjs.config';
 import DOMPurify from 'dompurify';
 import cx from 'classix';
 
+import dayjs from '#/config/dayjs.config';
 import { convertSecondsToDuration, getDayJsDuration } from '#/utils/time.util';
 import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { RecordStatus } from '#/core/models/core.model';
