@@ -72,7 +72,7 @@ export const StudentLessonPerformanceCard = memo(function ({
       <div className='flex min-h-[200px] w-full items-stretch'>
         <div className='flex flex-1 flex-col items-center justify-center gap-y-8'>
           <div className='flex items-center justify-center gap-5 font-bold text-primary'>
-            <span className='font-display text-2xl tracking-tighter'>
+            <span className='font-display text-xl tracking-tighter'>
               {overallLessonScoreText}
             </span>
           </div>

@@ -26,6 +26,12 @@ const filterOptions = [
     value: StudentPerformanceType.Activity,
     label: `Overall ${capitalize(StudentPerformanceType.Activity)}`,
   },
+  {
+    key: 'performance-lesson',
+    name: 'performance',
+    value: StudentPerformanceType.Lesson,
+    label: `Overall ${capitalize(StudentPerformanceType.Lesson)}`,
+  },
 ];
 
 const sortOptions = [

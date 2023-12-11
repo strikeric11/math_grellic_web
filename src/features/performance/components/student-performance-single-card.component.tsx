@@ -34,26 +34,35 @@ export const StudentPerformanceSingleCard = memo(function ({
   onDetails,
   ...moreProps
 }: Props) {
-  const [publicId, email, gender] = useMemo(
-    () => [student.publicId, student.email, student.gender],
+  const [publicId, email, gender, totalLessonCount] = useMemo(
+    () => [
+      student.publicId,
+      student.email,
+      student.gender,
+      student.totalLessonCount,
+    ],
     [student],
   );
 
-  const overallScore = useMemo(
-    () =>
-      performance === StudentPerformanceType.Exam
-        ? student.overallExamScore
-        : student.overallActivityScore,
-    [performance, student],
-  );
+  const overallScore = useMemo(() => {
+    if (performance === StudentPerformanceType.Exam) {
+      return student.overallExamScore;
+    } else if (performance === StudentPerformanceType.Activity) {
+      return student.overallActivityScore;
+    } else {
+      return student.lessonsCompletedCount;
+    }
+  }, [performance, student]);
 
-  const overallRank = useMemo(
-    () =>
-      performance === StudentPerformanceType.Exam
-        ? student.overallExamRank
-        : student.overallActivityRank,
-    [performance, student],
-  );
+  const overallRank = useMemo(() => {
+    if (performance === StudentPerformanceType.Exam) {
+      return student.overallExamRank;
+    } else if (performance === StudentPerformanceType.Activity) {
+      return student.overallActivityRank;
+    } else {
+      return null;
+    }
+  }, [performance, student]);
 
   const fullName = useMemo(
     () =>
@@ -67,14 +76,17 @@ export const StudentPerformanceSingleCard = memo(function ({
   );
 
   const overallScoreText = useMemo(() => {
-    if (overallScore == null) {
-      return '';
+    if (performance === StudentPerformanceType.Lesson) {
+      return `${overallScore || 0}/${totalLessonCount} Completed`;
+    } else {
+      if (overallScore == null) {
+        return '';
+      }
+
+      const pointText = overallScore > 1 ? 'Points' : 'Point';
+      return `${overallScore} ${pointText}`;
     }
-
-    const pointText = overallScore > 1 ? 'Points' : 'Point';
-
-    return `${overallScore} ${pointText}`;
-  }, [overallScore]);
+  }, [overallScore, totalLessonCount, performance]);
 
   return (
     <BaseSurface
@@ -108,21 +120,30 @@ export const StudentPerformanceSingleCard = memo(function ({
               '!text-primary-hue-purple',
             performance === StudentPerformanceType.Activity &&
               '!text-primary-hue-teal',
+            performance === StudentPerformanceType.Lesson && '!text-primary',
           )}
         >
-          <div className='flex items-center gap-x-2.5'>
-            <span className='text-4xl'>{overallRankText}</span>
-            {overallRank != null && overallRank <= 10 && (
-              <PerformanceRankAwardImg rank={overallRank} />
-            )}
-          </div>
-          {!!overallScore && (
+          {performance !== StudentPerformanceType.Lesson ? (
             <>
-              <BaseDivider className='!h-10' vertical />
-              <span className='font-display text-2xl tracking-tighter'>
-                {overallScoreText}
-              </span>
+              <div className='flex items-center gap-x-2.5'>
+                <span className='text-4xl'>{overallRankText}</span>
+                {overallRank != null && overallRank <= 10 && (
+                  <PerformanceRankAwardImg rank={overallRank} />
+                )}
+              </div>
+              {!!overallScore && (
+                <>
+                  <BaseDivider className='!h-10' vertical />
+                  <span className='font-display text-2xl tracking-tighter'>
+                    {overallScoreText}
+                  </span>
+                </>
+              )}
             </>
+          ) : (
+            <span className='font-display text-xl tracking-tighter'>
+              {overallScoreText}
+            </span>
           )}
         </div>
       </div>
