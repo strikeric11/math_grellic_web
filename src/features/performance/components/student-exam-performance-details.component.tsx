@@ -11,12 +11,14 @@ import type { Exam } from '#/exam/models/exam.model';
 
 type Props = Omit<ComponentProps<'div'>, 'onClick'> & {
   exam: Exam;
+  isUpcoming?: boolean;
   onClick?: (exam?: Exam) => void;
 };
 
 export const StudentExamPerformanceDetails = memo(function ({
   className,
   exam,
+  isUpcoming,
   onClick,
   ...moreProps
 }: Props) {
@@ -78,7 +80,14 @@ export const StudentExamPerformanceDetails = memo(function ({
       {...moreProps}
     >
       <div className='flex items-center gap-x-2.5'>
-        {hasPassed ? (
+        {isUpcoming ? (
+          <BaseIcon
+            className='text-accent/40'
+            name='x-circle'
+            size={28}
+            weight='bold'
+          />
+        ) : hasPassed ? (
           <BaseIcon
             className='text-green-500'
             name='check-circle'
@@ -93,6 +102,7 @@ export const StudentExamPerformanceDetails = memo(function ({
             weight='bold'
           />
         )}
+
         <span>
           Exam {orderNumber} - {title}
         </span>

@@ -23,6 +23,7 @@ export const queryLessonKey = {
   list: ['lessons', 'list'],
   single: ['lessons', 'single'],
   selectedLessonList: ['lessons', 'selected-lesson-list'],
+  studentPerformance: ['lessons', 'student-performance'],
 };
 
 export const queryExamKey = {

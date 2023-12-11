@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import cx from 'classix';
 
 import {
-  stepperAnimationVariants,
+  stepperAnimation,
   stepperAnimationTransition,
 } from '#/utils/animation.util';
 import { BaseDivider } from './base-divider.component';
@@ -158,7 +158,7 @@ export const BaseStepper = memo(function ({
             key={currentIndex}
             className='h-full w-full'
             custom={isForward}
-            variants={stepperAnimationVariants}
+            variants={stepperAnimation}
             initial='initial'
             animate='animate'
             exit='exit'

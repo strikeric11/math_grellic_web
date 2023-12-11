@@ -3,6 +3,7 @@ import cx from 'classix';
 
 import { StudentExamPerformanceCard } from './student-exam-performance-card.component';
 import { StudentActivityPerformanceCard } from './student-activity-performance-card.component';
+import { StudentLessonPerformanceCard } from './student-lesson-performance-card.component';
 
 import type { ComponentProps } from 'react';
 import type { StudentPerformance } from '../models/performance.model';
@@ -24,7 +25,16 @@ export const StudentPerformanceSingle = memo(function ({
       {...moreProps}
     >
       <StudentExamPerformanceCard student={student} isStudent={isStudent} />
-      <StudentActivityPerformanceCard student={student} isStudent={isStudent} />
+      <StudentActivityPerformanceCard
+        className='min-h-[280px]'
+        student={student}
+        isStudent={isStudent}
+      />
+      <StudentLessonPerformanceCard
+        className='min-h-[280px]'
+        student={student}
+        isStudent={isStudent}
+      />
     </div>
   );
 });

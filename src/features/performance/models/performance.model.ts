@@ -20,6 +20,10 @@ export type StudentPerformance = StudentUserAccount & {
   overallActivityCompletionPercent: number;
   overallActivityRank: number;
   overallActivityScore: number | null;
+  totalLessonCount: number;
+  currentLessonCount: number;
+  lessonsCompletedCount: number;
+  overallLessonCompletionPercent: number;
 };
 
 export type TeacherClassPerformance = {

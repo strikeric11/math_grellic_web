@@ -18,7 +18,7 @@ import type { Lesson, LessonCompletion } from '../models/lesson.model';
 type Result = {
   loading: boolean;
   title: string;
-  upcoming: boolean;
+  isUpcoming: boolean;
   lesson: Lesson | null;
   upcomingDayJsDuration: Duration | null;
   setLessonCompletion: (
@@ -61,17 +61,17 @@ export function useStudentLessonSingle(): Result {
     }),
   );
 
-  const [title, upcoming] = useMemo(
+  const [title, isUpcoming] = useMemo(
     () => [lesson?.title || '', !!(lesson && !lesson.videoUrl)],
     [lesson],
   );
 
   const upcomingDayJsDuration = useMemo(() => {
-    if (!upcoming || !lesson?.schedules?.length) {
+    if (!isUpcoming || !lesson?.schedules?.length) {
       return null;
     }
     return getDayJsDuration(lesson.schedules[0].startDate, serverClock);
-  }, [upcoming, lesson, serverClock]);
+  }, [isUpcoming, lesson, serverClock]);
 
   const setLessonCompletion = useCallback(
     (isCompleted: boolean) => mutateAsync({ slug: slug || '', isCompleted }),
@@ -84,9 +84,9 @@ export function useStudentLessonSingle(): Result {
       return;
     }
 
-    upcoming ? startClock() : stopClock();
+    isUpcoming ? startClock() : stopClock();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [upcoming, lesson]);
+  }, [isUpcoming, lesson]);
 
   useEffect(() => {
     if (!upcomingDayJsDuration || upcomingDayJsDuration.asSeconds() > 0) {
@@ -102,7 +102,7 @@ export function useStudentLessonSingle(): Result {
   return {
     loading: isLoading || isFetching || isMutateLoading,
     title,
-    upcoming,
+    isUpcoming,
     lesson: lesson || null,
     upcomingDayJsDuration,
     setLessonCompletion,

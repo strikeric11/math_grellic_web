@@ -36,7 +36,7 @@ export const liAnimation = {
   stiffness: 200,
 };
 
-export const stepperAnimationVariants = {
+export const stepperAnimation = {
   initial: (isForward: boolean) => ({
     x: isForward ? '100%' : '-100%',
     opacity: 0,
@@ -49,6 +49,12 @@ export const stepperAnimationVariants = {
     x: !isForward ? '100%' : '-100%',
     opacity: 0,
   }),
+};
+
+export const performanceDetailsAnimation = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
 };
 
 export const scoreShowVariants = {

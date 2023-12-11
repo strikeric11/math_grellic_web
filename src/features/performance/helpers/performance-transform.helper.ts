@@ -16,6 +16,10 @@ export function transformToStudentPerformance({
   overallActivityCompletionPercent,
   overallActivityRank,
   overallActivityScore,
+  totalLessonCount,
+  currentLessonCount,
+  lessonsCompletedCount,
+  overallLessonCompletionPercent,
   ...moreProps
 }: any): StudentPerformance {
   const student = transformToStudentUserAccount(moreProps);
@@ -35,5 +39,9 @@ export function transformToStudentPerformance({
     overallActivityCompletionPercent,
     overallActivityRank,
     overallActivityScore,
+    totalLessonCount,
+    currentLessonCount,
+    lessonsCompletedCount,
+    overallLessonCompletionPercent,
   };
 }

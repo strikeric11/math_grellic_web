@@ -1,12 +1,14 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
+import { performanceDetailsAnimation } from '#/utils/animation.util';
 import { generateOrdinalSuffix } from '#/utils/string.util';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseProgressCircle } from '#/base/components/base-progress-circle.component';
+import { StudentPerformanceType } from '../models/performance.model';
 import { PerformanceRankAwardImg } from './performance-rank-award-img.component';
 import { StudentActivityPerformanceList } from './student-activity-performance-list.component';
 import { TeacherStudentActivityPerformanceList } from './teacher-student-activity-performance-list.component';
@@ -15,10 +17,7 @@ import { TeacherStudentActivityPerformanceResult } from './teacher-student-activ
 
 import type { ComponentProps } from 'react';
 import type { Activity } from '#/activity/models/activity.model';
-import {
-  StudentPerformanceType,
-  type StudentPerformance,
-} from '../models/performance.model';
+import type { StudentPerformance } from '../models/performance.model';
 
 type Props = ComponentProps<typeof BaseSurface> & {
   student: StudentPerformance;
@@ -27,12 +26,6 @@ type Props = ComponentProps<typeof BaseSurface> & {
 
 const ACTIVITY_WRAPPER_CLASSNAME = 'flex flex-col items-center w-40';
 const ACTIVITY_VALUE_CLASSNAME = 'text-2xl font-bold text-primary-hue-teal';
-
-const detailsAnimation = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 },
-};
 
 export const StudentActivityPerformanceCard = memo(function ({
   student,
@@ -111,7 +104,7 @@ export const StudentActivityPerformanceCard = memo(function ({
           </div>
           <BaseDivider className='!h-auto' vertical />
           <div className='flex flex-1 flex-col items-center justify-center font-medium'>
-            <div className='flex w-fit flex-col gap-y-5'>
+            <div className='flex w-fit flex-col gap-y-4'>
               <div className={ACTIVITY_WRAPPER_CLASSNAME}>
                 <span className={ACTIVITY_VALUE_CLASSNAME}>
                   {totalActivityCount}
@@ -129,7 +122,10 @@ export const StudentActivityPerformanceCard = memo(function ({
         </div>
         <AnimatePresence>
           {openDetails && (
-            <motion.div className='overflow-hidden pt-8' {...detailsAnimation}>
+            <motion.div
+              className='overflow-hidden pt-8'
+              {...performanceDetailsAnimation}
+            >
               <BaseDivider className='mb-2.5' />
               {isStudent ? (
                 <StudentActivityPerformanceList

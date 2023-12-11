@@ -2,6 +2,7 @@ import { generateApiError } from '#/utils/api.util';
 import {
   queryActivityKey,
   queryExamKey,
+  queryLessonKey,
   queryStudentPerformanceKey,
   queryTeacherPerformanceKey,
 } from '#/config/react-query-keys.config';
@@ -10,6 +11,7 @@ import { generateSearchParams, kyInstance } from '#/config/ky.config';
 import type { UseQueryOptions } from '@tanstack/react-query';
 import type { QueryPagination } from '#/base/models/base.model';
 import type { PaginatedQueryData } from '#/core/models/core.model';
+import type { Lesson } from '#/lesson/models/lesson.model';
 import type { Exam } from '#/exam/models/exam.model';
 import type { Activity } from '#/activity/models/activity.model';
 import type {
@@ -123,6 +125,36 @@ export function getStudentPerformanceByPublicIdAndCurrentTeacherUser(
   return {
     queryKey: [
       ...queryStudentPerformanceKey.single,
+      { publicId, exclude, include },
+    ],
+    queryFn,
+    ...options,
+  };
+}
+
+export function getStudentLessonsByPublicIdAndCurrentTeacherUser(
+  keys: { publicId: string; exclude?: string; include?: string },
+  options?: Omit<UseQueryOptions<Lesson[], Error, Lesson[], any>, 'queryFn'>,
+) {
+  const { publicId: pId, exclude, include } = keys;
+  const publicId = pId.toLowerCase();
+
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/students/${publicId}/lessons`;
+    const searchParams = generateSearchParams({ exclude, include });
+
+    try {
+      const lessons = await kyInstance.get(url, { searchParams }).json();
+      return lessons;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [
+      ...queryLessonKey.studentPerformance,
       { publicId, exclude, include },
     ],
     queryFn,

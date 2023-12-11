@@ -3,10 +3,12 @@ import { generateSearchParams, kyInstance } from '#/config/ky.config';
 import {
   queryActivityKey,
   queryExamKey,
+  queryLessonKey,
   queryStudentPerformanceKey,
 } from '#/config/react-query-keys.config';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
+import type { Lesson } from '#/lesson/models/lesson.model';
 import type { Exam } from '#/exam/models/exam.model';
 import type { Activity } from '#/activity/models/activity.model';
 import type { StudentPerformance } from '../models/performance.model';
@@ -36,6 +38,32 @@ export function getStudentPerformanceByCurrentStudentUser(
 
   return {
     queryKey: [...queryStudentPerformanceKey.single, { exclude, include }],
+    queryFn,
+    ...options,
+  };
+}
+
+export function getStudentLessonsByCurrentStudentUser(
+  keys: { exclude?: string; include?: string },
+  options?: Omit<UseQueryOptions<Lesson[], Error, Lesson[], any>, 'queryFn'>,
+) {
+  const { exclude, include } = keys;
+
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/lessons`;
+    const searchParams = generateSearchParams({ exclude, include });
+
+    try {
+      const lessons = await kyInstance.get(url, { searchParams }).json();
+      return lessons;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [...queryLessonKey.studentPerformance, { exclude, include }],
     queryFn,
     ...options,
   };

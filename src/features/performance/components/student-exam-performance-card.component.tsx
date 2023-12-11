@@ -1,6 +1,7 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
+import { performanceDetailsAnimation } from '#/utils/animation.util';
 import { generateOrdinalSuffix } from '#/utils/string.util';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDivider } from '#/base/components/base-divider.component';
@@ -25,12 +26,6 @@ type Props = ComponentProps<typeof BaseSurface> & {
 
 const EXAM_WRAPPER_CLASSNAME = 'flex flex-col items-center w-36';
 const EXAM_VALUE_CLASSNAME = 'text-2xl font-bold text-primary-hue-purple';
-
-const detailsAnimation = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 },
-};
 
 export const StudentExamPerformanceCard = memo(function ({
   student,
@@ -134,7 +129,7 @@ export const StudentExamPerformanceCard = memo(function ({
           </div>
           <BaseDivider className='!h-auto' vertical />
           <div className='flex flex-1 flex-col items-center justify-center font-medium'>
-            <div className='grid w-fit grid-cols-2 gap-y-5'>
+            <div className='grid w-fit grid-cols-2 gap-y-4'>
               <div className={EXAM_WRAPPER_CLASSNAME}>
                 <span className={EXAM_VALUE_CLASSNAME}>{currentExamCount}</span>
                 <span>Current Exams</span>
@@ -164,7 +159,10 @@ export const StudentExamPerformanceCard = memo(function ({
         </div>
         <AnimatePresence>
           {openDetails && (
-            <motion.div className='overflow-hidden pt-8' {...detailsAnimation}>
+            <motion.div
+              className='overflow-hidden pt-8'
+              {...performanceDetailsAnimation}
+            >
               <BaseDivider className='mb-2.5' />
               {isStudent ? (
                 <StudentExamPerformanceList
