@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { alphabet } from '#/utils/string.util';
+import { ExActTextType } from '#/core/models/core.model';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
@@ -32,7 +33,7 @@ type ChoiceProps = {
   choiceName: string;
   choiceLabel: string;
   onSetAnswer: () => void;
-  onSetIsExpression: () => void;
+  onSetTextType: () => void;
   onRemove: () => void;
 };
 
@@ -42,10 +43,10 @@ const Choice = memo(function ({
   choiceName,
   choiceLabel,
   onSetAnswer,
-  onSetIsExpression,
+  onSetTextType,
   onRemove,
 }: ChoiceProps) {
-  const isExpression = useMemo(() => choice.isExpression, [choice]);
+  const textType = useMemo(() => choice.textType, [choice]);
   const isCorrect = useMemo(() => choice.isCorrect, [choice]);
 
   const iconButtonProps = useMemo(
@@ -62,18 +63,19 @@ const Choice = memo(function ({
     [isCorrect],
   );
 
-  const rightButtonProps = useMemo(
-    () => ({
-      name: (isExpression ? 'text-t' : 'function') as IconName,
-      isInput: true,
-      tooltip: isExpression
-        ? 'Switch to normal input'
-        : 'Switch to Math Equation input',
-      tooltipPlacement: 'left' as Placement,
-      onClick: onSetIsExpression,
-    }),
-    [isExpression, onSetIsExpression],
-  );
+  // TODO
+  // const rightButtonProps = useMemo(
+  //   () => ({
+  //     name: (isExpression ? 'text-t' : 'function') as IconName,
+  //     isInput: true,
+  //     tooltip: isExpression
+  //       ? 'Switch to normal input'
+  //       : 'Switch to Math Equation input',
+  //     tooltipPlacement: 'left' as Placement,
+  //     onClick: onSetIsExpression,
+  //   }),
+  //   [isExpression, onSetIsExpression],
+  // );
 
   return (
     <div className='flex w-full max-w-[578px] items-start'>
@@ -87,7 +89,24 @@ const Choice = memo(function ({
         />
       </div>
       <div className='flex h-fit flex-1 basis-full items-center gap-x-2.5 overflow-hidden'>
-        {isExpression ? (
+        <BaseControlledInput
+          name={choiceName}
+          control={control}
+          leftContent={
+            <div
+              className={cx(
+                'absolute left-15px top-1/2 flex w-6 -translate-y-1/2 items-center justify-center text-lg font-medium',
+                isCorrect ? 'text-green-500' : 'text-accent/50',
+              )}
+            >
+              {choiceLabel}
+            </div>
+          }
+          // rightButtonProps={rightButtonProps}
+          fullWidth
+        />
+        {/* TODO */}
+        {/* {isExpression ? (
           <BaseControlledMathInput
             className='flex min-h-[48px] items-center'
             name={choiceName}
@@ -122,7 +141,7 @@ const Choice = memo(function ({
             rightButtonProps={rightButtonProps}
             fullWidth
           />
-        )}
+        )} */}
       </div>
       <BaseIconButton
         name='x-square'
@@ -210,16 +229,16 @@ export const ActivityUpsertStageQuestionChoiceList = memo(function ({
     [fields, choices, update],
   );
 
-  const setIsExpression = useCallback(
-    (key: string, isExpression: boolean) => () => {
+  const setTextType = useCallback(
+    (key: string, textType: ExActTextType) => () => {
       const choiceIndex = fields.findIndex((field) => field.key === key);
-      update(choiceIndex, { ...choices[choiceIndex], isExpression });
+      update(choiceIndex, { ...choices[choiceIndex], textType });
     },
     [fields, choices, update],
   );
 
   const handleAppend = useCallback(() => {
-    append({ text: '', isExpression: false, isCorrect: false } as any);
+    append({ text: '', textType: ExActTextType.Text, isCorrect: false } as any);
   }, [append]);
 
   const handleRemove = useCallback(
@@ -257,7 +276,8 @@ export const ActivityUpsertStageQuestionChoiceList = memo(function ({
             choiceName={getChoiceName(key)}
             choiceLabel={getChoiceLabel(key)}
             onSetAnswer={setAnswer(key)}
-            onSetIsExpression={setIsExpression(key, !moreFields.isExpression)}
+            // TODO
+            onSetTextType={setTextType(key, ExActTextType.Text)}
             onRemove={handleRemove(key)}
           />
         ))}

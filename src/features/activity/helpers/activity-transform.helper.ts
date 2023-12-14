@@ -113,6 +113,7 @@ export function transformToActivityCategoryQuestion({
   updatedAt,
   orderNumber,
   text,
+  textType,
   choices,
   stageNumber,
 }: any): ActivityCategoryQuestion {
@@ -125,6 +126,7 @@ export function transformToActivityCategoryQuestion({
   return {
     orderNumber,
     text,
+    textType,
     choices: transformedChoices,
     stageNumber,
     ...transformToBaseModel(id, createdAt, updatedAt),
@@ -137,14 +139,14 @@ export function transformToActivityCategoryQuestionChoice({
   updatedAt,
   orderNumber,
   text,
+  textType,
   isCorrect,
-  isExpression,
 }: any): ActivityCategoryQuestionChoice {
   return {
     orderNumber,
     text,
+    textType,
     isCorrect,
-    isExpression,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
@@ -318,6 +320,7 @@ export function transformToCategoryQuestionFormData({
   id,
   orderNumber,
   text,
+  textType,
   choices,
   stageNumber,
 }: any): ActivityCategoryQuestionFormData {
@@ -330,6 +333,7 @@ export function transformToCategoryQuestionFormData({
     id,
     orderNumber,
     text,
+    textType,
     choices: transformedChoices,
     stageNumber: stageNumber || undefined,
   };
@@ -339,15 +343,15 @@ export function transformToCategoryQuestionChoiceFormData({
   id,
   orderNumber,
   text,
+  textType,
   isCorrect,
-  isExpression,
 }: any): ActivityCategoryQuestionChoiceFormData {
   return {
     id,
     orderNumber,
     text,
+    textType,
     isCorrect,
-    isExpression,
   };
 }
 
@@ -434,14 +438,14 @@ export function transformToCategoryQuestionChoiceUpsertDto({
   id,
   orderNumber,
   text,
+  textType,
   isCorrect,
-  isExpression,
 }: any) {
   return {
     id,
     orderNumber,
     text,
+    textType,
     isCorrect,
-    isExpression,
   };
 }

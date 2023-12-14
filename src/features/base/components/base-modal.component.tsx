@@ -60,7 +60,7 @@ export function BaseModal({
                 >
                   {!!onClose && (
                     <BaseControlButton
-                      className='absolute right-5 top-5'
+                      className='absolute right-5 top-5 z-10'
                       leftIconName='x'
                       onClick={onClose}
                     >

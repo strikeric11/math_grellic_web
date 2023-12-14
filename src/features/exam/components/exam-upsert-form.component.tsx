@@ -5,6 +5,7 @@ import { Menu } from '@headlessui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import isTime from 'validator/lib/isTime';
+import { Base64 } from 'js-base64';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
@@ -12,7 +13,7 @@ import dayjs from '#/config/dayjs.config';
 import { getErrorMessage } from '#/utils/string.util';
 import { getDayJsDuration } from '#/utils/time.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
-import { RecordStatus } from '#/core/models/core.model';
+import { ExActTextType, RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseStepper } from '#/base/components/base-stepper.component';
@@ -40,9 +41,10 @@ const choiceSchema = z.object({
     .number({ required_error: 'Choice number is required' })
     .int()
     .gt(0, 'Choice number is invalid'),
-  text: z.string().min(1, 'Choice is required'),
-  isExpression: z.boolean(),
+  text: z.string().optional(),
+  textType: z.nativeEnum(ExActTextType),
   isCorrect: z.boolean(),
+  imageData: z.string().optional(),
 });
 
 const questionSchema = z.object({
@@ -51,8 +53,10 @@ const questionSchema = z.object({
     .number({ required_error: 'Question number is required' })
     .int()
     .gt(0, 'Question number is invalid'),
-  text: z.string().min(1, 'Question is required'),
+  text: z.string().optional(),
+  textType: z.nativeEnum(ExActTextType),
   choices: z.array(choiceSchema).min(2),
+  imageData: z.string().optional(),
 });
 
 const schema = z
@@ -144,6 +148,50 @@ const schema = z
           path: [`questions.${index}.choices.0.text`],
         });
       }
+
+      if (
+        question.textType === ExActTextType.Text &&
+        !question.text?.trim().length
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Question is invalid',
+          path: [`questions.${index}.text`],
+        });
+      } else if (
+        question.textType === ExActTextType.Image &&
+        (!question.imageData ||
+          !Base64.isValid(Base64.encode(question.imageData)))
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Image is invalid',
+          path: [`questions.${index}.imageData`],
+        });
+      }
+
+      question.choices.forEach((choice, cIndex) => {
+        if (
+          choice.textType === ExActTextType.Text &&
+          !choice.text?.trim().length
+        ) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Choice is invalid',
+            path: [`questions.${index}.choices.${cIndex}.text`],
+          });
+        } else if (
+          choice.textType === ExActTextType.Image &&
+          (!choice.imageData ||
+            !Base64.isValid(Base64.encode(choice.imageData)))
+        ) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Image is invalid',
+            path: [`questions.${index}.choices.${cIndex}.imageData`],
+          });
+        }
+      });
     });
 
     if (data.startDate || data.endDate || data.startTime || data.endTime) {
@@ -277,10 +325,11 @@ export const ExamUpsertForm = memo(function ({
 
   const handleSubmitError = useCallback(
     (errors: FieldErrors<ExamUpsertFormData>) => {
+      console.log(getValues());
       const errorMessage = getErrorMessage(errors);
       toast.error(errorMessage || '');
     },
-    [],
+    [getValues],
   );
 
   const submitForm = useCallback(

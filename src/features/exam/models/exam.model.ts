@@ -1,5 +1,9 @@
 import type { Duration } from 'dayjs/plugin/duration';
-import type { AuditTrail, RecordStatus } from '#/core/models/core.model';
+import type {
+  AuditTrail,
+  ExActTextType,
+  RecordStatus,
+} from '#/core/models/core.model';
 import type { Lesson } from '#/lesson/models/lesson.model';
 import type { StudentUserAccount } from '#/user/models/user.model';
 import type { ExamUpsertFormData } from './exam-form-data.model';
@@ -39,6 +43,7 @@ export type ExamQuestion = Partial<AuditTrail> & {
   id: number;
   orderNumber: number;
   text: string;
+  textType: ExActTextType;
   choices: ExamQuestionChoice[];
 };
 
@@ -46,7 +51,7 @@ export type ExamQuestionChoice = Partial<AuditTrail> & {
   id: number;
   orderNumber: number;
   text: string;
-  isExpression: boolean;
+  textType: ExActTextType;
   isCorrect: boolean;
 };
 

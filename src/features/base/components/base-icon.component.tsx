@@ -35,6 +35,7 @@ import {
   CircleDashed,
   Clock,
   ClockCountdown,
+  Crop,
   DeviceMobile,
   DiceThree,
   DoorOpen,
@@ -47,6 +48,7 @@ import {
   FileDashed,
   FileText,
   FloppyDiskBack,
+  FrameCorners,
   Function,
   Funnel,
   GameController,
@@ -54,11 +56,14 @@ import {
   GenderMale,
   Hourglass,
   IdentificationBadge,
+  ImageSquare,
   LinkSimple,
   ListBullets,
   ListChecks,
   ListNumbers,
   MagnifyingGlass,
+  MagnifyingGlassMinus,
+  MagnifyingGlassPlus,
   Minus,
   MinusSquare,
   NumberSquareOne,
@@ -180,6 +185,8 @@ export const BaseIcon = memo(
           return Clock;
         case 'clock-countdown':
           return ClockCountdown;
+        case 'crop':
+          return Crop;
         case 'device-mobile':
           return DeviceMobile;
         case 'dice-three':
@@ -204,6 +211,8 @@ export const BaseIcon = memo(
           return FileText;
         case 'floppy-disk-back':
           return FloppyDiskBack;
+        case 'frame-corners':
+          return FrameCorners;
         case 'function':
           return Function;
         case 'funnel':
@@ -218,6 +227,8 @@ export const BaseIcon = memo(
           return Hourglass;
         case 'identification-badge':
           return IdentificationBadge;
+        case 'image-square':
+          return ImageSquare;
         case 'link-simple':
           return LinkSimple;
         case 'list-bullets':
@@ -228,6 +239,10 @@ export const BaseIcon = memo(
           return ListNumbers;
         case 'magnifying-glass':
           return MagnifyingGlass;
+        case 'magnifying-glass-minus':
+          return MagnifyingGlassMinus;
+        case 'magnifying-glass-plus':
+          return MagnifyingGlassPlus;
         case 'minus':
           return Minus;
         case 'minus-square':

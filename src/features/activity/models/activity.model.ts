@@ -1,4 +1,8 @@
-import type { AuditTrail, RecordStatus } from '#/core/models/core.model';
+import type {
+  AuditTrail,
+  ExActTextType,
+  RecordStatus,
+} from '#/core/models/core.model';
 import type { StudentUserAccount } from '#/user/models/user.model';
 import type { ActivityUpsertFormData } from './activity-form-data.model';
 
@@ -77,6 +81,7 @@ export type ActivityCategoryQuestion = Partial<AuditTrail> & {
   id: number;
   orderNumber: number;
   text: string;
+  textType: ExActTextType;
   choices: ActivityCategoryQuestionChoice[];
   stageNumber?: number;
 };
@@ -85,7 +90,7 @@ export type ActivityCategoryQuestionChoice = Partial<AuditTrail> & {
   id: number;
   orderNumber: number;
   text: string;
-  isExpression: boolean;
+  textType: ExActTextType;
   isCorrect: boolean;
 };
 

@@ -1,8 +1,11 @@
+import { ExActTextType } from '#/core/models/core.model';
+
 export const defaultQuestion = {
   text: '',
+  textType: ExActTextType.Text,
   choices: Array.from(Array(4), () => ({
     text: '',
-    isExpression: false,
+    textType: ExActTextType.Text,
     isCorrect: false,
   })) as any[],
 } as any;

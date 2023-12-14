@@ -1,10 +1,13 @@
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseControlledNumberInput } from '#/base/components/base-input.component';
 import { BaseControlledCheckbox } from '#/base/components/base-checkbox.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
+import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { BaseImageCropper } from '#/base/components/base-image-cropper.component';
 import { ExamUpsertQuestionList } from './exam-upsert-question-list.component';
 
 import type { ComponentProps } from 'react';
@@ -23,7 +26,10 @@ export const ExamUpsertFormStep2 = memo(function ({
   disabled,
   ...moreProps
 }: Props) {
-  const { control } = useFormContext<ExamUpsertFormData>();
+  const exActImageEdit = useBoundStore((state) => state.exActImageEdit);
+  const setExActImageEdit = useBoundStore((state) => state.setExActImageEdit);
+  const { control, setValue } = useFormContext<ExamUpsertFormData>();
+  const [openImageCropModal, setOpenImageCropModal] = useState(false);
 
   const visibleQuestionsCount = useWatch({
     control,
@@ -44,60 +50,114 @@ export const ExamUpsertFormStep2 = memo(function ({
     return visibleCount * pointsPerQuestion;
   }, [visibleQuestionsCount, pointsPerQuestion, totalQuestionCount]);
 
+  const handleSetOpenImageCropModal = useCallback(
+    (isOpen: boolean) => () => {
+      setOpenImageCropModal(isOpen);
+      !isOpen &&
+        setTimeout(() => {
+          setExActImageEdit();
+        }, 500);
+    },
+    [setExActImageEdit],
+  );
+
+  const handleImageCropComplete = useCallback(
+    (data: string | null) => {
+      const { isQuestion, index, cIndex } = exActImageEdit || {};
+
+      if (isQuestion) {
+        index != null &&
+          setValue(`questions.${index}.imageData`, data || undefined);
+      } else {
+        index != null &&
+          cIndex != null &&
+          setValue(
+            `questions.${index}.choices.${cIndex}.imageData`,
+            data || undefined,
+          );
+      }
+
+      handleSetOpenImageCropModal(false)();
+    },
+    [exActImageEdit, handleSetOpenImageCropModal, setValue],
+  );
+
+  useEffect(() => {
+    if (!exActImageEdit) {
+      return;
+    }
+
+    handleSetOpenImageCropModal(true)();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exActImageEdit]);
+
   return (
-    <div {...moreProps}>
-      <fieldset
-        className='group/field flex flex-wrap gap-5'
-        disabled={disabled}
+    <>
+      <div {...moreProps}>
+        <fieldset
+          className='group/field flex flex-wrap gap-5'
+          disabled={disabled}
+        >
+          <BaseSurface
+            className='flex w-full items-center justify-between gap-5'
+            rounded='sm'
+          >
+            <div className={FIXED_FIELD_CLASSNAME}>
+              <span className={FIXED_FIELD_VALUE_CLASSNAME}>
+                {totalQuestionCount}
+              </span>
+              <small className='uppercase'>Total Questions</small>
+            </div>
+            <BaseIcon className='w-11 shrink-0 opacity-40' name='x' size={28} />
+            <div className={FIXED_FIELD_CLASSNAME}>
+              <span className={FIXED_FIELD_VALUE_CLASSNAME}>
+                {pointsPerQuestion}
+              </span>
+              <small className='uppercase'>Point Per Question</small>
+            </div>
+            <BaseIcon
+              className='w-11 shrink-0 opacity-40'
+              name='equals'
+              size={32}
+            />
+            <div className={FIXED_FIELD_CLASSNAME}>
+              <span className={FIXED_FIELD_VALUE_CLASSNAME}>{totalPoints}</span>
+              <small className='uppercase'>Total Points</small>
+            </div>
+          </BaseSurface>
+          <BaseSurface
+            className='flex w-full items-center justify-between gap-5'
+            rounded='sm'
+          >
+            <BaseControlledNumberInput
+              wrapperProps={passingPointsWrapperProps}
+              label='Passing Points'
+              name='passingPoints'
+              control={control}
+              fullWidth
+              asterisk
+            />
+            <BaseControlledCheckbox
+              labelClassName='mt-0.5 !text-base'
+              name='randomizeQuestions'
+              label='Randomize Questions'
+              control={control}
+            />
+          </BaseSurface>
+          <ExamUpsertQuestionList />
+        </fieldset>
+      </div>
+      <BaseModal
+        open={openImageCropModal}
+        onClose={handleSetOpenImageCropModal(false)}
       >
-        <BaseSurface
-          className='flex w-full items-center justify-between gap-5'
-          rounded='sm'
-        >
-          <div className={FIXED_FIELD_CLASSNAME}>
-            <span className={FIXED_FIELD_VALUE_CLASSNAME}>
-              {totalQuestionCount}
-            </span>
-            <small className='uppercase'>Total Questions</small>
-          </div>
-          <BaseIcon className='w-11 shrink-0 opacity-40' name='x' size={28} />
-          <div className={FIXED_FIELD_CLASSNAME}>
-            <span className={FIXED_FIELD_VALUE_CLASSNAME}>
-              {pointsPerQuestion}
-            </span>
-            <small className='uppercase'>Point Per Question</small>
-          </div>
-          <BaseIcon
-            className='w-11 shrink-0 opacity-40'
-            name='equals'
-            size={32}
+        {!!exActImageEdit && (
+          <BaseImageCropper
+            imageData={exActImageEdit}
+            onComplete={handleImageCropComplete}
           />
-          <div className={FIXED_FIELD_CLASSNAME}>
-            <span className={FIXED_FIELD_VALUE_CLASSNAME}>{totalPoints}</span>
-            <small className='uppercase'>Total Points</small>
-          </div>
-        </BaseSurface>
-        <BaseSurface
-          className='flex w-full items-center justify-between gap-5'
-          rounded='sm'
-        >
-          <BaseControlledNumberInput
-            wrapperProps={passingPointsWrapperProps}
-            label='Passing Points'
-            name='passingPoints'
-            control={control}
-            fullWidth
-            asterisk
-          />
-          <BaseControlledCheckbox
-            labelClassName='mt-0.5 !text-base'
-            name='randomizeQuestions'
-            label='Randomize Questions'
-            control={control}
-          />
-        </BaseSurface>
-        <ExamUpsertQuestionList />
-      </fieldset>
-    </div>
+        )}
+      </BaseModal>
+    </>
   );
 });

@@ -1,28 +1,30 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import cx from 'classix';
 
+import { ExActTextType } from '#/core/models/core.model';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseTooltip } from '#/base/components/base-tooltip.component';
+import { BaseControlledImageUploader } from '#/base/components/base-image-uploader.component';
 import { BaseControlledTextArea } from '#/base/components/base-textarea.component';
 import { defaultQuestion } from '../helpers/exam-form.helper';
 import { ExamUpsertQuestionChoiceList } from './exam-upsert-question-choice-list.component';
 
-import type { ComponentProps } from 'react';
-import type { Control } from 'react-hook-form';
+import type { ChangeEvent, ComponentProps } from 'react';
 import type { IconName } from '#/base/models/base.model';
 import type { ExamUpsertFormData } from '../models/exam-form-data.model';
 
 type QuestionProps = {
   index: number;
-  control: Control<ExamUpsertFormData, any>;
   onRemove: (index: number) => () => void;
   onMoveUp: () => void;
   onMoveDown: () => void;
+  onUploadChange: (file: any) => void;
   moveUpDisabled?: boolean;
   moveDownDisabled?: boolean;
 };
@@ -35,23 +37,71 @@ const liAnimation = {
 
 const Question = memo(function ({
   index,
-  control,
   onRemove,
   onMoveDown,
   onMoveUp,
+  onUploadChange,
   moveUpDisabled,
   moveDownDisabled,
 }: QuestionProps) {
+  const { control, setValue } = useFormContext<ExamUpsertFormData>();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const textType = useWatch({ control, name: `questions.${index}.textType` });
+
+  const questionTextTypeIconName = useMemo(
+    () => (textType !== ExActTextType.Text ? 'text-t' : 'image-square'),
+    [textType],
+  );
 
   const orderNumber = useMemo(
     () => (index + 1).toString().padStart(2, '0'),
     [index],
   );
 
+  const textTypeTooltipText = useMemo(() => {
+    if (textType === ExActTextType.Text) {
+      return 'Switch to image input';
+    } else {
+      return 'Switch to text input';
+    }
+  }, [textType]);
+
   const handleIsCollapsed = useCallback(() => {
     setIsCollapsed((prev) => !prev);
   }, []);
+
+  const setTextType = useCallback(() => {
+    const value =
+      textType === ExActTextType.Text
+        ? ExActTextType.Image
+        : ExActTextType.Text;
+
+    setValue(`questions.${index}.textType`, value);
+  }, [index, textType, setValue]);
+
+  const handleUploadChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const { files } = event.target;
+
+      if (!files?.length || !onUploadChange) {
+        return;
+      }
+
+      onUploadChange(files[0]);
+    },
+    [onUploadChange],
+  );
+
+  const handleImageRemove = useCallback(
+    (index: number, cIndex?: number) => () => {
+      if (cIndex != null) {
+        setValue(`questions.${index}.choices.${cIndex}.imageData`, undefined);
+      } else {
+        setValue(`questions.${index}.imageData`, undefined);
+      }
+    },
+    [setValue],
+  );
 
   return (
     <BaseSurface className={cx('w-full !px-0 !pb-2.5 !pt-1')} rounded='sm'>
@@ -90,12 +140,34 @@ const Question = memo(function ({
               onClick={handleIsCollapsed}
             />
           </div>
-          <BaseControlledTextArea
-            name={`questions.${index}.text`}
-            placeholder='Question'
-            control={control}
-            fullWidth
-          />
+          <div className='relative w-full'>
+            {textType === ExActTextType.Image ? (
+              <BaseControlledImageUploader
+                name={`questions.${index}.imageData`}
+                onChange={handleUploadChange}
+                onRemove={handleImageRemove(index)}
+                fullWidth
+              />
+            ) : (
+              <BaseControlledTextArea
+                name={`questions.${index}.text`}
+                placeholder='Question'
+                control={control}
+                fullWidth
+              />
+            )}
+            <div className='absolute right-3.5 top-3 z-20'>
+              <BaseTooltip content={textTypeTooltipText}>
+                <BaseIconButton
+                  name={questionTextTypeIconName}
+                  variant='link'
+                  size='xs'
+                  className='!text-accent hover:!text-primary'
+                  onClick={setTextType}
+                />
+              </BaseTooltip>
+            </div>
+          </div>
           <div className='flex h-input items-center justify-center'>
             <BaseIconButton
               name='x'
@@ -119,6 +191,7 @@ export const ExamUpsertQuestionList = memo(function ({
   className,
   ...moreProps
 }: ComponentProps<'div'>) {
+  const setExActImageEdit = useBoundStore((state) => state.setExActImageEdit);
   const { control, getValues, setValue } = useFormContext<ExamUpsertFormData>();
 
   const {
@@ -173,6 +246,17 @@ export const ExamUpsertQuestionList = memo(function ({
     [move, questions],
   );
 
+  const handleUploadChange = useCallback(
+    (index: number) => (file: any) => {
+      setExActImageEdit({
+        index,
+        isQuestion: true,
+        file,
+      });
+    },
+    [setExActImageEdit],
+  );
+
   return (
     <div
       className={cx(
@@ -191,10 +275,10 @@ export const ExamUpsertQuestionList = memo(function ({
           >
             <Question
               index={index}
-              control={control}
               onRemove={handleRemove}
               onMoveUp={handleMove(index, true)}
               onMoveDown={handleMove(index, false)}
+              onUploadChange={handleUploadChange(index)}
               moveUpDisabled={index <= 0}
               moveDownDisabled={index >= questions.length - 1}
             />

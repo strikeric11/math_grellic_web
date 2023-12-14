@@ -6,21 +6,36 @@ export enum RecordStatus {
   Published = 'published',
 }
 
+export enum ExActTextType {
+  Text = 'text',
+  Expression = 'expression',
+  Image = 'image',
+}
+
 export type AuditTrail = {
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
 };
 
+export type ExActImageEdit = {
+  file: any;
+  isQuestion: boolean;
+  index: number;
+  cIndex?: number;
+};
+
 export type CoreSlice = {
   socket?: Socket;
   openRegister?: boolean;
   openLogin?: boolean;
+  exActImageEdit?: ExActImageEdit;
   sidebarMode: SidebarMode;
   rightSidebarMode: Omit<SidebarMode, 'Hidden'>;
   setSocket: (socket: Socket) => void;
   setOpenRegister: (openRegister?: boolean) => void;
   setOpenLogin: (openLogin?: boolean) => void;
+  setExActImageEdit: (exActImageEdit?: ExActImageEdit) => void;
   setSidebarMode: (sidebarMode: SidebarMode) => void;
   toggleRightSidebarMode: () => void;
 };

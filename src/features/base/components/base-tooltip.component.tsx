@@ -21,6 +21,7 @@ import { BaseSurface } from './base-surface.component';
 
 import type { ReactNode } from 'react';
 import type { Placement, UseHoverProps } from '@floating-ui/react';
+import { useClickAway } from '@uidotdev/usehooks';
 
 type Props = UseHoverProps & {
   children: ReactNode;
@@ -41,15 +42,21 @@ export const BaseTooltip = memo(
   ) {
     // For floating ui tooltip
     const [isOpen, setIsOpen] = useState(false);
+
     const { refs, floatingStyles, context } = useFloating({
       open: isOpen,
       onOpenChange: setIsOpen,
       placement,
       middleware: [shift(), flip(), offset(10)],
     });
+
+    const awayRef = useClickAway(() => {
+      setIsOpen(false);
+    });
+
     const hover = useHover(context, { delay, ...moreProps });
     const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
-    const mergedRef = useMergeRefs([refs.setReference, ref]);
+    const mergedRef = useMergeRefs([refs.setReference, ref, awayRef]);
     // ------------------------
 
     const transformedChildren = useMemo(

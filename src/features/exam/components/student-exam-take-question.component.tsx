@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { alphabet } from '#/utils/string.util';
+import { ExActTextType } from '#/core/models/core.model';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 
@@ -94,7 +95,7 @@ export const StudentExamTakeQuestion = memo(function ({
         {questionText}
       </p>
       <ol className='flex flex-col items-start rounded-sm'>
-        {choices.map(({ orderNumber, id, text, isExpression }) => (
+        {choices.map(({ orderNumber, id, text, textType }) => (
           <li
             key={`c-${orderNumber}`}
             className='w-full border-b border-accent/20 last:border-b-0'
@@ -115,7 +116,8 @@ export const StudentExamTakeQuestion = memo(function ({
               <div
                 className={cx(
                   'min-h-[40px] flex-1 pr-5 transition-[padding]',
-                  isExpression ? 'pb-1 pt-2' : 'py-2',
+                  // TODO
+                  textType === ExActTextType.Expression ? 'pb-1 pt-2' : 'py-2',
                   isChoiceSelected(preview ? orderNumber : id)
                     ? 'bg-green-100 pl-10'
                     : 'bg-white pl-5',
@@ -131,7 +133,8 @@ export const StudentExamTakeQuestion = memo(function ({
                 >
                   {getChoiceLabel(orderNumber - 1)}.
                 </span>
-                {isExpression ? (
+                {/* TODO */}
+                {textType === ExActTextType.Expression ? (
                   <StaticMathField>{text}</StaticMathField>
                 ) : (
                   <span>{text}</span>

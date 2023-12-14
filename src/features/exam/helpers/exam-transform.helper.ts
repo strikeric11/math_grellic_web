@@ -88,6 +88,7 @@ export function transformToExamQuestion({
   updatedAt,
   orderNumber,
   text,
+  textType,
   choices,
 }: any): ExamQuestion {
   const transformedChoices = choices
@@ -97,6 +98,7 @@ export function transformToExamQuestion({
   return {
     orderNumber,
     text,
+    textType,
     choices: transformedChoices,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
@@ -108,14 +110,14 @@ export function transformToExamQuestionChoice({
   updatedAt,
   orderNumber,
   text,
+  textType,
   isCorrect,
-  isExpression,
 }: any): ExamQuestionChoice {
   return {
     orderNumber,
     text,
+    textType,
     isCorrect,
-    isExpression,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
@@ -254,6 +256,7 @@ export function transformToExamQuestionFormData({
   id,
   orderNumber,
   text,
+  textType,
   choices,
 }: any): ExamQuestionFormData {
   const transformedChoices =
@@ -265,6 +268,7 @@ export function transformToExamQuestionFormData({
     id,
     orderNumber,
     text,
+    textType,
     choices: transformedChoices,
   };
 }
@@ -273,15 +277,15 @@ export function transformToExamQuestionChoiceFormData({
   id,
   orderNumber,
   text,
+  textType,
   isCorrect,
-  isExpression,
 }: any): ExamQuestionChoiceFormData {
   return {
     id,
     orderNumber,
     text,
+    textType,
     isCorrect,
-    isExpression,
   };
 }
 
@@ -358,15 +362,15 @@ export function transformToExamQuestionChoiceUpsertDto({
   id,
   orderNumber,
   text,
+  textType,
   isCorrect,
-  isExpression,
 }: any) {
   return {
     id,
     orderNumber,
     text,
+    textType,
     isCorrect,
-    isExpression,
   };
 }
 

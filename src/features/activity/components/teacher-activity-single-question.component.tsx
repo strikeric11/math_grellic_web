@@ -3,6 +3,7 @@ import { StaticMathField } from 'react-mathquill';
 import cx from 'classix';
 
 import { alphabet } from '#/utils/string.util';
+import { ExActTextType } from '#/core/models/core.model';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
@@ -19,7 +20,7 @@ type Props = ComponentProps<typeof BaseSurface> & {
 };
 
 const Choice = memo(function ({
-  choice: { orderNumber, text, isExpression, isCorrect },
+  choice: { orderNumber, text, textType, isCorrect },
 }: {
   choice: ActivityCategoryQuestionChoice;
 }) {
@@ -39,7 +40,8 @@ const Choice = memo(function ({
         <div
           className={cx(
             'min-h-[40px] flex-1 bg-white pr-5 transition-[padding]  group-hover/choice:bg-green-100',
-            isExpression ? 'pb-1 pt-2' : 'py-2',
+            // TODO
+            textType === ExActTextType.Expression ? 'pb-1 pt-2' : 'py-2',
             isCorrect ? 'pl-11' : 'pl-5',
           )}
         >
@@ -51,7 +53,8 @@ const Choice = memo(function ({
           >
             {getChoiceLabel(orderNumber - 1)}.
           </span>
-          {isExpression ? (
+          {/* TODO */}
+          {textType === ExActTextType.Expression ? (
             <StaticMathField>{text}</StaticMathField>
           ) : (
             <span>{text}</span>

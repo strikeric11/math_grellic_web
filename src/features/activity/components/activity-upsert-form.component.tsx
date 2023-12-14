@@ -10,7 +10,7 @@ import cx from 'classix';
 
 import { getErrorMessage } from '#/utils/string.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
-import { RecordStatus } from '#/core/models/core.model';
+import { ExActTextType, RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
 import { BaseStepper } from '#/base/components/base-stepper.component';
@@ -49,7 +49,7 @@ const choiceSchema = z.object({
     .int()
     .gt(0, 'Choice number is invalid'),
   text: z.string().min(1, 'Choice is required'),
-  isExpression: z.boolean(),
+  textType: z.nativeEnum(ExActTextType),
   isCorrect: z.boolean(),
 });
 
@@ -60,6 +60,7 @@ const questionSchema = z.object({
     .int()
     .gt(0, 'Question number is invalid'),
   text: z.string().min(1, 'Question is required'),
+  textType: z.nativeEnum(ExActTextType),
   choices: z.array(choiceSchema).min(2),
   stageNumber: z.number().optional(),
 });
