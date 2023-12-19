@@ -65,16 +65,17 @@ export const ExamUpsertFormStep2 = memo(function ({
     (data: string | null) => {
       const { isQuestion, index, cIndex } = exActImageEdit || {};
 
+      if (index == null) {
+        return;
+      }
+
       if (isQuestion) {
-        index != null &&
-          setValue(`questions.${index}.imageData`, data || undefined);
-      } else {
-        index != null &&
-          cIndex != null &&
-          setValue(
-            `questions.${index}.choices.${cIndex}.imageData`,
-            data || undefined,
-          );
+        cIndex == null
+          ? setValue(`questions.${index}.imageData`, data || undefined)
+          : setValue(
+              `questions.${index}.choices.${cIndex}.imageData`,
+              data || undefined,
+            );
       }
 
       handleSetOpenImageCropModal(false)();

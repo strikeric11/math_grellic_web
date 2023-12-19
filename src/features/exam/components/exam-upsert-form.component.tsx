@@ -5,7 +5,7 @@ import { Menu } from '@headlessui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import isTime from 'validator/lib/isTime';
-import { Base64 } from 'js-base64';
+import isBase64 from 'validator/lib/isBase64';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
@@ -118,6 +118,7 @@ const schema = z
       })
       .optional(),
     studentIds: z.array(z.number()).nullable().optional(),
+    slug: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     if (
@@ -161,7 +162,8 @@ const schema = z
       } else if (
         question.textType === ExActTextType.Image &&
         (!question.imageData ||
-          !Base64.isValid(Base64.encode(question.imageData)))
+          (!data.slug?.trim() &&
+            !isBase64(question.imageData?.split(',').pop() || '')))
       ) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -183,7 +185,8 @@ const schema = z
         } else if (
           choice.textType === ExActTextType.Image &&
           (!choice.imageData ||
-            !Base64.isValid(Base64.encode(choice.imageData)))
+            (!data.slug?.trim() &&
+              !isBase64(choice.imageData?.split(',').pop() || '')))
         ) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
@@ -325,17 +328,17 @@ export const ExamUpsertForm = memo(function ({
 
   const handleSubmitError = useCallback(
     (errors: FieldErrors<ExamUpsertFormData>) => {
-      console.log(getValues());
       const errorMessage = getErrorMessage(errors);
       toast.error(errorMessage || '');
     },
-    [getValues],
+    [],
   );
 
   const submitForm = useCallback(
     async (data: ExamUpsertFormData, status?: RecordStatus) => {
       try {
         const targetData = status ? { ...data, status } : data;
+        // TODO set imageUrls to designated questions and choices
         const exam = await onSubmit(targetData);
 
         toast.success(

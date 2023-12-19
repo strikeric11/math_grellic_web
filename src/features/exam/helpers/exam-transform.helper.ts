@@ -1,5 +1,9 @@
 import dayjs from '#/config/dayjs.config';
-import { transformToBaseModel } from '#/base/helpers/base.helper';
+import { ExActTextType } from '#/core/models/core.model';
+import {
+  getQuestionImageUrl,
+  transformToBaseModel,
+} from '#/base/helpers/base.helper';
 import { transformToStudentUserAccount } from '#/user/helpers/user-transform.helper';
 import { transformToLesson } from '#/lesson/helpers/lesson-transform.helper';
 
@@ -194,6 +198,7 @@ export function transformToExamCompletionQuestionAnswer({
 export function transformToExamFormData({
   status,
   orderNumber,
+  slug,
   title,
   randomizeQuestions,
   visibleQuestionsCount,
@@ -235,6 +240,7 @@ export function transformToExamFormData({
   return {
     status,
     orderNumber,
+    slug,
     title,
     randomizeQuestions,
     visibleQuestionsCount,
@@ -264,12 +270,16 @@ export function transformToExamQuestionFormData({
       transformToExamQuestionChoiceFormData(choice),
     ) || [];
 
+  const imageData =
+    textType === ExActTextType.Image ? getQuestionImageUrl(text) : undefined;
+
   return {
     id,
     orderNumber,
     text,
     textType,
     choices: transformedChoices,
+    imageData,
   };
 }
 
@@ -280,12 +290,16 @@ export function transformToExamQuestionChoiceFormData({
   textType,
   isCorrect,
 }: any): ExamQuestionChoiceFormData {
+  const imageData =
+    textType === ExActTextType.Image ? getQuestionImageUrl(text) : undefined;
+
   return {
     id,
     orderNumber,
     text,
     textType,
     isCorrect,
+    imageData,
   };
 }
 
@@ -307,13 +321,14 @@ export function transformToExamUpsertDto({
   endTime,
   studentIds,
 }: any) {
-  const formattedStartDate = dayjs(startDate).format('YYYY-MM-DD');
-  const formattedEndDate = dayjs(endDate).format('YYYY-MM-DD');
+  const transformedStartDate = startDate
+    ? dayjs(`${dayjs(startDate).format('YYYY-MM-DD')} ${startTime}`).toDate()
+    : undefined;
 
-  const transformedStartDate = dayjs(
-    `${formattedStartDate} ${startTime}`,
-  ).toDate();
-  const transformedEndDate = dayjs(`${formattedEndDate} ${endTime}`).toDate();
+  const transformedEndDate = endDate
+    ? dayjs(`${dayjs(endDate).format('YYYY-MM-DD')} ${endTime}`).toDate()
+    : undefined;
+
   const transformedStudentsIds = !studentIds?.length ? null : studentIds;
 
   const questionsDto =
@@ -343,6 +358,7 @@ export function transformToExamQuestionUpsertDto({
   id,
   orderNumber,
   text,
+  textType,
   choices,
 }: any) {
   const choicesDto =
@@ -354,6 +370,7 @@ export function transformToExamQuestionUpsertDto({
     id,
     orderNumber,
     text,
+    textType,
     choices: choicesDto,
   };
 }

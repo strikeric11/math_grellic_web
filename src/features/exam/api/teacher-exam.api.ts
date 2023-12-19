@@ -7,6 +7,10 @@ import {
   transformToExam,
   transformToExamUpsertDto,
 } from '../helpers/exam-transform.helper';
+import {
+  generateImageFormData,
+  generateImageFormDataStrict,
+} from '../helpers/exam-form.helper';
 
 import type {
   UseMutationOptions,
@@ -113,6 +117,45 @@ export function getExamBySlugAndCurrentTeacherUser(
   };
 }
 
+export function validateUpsertExam(
+  options?: Omit<
+    UseMutationOptions<
+      boolean,
+      Error,
+      { data: ExamUpsertFormData; slug?: string; scheduleId?: number },
+      any
+    >,
+    'mutationFn'
+  >,
+) {
+  const mutationFn = async ({
+    slug,
+    data,
+    scheduleId,
+  }: {
+    data: ExamUpsertFormData;
+    slug?: string;
+    scheduleId?: number;
+  }): Promise<boolean> => {
+    const url = `${BASE_URL}/validate`;
+    const json = transformToExamUpsertDto(data);
+    const searchParams = generateSearchParams({
+      slug: slug?.toString(),
+      schedule: scheduleId?.toString(),
+    });
+
+    try {
+      await kyInstance.post(url, { json, searchParams }).json();
+      return true;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return { mutationFn, ...options };
+}
+
 export function createExam(
   options?: Omit<
     UseMutationOptions<Exam, Error, ExamUpsertFormData, any>,
@@ -181,6 +224,39 @@ export function deleteExam(
     try {
       const success: boolean = await kyInstance.delete(url).json();
       return success;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return { mutationFn, ...options };
+}
+
+export function uploadExamImages(
+  options?: Omit<
+    UseMutationOptions<
+      string[],
+      Error,
+      { data: ExamUpsertFormData; strict?: boolean },
+      any
+    >,
+    'mutationFn'
+  >,
+) {
+  const mutationFn = async (options: {
+    data: ExamUpsertFormData;
+    strict?: boolean;
+  }): Promise<any> => {
+    const { data, strict } = options;
+    const url = `upload/${BASE_URL}/images`;
+    const { orderNumber, questions } = data;
+    const formData = await (strict
+      ? generateImageFormDataStrict(orderNumber || 0, questions)
+      : generateImageFormData(orderNumber || 0, questions));
+
+    try {
+      return kyInstance.post(url, { body: formData }).json();
     } catch (error: any) {
       const apiError = await generateApiError(error);
       throw apiError;

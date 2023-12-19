@@ -10,7 +10,7 @@ import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseTooltip } from '#/base/components/base-tooltip.component';
-import { BaseControlledImageUploader } from '#/base/components/base-image-uploader.component';
+import { BaseImageUploader } from '#/base/components/base-image-uploader.component';
 import { BaseControlledTextArea } from '#/base/components/base-textarea.component';
 import { defaultQuestion } from '../helpers/exam-form.helper';
 import { ExamUpsertQuestionChoiceList } from './exam-upsert-question-choice-list.component';
@@ -44,9 +44,10 @@ const Question = memo(function ({
   moveUpDisabled,
   moveDownDisabled,
 }: QuestionProps) {
-  const { control, setValue } = useFormContext<ExamUpsertFormData>();
+  const { control, setValue, formState } = useFormContext<ExamUpsertFormData>();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const textType = useWatch({ control, name: `questions.${index}.textType` });
+  const imageData = useWatch({ control, name: `questions.${index}.imageData` });
 
   const questionTextTypeIconName = useMemo(
     () => (textType !== ExActTextType.Text ? 'text-t' : 'image-square'),
@@ -56,6 +57,13 @@ const Question = memo(function ({
   const orderNumber = useMemo(
     () => (index + 1).toString().padStart(2, '0'),
     [index],
+  );
+
+  const errorMessage = useMemo(
+    () =>
+      formState.errors.questions &&
+      formState.errors.questions[index]?.imageData?.message,
+    [formState, index],
   );
 
   const textTypeTooltipText = useMemo(() => {
@@ -93,12 +101,8 @@ const Question = memo(function ({
   );
 
   const handleImageRemove = useCallback(
-    (index: number, cIndex?: number) => () => {
-      if (cIndex != null) {
-        setValue(`questions.${index}.choices.${cIndex}.imageData`, undefined);
-      } else {
-        setValue(`questions.${index}.imageData`, undefined);
-      }
+    (index: number) => () => {
+      setValue(`questions.${index}.imageData`, undefined);
     },
     [setValue],
   );
@@ -141,18 +145,20 @@ const Question = memo(function ({
             />
           </div>
           <div className='relative w-full'>
-            {textType === ExActTextType.Image ? (
-              <BaseControlledImageUploader
-                name={`questions.${index}.imageData`}
-                onChange={handleUploadChange}
-                onRemove={handleImageRemove(index)}
-                fullWidth
-              />
-            ) : (
+            {textType === ExActTextType.Text ? (
               <BaseControlledTextArea
                 name={`questions.${index}.text`}
                 placeholder='Question'
                 control={control}
+                fullWidth
+              />
+            ) : (
+              <BaseImageUploader
+                name={`questions.${index}.imageData`}
+                value={imageData}
+                errorMessage={errorMessage}
+                onChange={handleUploadChange}
+                onRemove={handleImageRemove(index)}
                 fullWidth
               />
             )}
