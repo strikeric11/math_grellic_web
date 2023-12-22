@@ -4,6 +4,7 @@ import cx from 'classix';
 
 import { alphabet } from '#/utils/string.util';
 import { ExActTextType } from '#/core/models/core.model';
+import { getQuestionImageUrl } from '#/base/helpers/base.helper';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
@@ -21,6 +22,25 @@ const Choice = memo(function ({
 }: {
   choice: ExamQuestionChoice;
 }) {
+  const textComponent = useMemo(() => {
+    const value =
+      textType === ExActTextType.Image ? getQuestionImageUrl(text) : text;
+
+    switch (textType) {
+      case ExActTextType.Text:
+        return <span>{value}</span>;
+      case ExActTextType.Expression:
+        return <StaticMathField>{value}</StaticMathField>;
+      default:
+        return (
+          <img
+            src={value}
+            className='overflow-hidden rounded border border-primary-border-light object-contain'
+          />
+        );
+    }
+  }, [text, textType]);
+
   const getChoiceLabel = useCallback(
     (index: number) => alphabet[index].toUpperCase(),
     [],
@@ -30,32 +50,26 @@ const Choice = memo(function ({
     <li className='w-full border-b border-accent/20 last:border-b-0'>
       <div className='relative flex w-full items-center'>
         {isCorrect && (
-          <div className='z-11 absolute left-0 top-0 flex h-full items-center justify-center px-3 text-green-500'>
+          <div className='z-11 absolute left-0 top-0 flex h-full items-start justify-center px-3 py-2.5 text-green-500'>
             <BaseIcon name='check-fat' weight='fill' size={20} />
           </div>
         )}
         <div
           className={cx(
-            'min-h-[40px] flex-1 bg-white pr-5 transition-[padding]  group-hover/choice:bg-green-100',
-            // TODO
+            'flex min-h-[40px] flex-1 bg-white pl-10  pr-5 transition-[padding] group-hover/choice:bg-green-100',
+            textType === ExActTextType.Image ? 'items-start' : 'items-center',
             textType === ExActTextType.Expression ? 'pb-1 pt-2' : 'py-2',
-            isCorrect ? 'pl-11' : 'pl-5',
           )}
         >
           <span
             className={cx(
-              'mr-2.5 font-medium opacity-70',
+              'mx-2.5 inline-block w-6 text-left font-medium opacity-70',
               isCorrect && 'text-green-600',
             )}
           >
             {getChoiceLabel(orderNumber - 1)}.
           </span>
-          {/* TODO */}
-          {textType === ExActTextType.Expression ? (
-            <StaticMathField>{text}</StaticMathField>
-          ) : (
-            <span>{text}</span>
-          )}
+          {textComponent}
         </div>
       </div>
     </li>
@@ -69,8 +83,15 @@ export const TeacherExamSingleQuestion = memo(function ({
 }: Props) {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
-  const [questionText, questionOrderNumber, choices] = useMemo(
-    () => [question.text, question.orderNumber, question.choices],
+  const [orderNumber, text, isImage, choices] = useMemo(
+    () => [
+      question.orderNumber,
+      question.textType === ExActTextType.Image
+        ? getQuestionImageUrl(question.text)
+        : question.text,
+      question.textType === ExActTextType.Image,
+      question.choices,
+    ],
     [question],
   );
 
@@ -86,7 +107,12 @@ export const TeacherExamSingleQuestion = memo(function ({
       rounded='sm'
       {...moreProps}
     >
-      <div className='flex items-center gap-x-1 border-b border-accent/20 px-1'>
+      <div
+        className={cx(
+          'flex gap-x-1 border-b border-accent/20 px-1',
+          isImage ? 'items-start' : 'items-center',
+        )}
+      >
         <div className='flex h-input items-center justify-center'>
           <BaseIconButton
             name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
@@ -95,12 +121,19 @@ export const TeacherExamSingleQuestion = memo(function ({
             onClick={handleIsCollapsed}
           />
         </div>
-        <p>
-          <span className='pr-2.5 font-medium opacity-70'>
-            {questionOrderNumber.toString().padStart(2, '0')}.
-          </span>
-          {questionText}
-        </p>
+        <span className='py-[18px] pr-2.5 font-medium opacity-70'>
+          {orderNumber.toString().padStart(2, '0')}.
+        </span>
+        {!isImage ? (
+          <span>{text}</span>
+        ) : (
+          <div className='py-2.5'>
+            <img
+              src={text}
+              className='overflow-hidden rounded border border-primary-border-light object-contain'
+            />
+          </div>
+        )}
       </div>
       <ol className='flex flex-col items-start rounded-sm'>
         {isCollapsed

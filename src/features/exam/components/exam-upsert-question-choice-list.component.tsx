@@ -170,14 +170,25 @@ const Choice = memo(function ({
             )}
           </div>
         ) : (
-          <BaseImageUploader
-            name={choiceName}
-            value={imageData}
-            errorMessage={errorMessage}
-            onChange={handleUploadChange}
-            onRemove={onImageRemove}
-            fullWidth
-          />
+          <div className='group/image relative'>
+            <BaseImageUploader
+              name={choiceName}
+              value={imageData}
+              errorMessage={errorMessage}
+              onChange={handleUploadChange}
+              onRemove={onImageRemove}
+              fullWidth
+            />
+            <span
+              className={cx(
+                'absolute left-15px top-2.5 z-20 flex w-6 items-center justify-center overflow-hidden rounded-sm bg-white',
+                'text-lg font-medium leading-snug opacity-0 group-hover/image:!opacity-100',
+                isCorrect ? 'text-green-500' : 'text-accent/50',
+              )}
+            >
+              {choiceLabel}
+            </span>
+          </div>
         )}
         <div className='absolute right-2 top-1.5 z-20'>
           <BaseTooltip content={textTypeTooltipText} placement='left'>

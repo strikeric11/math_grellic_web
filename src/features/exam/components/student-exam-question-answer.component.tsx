@@ -3,6 +3,7 @@ import { StaticMathField } from 'react-mathquill';
 import cx from 'classix';
 
 import { alphabet } from '#/utils/string.util';
+import { getQuestionImageUrl } from '#/base/helpers/base.helper';
 import { ExActTextType } from '#/core/models/core.model';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
@@ -26,6 +27,25 @@ const Choice = memo(function ({ className, choice }: ChoiceProps) {
     [choice],
   );
 
+  const textComponent = useMemo(() => {
+    const value =
+      textType === ExActTextType.Image ? getQuestionImageUrl(text) : text;
+
+    switch (textType) {
+      case ExActTextType.Text:
+        return <span>{value}</span>;
+      case ExActTextType.Expression:
+        return <StaticMathField>{value}</StaticMathField>;
+      default:
+        return (
+          <img
+            src={value}
+            className='overflow-hidden rounded border border-primary-border-light object-contain'
+          />
+        );
+    }
+  }, [text, textType]);
+
   const getChoiceLabel = useCallback(
     (index: number) => alphabet[index].toUpperCase(),
     [],
@@ -34,17 +54,17 @@ const Choice = memo(function ({ className, choice }: ChoiceProps) {
   return (
     <div
       className={cx(
-        'flex w-full items-center',
+        'flex w-full items-start',
         isCorrect ? 'bg-green-100' : 'bg-red-100',
         className,
       )}
     >
       {!choice ? (
         <>
-          <div className='h-full px-2.5 text-red-500'>
+          <div className='h-full px-2.5 py-2 text-red-500'>
             <BaseIcon name='x-circle' size={28} weight='bold' />
           </div>
-          <div className='min-h-[40px] flex-1 py-2 pr-5'>
+          <div className='min-h-[40px] flex-1 py-2.5 pr-5'>
             <span className='text-accent/80'>None selected</span>
           </div>
         </>
@@ -52,7 +72,7 @@ const Choice = memo(function ({ className, choice }: ChoiceProps) {
         <>
           <div
             className={cx(
-              'h-full px-2.5',
+              'h-full py-2 pl-3 pr-3.5',
               isCorrect ? 'text-green-500' : 'text-red-500',
             )}
           >
@@ -64,20 +84,20 @@ const Choice = memo(function ({ className, choice }: ChoiceProps) {
           </div>
           <div
             className={cx(
-              'min-h-[40px] flex-1 pr-5',
-              // TODO
+              'flex min-h-[40px] flex-1 py-2.5 pr-5',
+              textType === ExActTextType.Image ? 'items-start' : 'items-center',
               textType === ExActTextType.Expression ? 'pb-1 pt-2' : 'py-2',
             )}
           >
-            <span className='mr-2.5 font-medium opacity-70'>
+            <span
+              className={cx(
+                'mr-1 inline-block w-6 text-left font-medium opacity-70',
+                isCorrect ? 'text-green-600' : 'text-red-600',
+              )}
+            >
               {getChoiceLabel(orderNumber - 1)}.
             </span>
-            {/* TODO */}
-            {textType === ExActTextType.Expression ? (
-              <StaticMathField>{text}</StaticMathField>
-            ) : (
-              <span>{text}</span>
-            )}
+            {textComponent}
           </div>
         </>
       )}
@@ -91,10 +111,13 @@ export const StudentExamQuestionAnswer = memo(function ({
   selectedChoiceId,
   ...moreProps
 }: Props) {
-  const [questionOrderNumber, questionText, choices, selectedChoice] = useMemo(
+  const [orderNumber, text, isImage, choices, selectedChoice] = useMemo(
     () => [
       question.orderNumber,
-      question.text,
+      question.textType === ExActTextType.Image
+        ? getQuestionImageUrl(question.text)
+        : question.text,
+      question.textType === ExActTextType.Image,
       question.choices,
       question.choices.find((c) => c.id === selectedChoiceId),
     ],
@@ -115,12 +138,26 @@ export const StudentExamQuestionAnswer = memo(function ({
       rounded='sm'
       {...moreProps}
     >
-      <p className='border-b border-accent/20 p-4'>
-        <span className='pr-2.5 font-medium opacity-70'>
-          {questionOrderNumber.toString().padStart(2, '0')}.
+      <div
+        className={cx(
+          'flex gap-x-1 border-b border-accent/20 px-4',
+          isImage ? 'items-start' : 'items-center',
+        )}
+      >
+        <span className='py-[18px] pr-2.5 font-medium opacity-70'>
+          {orderNumber.toString().padStart(2, '0')}.
         </span>
-        {questionText}
-      </p>
+        {!isImage ? (
+          <span>{text}</span>
+        ) : (
+          <div className='py-2.5'>
+            <img
+              src={text}
+              className='overflow-hidden rounded border border-primary-border-light object-contain'
+            />
+          </div>
+        )}
+      </div>
       <div className='flex flex-col items-start rounded-sm'>
         <Choice choice={selectedChoice} />
         {answerChoice && <Choice className='!bg-white' choice={answerChoice} />}

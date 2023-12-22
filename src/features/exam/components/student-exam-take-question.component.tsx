@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { alphabet } from '#/utils/string.util';
+import { getQuestionImageUrl } from '#/base/helpers/base.helper';
 import { ExActTextType } from '#/core/models/core.model';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
@@ -20,7 +21,33 @@ type Props = ComponentProps<typeof BaseSurface> & {
   preview?: boolean;
 };
 
+type ChoiceTextProps = {
+  text: string;
+  textType: ExActTextType;
+};
+
 type ControlledProps = Props & UseControllerProps<StudentExamFormData>;
+
+const ChoiceText = memo(function ({ text, textType }: ChoiceTextProps) {
+  const value = useMemo(
+    () => (textType === ExActTextType.Image ? getQuestionImageUrl(text) : text),
+    [textType, text],
+  );
+
+  switch (textType) {
+    case ExActTextType.Text:
+      return <span>{value}</span>;
+    case ExActTextType.Expression:
+      return <StaticMathField>{value}</StaticMathField>;
+    default:
+      return (
+        <img
+          src={value}
+          className='overflow-hidden rounded border border-primary-border-light object-contain'
+        />
+      );
+  }
+});
 
 export const StudentExamTakeQuestion = memo(function ({
   className,
@@ -35,8 +62,16 @@ export const StudentExamTakeQuestion = memo(function ({
     field: { value, onChange },
   } = useController<any>({ name, control });
 
-  const [questionText, questionId, questionOrderNumber, choices] = useMemo(
-    () => [question.text, question.id, question.orderNumber, question.choices],
+  const [questionId, orderNumber, text, isImage, choices] = useMemo(
+    () => [
+      question.id,
+      question.orderNumber,
+      question.textType === ExActTextType.Image
+        ? getQuestionImageUrl(question.text)
+        : question.text,
+      question.textType === ExActTextType.Image,
+      question.choices,
+    ],
     [question],
   );
 
@@ -64,36 +99,43 @@ export const StudentExamTakeQuestion = memo(function ({
 
       if (preview) {
         onChange({
-          questionId: questionOrderNumber,
+          questionId: orderNumber,
           selectedQuestionChoiceId: choiceId,
         });
       } else {
         onChange({ questionId, selectedQuestionChoiceId: choiceId });
       }
     },
-    [
-      preview,
-      isExpired,
-      questionId,
-      questionOrderNumber,
-      onChange,
-      isChoiceSelected,
-    ],
+    [preview, isExpired, questionId, orderNumber, onChange, isChoiceSelected],
   );
 
   return (
     <BaseSurface
-      id={`q-${questionOrderNumber}`}
+      id={`q-${orderNumber}`}
       className={cx('w-full overflow-hidden !p-0', className)}
       rounded='sm'
       {...moreProps}
     >
-      <p className='border-b border-accent/20 p-4'>
-        <span className='pr-2.5 font-medium opacity-70'>
-          {questionOrderNumber.toString().padStart(2, '0')}.
+      <div
+        className={cx(
+          'flex gap-x-1 border-b border-accent/20 pl-5 pr-1',
+          isImage ? 'items-start' : 'items-center',
+        )}
+      >
+        <span className='py-[18px] pr-2.5 font-medium opacity-70'>
+          {orderNumber.toString().padStart(2, '0')}.
         </span>
-        {questionText}
-      </p>
+        {!isImage ? (
+          <span>{text}</span>
+        ) : (
+          <div className='py-2.5'>
+            <img
+              src={text}
+              className='overflow-hidden rounded border border-primary-border-light object-contain'
+            />
+          </div>
+        )}
+      </div>
       <ol className='flex flex-col items-start rounded-sm'>
         {choices.map(({ orderNumber, id, text, textType }) => (
           <li
@@ -115,8 +157,10 @@ export const StudentExamTakeQuestion = memo(function ({
               )}
               <div
                 className={cx(
-                  'min-h-[40px] flex-1 pr-5 transition-[padding]',
-                  // TODO
+                  'flex min-h-[40px] flex-1 pr-5 transition-[padding]',
+                  textType === ExActTextType.Image
+                    ? 'items-start'
+                    : 'items-center',
                   textType === ExActTextType.Expression ? 'pb-1 pt-2' : 'py-2',
                   isChoiceSelected(preview ? orderNumber : id)
                     ? 'bg-green-100 pl-10'
@@ -133,12 +177,7 @@ export const StudentExamTakeQuestion = memo(function ({
                 >
                   {getChoiceLabel(orderNumber - 1)}.
                 </span>
-                {/* TODO */}
-                {textType === ExActTextType.Expression ? (
-                  <StaticMathField>{text}</StaticMathField>
-                ) : (
-                  <span>{text}</span>
-                )}
+                <ChoiceText text={text} textType={textType} />
               </div>
             </div>
           </li>
