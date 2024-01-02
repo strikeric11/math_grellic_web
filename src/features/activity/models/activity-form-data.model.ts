@@ -7,6 +7,7 @@ export type ActivityCategoryQuestionChoiceFormData = {
   text: string;
   textType: ExActTextType;
   isCorrect: boolean;
+  imageData?: string;
 };
 
 export type ActivityCategoryQuestionFormData = {
@@ -16,6 +17,7 @@ export type ActivityCategoryQuestionFormData = {
   textType: ExActTextType;
   choices: ActivityCategoryQuestionChoiceFormData[];
   stageNumber?: number;
+  imageData?: string;
 };
 
 export type ActivityCategoryStageQuestionsFormData = {

@@ -51,13 +51,14 @@ export const StudentLatestLessonList = memo(function ({
       ) : (
         <>
           {latestLesson && (
-            <StudentLessonSingleCard lesson={latestLesson} primary />
+            <StudentLessonSingleCard lesson={latestLesson} primary fat />
           )}
           {upcomingLesson && (
             <StudentLessonSingleCard
               lesson={upcomingLesson}
               upcomingDuration={upcomingDuration}
               primary={!latestLesson}
+              fat={!latestLesson}
             />
           )}
           {!latestLesson && !upcomingLesson && (

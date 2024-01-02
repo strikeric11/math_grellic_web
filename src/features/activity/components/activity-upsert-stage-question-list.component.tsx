@@ -12,11 +12,12 @@ import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { liAnimation } from '#/utils/animation.util';
-import { createDefaultStageQuestion } from '#/exam/helpers/exam-form.helper';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
+import { createDefaultStageQuestion } from '../helpers/activity-form.helper';
 import { ActivityUpsertStageQuestion } from './activity-upsert-stage-question.component';
 
 import type { ComponentProps } from 'react';
@@ -41,6 +42,7 @@ const StageQuestionList = memo(function ({
   stageIndex,
   onStageRemove,
 }: StageQuestionListProps) {
+  const setExActImageEdit = useBoundStore((state) => state.setExActImageEdit);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const stageNumber = useMemo(() => stageIndex + 1, [stageIndex]);
 
@@ -132,6 +134,17 @@ const StageQuestionList = memo(function ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questions]);
 
+  const handleUploadChange = useCallback(
+    (index: number) => (file: any) => {
+      setExActImageEdit({
+        index,
+        sIndex: stageIndex,
+        file,
+      });
+    },
+    [stageIndex, setExActImageEdit],
+  );
+
   return (
     <BaseSurface
       key={`stage-${stageIndex}`}
@@ -185,6 +198,7 @@ const StageQuestionList = memo(function ({
               onRemove={handleRemove(index)}
               onMoveUp={handleMove(index, true)}
               onMoveDown={handleMove(index, false)}
+              onUploadChange={handleUploadChange(index)}
               moveUpDisabled={index <= 0}
               moveDownDisabled={index >= questions.length - 1}
             />
@@ -206,7 +220,7 @@ const StageQuestionList = memo(function ({
   );
 });
 
-export const ActivityUpsertStageList = memo(function ({
+export const ActivityUpsertStageQuestionList = memo(function ({
   className,
   categoryIndex,
   ...moreProps

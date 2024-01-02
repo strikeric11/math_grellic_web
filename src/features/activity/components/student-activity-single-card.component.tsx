@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import cx from 'classix';
 
 import { convertSecondsToDuration } from '#/utils/time.util';
+import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import {
@@ -32,6 +33,8 @@ type ScoreProps = {
   game: Game;
   score: number | null;
 };
+
+const ACTIVITY_LIST_PATH = `/${studentBaseRoute}/${studentRoutes.activity.to}`;
 
 const Score = memo(function ({ game, score }: ScoreProps) {
   const scoreSuffix = useMemo(() => {
@@ -75,7 +78,7 @@ export const StudentActivitySingleCard = memo(function ({
 }: Props) {
   const [singleTo, orderNumber, title, game, categories, score] = useMemo(
     () => [
-      activity.slug,
+      `${ACTIVITY_LIST_PATH}/${activity.slug}`,
       activity.orderNumber,
       activity.title,
       activity.game,
@@ -127,7 +130,7 @@ export const StudentActivitySingleCard = memo(function ({
     return `${totalStageCount} ${totalStageCount > 1 ? 'Levels' : 'Level'}`;
   }, []);
 
-  const generateStagQuestionCountText = useCallback(
+  const generateStageQuestionCountText = useCallback(
     (category: ActivityCategory) => {
       const visibleQuestionsCount = category.visibleQuestionsCount;
       return `${visibleQuestionsCount} ${
@@ -150,9 +153,14 @@ export const StudentActivitySingleCard = memo(function ({
         rounded='sm'
         {...moreProps}
       >
-        <div className='flex w-full items-center gap-4'>
+        <div className='flex w-full items-stretch gap-4'>
           <Score game={game} score={score} />
-          <div className='flex flex-1 flex-col gap-2.5'>
+          <div
+            className={cx(
+              'flex flex-1 flex-col justify-between',
+              isGameTypeStage && 'pb-2.5',
+            )}
+          >
             {/* Title and status */}
             <div className='flex min-h-[44px] w-full items-center'>
               <h2 className='flex-1 font-body text-lg font-medium tracking-normal text-accent [.primary_&]:text-white'>
@@ -208,7 +216,7 @@ export const StudentActivitySingleCard = memo(function ({
                           {generateStageText(category)}
                         </BaseChip>
                         <BaseChip iconName='list-bullets'>
-                          {generateStagQuestionCountText(category)}
+                          {generateStageQuestionCountText(category)}
                         </BaseChip>
                       </div>
                     )}

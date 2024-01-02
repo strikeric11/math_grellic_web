@@ -5,16 +5,16 @@ import cx from 'classix';
 
 import { alphabet } from '#/utils/string.util';
 import { ExActTextType } from '#/core/models/core.model';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseControlledInput } from '#/base/components/base-input.component';
 import { BaseControlledMathInput } from '#/base/components/base-math-input.component';
+import { BaseImageUploader } from '#/base/components/base-image-uploader.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 
-import type { ComponentProps } from 'react';
-import type { Control } from 'react-hook-form';
-import type { Placement } from '@floating-ui/react';
-import type { IconName } from '#/base/models/base.model';
+import type { ChangeEvent, ComponentProps } from 'react';
 import type {
   ActivityCategoryQuestionChoiceFormData,
   ActivityUpsertFormData,
@@ -28,26 +28,45 @@ type Props = ComponentProps<'div'> & {
 };
 
 type ChoiceProps = {
+  index: number;
+  questionIndex: number;
+  stageIndex: number;
+  categoryIndex: number;
   choice: ActivityCategoryQuestionChoiceFormData;
-  control: Control<ActivityUpsertFormData, any>;
   choiceName: string;
   choiceLabel: string;
   onSetAnswer: () => void;
   onSetTextType: () => void;
+  onUploadChange: (file: any) => void;
   onRemove: () => void;
+  onImageRemove: () => void;
 };
 
 const Choice = memo(function ({
+  index,
+  questionIndex,
+  stageIndex,
+  categoryIndex,
   choice,
-  control,
   choiceName,
   choiceLabel,
   onSetAnswer,
   onSetTextType,
+  onUploadChange,
   onRemove,
+  onImageRemove,
 }: ChoiceProps) {
-  const textType = useMemo(() => choice.textType, [choice]);
-  const isCorrect = useMemo(() => choice.isCorrect, [choice]);
+  const { control, formState } = useFormContext<ActivityUpsertFormData>();
+
+  const [textType, isCorrect] = useMemo(
+    () => [choice.textType, choice.isCorrect, choice.imageData],
+    [choice],
+  );
+
+  const imageData = useWatch({
+    control,
+    name: `categories.${categoryIndex}.stageQuestions.${stageIndex}.questions.${questionIndex}.choices.${index}.imageData`,
+  });
 
   const iconButtonProps = useMemo(
     () => ({
@@ -63,19 +82,61 @@ const Choice = memo(function ({
     [isCorrect],
   );
 
-  // TODO
-  // const rightButtonProps = useMemo(
-  //   () => ({
-  //     name: (isExpression ? 'text-t' : 'function') as IconName,
-  //     isInput: true,
-  //     tooltip: isExpression
-  //       ? 'Switch to normal input'
-  //       : 'Switch to Math Equation input',
-  //     tooltipPlacement: 'left' as Placement,
-  //     onClick: onSetIsExpression,
-  //   }),
-  //   [isExpression, onSetIsExpression],
-  // );
+  const choiceTextTypeIconName = useMemo(() => {
+    switch (textType) {
+      case ExActTextType.Text:
+        return 'function';
+      case ExActTextType.Expression:
+        return 'image-square';
+      default:
+        return 'text-t';
+    }
+  }, [textType]);
+
+  const textTypeTooltipText = useMemo(() => {
+    switch (textType) {
+      case ExActTextType.Text:
+        return 'Switch to expression input';
+      case ExActTextType.Expression:
+        return 'Switch to image input';
+      default:
+        return 'Switch to text input';
+    }
+  }, [textType]);
+
+  const errorMessage = useMemo(() => {
+    try {
+      const errorStageQuestion: any = (formState.errors.categories as any)[
+        categoryIndex
+      ]?.stageQuestions[stageIndex];
+
+      if (!errorStageQuestion) {
+        return undefined;
+      }
+
+      return (
+        errorStageQuestion.questions &&
+        errorStageQuestion.questions[questionIndex]?.choices &&
+        (errorStageQuestion.questions[questionIndex]?.choices as any)[index]
+          ?.imageData?.message
+      );
+    } catch (error) {
+      return null;
+    }
+  }, [formState, index, questionIndex, stageIndex, categoryIndex]);
+
+  const handleUploadChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const { files } = event.target;
+
+      if (!files?.length || !onUploadChange) {
+        return;
+      }
+
+      onUploadChange(files[0]);
+    },
+    [onUploadChange],
+  );
 
   return (
     <div className='flex w-full max-w-[578px] items-start'>
@@ -88,60 +149,76 @@ const Choice = memo(function ({
           {...iconButtonProps}
         />
       </div>
-      <div className='flex h-fit flex-1 basis-full items-center gap-x-2.5 overflow-hidden'>
-        <BaseControlledInput
-          name={choiceName}
-          control={control}
-          leftContent={
-            <div
+      <div className='relative w-full'>
+        {textType !== ExActTextType.Image ? (
+          <div className='flex h-fit flex-1 basis-full items-center gap-x-2.5 overflow-hidden'>
+            {textType === ExActTextType.Text ? (
+              <BaseControlledInput
+                name={choiceName}
+                control={control}
+                leftContent={
+                  <div
+                    className={cx(
+                      'absolute left-15px top-1/2 flex w-6 -translate-y-1/2 items-center justify-center text-lg font-medium',
+                      isCorrect ? 'text-green-500' : 'text-accent/50',
+                    )}
+                  >
+                    {choiceLabel}
+                  </div>
+                }
+                fullWidth
+              />
+            ) : (
+              <BaseControlledMathInput
+                className='flex min-h-[48px] items-center'
+                name={choiceName}
+                control={control}
+                leftContent={
+                  <div
+                    className={cx(
+                      'absolute left-15px top-1/2 flex w-6 -translate-y-1/2 items-center justify-center text-lg font-medium',
+                      isCorrect ? 'text-green-500' : 'text-accent/50',
+                    )}
+                  >
+                    {choiceLabel}
+                  </div>
+                }
+                fullWidth
+              />
+            )}
+          </div>
+        ) : (
+          <div className='group/image relative'>
+            <BaseImageUploader
+              name={choiceName}
+              value={imageData}
+              errorMessage={errorMessage}
+              onChange={handleUploadChange}
+              onRemove={onImageRemove}
+              fullWidth
+            />
+            <span
               className={cx(
-                'absolute left-15px top-1/2 flex w-6 -translate-y-1/2 items-center justify-center text-lg font-medium',
+                'absolute left-15px top-2.5 z-20 flex w-6 items-center justify-center overflow-hidden rounded-sm bg-white',
+                'text-lg font-medium leading-snug opacity-0 group-hover/image:!opacity-100',
                 isCorrect ? 'text-green-500' : 'text-accent/50',
               )}
             >
               {choiceLabel}
-            </div>
-          }
-          // rightButtonProps={rightButtonProps}
-          fullWidth
-        />
-        {/* TODO */}
-        {/* {isExpression ? (
-          <BaseControlledMathInput
-            className='flex min-h-[48px] items-center'
-            name={choiceName}
-            control={control}
-            leftContent={
-              <div
-                className={cx(
-                  'absolute left-15px top-1/2 flex w-6 -translate-y-1/2 items-center justify-center text-lg font-medium',
-                  isCorrect ? 'text-green-500' : 'text-accent/50',
-                )}
-              >
-                {choiceLabel}
-              </div>
-            }
-            rightButtonProps={rightButtonProps}
-            fullWidth
-          />
-        ) : (
-          <BaseControlledInput
-            name={choiceName}
-            control={control}
-            leftContent={
-              <div
-                className={cx(
-                  'absolute left-15px top-1/2 flex w-6 -translate-y-1/2 items-center justify-center text-lg font-medium',
-                  isCorrect ? 'text-green-500' : 'text-accent/50',
-                )}
-              >
-                {choiceLabel}
-              </div>
-            }
-            rightButtonProps={rightButtonProps}
-            fullWidth
-          />
-        )} */}
+            </span>
+          </div>
+        )}
+        <div className='absolute right-2 top-1.5 z-20'>
+          <BaseTooltip content={textTypeTooltipText} placement='left'>
+            <BaseIconButton
+              name={choiceTextTypeIconName}
+              variant='link'
+              size='xs'
+              className='!text-accent hover:!text-primary'
+              onClick={onSetTextType}
+            />
+          </BaseTooltip>
+        </div>
       </div>
       <BaseIconButton
         name='x-square'
@@ -161,6 +238,7 @@ export const ActivityUpsertStageQuestionChoiceList = memo(function ({
   isCollapsed,
   ...moreProps
 }: Props) {
+  const setExActImageEdit = useBoundStore((state) => state.setExActImageEdit);
   const { control, getValues, setValue } =
     useFormContext<ActivityUpsertFormData>();
 
@@ -203,8 +281,12 @@ export const ActivityUpsertStageQuestionChoiceList = memo(function ({
 
   const getChoiceName = useCallback(
     (key: string) => {
+      const choice = fields.find((field) => field.key === key);
       const choiceIndex = fields.findIndex((field) => field.key === key);
-      return `categories.${categoryIndex}.stageQuestions.${stageIndex}.questions.${questionIndex}.choices.${choiceIndex}.text`;
+
+      return choice?.textType === ExActTextType.Image
+        ? `categories.${categoryIndex}.stageQuestions.${stageIndex}.questions.${questionIndex}.choices.${choiceIndex}.imageData`
+        : `categories.${categoryIndex}.stageQuestions.${stageIndex}.questions.${questionIndex}.choices.${choiceIndex}.text`;
     },
     [fields, categoryIndex, questionIndex, stageIndex],
   );
@@ -230,11 +312,41 @@ export const ActivityUpsertStageQuestionChoiceList = memo(function ({
   );
 
   const setTextType = useCallback(
-    (key: string, textType: ExActTextType) => () => {
+    (key: string) => () => {
+      const choice = fields.find(
+        (field: ActivityCategoryQuestionChoiceFormData & { key: string }) =>
+          field.key === key,
+      );
       const choiceIndex = fields.findIndex((field) => field.key === key);
+
+      if (!choice) {
+        return;
+      }
+
+      let textType = ExActTextType.Text;
+      if (choice.textType === ExActTextType.Text) {
+        textType = ExActTextType.Expression;
+      } else if (choice.textType === ExActTextType.Expression) {
+        textType = ExActTextType.Image;
+      }
+
       update(choiceIndex, { ...choices[choiceIndex], textType });
     },
     [fields, choices, update],
+  );
+
+  const handleUploadChange = useCallback(
+    (key: string) => (file: any) => {
+      const cIndex = fields.findIndex((field) => field.key === key);
+
+      setExActImageEdit({
+        index: questionIndex,
+        sIndex: stageIndex,
+        cIndex,
+        file,
+      });
+    },
+    [questionIndex, stageIndex, fields, setExActImageEdit],
   );
 
   const handleAppend = useCallback(() => {
@@ -254,6 +366,14 @@ export const ActivityUpsertStageQuestionChoiceList = memo(function ({
     [fields, remove],
   );
 
+  const handleImageRemove = useCallback(
+    (key: string) => () => {
+      const choiceIndex = fields.findIndex((field) => field.key === key);
+      update(choiceIndex, { ...choices[choiceIndex], imageData: undefined });
+    },
+    [fields, choices, update],
+  );
+
   return (
     <div className={cx('w-full', className)} {...moreProps}>
       {!isCollapsed ? (
@@ -268,17 +388,21 @@ export const ActivityUpsertStageQuestionChoiceList = memo(function ({
         )
       )}
       <div className='flex w-full flex-col items-center gap-y-2.5'>
-        {filteredFields.map(({ key, ...moreFields }) => (
+        {filteredFields.map(({ key, ...moreFields }, index) => (
           <Choice
             key={key}
+            index={index}
+            questionIndex={questionIndex}
+            stageIndex={stageIndex}
+            categoryIndex={categoryIndex}
             choice={moreFields}
-            control={control}
             choiceName={getChoiceName(key)}
             choiceLabel={getChoiceLabel(key)}
             onSetAnswer={setAnswer(key)}
-            // TODO
-            onSetTextType={setTextType(key, ExActTextType.Text)}
+            onSetTextType={setTextType(key)}
+            onUploadChange={handleUploadChange(key)}
             onRemove={handleRemove(key)}
+            onImageRemove={handleImageRemove(key)}
           />
         ))}
         {!isCollapsed && (

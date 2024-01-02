@@ -3,7 +3,11 @@ import {
   convertDurationToSeconds,
   convertSecondsToDuration,
 } from '#/utils/time.util';
-import { transformToBaseModel } from '#/base/helpers/base.helper';
+import { ExActTextType } from '#/core/models/core.model';
+import {
+  getQuestionImageUrl,
+  transformToBaseModel,
+} from '#/base/helpers/base.helper';
 
 import type { StudentUserAccount } from '#/user/models/user.model';
 import type {
@@ -312,7 +316,12 @@ export function transformToCategoryStageQuestionsFormData(
       .filter((question) => question.stageNumber === index + 1)
       .sort((qA, qB) => qA.orderNumber - qB.orderNumber);
 
-    return { questions };
+    const transformedQuestions =
+      questions?.map((question: any) =>
+        transformToCategoryQuestionFormData(question),
+      ) || [];
+
+    return { questions: transformedQuestions };
   });
 }
 
@@ -329,6 +338,9 @@ export function transformToCategoryQuestionFormData({
       transformToCategoryQuestionChoiceFormData(choice),
     ) || [];
 
+  const imageData =
+    textType === ExActTextType.Image ? getQuestionImageUrl(text) : undefined;
+
   return {
     id,
     orderNumber,
@@ -336,6 +348,7 @@ export function transformToCategoryQuestionFormData({
     textType,
     choices: transformedChoices,
     stageNumber: stageNumber || undefined,
+    imageData,
   };
 }
 
@@ -346,12 +359,16 @@ export function transformToCategoryQuestionChoiceFormData({
   textType,
   isCorrect,
 }: any): ActivityCategoryQuestionChoiceFormData {
+  const imageData =
+    textType === ExActTextType.Image ? getQuestionImageUrl(text) : undefined;
+
   return {
     id,
     orderNumber,
     text,
     textType,
     isCorrect,
+    imageData,
   };
 }
 
@@ -417,6 +434,7 @@ export function transformToCategoryQuestionUpsertDto({
   id,
   orderNumber,
   text,
+  textType,
   choices,
   stageNumber,
 }: any) {
@@ -429,6 +447,7 @@ export function transformToCategoryQuestionUpsertDto({
     id,
     orderNumber,
     text,
+    textType,
     choices: choicesDto,
     stageNumber,
   };

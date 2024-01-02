@@ -316,7 +316,6 @@ export const ExamUpsertQuestionChoiceList = memo(function ({
       setExActImageEdit({
         index: questionIndex,
         cIndex,
-        isQuestion: true,
         file,
       });
     },

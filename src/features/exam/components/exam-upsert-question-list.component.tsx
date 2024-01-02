@@ -100,12 +100,9 @@ const Question = memo(function ({
     [onUploadChange],
   );
 
-  const handleImageRemove = useCallback(
-    (index: number) => () => {
-      setValue(`questions.${index}.imageData`, undefined);
-    },
-    [setValue],
-  );
+  const handleImageRemove = useCallback(() => {
+    setValue(`questions.${index}.imageData`, undefined);
+  }, [index, setValue]);
 
   return (
     <BaseSurface className={cx('w-full !px-0 !pb-2.5 !pt-1')} rounded='sm'>
@@ -158,7 +155,7 @@ const Question = memo(function ({
                 value={imageData}
                 errorMessage={errorMessage}
                 onChange={handleUploadChange}
-                onRemove={handleImageRemove(index)}
+                onRemove={handleImageRemove}
                 fullWidth
               />
             )}
@@ -256,7 +253,6 @@ export const ExamUpsertQuestionList = memo(function ({
     (index: number) => (file: any) => {
       setExActImageEdit({
         index,
-        isQuestion: true,
         file,
       });
     },

@@ -7,10 +7,11 @@ import type { StudentPerformance } from '../models/performance.model';
 
 type Result = {
   student?: StudentPerformance | null;
+  loading?: boolean;
 };
 
 export function useStudentPerformanceSingle(): Result {
-  const { data: student } = useQuery(
+  const { data: student, isLoading, isRefetching } = useQuery(
     getStudentPerformanceByCurrentStudentUser(
       {},
       {
@@ -22,5 +23,5 @@ export function useStudentPerformanceSingle(): Result {
     ),
   );
 
-  return { student };
+  return { loading: isLoading || isRefetching, student };
 }

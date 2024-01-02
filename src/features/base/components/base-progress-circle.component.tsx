@@ -66,6 +66,11 @@ export const BaseProgressCircle = memo(function ({
     [targetSize],
   );
 
+  const percentText = useMemo(() => {
+    const value = percent || 0;
+    return `${Math.floor(value)}%`;
+  }, [percent]);
+
   const circleClassname = useMemo(() => {
     switch (performance) {
       case StudentPerformanceType.Exam:
@@ -114,7 +119,7 @@ export const BaseProgressCircle = memo(function ({
             textClassname,
           )}
         >
-          {percent || 0}%
+          {percentText}
         </span>
       </div>
       {label && (

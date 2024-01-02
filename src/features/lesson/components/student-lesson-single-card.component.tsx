@@ -7,6 +7,7 @@ import {
   convertSecondsToDuration,
   generateCountdownDate,
 } from '#/utils/time.util';
+import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
@@ -19,20 +20,24 @@ import type { Lesson } from '../models/lesson.model';
 type Props = ComponentProps<typeof BaseSurface> & {
   lesson: Lesson;
   primary?: boolean;
+  fat?: boolean;
   upcomingDuration?: Duration | null;
 };
+
+const LESSON_LIST_PATH = `/${studentBaseRoute}/${studentRoutes.lesson.to}`;
 
 export const StudentLessonSingleCard = memo(function ({
   className,
   lesson,
   primary,
+  fat,
   upcomingDuration,
   ...moreProps
 }: Props) {
   const [singleTo, orderNumber, title, excerpt, isCompleted, duration] =
     useMemo(
       () => [
-        lesson.slug,
+        `${LESSON_LIST_PATH}/${lesson.slug}`,
         lesson.orderNumber,
         lesson.title,
         lesson.excerpt,
@@ -68,21 +73,27 @@ export const StudentLessonSingleCard = memo(function ({
           primary
             ? 'primary !border-accent !bg-primary group-hover:!border-primary-focus group-hover:ring-primary-focus group-hover:drop-shadow-primary'
             : 'group-hover:ring-primary-focus group-hover:drop-shadow-primary',
+          fat && 'fat',
           className,
         )}
         rounded='sm'
         {...moreProps}
       >
-        <div className='flex w-full items-center gap-4'>
+        <div className='flex w-full items-stretch gap-4'>
           {/* Image */}
           <div
             className={`flex h-[90px] w-[161px] items-center justify-center overflow-hidden rounded border border-primary bg-primary-focus-light/30 text-primary
-              [.primary_&]:h-[117px] [.primary_&]:w-[209px] [.primary_&]:border-accent [.primary_&]:bg-white/50 [.primary_&]:text-accent`}
+              [.fat_&]:h-[117px] [.fat_&]:w-[209px] [.primary_&]:border-accent [.primary_&]:bg-white/50 [.primary_&]:text-accent`}
           >
             <BaseIcon name='chalkboard-teacher' size={40} weight='light' />
           </div>
           <div className='flex flex-1'>
-            <div className='flex flex-1 flex-col gap-3'>
+            <div
+              className={cx(
+                'flex flex-1 flex-col justify-between',
+                !formattedUpcomingDate ? 'pb-2.5' : 'py-2.5',
+              )}
+            >
               {/* Title and status */}
               <div className='flex w-full items-center'>
                 <h2 className='flex-1 font-body text-lg font-medium tracking-normal text-accent [.primary_&]:text-white'>

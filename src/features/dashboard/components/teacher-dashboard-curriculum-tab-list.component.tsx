@@ -3,7 +3,6 @@ import { Tab } from '@headlessui/react';
 import cx from 'classix';
 
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
-import { StudentPerformanceType } from '#/performance/models/performance.model';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
@@ -41,15 +40,15 @@ const CREATE_ACTIVITY_PATH = `${ACTIVITY_LIST_PATH}/${teacherRoutes.activity.cre
 
 const tabCategories = {
   lesson: {
-    name: StudentPerformanceType.Lesson,
+    name: 'lesson',
     label: 'Lessons',
   },
   exam: {
-    name: StudentPerformanceType.Exam,
+    name: 'exam',
     label: 'Exams',
   },
   activity: {
-    name: StudentPerformanceType.Activity,
+    name: 'activity',
     label: 'Activities',
   },
 };

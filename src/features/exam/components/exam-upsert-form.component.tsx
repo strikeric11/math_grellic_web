@@ -287,6 +287,7 @@ export const ExamUpsertForm = memo(function ({
   ...moreProps
 }: Props) {
   const navigate = useNavigate();
+  const setExActImageEdit = useBoundStore((state) => state.setExActImageEdit);
   const setExamFormData = useBoundStore((state) => state.setExamFormData);
 
   const [isEdit, isEditPublished] = useMemo(
@@ -338,7 +339,6 @@ export const ExamUpsertForm = memo(function ({
     async (data: ExamUpsertFormData, status?: RecordStatus) => {
       try {
         const targetData = status ? { ...data, status } : data;
-        // TODO set imageUrls to designated questions and choices
         const exam = await onSubmit(targetData);
 
         toast.success(
@@ -369,6 +369,9 @@ export const ExamUpsertForm = memo(function ({
   }, [trigger, getValues, setExamFormData]);
 
   useEffect(() => {
+    // Clear image edit value
+    setExActImageEdit();
+
     // Set lessonFormData to undefined when unmounting component
     return () => {
       setExamFormData();

@@ -9,6 +9,7 @@ import {
   generateCountdownTime,
   getDayJsDuration,
 } from '#/utils/time.util';
+import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
@@ -37,6 +38,8 @@ type StatusProps = {
   score: number | null;
   ongoingDuration?: Duration | null;
 };
+
+const EXAM_LIST_PATH = `/${studentBaseRoute}/${studentRoutes.exam.to}`;
 
 const Score = memo(function ({
   score,
@@ -166,7 +169,7 @@ export const StudentExamSingleCard = memo(function ({
 }: Props) {
   const [singleTo, orderNumber, title, totalPoints, passingPoints] = useMemo(
     () => [
-      exam.slug,
+      `${EXAM_LIST_PATH}/${exam.slug}`,
       exam.orderNumber,
       exam.title,
       exam.pointsPerQuestion * exam.visibleQuestionsCount,

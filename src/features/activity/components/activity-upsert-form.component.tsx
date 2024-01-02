@@ -5,6 +5,7 @@ import { Menu } from '@headlessui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import isTime from 'validator/lib/isTime';
+import isBase64 from 'validator/lib/isBase64';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
@@ -18,10 +19,8 @@ import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
-import {
-  createDefaultStageQuestion,
-  defaultQuestion,
-} from '#/exam/helpers/exam-form.helper';
+import { defaultQuestion } from '#/exam/helpers/exam-form.helper';
+import { createDefaultStageQuestion } from '../helpers/activity-form.helper';
 import { ActivityUpsertFormStep1 } from './activity-upsert-form-step-1.component';
 import { ActivityUpsertFormStepPointTimeLevel } from './activity-upsert-form-step-point-time-level.component';
 import { ActivityUpsertFormStepStageLevel } from './activity-upsert-form-step-stage-level.component';
@@ -48,9 +47,10 @@ const choiceSchema = z.object({
     .number({ required_error: 'Choice number is required' })
     .int()
     .gt(0, 'Choice number is invalid'),
-  text: z.string().min(1, 'Choice is required'),
+  text: z.string().optional(),
   textType: z.nativeEnum(ExActTextType),
   isCorrect: z.boolean(),
+  imageData: z.string().optional(),
 });
 
 const questionSchema = z.object({
@@ -59,10 +59,11 @@ const questionSchema = z.object({
     .number({ required_error: 'Question number is required' })
     .int()
     .gt(0, 'Question number is invalid'),
-  text: z.string().min(1, 'Question is required'),
+  text: z.string().optional(),
   textType: z.nativeEnum(ExActTextType),
   choices: z.array(choiceSchema).min(2),
   stageNumber: z.number().optional(),
+  imageData: z.string().optional(),
 });
 
 const stageQuestionsSchema = z.object({
@@ -132,6 +133,7 @@ const schema = z
     description: z.string().optional(),
     excerpt: z.string().optional(),
     categories: z.array(categorySchema).min(1),
+    slug: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     if (data.game.type === ActivityCategoryType.Point) {
@@ -188,6 +190,60 @@ const schema = z
                 ],
               });
             }
+            // Check question types
+            if (
+              question.textType === ExActTextType.Text &&
+              !question.text?.trim().length
+            ) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Question is invalid',
+                path: [
+                  `categories.${index}.stageQuestions.${sIndex}.questions.${qIndex}.text`,
+                ],
+              });
+            } else if (
+              question.textType === ExActTextType.Image &&
+              (!question.imageData ||
+                (!data.slug?.trim() &&
+                  !isBase64(question.imageData?.split(',').pop() || '')))
+            ) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Image is invalid',
+                path: [
+                  `categories.${index}.stageQuestions.${sIndex}.questions.${qIndex}.imageData`,
+                ],
+              });
+            }
+            // Check choices types
+            question.choices.forEach((choice, cIndex) => {
+              if (
+                choice.textType === ExActTextType.Text &&
+                !choice.text?.trim().length
+              ) {
+                ctx.addIssue({
+                  code: z.ZodIssueCode.custom,
+                  message: 'Choice is invalid',
+                  path: [
+                    `categories.${index}.stageQuestions.${sIndex}.questions.${qIndex}.choices.${cIndex}.text`,
+                  ],
+                });
+              } else if (
+                choice.textType === ExActTextType.Image &&
+                (!choice.imageData ||
+                  (!data.slug?.trim() &&
+                    !isBase64(choice.imageData?.split(',').pop() || '')))
+              ) {
+                ctx.addIssue({
+                  code: z.ZodIssueCode.custom,
+                  message: 'Image is invalid',
+                  path: [
+                    `categories.${index}.stageQuestions.${sIndex}.questions.${qIndex}.choices.${cIndex}.imageData`,
+                  ],
+                });
+              }
+            });
 
             if (question.stageNumber == null) {
               ctx.addIssue({
@@ -212,6 +268,57 @@ const schema = z
               path: [`categories.${index}.questions.${qIndex}.choices.0.text`],
             });
           }
+
+          // Check question types
+          if (
+            question.textType === ExActTextType.Text &&
+            !question.text?.trim().length
+          ) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Question is invalid',
+              path: [`categories.${index}.questions.${qIndex}.text`],
+            });
+          } else if (
+            question.textType === ExActTextType.Image &&
+            (!question.imageData ||
+              (!data.slug?.trim() &&
+                !isBase64(question.imageData?.split(',').pop() || '')))
+          ) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Image is invalid',
+              path: [`categories.${index}.questions.${qIndex}.imageData`],
+            });
+          }
+          // Check choices types
+          question.choices.forEach((choice, cIndex) => {
+            if (
+              choice.textType === ExActTextType.Text &&
+              !choice.text?.trim().length
+            ) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Choice is invalid',
+                path: [
+                  `categories.${index}.questions.${qIndex}.choices.${cIndex}.text`,
+                ],
+              });
+            } else if (
+              choice.textType === ExActTextType.Image &&
+              (!choice.imageData ||
+                (!data.slug?.trim() &&
+                  !isBase64(choice.imageData?.split(',').pop() || '')))
+            ) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Image is invalid',
+                path: [
+                  `categories.${index}.questions.${qIndex}.choices.${cIndex}.imageData`,
+                ],
+              });
+            }
+          });
         });
       });
     }
@@ -273,6 +380,7 @@ export const ActivityUpsertForm = memo(function ({
   ...moreProps
 }: Props) {
   const navigate = useNavigate();
+  const setExActImageEdit = useBoundStore((state) => state.setExActImageEdit);
   const setActivityFormData = useBoundStore(
     (state) => state.setActivityFormData,
   );
@@ -436,6 +544,9 @@ export const ActivityUpsertForm = memo(function ({
   }, [gameType]);
 
   useEffect(() => {
+    // Clear image edit value
+    setExActImageEdit();
+
     // Set lessonFormData to undefined when unmounting component
     return () => {
       setActivityFormData();

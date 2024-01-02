@@ -15,6 +15,10 @@ import type { PaginatedQueryData } from '#/core/models/core.model';
 import type { QueryPagination } from '#/base/models/base.model';
 import type { Activity, Game } from '../models/activity.model';
 import type { ActivityUpsertFormData } from '../models/activity-form-data.model';
+import {
+  generateImageFormDataStrict,
+  generateImageFormData,
+} from '../helpers/activity-form.helper';
 
 const BASE_URL = 'activities';
 
@@ -116,6 +120,43 @@ export function getActivitySnippetsByCurrentTeacherUser(
   };
 }
 
+export function validateUpsertActivity(
+  options?: Omit<
+    UseMutationOptions<
+      boolean,
+      Error,
+      { data: ActivityUpsertFormData; slug?: string },
+      any
+    >,
+    'mutationFn'
+  >,
+) {
+  const mutationFn = async ({
+    slug,
+    data,
+  }: {
+    data: ActivityUpsertFormData;
+    slug?: string;
+    scheduleId?: number;
+  }): Promise<boolean> => {
+    const url = `${BASE_URL}/validate`;
+    const json = transformToActivityUpsertDto(data);
+    const searchParams = generateSearchParams({
+      slug: slug?.toString(),
+    });
+
+    try {
+      await kyInstance.post(url, { json, searchParams }).json();
+      return true;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return { mutationFn, ...options };
+}
+
 export function createActivity(
   options?: Omit<
     UseMutationOptions<Activity, Error, ActivityUpsertFormData, any>,
@@ -206,6 +247,38 @@ export function deleteActivity(
     try {
       const success: boolean = await kyInstance.delete(url).json();
       return success;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return { mutationFn, ...options };
+}
+
+export function uploadActivityImages(
+  options?: Omit<
+    UseMutationOptions<
+      string[],
+      Error,
+      { data: ActivityUpsertFormData; strict?: boolean },
+      any
+    >,
+    'mutationFn'
+  >,
+) {
+  const mutationFn = async (options: {
+    data: ActivityUpsertFormData;
+    strict?: boolean;
+  }): Promise<any> => {
+    const { data, strict } = options;
+    const url = `upload/${BASE_URL}/images`;
+    const formData = await (strict
+      ? generateImageFormDataStrict(data)
+      : generateImageFormData(data));
+
+    try {
+      return kyInstance.post(url, { body: formData }).json();
     } catch (error: any) {
       const apiError = await generateApiError(error);
       throw apiError;

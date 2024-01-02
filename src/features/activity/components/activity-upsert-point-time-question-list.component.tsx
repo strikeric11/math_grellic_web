@@ -6,6 +6,7 @@ import cx from 'classix';
 
 import { liAnimation } from '#/utils/animation.util';
 import { defaultQuestion } from '#/exam/helpers/exam-form.helper';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseButton } from '#/base/components/base-button.components';
 import { ActivityUpsertPointTimeQuestion } from './activity-upsert-point-time-question.component';
 
@@ -19,11 +20,13 @@ type Props = ComponentProps<'div'> & {
   categoryIndex: number;
 };
 
-export const ActivityUpsertQuestionList = memo(function ({
+export const ActivityUpsertPointTimeQuestionList = memo(function ({
   className,
   categoryIndex,
   ...moreProps
 }: Props) {
+  const setExActImageEdit = useBoundStore((state) => state.setExActImageEdit);
+
   const { control, getValues, setValue } =
     useFormContext<ActivityUpsertFormData>();
 
@@ -86,6 +89,16 @@ export const ActivityUpsertQuestionList = memo(function ({
     [move, questions],
   );
 
+  const handleUploadChange = useCallback(
+    (index: number) => (file: any) => {
+      setExActImageEdit({
+        index,
+        file,
+      });
+    },
+    [setExActImageEdit],
+  );
+
   return (
     <div
       className={cx(
@@ -108,6 +121,7 @@ export const ActivityUpsertQuestionList = memo(function ({
               onRemove={handleRemove(index)}
               onMoveUp={handleMove(index, true)}
               onMoveDown={handleMove(index, false)}
+              onUploadChange={handleUploadChange(index)}
               moveUpDisabled={index <= 0}
               moveDownDisabled={index >= questions.length - 1}
             />

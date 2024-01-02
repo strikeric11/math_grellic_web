@@ -1,15 +1,18 @@
-import { memo, useCallback, useEffect, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import cx from 'classix';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
+import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
+import { BaseImageCropper } from '#/base/components/base-image-cropper.component';
 import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { BaseControlledNumberInput } from '#/base/components/base-input.component';
 import { BaseControlledCheckbox } from '#/base/components/base-checkbox.component';
 import { BaseControlledDurationInput } from '#/base/components/base-duration-input.component';
 import { ActivityCategoryType } from '../models/activity.model';
-import { ActivityUpsertQuestionList } from './activity-upsert-question-list.component';
+import { ActivityUpsertPointTimeQuestionList } from './activity-upsert-point-time-question-list.component';
 
 import type { ComponentProps } from 'react';
 import type { IconName } from '#/base/models/base.model';
@@ -29,7 +32,10 @@ export const ActivityUpsertFormStepPointTimeLevel = memo(function ({
   disabled,
   ...moreProps
 }: Props) {
+  const exActImageEdit = useBoundStore((state) => state.exActImageEdit);
+  const setExActImageEdit = useBoundStore((state) => state.setExActImageEdit);
   const { control, setValue } = useFormContext<ActivityUpsertFormData>();
+  const [openImageCropModal, setOpenImageCropModal] = useState(false);
 
   const game = useWatch({ control, name: 'game' });
 
@@ -78,6 +84,40 @@ export const ActivityUpsertFormStepPointTimeLevel = memo(function ({
     [handleSetToMax],
   );
 
+  const handleSetOpenImageCropModal = useCallback(
+    (isOpen: boolean) => () => {
+      setOpenImageCropModal(isOpen);
+      !isOpen &&
+        setTimeout(() => {
+          setExActImageEdit();
+        }, 500);
+    },
+    [setExActImageEdit],
+  );
+
+  const handleImageCropComplete = useCallback(
+    (data: string | null) => {
+      const { sIndex, index, cIndex } = exActImageEdit || {};
+
+      if (index == null || sIndex != null) {
+        return;
+      }
+
+      cIndex == null
+        ? setValue(
+            `categories.${categoryIndex}.questions.${index}.imageData`,
+            data || undefined,
+          )
+        : setValue(
+            `categories.${categoryIndex}.questions.${index}.choices.${cIndex}.imageData`,
+            data || undefined,
+          );
+
+      handleSetOpenImageCropModal(false)();
+    },
+    [categoryIndex, exActImageEdit, handleSetOpenImageCropModal, setValue],
+  );
+
   useEffect(() => {
     if (pointsPerQuestion != null) {
       return;
@@ -86,6 +126,15 @@ export const ActivityUpsertFormStepPointTimeLevel = memo(function ({
     setValue(`categories.${categoryIndex}.pointsPerQuestion`, 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!exActImageEdit) {
+      return;
+    }
+
+    handleSetOpenImageCropModal(true)();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exActImageEdit]);
 
   if (!game?.type) {
     return (
@@ -99,88 +148,101 @@ export const ActivityUpsertFormStepPointTimeLevel = memo(function ({
   }
 
   return (
-    <div className={cx('w-full', className)} {...moreProps}>
-      <fieldset
-        className='group/field flex flex-wrap gap-5'
-        disabled={disabled}
-      >
-        <BaseSurface
-          className='flex w-full items-center justify-center gap-5'
-          rounded='sm'
+    <>
+      <div className={cx('w-full', className)} {...moreProps}>
+        <fieldset
+          className='group/field flex flex-wrap gap-5'
+          disabled={disabled}
         >
-          {game?.type === ActivityCategoryType.Time && (
-            <div className='flex items-center gap-x-4'>
-              <BaseControlledNumberInput
-                label='Correct answer count'
-                name={`categories.${categoryIndex}.correctAnswerCount`}
-                control={control}
-                rightButtonProps={setToMaxButtonProps}
-                asterisk
-              />
-              <BaseTooltip content='Number of correct answers needed to finish the level'>
-                <BaseIcon name='question' size={30} />
-              </BaseTooltip>
-            </div>
-          )}
-          <div
-            className={cx(
-              FIXED_FIELD_CLASSNAME,
-              game?.type === ActivityCategoryType.Time && 'flex-1',
-            )}
+          <BaseSurface
+            className='flex w-full items-center justify-center gap-5'
+            rounded='sm'
           >
-            <span className={FIXED_FIELD_VALUE_CLASSNAME}>
-              {totalQuestionCount}
-            </span>
-            <small className='uppercase'>Total Questions</small>
-          </div>
-          {game?.type === ActivityCategoryType.Point && (
-            <>
-              <BaseIcon
-                className='w-11 shrink-0 opacity-40'
-                name='x'
-                size={28}
-              />
-              <BaseControlledNumberInput
-                label='Points per Question'
-                name={`categories.${categoryIndex}.pointsPerQuestion`}
+            {game?.type === ActivityCategoryType.Time && (
+              <div className='flex items-center gap-x-4'>
+                <BaseControlledNumberInput
+                  label='Correct answer count'
+                  name={`categories.${categoryIndex}.correctAnswerCount`}
+                  control={control}
+                  rightButtonProps={setToMaxButtonProps}
+                  asterisk
+                />
+                <BaseTooltip content='Number of correct answers needed to finish the level'>
+                  <BaseIcon name='question' size={30} />
+                </BaseTooltip>
+              </div>
+            )}
+            <div
+              className={cx(
+                FIXED_FIELD_CLASSNAME,
+                game?.type === ActivityCategoryType.Time && 'flex-1',
+              )}
+            >
+              <span className={FIXED_FIELD_VALUE_CLASSNAME}>
+                {totalQuestionCount}
+              </span>
+              <small className='uppercase'>Total Questions</small>
+            </div>
+            {game?.type === ActivityCategoryType.Point && (
+              <>
+                <BaseIcon
+                  className='w-11 shrink-0 opacity-40'
+                  name='x'
+                  size={28}
+                />
+                <BaseControlledNumberInput
+                  label='Points per Question'
+                  name={`categories.${categoryIndex}.pointsPerQuestion`}
+                  control={control}
+                  asterisk
+                />
+                <BaseIcon
+                  className='w-11 shrink-0 opacity-40'
+                  name='equals'
+                  size={32}
+                />
+                <div className={FIXED_FIELD_CLASSNAME}>
+                  <span className={FIXED_FIELD_VALUE_CLASSNAME}>
+                    {totalPoints}
+                  </span>
+                  <small className='uppercase'>Total Points</small>
+                </div>
+              </>
+            )}
+          </BaseSurface>
+          <BaseSurface
+            className='flex w-full items-center justify-between gap-5'
+            rounded='sm'
+          >
+            {game?.type === ActivityCategoryType.Point && (
+              <BaseControlledDurationInput
+                label='Level Duration (hh:mm:ss)'
+                name={`categories.${categoryIndex}.duration`}
                 control={control}
                 asterisk
               />
-              <BaseIcon
-                className='w-11 shrink-0 opacity-40'
-                name='equals'
-                size={32}
-              />
-              <div className={FIXED_FIELD_CLASSNAME}>
-                <span className={FIXED_FIELD_VALUE_CLASSNAME}>
-                  {totalPoints}
-                </span>
-                <small className='uppercase'>Total Points</small>
-              </div>
-            </>
-          )}
-        </BaseSurface>
-        <BaseSurface
-          className='flex w-full items-center justify-between gap-5'
-          rounded='sm'
-        >
-          {game?.type === ActivityCategoryType.Point && (
-            <BaseControlledDurationInput
-              label='Level Duration (hh:mm:ss)'
-              name={`categories.${categoryIndex}.duration`}
+            )}
+            <BaseControlledCheckbox
+              labelClassName='mt-0.5 !text-base'
+              name={`categories.${categoryIndex}.randomizeQuestions`}
+              label='Randomize Questions'
               control={control}
-              asterisk
             />
-          )}
-          <BaseControlledCheckbox
-            labelClassName='mt-0.5 !text-base'
-            name={`categories.${categoryIndex}.randomizeQuestions`}
-            label='Randomize Questions'
-            control={control}
+          </BaseSurface>
+          <ActivityUpsertPointTimeQuestionList categoryIndex={categoryIndex} />
+        </fieldset>
+      </div>
+      <BaseModal
+        open={openImageCropModal}
+        onClose={handleSetOpenImageCropModal(false)}
+      >
+        {!!exActImageEdit && (
+          <BaseImageCropper
+            imageData={exActImageEdit}
+            onComplete={handleImageCropComplete}
           />
-        </BaseSurface>
-        <ActivityUpsertQuestionList categoryIndex={categoryIndex} />
-      </fieldset>
-    </div>
+        )}
+      </BaseModal>
+    </>
   );
 });

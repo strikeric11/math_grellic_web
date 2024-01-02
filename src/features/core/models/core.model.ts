@@ -20,9 +20,9 @@ export type AuditTrail = {
 
 export type ExActImageEdit = {
   file: any;
-  isQuestion: boolean;
   index: number;
   cIndex?: number;
+  sIndex?: number;
 };
 
 export type CoreSlice = {

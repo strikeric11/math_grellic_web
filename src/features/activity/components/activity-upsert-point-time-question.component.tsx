@@ -1,14 +1,16 @@
 import { memo, useCallback, useMemo, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import cx from 'classix';
 
+import { ExActTextType } from '#/core/models/core.model';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseControlledTextArea } from '#/base/components/base-textarea.component';
 import { BaseTooltip } from '#/base/components/base-tooltip.component';
+import { BaseImageUploader } from '#/base/components/base-image-uploader.component';
 import { ActivityUpsertPointTimeQuestionChoiceList } from './activity-upsert-point-time-question-choice-list.component';
 
-import type { ComponentProps } from 'react';
+import type { ChangeEvent, ComponentProps } from 'react';
 import type { IconName } from '#/base/models/base.model';
 import type { ActivityUpsertFormData } from '../models/activity-form-data.model';
 
@@ -18,6 +20,7 @@ type Props = ComponentProps<typeof BaseSurface> & {
   onRemove: () => void;
   onMoveUp: () => void;
   onMoveDown: () => void;
+  onUploadChange: (file: any) => void;
   moveUpDisabled?: boolean;
   moveDownDisabled?: boolean;
 };
@@ -29,21 +32,93 @@ export const ActivityUpsertPointTimeQuestion = memo(function ({
   onRemove,
   onMoveDown,
   onMoveUp,
+  onUploadChange,
   moveUpDisabled,
   moveDownDisabled,
   ...moreProps
 }: Props) {
-  const { control } = useFormContext<ActivityUpsertFormData>();
+  const { control, setValue, formState } =
+    useFormContext<ActivityUpsertFormData>();
+
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const textType = useWatch({
+    control,
+    name: `categories.${categoryIndex}.questions.${index}.textType`,
+  });
+
+  const imageData = useWatch({
+    control,
+    name: `categories.${categoryIndex}.questions.${index}.imageData`,
+  });
+
+  const questionTextTypeIconName = useMemo(
+    () => (textType !== ExActTextType.Text ? 'text-t' : 'image-square'),
+    [textType],
+  );
 
   const orderNumber = useMemo(
     () => (index + 1).toString().padStart(2, '0'),
     [index],
   );
 
+  const errorMessage = useMemo(() => {
+    try {
+      const errorCategory = (formState.errors.categories as any)[categoryIndex];
+
+      if (!errorCategory) {
+        return undefined;
+      }
+
+      return (
+        errorCategory.questions &&
+        errorCategory.questions[index]?.imageData?.message
+      );
+    } catch (error) {
+      return null;
+    }
+  }, [formState, index, categoryIndex]);
+
+  const textTypeTooltipText = useMemo(() => {
+    if (textType === ExActTextType.Text) {
+      return 'Switch to image input';
+    } else {
+      return 'Switch to text input';
+    }
+  }, [textType]);
+
   const handleIsCollapsed = useCallback(() => {
     setIsCollapsed((prev) => !prev);
   }, []);
+
+  const setTextType = useCallback(() => {
+    const value =
+      textType === ExActTextType.Text
+        ? ExActTextType.Image
+        : ExActTextType.Text;
+
+    setValue(`categories.${categoryIndex}.questions.${index}.textType`, value);
+  }, [index, categoryIndex, textType, setValue]);
+
+  const handleUploadChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const { files } = event.target;
+
+      if (!files?.length || !onUploadChange) {
+        return;
+      }
+
+      onUploadChange(files[0]);
+    },
+    [onUploadChange],
+  );
+
+  const handleImageRemove = useCallback(() => {
+    setValue(
+      `categories.${categoryIndex}.questions.${index}.imageData`,
+      undefined,
+    );
+  }, [index, categoryIndex, setValue]);
 
   return (
     <BaseSurface
@@ -86,12 +161,36 @@ export const ActivityUpsertPointTimeQuestion = memo(function ({
               onClick={handleIsCollapsed}
             />
           </div>
-          <BaseControlledTextArea
-            name={`categories.${categoryIndex}.questions.${index}.text`}
-            placeholder='Question'
-            control={control}
-            fullWidth
-          />
+          <div className='relative w-full'>
+            {textType === ExActTextType.Text ? (
+              <BaseControlledTextArea
+                name={`categories.${categoryIndex}.questions.${index}.text`}
+                placeholder='Question'
+                control={control}
+                fullWidth
+              />
+            ) : (
+              <BaseImageUploader
+                name={`categories.${categoryIndex}.questions.${index}.imageData`}
+                value={imageData}
+                errorMessage={errorMessage}
+                onChange={handleUploadChange}
+                onRemove={handleImageRemove}
+                fullWidth
+              />
+            )}
+            <div className='absolute right-3.5 top-3 z-20'>
+              <BaseTooltip content={textTypeTooltipText}>
+                <BaseIconButton
+                  name={questionTextTypeIconName}
+                  variant='link'
+                  size='xs'
+                  className='!text-accent hover:!text-primary'
+                  onClick={setTextType}
+                />
+              </BaseTooltip>
+            </div>
+          </div>
           <div className='flex h-input items-center justify-center'>
             <BaseIconButton
               name='x'

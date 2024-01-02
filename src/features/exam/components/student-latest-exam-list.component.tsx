@@ -22,16 +22,16 @@ type Props = ComponentProps<'div'> & {
 export const StudentLatestExamList = memo(function ({
   className,
   latestExam,
-  upcomingExamWithDuration,
+  upcomingExamWithDuration: {
+    exam: upcomingExam,
+    duration: upcomingExamDuration,
+  },
   ongoingExamsWithDurations,
   title = 'Latest Exams',
   loading,
   onRefresh,
   ...moreProps
 }: Props) {
-  const { exam: upcomingExam, duration: upcomingExamDuration } =
-    upcomingExamWithDuration;
-
   return (
     <div
       className={cx('flex w-full flex-col gap-2.5', className)}

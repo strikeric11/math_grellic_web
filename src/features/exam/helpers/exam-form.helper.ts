@@ -14,10 +14,6 @@ export const defaultQuestion = {
   })) as any[],
 } as any;
 
-export function createDefaultStageQuestion(stageNumber: number) {
-  return { ...defaultQuestion, stageNumber };
-}
-
 export async function generateImageFormData(
   orderNumber: number,
   questions: ExamQuestionFormData[],
