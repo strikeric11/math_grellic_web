@@ -63,6 +63,7 @@ const questionSchema = z.object({
   textType: z.nativeEnum(ExActTextType),
   choices: z.array(choiceSchema).min(2),
   stageNumber: z.number().optional(),
+  hintText: z.string().optional(),
   imageData: z.string().optional(),
 });
 

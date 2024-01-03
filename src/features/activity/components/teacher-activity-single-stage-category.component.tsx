@@ -4,17 +4,19 @@ import cx from 'classix';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
+import { ActivityCategory, ActivityGame } from '../models/activity.model';
 import { TeacherActivitySingleQuestion } from './teacher-activity-single-question.component';
 
 import type { ComponentProps } from 'react';
-import type { ActivityCategory } from '../models/activity.model';
 
 type Props = ComponentProps<'div'> & {
   category: ActivityCategory;
+  gameName?: ActivityGame
 };
 
 export const TeacherActivitySingleStageCategory = memo(function ({
   className,
+  gameName,
   category,
   ...moreProps
 }: Props) {
@@ -47,7 +49,7 @@ export const TeacherActivitySingleStageCategory = memo(function ({
   return (
     <div className={cx('mx-auto w-full', className)} {...moreProps}>
       {stages.map(({ label, questions }, index) => (
-        <div className='flex flex-col gap-2.5'>
+        <div key={`s-${index}`} className='flex flex-col gap-2.5'>
           <div className='flex items-center gap-2'>
             <BaseIcon name='stack' size={20} />
             <h3 className='text-base'>{label}</h3>
@@ -62,6 +64,7 @@ export const TeacherActivitySingleStageCategory = memo(function ({
               <TeacherActivitySingleQuestion
                 key={question.id}
                 question={question}
+                withHints={gameName === ActivityGame.EscapeRoom}
               />
             ))}
           </div>

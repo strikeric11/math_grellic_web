@@ -158,6 +158,7 @@ export const TeacherActivitySingle = memo(function ({
               <TeacherActivitySingleStageCategory
                 key={`cat-${category.id}`}
                 className='mb-4 border-b border-accent/20 pb-4 last:mb-0 last:border-none last:pb-0'
+                gameName={game.name as ActivityGame}
                 category={category}
               />
             ))}

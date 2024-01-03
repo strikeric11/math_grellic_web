@@ -120,6 +120,7 @@ export function transformToActivityCategoryQuestion({
   textType,
   choices,
   stageNumber,
+  hintText,
 }: any): ActivityCategoryQuestion {
   const transformedChoices = choices
     ? choices.map((choice: any) =>
@@ -133,6 +134,7 @@ export function transformToActivityCategoryQuestion({
     textType,
     choices: transformedChoices,
     stageNumber,
+    hintText,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
@@ -332,6 +334,7 @@ export function transformToCategoryQuestionFormData({
   textType,
   choices,
   stageNumber,
+  hintText,
 }: any): ActivityCategoryQuestionFormData {
   const transformedChoices =
     choices?.map((choice: any) =>
@@ -348,6 +351,7 @@ export function transformToCategoryQuestionFormData({
     textType,
     choices: transformedChoices,
     stageNumber: stageNumber || undefined,
+    hintText: hintText || undefined,
     imageData,
   };
 }
@@ -437,6 +441,7 @@ export function transformToCategoryQuestionUpsertDto({
   textType,
   choices,
   stageNumber,
+  hintText,
 }: any) {
   const choicesDto =
     choices?.map((choice: any) =>
@@ -450,6 +455,7 @@ export function transformToCategoryQuestionUpsertDto({
     textType,
     choices: choicesDto,
     stageNumber,
+    hintText,
   };
 }
 

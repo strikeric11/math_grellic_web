@@ -17,6 +17,7 @@ export type ActivityCategoryQuestionFormData = {
   textType: ExActTextType;
   choices: ActivityCategoryQuestionChoiceFormData[];
   stageNumber?: number;
+  hintText?: string;
   imageData?: string;
 };
 

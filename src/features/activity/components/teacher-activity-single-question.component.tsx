@@ -18,6 +18,7 @@ import type {
 
 type Props = ComponentProps<typeof BaseSurface> & {
   question: ActivityCategoryQuestion;
+  withHints?: boolean;
 };
 
 const Choice = memo(function ({
@@ -81,12 +82,13 @@ const Choice = memo(function ({
 
 export const TeacherActivitySingleQuestion = memo(function ({
   className,
+  withHints,
   question,
   ...moreProps
 }: Props) {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
-  const [orderNumber, text, isImage, choices] = useMemo(
+  const [orderNumber, text, isImage, choices, hintText] = useMemo(
     () => [
       question.orderNumber,
       question.textType === ExActTextType.Image
@@ -94,9 +96,12 @@ export const TeacherActivitySingleQuestion = memo(function ({
         : question.text,
       question.textType === ExActTextType.Image,
       question.choices,
+      question.hintText,
     ],
     [question],
   );
+
+  const hasHint = useMemo(() => hintText?.trim().length, [hintText]);
 
   const answer = useMemo(() => choices.find((c) => c.isCorrect), [choices]);
 
@@ -138,6 +143,16 @@ export const TeacherActivitySingleQuestion = memo(function ({
           </div>
         )}
       </div>
+      {withHints && (
+        <div className='border-b border-accent/20 bg-accent/5 px-5 py-2 opacity-70'>
+          <span className='py-[18px] pr-2.5 font-medium opacity-70'>
+            Hint —
+          </span>
+          <span className={cx(!hasHint && 'text-sm italic')}>
+            {hasHint ? hintText : 'Question has no hint'}
+          </span>
+        </div>
+      )}
       <ol className='flex flex-col items-start rounded-sm'>
         {isCollapsed
           ? answer && <Choice choice={answer} />

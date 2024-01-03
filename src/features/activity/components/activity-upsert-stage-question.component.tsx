@@ -3,11 +3,13 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import cx from 'classix';
 
 import { ExActTextType } from '#/core/models/core.model';
+import { BaseControlledInput } from '#/base/components/base-input.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseControlledTextArea } from '#/base/components/base-textarea.component';
 import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { BaseImageUploader } from '#/base/components/base-image-uploader.component';
+import { ActivityGame } from '../models/activity.model';
 import { ActivityUpsertStageQuestionChoiceList } from './activity-upsert-stage-question-choice-list.component';
 
 import type { ChangeEvent, ComponentProps } from 'react';
@@ -43,6 +45,8 @@ export const ActivityUpsertStageQuestion = memo(function ({
     useFormContext<ActivityUpsertFormData>();
 
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const gameName = useWatch({ control, name: 'game.name' });
 
   const textType = useWatch({
     control,
@@ -212,6 +216,16 @@ export const ActivityUpsertStageQuestion = memo(function ({
             />
           </div>
         </div>
+        {gameName === ActivityGame.EscapeRoom && (
+          <div className='mt-2.5 px-[50px]'>
+            <BaseControlledInput
+              name={`categories.${categoryIndex}.stageQuestions.${stageIndex}.questions.${index}.hintText`}
+              placeholder='Hint'
+              control={control}
+              fullWidth
+            />
+          </div>
+        )}
         <ActivityUpsertStageQuestionChoiceList
           className='mt-4'
           categoryIndex={categoryIndex}

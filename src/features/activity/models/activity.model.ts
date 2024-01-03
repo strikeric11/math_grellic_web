@@ -84,6 +84,7 @@ export type ActivityCategoryQuestion = Partial<AuditTrail> & {
   textType: ExActTextType;
   choices: ActivityCategoryQuestionChoice[];
   stageNumber?: number;
+  hintText?: string;
 };
 
 export type ActivityCategoryQuestionChoice = Partial<AuditTrail> & {
