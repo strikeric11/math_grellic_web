@@ -58,19 +58,20 @@ import {
   IdentificationBadge,
   ImageSquare,
   LinkSimple,
+  List,
   ListBullets,
   ListChecks,
   ListNumbers,
   MagnifyingGlass,
   MagnifyingGlassMinus,
   MagnifyingGlassPlus,
+  MessengerLogo,
   Minus,
   MinusSquare,
   NumberSquareOne,
   NumberSquareThree,
   NumberSquareTwo,
   Pencil,
-  PersonArmsSpread,
   Play,
   Plus,
   PlusCircle,
@@ -231,6 +232,8 @@ export const BaseIcon = memo(
           return ImageSquare;
         case 'link-simple':
           return LinkSimple;
+        case 'list':
+          return List;
         case 'list-bullets':
           return ListBullets;
         case 'list-checks':
@@ -243,6 +246,8 @@ export const BaseIcon = memo(
           return MagnifyingGlassMinus;
         case 'magnifying-glass-plus':
           return MagnifyingGlassPlus;
+        case 'messenger-logo':
+          return MessengerLogo;
         case 'minus':
           return Minus;
         case 'minus-square':
@@ -255,8 +260,6 @@ export const BaseIcon = memo(
           return NumberSquareThree;
         case 'pencil':
           return Pencil;
-        case 'person-arms-spread':
-          return PersonArmsSpread;
         case 'play':
           return Play;
         case 'plus':

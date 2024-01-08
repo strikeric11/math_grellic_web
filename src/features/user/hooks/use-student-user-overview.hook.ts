@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { queryUserKey } from '#/config/react-query-keys.config';
-import { getStudentCountByCurrentTeacherUser } from '../api/user.api';
+import { getStudentCountByCurrentTeacherUser } from '../api/teacher-user.api';
 
 type Result = {
   enrolledStudentCount: number;

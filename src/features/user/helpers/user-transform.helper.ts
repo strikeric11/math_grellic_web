@@ -10,12 +10,16 @@ import {
 import { transformToActivityCategoryCompletion } from '#/activity/helpers/activity-transform.helper';
 import { UserRole } from '../models/user.model';
 
+import type { AuthRegisterFormData } from '../models/auth.model';
 import type {
   StudentUserAccount,
   TeacherUserAccount,
   User,
 } from '../models/user.model';
-import type { AuthRegisterFormData } from '../models/auth.model';
+import type {
+  StudentUserUpdateFormData,
+  TeacherUserUpdateFormData,
+} from '../models/user-form-data.model';
 
 export function transformToUser({
   id,
@@ -65,6 +69,7 @@ export function transformToTeacherUserAccount({
   teachingCertifications,
   website,
   socialMediaLinks,
+  messengerLink,
   emails,
   user,
 }: any): TeacherUserAccount {
@@ -87,6 +92,7 @@ export function transformToTeacherUserAccount({
     teachingCertifications,
     website,
     socialMediaLinks,
+    messengerLink,
     emails,
     //  students,
   } as TeacherUserAccount;
@@ -101,6 +107,7 @@ export function transformToStudentUserAccount({
   phoneNumber,
   gender,
   aboutMe,
+  messengerLink,
   teacherId,
   user,
   lessonSchedules,
@@ -156,6 +163,7 @@ export function transformToStudentUserAccount({
     phoneNumber,
     gender,
     aboutMe,
+    messengerLink,
     teacherId,
     lessonSchedules: transformedLessonSchedules,
     examSchedules: transformedExamSchedules,
@@ -220,6 +228,7 @@ export function transformToTeacherUserUpdateDto({
   teachingCertifications,
   website,
   socialMediaLinks,
+  messengerLink,
   emails,
 }: any) {
   return {
@@ -237,6 +246,7 @@ export function transformToTeacherUserUpdateDto({
     teachingCertifications,
     website,
     socialMediaLinks,
+    messengerLink,
     emails,
   };
 }
@@ -281,6 +291,7 @@ export function transformToStudentUserUpdateDto({
   phoneNumber,
   gender,
   aboutMe,
+  messengerLink,
   teacherId,
 }: any) {
   return {
@@ -293,6 +304,7 @@ export function transformToStudentUserUpdateDto({
     phoneNumber: phoneNumber.replace(/\D/g, ''),
     gender,
     aboutMe,
+    messengerLink,
     teacherId: teacherId ? teacherId.toUpperCase() : undefined,
   };
 }
@@ -320,5 +332,53 @@ export function transformToAuthRegisterFormData({
     approvalStatus,
     password: 'xxxxxxxxxxxx',
     confirmPassword: 'xxxxxxxxxxxx',
+  };
+}
+
+export function transformToTeacherUserAccountFormData({
+  profileImageUrl,
+  userAccount,
+}: any): TeacherUserUpdateFormData {
+  const {
+    phoneNumber,
+    aboutMe,
+    educationalBackground,
+    teachingExperience,
+    teachingCertifications,
+    website,
+    socialMediaLinks,
+    messengerLink,
+    emails,
+  } = userAccount || {};
+
+  return {
+    phoneNumber: phoneNumber?.length
+      ? phoneNumber?.slice(1, phoneNumber.length)
+      : undefined,
+    aboutMe: aboutMe || undefined,
+    educationalBackground: educationalBackground || undefined,
+    teachingExperience: teachingExperience || undefined,
+    teachingCertifications: teachingCertifications || undefined,
+    website: website || undefined,
+    socialMediaLinks: socialMediaLinks || undefined,
+    messengerLink: messengerLink || undefined,
+    emails: emails || undefined,
+    profileImageUrl: profileImageUrl || undefined,
+  };
+}
+
+export function transformToStudentUserAccountFormData({
+  profileImageUrl,
+  userAccount,
+}: any): StudentUserUpdateFormData {
+  const { phoneNumber, aboutMe, messengerLink } = userAccount || {};
+
+  return {
+    phoneNumber: phoneNumber?.length
+      ? phoneNumber?.slice(1, phoneNumber.length)
+      : undefined,
+    aboutMe: aboutMe || undefined,
+    messengerLink: messengerLink || undefined,
+    profileImageUrl: profileImageUrl || undefined,
   };
 }

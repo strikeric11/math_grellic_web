@@ -3,6 +3,7 @@ import { generateSearchParams, kyInstance } from '#/config/ky.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
 import {
   transformToStudentUserUpdateDto,
+  transformToTeacherUserUpdateDto,
   transformToUser,
 } from '../helpers/user-transform.helper';
 
@@ -12,15 +13,16 @@ import type {
 } from '@tanstack/react-query';
 import type { QueryPagination } from '#/base/models/base.model';
 import type { PaginatedQueryData } from '#/core/models/core.model';
+import type { AuthRegisterFormData } from '../models/auth.model';
 import type {
   StudentUserAccount,
   User,
   UserApprovalStatus,
 } from '../models/user.model';
-import type { AuthRegisterFormData } from '../models/auth.model';
+import type { TeacherUserUpdateFormData } from '../models/user-form-data.model';
 
 const BASE_URL = 'users';
-const TEACHER_BASE_URL = `${BASE_URL}/teachers/students`;
+const TEACHER_BASE_URL = `${BASE_URL}/teachers`;
 
 export function getPaginatedStudentsByCurrentTeacherUser(
   keys?: {
@@ -43,7 +45,7 @@ export function getPaginatedStudentsByCurrentTeacherUser(
   const { take, skip } = pagination || {};
 
   const queryFn = async (): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/list`;
+    const url = `${TEACHER_BASE_URL}/students/list`;
     const searchParams = generateSearchParams({
       q,
       status,
@@ -79,7 +81,7 @@ export function getStudentsByCurrentTeacherUser(
   const { queryKey, ...moreOptions } = options || {};
 
   const queryFn = async (): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/list/all`;
+    const url = `${TEACHER_BASE_URL}/students/list/all`;
     const searchParams = generateSearchParams({
       q,
       ids: ids?.join(','),
@@ -112,7 +114,7 @@ export function getStudentCountByCurrentTeacherUser(
   const { queryKey, ...moreOptions } = options || {};
 
   const queryFn = async (): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/count`;
+    const url = `${TEACHER_BASE_URL}/students/count`;
     const searchParams = generateSearchParams({ status });
 
     try {
@@ -146,7 +148,7 @@ export function getStudentByPublicIdAndCurrentTeacherUser(
   const publicId = pId.toLowerCase();
 
   const queryFn = async (): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/${publicId}`;
+    const url = `${TEACHER_BASE_URL}/students/${publicId}`;
     const searchParams = generateSearchParams({ exclude, include });
 
     try {
@@ -175,7 +177,7 @@ export function getStudentByIdAndCurrentTeacherUser(
   const { id, exclude, include } = keys;
 
   const queryFn = async (): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/${id}`;
+    const url = `${TEACHER_BASE_URL}/students/${id}`;
     const searchParams = generateSearchParams({ exclude, include });
 
     try {
@@ -192,6 +194,27 @@ export function getStudentByIdAndCurrentTeacherUser(
     queryFn,
     ...options,
   };
+}
+
+export function editCurrentTeacherUser(
+  options?: Omit<
+    UseMutationOptions<User, Error, TeacherUserUpdateFormData, any>,
+    'mutationFn'
+  >,
+) {
+  const mutationFn = async (data: TeacherUserUpdateFormData): Promise<any> => {
+    const json = transformToTeacherUserUpdateDto(data);
+
+    try {
+      const user = await kyInstance.patch(TEACHER_BASE_URL, { json }).json();
+      return transformToUser(user);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return { mutationFn, ...options };
 }
 
 export function editStudent(
@@ -212,7 +235,7 @@ export function editStudent(
     studentId: number;
     data: AuthRegisterFormData;
   }): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/${studentId}`;
+    const url = `${TEACHER_BASE_URL}/students/${studentId}`;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { email, password, confirmPassword, ...moreData } = data;
     const json = transformToStudentUserUpdateDto(moreData);
@@ -233,7 +256,7 @@ export function deleteStudent(
   options?: Omit<UseMutationOptions<boolean, Error, number, any>, 'mutationFn'>,
 ) {
   const mutationFn = async (id: number): Promise<boolean> => {
-    const url = `${TEACHER_BASE_URL}/${id}`;
+    const url = `${TEACHER_BASE_URL}/students/${id}`;
 
     try {
       const success: boolean = await kyInstance.delete(url).json();

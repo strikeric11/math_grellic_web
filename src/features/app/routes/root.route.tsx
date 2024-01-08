@@ -36,6 +36,7 @@ import { teacherScheduleRouteHandle } from '#/schedule/route/teacher-schedule-ha
 import { studentScheduleRouteHandle } from '#/schedule/route/student-schedule-handle.route';
 import { studentUserRouteHandle } from '#/user/route/student-user-handle';
 import { LessonCreatePage } from '#/lesson/pages/lesson-create.page';
+import { getCurrentUserLoader } from '#/user/route/user-account-loader.route';
 import {
   getPaginatedLessonsLoader as getTeacherPaginatedLessonsLoader,
   getLessonBySlugLoader as getTeacherLessonBySlugLoader,
@@ -78,6 +79,10 @@ import {
   getPaginatedStudentUserLoader,
   getStudentUserByIdLoader,
 } from '#/user/route/student-user-loader';
+import { TeacherCurrentUserSinglePage } from '#/user/pages/teacher-current-user-single.page';
+import { TeacherUserAccountEditPage } from '#/user/pages/teacher-current-user-edit.page';
+import { StudentUserAccountEditPage } from '#/user/pages/student-current-user-edit.page';
+import { StudentCurrentUserSinglePage } from '#/user/pages/student-current-user-single.page';
 import { TeacherLessonListPage } from '#/lesson/pages/teacher-lesson-list.page';
 import { TeacherLessonSinglePage } from '#/lesson/pages/teacher-lesson-single.page';
 import { TeacherLessonScheduleListPage } from '#/lesson/pages/teacher-lesson-schedule-list.page';
@@ -163,6 +168,19 @@ const rootRoutes = createRoutesFromElements(
         element={<TeacherDashboardPage />}
         handle={dashboardRouteHandle}
       />
+      {/* TEACHER CURRENT USER */}
+      <Route path={teacherRoutes.account.to} element={<Outlet />}>
+        <Route
+          index
+          element={<TeacherCurrentUserSinglePage />}
+          loader={getCurrentUserLoader(queryClient)}
+        />
+        <Route
+          path={teacherRoutes.account.editTo}
+          element={<TeacherUserAccountEditPage />}
+          loader={getCurrentUserLoader(queryClient)}
+        />
+      </Route>
       {/* TEACHER LESSONS */}
       <Route path={teacherRoutes.lesson.to} element={<Outlet />}>
         <Route
@@ -423,6 +441,19 @@ const rootRoutes = createRoutesFromElements(
         element={<StudentDashboardPage />}
         handle={dashboardRouteHandle}
       />
+      {/* STUDENT CURRENT USER */}
+      <Route path={studentRoutes.account.to} element={<Outlet />}>
+        <Route
+          index
+          element={<StudentCurrentUserSinglePage />}
+          loader={getCurrentUserLoader(queryClient)}
+        />
+        <Route
+          path={studentRoutes.account.editTo}
+          element={<StudentUserAccountEditPage />}
+          loader={getCurrentUserLoader(queryClient)}
+        />
+      </Route>
       {/* STUDENT LESSONS */}
       <Route path={studentRoutes.lesson.to} element={<Outlet />}>
         <Route

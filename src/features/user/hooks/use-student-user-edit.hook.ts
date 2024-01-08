@@ -11,7 +11,7 @@ import {
   deleteStudent as deleteStudentApi,
   editStudent as editStudentApi,
   getStudentByIdAndCurrentTeacherUser as getStudentByIdAndCurrentTeacherUserApi,
-} from '../api/user.api';
+} from '../api/teacher-user.api';
 
 import type { AuthRegisterFormData } from '../models/auth.model';
 import type { User } from '../models/user.model';

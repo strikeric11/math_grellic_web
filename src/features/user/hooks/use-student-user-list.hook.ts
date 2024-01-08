@@ -11,7 +11,7 @@ import {
   getPaginatedStudentsByCurrentTeacherUser,
   setStudentApprovalStatus as setStudentApprovalStatusApi,
   deleteStudent as deleteStudentApi,
-} from '../api/user.api';
+} from '../api/teacher-user.api';
 
 import type {
   QueryFilterOption,

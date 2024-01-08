@@ -55,6 +55,7 @@ export type TeacherUserAccount = UserAccount & {
   teachingCertifications?: string;
   website?: string;
   socialMediaLinks: string[];
+  messengerLink?: string;
   emails: string[];
   students?: StudentUserAccount[];
 };
@@ -62,6 +63,7 @@ export type TeacherUserAccount = UserAccount & {
 export type StudentUserAccount = UserAccount & {
   teacherId: string;
   aboutMe?: string;
+  messengerLink?: string;
   lessonSchedules?: LessonSchedule[];
   examSchedules?: ExamSchedule[];
   lessonCompletions?: LessonCompletion[];

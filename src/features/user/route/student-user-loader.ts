@@ -3,7 +3,7 @@ import { defer } from 'react-router-dom';
 import {
   getPaginatedStudentsByCurrentTeacherUser,
   getStudentByIdAndCurrentTeacherUser,
-} from '../api/user.api';
+} from '../api/teacher-user.api';
 import { defaultParamKeys } from '../hooks/use-student-user-list.hook';
 
 import type { LoaderFunctionArgs } from 'react-router-dom';

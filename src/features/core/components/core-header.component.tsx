@@ -1,7 +1,11 @@
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Menu } from '@headlessui/react';
 import cx from 'classix';
 
+import { UserRole } from '#/user/models/user.model';
+import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { useAuth } from '#/user/hooks/use-auth.hook';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
@@ -18,17 +22,36 @@ export const CoreHeader = memo(function ({
   className,
   ...moreProps
 }: ComponentProps<'header'>) {
+  const navigate = useNavigate();
   const user = useBoundStore((state) => state.user);
   const { isScrollTop } = useScroll();
   const { logout } = useAuth();
 
   const publicId = useMemo(() => user?.publicId, [user]);
 
-  // TODO notification and user menu
+  // TODO notification
 
-  const handleLogout = () => {
+  const handleUserAccount = useCallback(() => {
+    if (!user) {
+      return;
+    }
+
+    switch (user.role) {
+      case UserRole.Student:
+        navigate(`/${studentBaseRoute}/${studentRoutes.account.to}`);
+        break;
+      case UserRole.Teacher:
+        navigate(`/${teacherBaseRoute}/${teacherRoutes.account.to}`);
+        break;
+      default:
+        // navigate(`/${teacherBaseRoute}/${teacherRoutes.account.to}`)
+        break;
+    }
+  }, [user, navigate]);
+
+  const handleLogout = useCallback(() => {
     logout();
-  };
+  }, [logout]);
 
   return (
     <header
@@ -47,7 +70,7 @@ export const CoreHeader = memo(function ({
               <div>
                 <Menu.Button
                   as={BaseIconButton}
-                  name='user'
+                  name='list'
                   variant='solid'
                   size='sm'
                 />
@@ -61,9 +84,8 @@ export const CoreHeader = memo(function ({
             <BaseDivider className='my-1' />
             <Menu.Item
               as={BaseDropdownButton}
-              iconName='person-arms-spread'
-              onClick={handleLogout}
-              disabled
+              iconName='user'
+              onClick={handleUserAccount}
             >
               Account
             </Menu.Item>

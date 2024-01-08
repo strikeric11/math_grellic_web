@@ -8,7 +8,7 @@ import {
   getStudentsByCurrentTeacherUser,
   setStudentApprovalStatus as setStudentApprovalStatusApi,
   deleteStudent as deleteStudentApi,
-} from '../api/user.api';
+} from '../api/teacher-user.api';
 import { UserApprovalStatus } from '../models/user.model';
 
 import type { StudentUserAccount } from '../models/user.model';

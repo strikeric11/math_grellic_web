@@ -6,7 +6,7 @@ import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { useStudentUserSingle } from '../hooks/use-student-user-single.hook';
 import { StudentUserSingle } from '../components/student-user-single.component';
 
-export const StudentUserSinglePage = memo(() => {
+export const StudentUserSinglePage = memo(function () {
   const { loading, student } = useStudentUserSingle();
   const data: any = useLoaderData();
 

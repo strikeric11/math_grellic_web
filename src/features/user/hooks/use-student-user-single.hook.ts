@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
 import { transformToStudentUserAccount } from '../helpers/user-transform.helper';
-import { getStudentByIdAndCurrentTeacherUser } from '../api/user.api';
+import { getStudentByIdAndCurrentTeacherUser } from '../api/teacher-user.api';
 
 import type { StudentUserAccount } from '../models/user.model';
 

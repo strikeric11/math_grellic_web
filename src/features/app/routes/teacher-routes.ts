@@ -81,10 +81,19 @@ export const teacherRoutes = {
     label: 'Help',
     iconName: 'chat-centered-text',
   },
+  account: {
+    name: 'account',
+    to: 'account',
+    label: 'Account',
+    editTo: 'edit',
+    hidden: true,
+  },
 };
 
 export function generateTeacherRouteLinks() {
-  const links = Object.entries(teacherRoutes).map((route) => route[1]);
+  const links = Object.entries(teacherRoutes)
+    .map((route) => route[1])
+    .filter(({ hidden }: any) => !hidden);
 
   return links.map(({ to, ...t }) => ({
     ...t,

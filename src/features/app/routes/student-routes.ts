@@ -53,10 +53,19 @@ export const studentRoutes = {
     label: 'Help',
     iconName: 'chat-centered-text',
   },
+  account: {
+    name: 'account',
+    to: 'account',
+    label: 'Account',
+    editTo: 'edit',
+    hidden: true,
+  },
 };
 
 export function generateStudentRouteLinks() {
-  const links = Object.entries(studentRoutes).map((route) => route[1]);
+  const links = Object.entries(studentRoutes)
+    .map((route) => route[1])
+    .filter(({ hidden }: any) => !hidden);
 
   return links.map(({ to, ...t }) => ({
     ...t,
