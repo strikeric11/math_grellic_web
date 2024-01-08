@@ -11,7 +11,7 @@ import { StudentPerformanceSingle } from '../components/student-performance-sing
 
 import type { UserGender } from '#/user/models/user.model';
 
-export const StudentPerformanceSinglePage = memo(() => {
+export const StudentPerformanceSinglePage = memo(function () {
   const { student } = useStudentPerformanceSingle();
   const data: any = useLoaderData();
 

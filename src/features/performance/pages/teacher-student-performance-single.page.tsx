@@ -20,7 +20,7 @@ import type { UserGender } from '#/user/models/user.model';
 
 const STUDENT_USER_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 
-export const TeacherStudentPerformanceSinglePage = memo(() => {
+export const TeacherStudentPerformanceSinglePage = memo(function () {
   const { student, loading } = useTeacherStudentPerformanceSingle();
   const data: any = useLoaderData();
 

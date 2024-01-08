@@ -132,8 +132,6 @@ export function useActivityEdit(slug?: string): Result {
       const clonedImages = images;
       // Apply image url to question/choice text for activity creation
 
-      console.log(data);
-
       const transformedFormData: ActivityUpsertFormData = {
         ...data,
         categories: data.categories.map((category) => {

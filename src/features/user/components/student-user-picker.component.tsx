@@ -8,7 +8,7 @@ import { BaseSelect } from '#/base/components/base-select.component';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { transformToStudentUserAccount } from '../helpers/user-transform.helper';
-import { getStudentsByCurrentTeacherUser } from '../api/user.api';
+import { getStudentsByCurrentTeacherUser } from '../api/teacher-user.api';
 import {
   StudentUserItem,
   StudentUserPickerList,

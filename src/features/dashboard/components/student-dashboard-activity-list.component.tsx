@@ -87,8 +87,6 @@ export const StudentDashboardActivityList = memo(function ({
   activities,
   ...moreProps
 }: Props) {
-  console.log(activities);
-
   const featuredActivities = useMemo(
     () => activities?.slice(0, 2) || [],
     [activities],

@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { queryUserKey } from '#/config/react-query-keys.config';
 import { transformToStudentUserAccount } from '#/user/helpers/user-transform.helper';
-import { getStudentsByCurrentTeacherUser } from '#/user/api/user.api';
+import { getStudentsByCurrentTeacherUser } from '#/user/api/teacher-user.api';
 import { transformToMeetingSchedule } from '../helpers/schedule-transform.helper';
 import { getMeetingScheduleByIdAndCurrentTeacherUser } from '../api/teacher-schedule.api';
 

@@ -25,7 +25,7 @@ export function TeacherDashboardPage() {
   } = useTeacherCurriculumSnippets();
 
   return (
-    <div className='flex items-start gap-5'>
+    <div className='flex items-start justify-center gap-5'>
       <div className='flex min-w-[835px] flex-col gap-5 pb-8'>
         <TeacherDashboardUserSummary
           className='min-h-[262px]'
