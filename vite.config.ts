@@ -80,6 +80,12 @@ export default defineConfig({
         ),
       },
       {
+        find: '#/help',
+        replacement: fileURLToPath(
+          new URL('./src/features/help', import.meta.url),
+        ),
+      },
+      {
         find: '#/schedule',
         replacement: fileURLToPath(
           new URL('./src/features/schedule', import.meta.url),

@@ -1,7 +1,9 @@
 import { memo, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import cx from 'classix';
 
 import { UserGender } from '#/user/models/user.model';
+import { BaseIcon } from '#/base/components/base-icon.component';
 import { UserAvatarImg } from '#/user/components/user-avatar-img.component';
 
 import type { ComponentProps } from 'react';
@@ -9,11 +11,13 @@ import type { User } from '#/user/models/user.model';
 
 type Props = ComponentProps<'div'> & {
   user: User;
+  to: string;
 };
 
 export const DashboardUserWelcome = memo(function ({
   className,
   user,
+  to,
   ...moreProps
 }: Props) {
   const [publicId, firstName, gender] = useMemo(
@@ -32,14 +36,19 @@ export const DashboardUserWelcome = memo(function ({
     >
       <div className='flex items-center gap-3'>
         <UserAvatarImg gender={gender} size='base' />
-        <h2 className='flex flex-col text-2xl leading-tight'>
+        <h2 className='flex flex-col text-2xl leading-tight transition-colors group-hover:text-primary-focus-light'>
           <span>Hello,</span>
           <span>{firstName}</span>
         </h2>
       </div>
-      <span className='rounded-4px inline-block overflow-hidden border border-accent/50 px-2 py-1.5 text-sm leading-none text-accent/80'>
-        {publicId}
-      </span>
+      <Link
+        to={to}
+        className={`flex items-center gap-1 overflow-hidden rounded-4px border border-accent/50 px-1.5 py-1
+          text-sm leading-none transition-all hover:border-primary-focus hover:text-primary-focus`}
+      >
+        <BaseIcon name='identification-badge' size={18} />
+        <span>{publicId}</span>
+      </Link>
     </div>
   );
 });

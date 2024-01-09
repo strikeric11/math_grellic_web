@@ -9,12 +9,14 @@ import type { IconName } from '../models/base.model';
 type Props = ComponentProps<'div'> & {
   iconName?: IconName;
   iconProps?: Omit<ComponentProps<typeof BaseIcon>, 'name'>;
+  isIconEnd?: boolean;
 };
 
 export const BaseChip = memo(function ({
   className,
   iconName,
   iconProps,
+  isIconEnd,
   children,
   ...moreProps
 }: Props) {
@@ -23,8 +25,17 @@ export const BaseChip = memo(function ({
       className={cx(className, 'flex items-center gap-1 uppercase')}
       {...moreProps}
     >
-      {iconName && <BaseIcon name={iconName} size={20} {...iconProps} />}
-      <span>{children}</span>
+      {isIconEnd ? (
+        <>
+          <span>{children}</span>
+          {iconName && <BaseIcon name={iconName} size={20} {...iconProps} />}
+        </>
+      ) : (
+        <>
+          {iconName && <BaseIcon name={iconName} size={20} {...iconProps} />}
+          <span>{children}</span>
+        </>
+      )}
     </div>
   );
 });

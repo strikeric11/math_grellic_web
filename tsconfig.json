@@ -32,6 +32,7 @@
       "#/exam/*": ["./src/features/exam/*"],
       "#/activity/*": ["./src/features/activity/*"],
       "#/performance/*": ["./src/features/performance/*"],
+      "#/help/*": ["./src/features/help/*"],
       "#/schedule/*": ["./src/features/schedule/*"]
     }
   },

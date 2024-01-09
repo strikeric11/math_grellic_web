@@ -3,6 +3,7 @@ import { useStudentPerformanceSingle } from '#/performance/hooks/use-student-per
 import { useStudentCurriculumSnippets } from '../hooks/use-student-curriculum-snippets.hook';
 import { StudentDashboardUserSummary } from '../components/student-dashboard-user-summary.component';
 import { StudentDashboardCurriculumTabList } from '../components/student-dashboard-curriculum-tab-list.component';
+import { StudentDashboardHelpCard } from '../components/student-dashboard-help-card.component';
 
 export function StudentDashboardPage() {
   const user = useBoundStore((state) => state.user || null);
@@ -24,7 +25,7 @@ export function StudentDashboardPage() {
   } = useStudentCurriculumSnippets();
 
   return (
-    <div className='flex items-start gap-5'>
+    <div className='flex items-start justify-center gap-5'>
       <div className='flex min-w-[835px] flex-col gap-5 pb-8'>
         <StudentDashboardUserSummary
           className='min-h-[262px]'
@@ -45,7 +46,9 @@ export function StudentDashboardPage() {
           refresh={refresh}
         />
       </div>
-      <div>{/* TODO announcements, ...etc */}</div>
+      <div className='flex flex-col gap-5'>
+        <StudentDashboardHelpCard />
+      </div>
     </div>
   );
 }

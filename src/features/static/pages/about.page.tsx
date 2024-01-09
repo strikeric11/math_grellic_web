@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import DOMPurify from 'dompurify';
 
 import { BaseStaticScene } from '#/base/components/base-static-scene.component';
@@ -18,7 +17,7 @@ const section2ContentHtml = {
   __html: DOMPurify.sanitize(aboutContent.section2.content),
 };
 
-export const AboutPage = memo(function () {
+export function AboutPage() {
   return (
     <BaseStaticScene title='About Us'>
       <section className='mx-auto mb-56 flex w-full max-w-static-full items-start justify-between px-4'>
@@ -59,4 +58,4 @@ export const AboutPage = memo(function () {
       </section>
     </BaseStaticScene>
   );
-});
+}

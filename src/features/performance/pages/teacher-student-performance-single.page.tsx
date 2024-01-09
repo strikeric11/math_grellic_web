@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
@@ -13,6 +13,7 @@ import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
+import { UserMessengerLink } from '#/user/components/user-messenger-link.component';
 import { useTeacherStudentPerformanceSingle } from '../hooks/use-teacher-student-performance-single.hook';
 import { StudentPerformanceSingle } from '../components/student-performance-single.component';
 
@@ -20,35 +21,30 @@ import type { UserGender } from '#/user/models/user.model';
 
 const STUDENT_USER_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 
-export const TeacherStudentPerformanceSinglePage = memo(function () {
+export function TeacherStudentPerformanceSinglePage() {
   const { student, loading } = useTeacherStudentPerformanceSingle();
   const data: any = useLoaderData();
 
-  const [id, email, publicId, phoneNumber, gender] = useMemo(
-    () =>
-      student
-        ? [
-            student.id,
-            student.email,
-            student.publicId,
-            formatPhoneNumber(student.phoneNumber),
-            student.gender,
-          ]
-        : [],
-    [student],
-  );
-
-  const fullName = useMemo(
-    () =>
-      student
-        ? generateFullName(
-            student.firstName,
-            student.lastName,
-            student.middleName,
-          )
-        : '',
-    [student],
-  );
+  const [id, email, publicId, phoneNumber, fullName, gender, messengerLink] =
+    useMemo(
+      () =>
+        student
+          ? [
+              student.id,
+              student.email,
+              student.publicId,
+              formatPhoneNumber(student.phoneNumber),
+              generateFullName(
+                student.firstName,
+                student.lastName,
+                student.middleName,
+              ),
+              student.gender,
+              student.messengerLink,
+            ]
+          : [],
+      [student],
+    );
 
   const editTo = useMemo(
     () => `${STUDENT_USER_PATH}/${id}/${teacherRoutes.student.editTo}`,
@@ -60,7 +56,7 @@ export const TeacherStudentPerformanceSinglePage = memo(function () {
       {loading && <BasePageSpinner />}
       {student && (
         <div className='mx-auto w-full max-w-compact py-5 pb-16'>
-          <div className='mb-2.5 flex flex-col gap-y-4'>
+          <div className='mb-2.5 flex flex-col gap-y-2.5'>
             <div className='flex w-full items-center justify-between'>
               <div className='flex items-center gap-2.5'>
                 <UserAvatarImg gender={gender as UserGender} />
@@ -75,10 +71,13 @@ export const TeacherStudentPerformanceSinglePage = memo(function () {
                 </BaseLink>
               </div>
             </div>
-            <div className='flex items-center gap-2.5'>
-              <BaseChip iconName='identification-badge'>{publicId}</BaseChip>
-              <BaseDivider className='!h-6' vertical />
-              <BaseChip iconName='device-mobile'>{phoneNumber}</BaseChip>
+            <div className='flex items-center justify-between'>
+              <div className='flex items-center gap-2.5'>
+                <BaseChip iconName='identification-badge'>{publicId}</BaseChip>
+                <BaseDivider className='!h-6' vertical />
+                <BaseChip iconName='device-mobile'>{phoneNumber}</BaseChip>
+              </div>
+              <UserMessengerLink to={messengerLink || ''} />
             </div>
           </div>
           <BaseDivider className='mb-2.5' />
@@ -87,4 +86,4 @@ export const TeacherStudentPerformanceSinglePage = memo(function () {
       )}
     </BaseDataSuspense>
   );
-});
+}

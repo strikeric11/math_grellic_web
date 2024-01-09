@@ -1,5 +1,3 @@
-import { memo } from 'react';
-
 import { BaseStaticScene } from '#/base/components/base-static-scene.component';
 import { HomeSection1 } from '../components/home-section-1.component';
 import { HomeSection2 } from '../components/home-section-2.component';
@@ -7,7 +5,7 @@ import { HomeSection3 } from '../components/home-section-3.component';
 import { HomeSection4 } from '../components/home-section-4.component';
 import { HomeSection5 } from '../components/home-section-5.component';
 
-export const HomePage = memo(function () {
+export function HomePage() {
   return (
     <BaseStaticScene>
       <HomeSection1 className='pt-20' />
@@ -17,4 +15,4 @@ export const HomePage = memo(function () {
       <HomeSection5 />
     </BaseStaticScene>
   );
-});
+}

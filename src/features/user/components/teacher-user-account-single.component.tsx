@@ -26,8 +26,6 @@ export const TeacherUserAccountSingle = memo(function ({
     teachingExperience,
     teachingCertifications,
     website,
-    socialMediaLinks,
-    emails,
   ] = useMemo(
     () => [
       userAccount.aboutMe,
@@ -35,8 +33,6 @@ export const TeacherUserAccountSingle = memo(function ({
       userAccount.teachingExperience,
       userAccount.teachingCertifications,
       userAccount.website,
-      userAccount.socialMediaLinks,
-      userAccount.emails,
     ],
     [userAccount],
   );
@@ -89,7 +85,7 @@ export const TeacherUserAccountSingle = memo(function ({
           <p className={FIELD_VALUE_CLASSNAME}>{website || '—'}</p>
         )}
       </div>
-      <BaseDivider />
+      {/* <BaseDivider />
       <div>
         <h3 className={FIELD_TITLE_CLASSNAME}>Social Media</h3>
         <p
@@ -120,7 +116,7 @@ export const TeacherUserAccountSingle = memo(function ({
         >
           {emails.length ? emails.map((email) => <span>{email}</span>) : '—'}
         </p>
-      </div>
+      </div> */}
     </BaseSurface>
   );
 });

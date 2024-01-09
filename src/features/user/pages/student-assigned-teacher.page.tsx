@@ -1,26 +1,22 @@
 import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
-import { BaseIcon } from '#/base/components/base-icon.component';
-import { BaseLink } from '#/base/components/base-link.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { generateFullName } from '../helpers/user.helper';
-import { UserRole } from '../models/user.model';
-import { useCurrentUserSingle } from '../hooks/use-current-user-single.hook';
+import { useStudentAssignedTeacherSingle } from '../hooks/use-student-assigned-teacher-single.hook';
 import { UserAvatarImg } from '../components/user-avatar-img.component';
 import { UserMessengerLink } from '../components/user-messenger-link.component';
 import { TeacherUserAccountSingle } from '../components/teacher-user-account-single.component';
 
 import type { TeacherUserAccount, UserGender } from '../models/user.model';
 
-const USER_ACCOUNT_PATH = `/${teacherBaseRoute}/${teacherRoutes.account.to}/${teacherRoutes.account.editTo}`;
+export function StudentAssignedTeacherPage() {
+  const { loading: assignedTeacherLoading, user: assignedTeacher } =
+    useStudentAssignedTeacherSingle();
 
-export function TeacherCurrentUserSinglePage() {
-  const { loading, user } = useCurrentUserSingle();
   const data: any = useLoaderData();
 
   const [
@@ -31,37 +27,26 @@ export function TeacherCurrentUserSinglePage() {
     gender,
     fullName,
     messengerLink,
-    isTeacher,
   ] = useMemo(
     () => [
-      user?.userAccount as TeacherUserAccount,
-      user?.email,
-      user?.publicId,
-      user?.userAccount?.phoneNumber,
-      user?.userAccount?.gender,
+      assignedTeacher?.userAccount as TeacherUserAccount,
+      assignedTeacher?.email,
+      assignedTeacher?.publicId,
+      assignedTeacher?.userAccount?.phoneNumber,
+      assignedTeacher?.userAccount?.gender,
       generateFullName(
-        user?.userAccount?.firstName || '',
-        user?.userAccount?.lastName || '',
-        user?.userAccount?.middleName || '',
+        assignedTeacher?.userAccount?.firstName || '',
+        assignedTeacher?.userAccount?.lastName || '',
+        assignedTeacher?.userAccount?.middleName || '',
       ),
-      user?.userAccount?.messengerLink,
-      user?.role === UserRole.Teacher,
+      assignedTeacher?.userAccount?.messengerLink,
     ],
-    [user],
+    [assignedTeacher],
   );
-
-  const messengerLinkText = useMemo(
-    () => messengerLink?.replace('https://', ''),
-    [messengerLink],
-  );
-
-  if (!isTeacher) {
-    return null;
-  }
 
   return (
     <BaseDataSuspense resolve={data?.main}>
-      {loading || !isTeacher ? (
+      {assignedTeacherLoading ? (
         <BasePageSpinner />
       ) : (
         <div className='mx-auto w-full max-w-compact py-5 pb-16'>
@@ -74,15 +59,6 @@ export function TeacherCurrentUserSinglePage() {
                   <span>{email}</span>
                 </div>
               </div>
-              <div>
-                <BaseLink
-                  to={USER_ACCOUNT_PATH}
-                  className='!px-3'
-                  variant='solid'
-                >
-                  <BaseIcon name='pencil' size={24} />
-                </BaseLink>
-              </div>
             </div>
             <div className='flex items-center justify-between'>
               <div className='flex items-center gap-2.5'>
@@ -90,9 +66,7 @@ export function TeacherCurrentUserSinglePage() {
                 <BaseDivider className='!h-6' vertical />
                 <BaseChip iconName='device-mobile'>{phoneNumber}</BaseChip>
               </div>
-              <UserMessengerLink to={messengerLink || ''} size='xs' isLight>
-                {messengerLinkText}
-              </UserMessengerLink>
+              <UserMessengerLink to={messengerLink || ''} size='xs' />
             </div>
           </div>
           <BaseDivider className='mb-2.5' />

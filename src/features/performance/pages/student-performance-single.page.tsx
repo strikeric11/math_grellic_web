@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { formatPhoneNumber } from '#/user/helpers/user.helper';
@@ -11,7 +11,7 @@ import { StudentPerformanceSingle } from '../components/student-performance-sing
 
 import type { UserGender } from '#/user/models/user.model';
 
-export const StudentPerformanceSinglePage = memo(function () {
+export function StudentPerformanceSinglePage() {
   const { student } = useStudentPerformanceSingle();
   const data: any = useLoaderData();
 
@@ -66,4 +66,4 @@ export const StudentPerformanceSinglePage = memo(function () {
       )}
     </BaseDataSuspense>
   );
-});
+}

@@ -1,12 +1,12 @@
 import { defer } from 'react-router-dom';
 
-import { getCurrentUser } from '../api/auth.api';
+import { getAssignedTeacherByCurrentStudentUser } from '../api/student-user.api';
 
 import type { QueryClient } from '@tanstack/react-query';
 
-export function getCurrentUserLoader(queryClient: QueryClient) {
+export function getStudentAssignedTeacherLoader(queryClient: QueryClient) {
   return async () => {
-    const query = getCurrentUser();
+    const query = getAssignedTeacherByCurrentStudentUser();
     return defer({
       main:
         queryClient.getQueryData(query.queryKey as string[]) ??

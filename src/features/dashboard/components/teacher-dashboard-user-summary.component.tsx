@@ -21,6 +21,8 @@ type Props = ComponentProps<typeof BaseSurface> & {
   loading?: boolean;
 };
 
+const USER_ACCOUNT_PATH = `/${teacherBaseRoute}/${teacherRoutes.account.to}`;
+
 const links = [
   {
     to: `/${teacherBaseRoute}/${teacherRoutes.lesson.to}/${teacherRoutes.lesson.createTo}`,
@@ -108,7 +110,9 @@ export const TeacherDashboardUserSummary = memo(function ({
       ) : (
         <>
           <div className='flex min-w-[400px] animate-fastFadeIn flex-col gap-4'>
-            {user && <DashboardUserWelcome user={user} />}
+            {user && (
+              <DashboardUserWelcome to={USER_ACCOUNT_PATH} user={user} />
+            )}
             <BaseDivider />
             <DashboardShortcutMenu
               className='h-full min-h-[100px]'

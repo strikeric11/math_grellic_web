@@ -35,8 +35,10 @@ import { studentPerformanceRouteHandle } from '#/performance/route/student-perfo
 import { teacherScheduleRouteHandle } from '#/schedule/route/teacher-schedule-handle.route';
 import { studentScheduleRouteHandle } from '#/schedule/route/student-schedule-handle.route';
 import { studentUserRouteHandle } from '#/user/route/student-user-handle';
+import { currentUserRouteHandle } from '#/user/route/current-user-handle';
+import { studentHelpRouteHandle } from '#/help/route/student-help-handle.route';
 import { LessonCreatePage } from '#/lesson/pages/lesson-create.page';
-import { getCurrentUserLoader } from '#/user/route/user-account-loader.route';
+import { getStudentAssignedTeacherLoader } from '#/user/route/student-assigned-teacher-loader.route';
 import {
   getPaginatedLessonsLoader as getTeacherPaginatedLessonsLoader,
   getLessonBySlugLoader as getTeacherLessonBySlugLoader,
@@ -82,6 +84,7 @@ import {
 import { TeacherCurrentUserSinglePage } from '#/user/pages/teacher-current-user-single.page';
 import { TeacherUserAccountEditPage } from '#/user/pages/teacher-current-user-edit.page';
 import { StudentUserAccountEditPage } from '#/user/pages/student-current-user-edit.page';
+import { StudentAssignedTeacherPage } from '#/user/pages/student-assigned-teacher.page';
 import { StudentCurrentUserSinglePage } from '#/user/pages/student-current-user-single.page';
 import { TeacherLessonListPage } from '#/lesson/pages/teacher-lesson-list.page';
 import { TeacherLessonSinglePage } from '#/lesson/pages/teacher-lesson-single.page';
@@ -126,6 +129,7 @@ import { StudentUserListPage } from '#/user/pages/student-user-list.page';
 import { StudentUserSinglePage } from '#/user/pages/student-user-single.page';
 import { StudentUserCreatePage } from '#/user/pages/student-user-create.page';
 import { StudentUserEditPage } from '#/user/pages/student-user-edit.page';
+import { StudentHelpPage } from '#/help/pages/student-help.page';
 
 import { staticRoutes } from './static-routes';
 import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
@@ -173,12 +177,12 @@ const rootRoutes = createRoutesFromElements(
         <Route
           index
           element={<TeacherCurrentUserSinglePage />}
-          loader={getCurrentUserLoader(queryClient)}
+          handle={currentUserRouteHandle.single}
         />
         <Route
           path={teacherRoutes.account.editTo}
           element={<TeacherUserAccountEditPage />}
-          loader={getCurrentUserLoader(queryClient)}
+          handle={currentUserRouteHandle.edit}
         />
       </Route>
       {/* TEACHER LESSONS */}
@@ -446,12 +450,19 @@ const rootRoutes = createRoutesFromElements(
         <Route
           index
           element={<StudentCurrentUserSinglePage />}
-          loader={getCurrentUserLoader(queryClient)}
+          handle={currentUserRouteHandle.single}
+          loader={getStudentAssignedTeacherLoader(queryClient)}
         />
         <Route
           path={studentRoutes.account.editTo}
+          handle={currentUserRouteHandle.edit}
           element={<StudentUserAccountEditPage />}
-          loader={getCurrentUserLoader(queryClient)}
+        />
+        <Route
+          path={studentRoutes.account.teacherAccountTo}
+          element={<StudentAssignedTeacherPage />}
+          handle={currentUserRouteHandle.assignedTeacher}
+          loader={getStudentAssignedTeacherLoader(queryClient)}
         />
       </Route>
       {/* STUDENT LESSONS */}
@@ -532,6 +543,13 @@ const rootRoutes = createRoutesFromElements(
           </Route>
         </Route>
       </Route>
+      {/* STUDENT HELP */}
+      <Route
+        path={studentRoutes.help.to}
+        element={<StudentHelpPage />}
+        handle={studentHelpRouteHandle}
+        loader={getStudentAssignedTeacherLoader(queryClient)}
+      />
     </Route>
   </>,
 );

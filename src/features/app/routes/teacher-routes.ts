@@ -75,12 +75,12 @@ export const teacherRoutes = {
     createTo: 'enroll',
     editTo: 'edit',
   },
-  help: {
-    name: 'help',
-    to: 'help',
-    label: 'Help',
-    iconName: 'chat-centered-text',
-  },
+  // help: {
+  //   name: 'help',
+  //   to: 'help',
+  //   label: 'Help',
+  //   iconName: 'chat-centered-text',
+  // },
   account: {
     name: 'account',
     to: 'account',

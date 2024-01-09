@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
@@ -6,7 +5,7 @@ import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { useStudentUserSingle } from '../hooks/use-student-user-single.hook';
 import { StudentUserSingle } from '../components/student-user-single.component';
 
-export const StudentUserSinglePage = memo(function () {
+export function StudentUserSinglePage() {
   const { loading, student } = useStudentUserSingle();
   const data: any = useLoaderData();
 
@@ -21,4 +20,4 @@ export const StudentUserSinglePage = memo(function () {
       )}
     </BaseDataSuspense>
   );
-});
+}

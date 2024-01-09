@@ -57,6 +57,7 @@ export const studentRoutes = {
     name: 'account',
     to: 'account',
     label: 'Account',
+    teacherAccountTo: 'teacher',
     editTo: 'edit',
     hidden: true,
   },

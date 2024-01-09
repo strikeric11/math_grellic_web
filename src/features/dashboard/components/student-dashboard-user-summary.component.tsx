@@ -2,6 +2,7 @@ import { memo, useMemo } from 'react';
 import cx from 'classix';
 
 import { generateOrdinalSuffix } from '#/utils/string.util';
+import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { StudentPerformanceType } from '#/performance/models/performance.model';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseProgressCircle } from '#/base/components/base-progress-circle.component';
@@ -13,12 +14,16 @@ import { DashboardUserWelcome } from './dashboard-user-welcome.component';
 import type { ComponentProps } from 'react';
 import type { User } from '#/user/models/user.model';
 import type { StudentPerformance } from '#/performance/models/performance.model';
+import { BaseLink } from '#/base/components/base-link.component';
 
 type Props = ComponentProps<typeof BaseSurface> & {
   user: User | null;
   studentPerformance?: StudentPerformance | null;
   loading?: boolean;
 };
+
+const USER_ACCOUNT_PATH = `/${studentBaseRoute}/${studentRoutes.account.to}`;
+const PERFORMANCE_PATH = `/${studentBaseRoute}/${studentRoutes.performance.to}`;
 
 export const StudentDashboardUserSummary = memo(function ({
   className,
@@ -87,14 +92,25 @@ export const StudentDashboardUserSummary = memo(function ({
       ) : (
         <>
           <div className='flex min-w-[400px] animate-fastFadeIn flex-col gap-4'>
-            {user && <DashboardUserWelcome user={user} />}
+            {user && (
+              <DashboardUserWelcome to={USER_ACCOUNT_PATH} user={user} />
+            )}
             <BaseDivider />
             <div>
-              <div className='mb-5'>
-                <h3 className='text-lg'>Overall Rank</h3>
-                <span className='text-sm'>
-                  Your current position among peers
-                </span>
+              <div className='mb-5 flex items-start justify-between'>
+                <div>
+                  <h3 className='text-lg'>Overall Rank</h3>
+                  <span className='text-sm'>
+                    Your current position among peers
+                  </span>
+                </div>
+                <BaseLink
+                  to={PERFORMANCE_PATH}
+                  rightIconName='arrow-circle-right'
+                  size='xs'
+                >
+                  Detailed View
+                </BaseLink>
               </div>
               <div className='flex min-w-[230px] items-center gap-5 font-bold text-primary'>
                 <div className='flex items-center gap-x-2.5'>
