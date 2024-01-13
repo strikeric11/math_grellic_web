@@ -1,7 +1,7 @@
 import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { useStudentPerformanceSingle } from '#/performance/hooks/use-student-performance-single.hook';
-import { useTeacherScheduleTodayList } from '#/schedule/hooks/use-teacher-schedule-today-list.hook';
+import { useStudentScheduleTodayList } from '#/schedule/hooks/use-student-schedule-today-list.hook';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { ScheduleDailyCardList } from '#/schedule/components/schedule-daily-card-list.component';
 import { useStudentCurriculumSnippets } from '../hooks/use-student-curriculum-snippets.hook';
@@ -31,7 +31,7 @@ export function StudentDashboardPage() {
   } = useStudentCurriculumSnippets();
 
   const { loading: todayScheduleLoading, schedules } =
-    useTeacherScheduleTodayList();
+    useStudentScheduleTodayList();
 
   return (
     <div className='flex items-start justify-center gap-5'>

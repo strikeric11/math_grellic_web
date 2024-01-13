@@ -55,7 +55,7 @@ export const TeacherActivityPerformanceOverview = memo(function ({
           </BaseSurface>
           <BaseSurface
             rounded='sm'
-            className='flex animate-fastFadeIn justify-center !p-2.5'
+            className='flex animate-fastFadeIn justify-center !p-4'
           >
             <BaseProgressCircle
               percent={overallActivityCompletionPercent}

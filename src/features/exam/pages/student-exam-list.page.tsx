@@ -1,7 +1,11 @@
 import { useLoaderData } from 'react-router-dom';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
+import { options } from '#/utils/scrollbar.util';
+import { useStudentPerformanceSingle } from '#/performance/hooks/use-student-performance-single.hook';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
+import { StudentExamPerformanceOverview } from '#/performance/components/student-exam-performance-overview.component';
 import { useStudentExamList } from '../hooks/use-student-exam-list.hook';
 import { StudentLatestExamList } from '../components/student-latest-exam-list.component';
 import { StudentPreviousExamList } from '../components/student-previous-exam-list.component';
@@ -15,6 +19,9 @@ export function StudentExamListPage() {
     loading,
     refetch,
   } = useStudentExamList();
+
+  const { loading: performanceLoading, student: studentPerformance } =
+    useStudentPerformanceSingle();
 
   const data: any = useLoaderData();
 
@@ -36,8 +43,18 @@ export function StudentExamListPage() {
           />
           <div className='bg-gradient sticky bottom-0 h-20 w-full bg-gradient-to-t from-backdrop from-60% to-transparent' />
         </div>
-        {/* TODO sidebar components */}
-        <BaseRightSidebar />
+        <BaseRightSidebar>
+          <OverlayScrollbarsComponent
+            className='h-full w-full'
+            options={options}
+            defer
+          >
+            <StudentExamPerformanceOverview
+              studentPerformance={studentPerformance}
+              loading={performanceLoading}
+            />
+          </OverlayScrollbarsComponent>
+        </BaseRightSidebar>
       </div>
     </BaseDataSuspense>
   );

@@ -50,7 +50,7 @@ export const TeacherExamPerformanceOverview = memo(function ({
         <>
           <BaseSurface
             rounded='sm'
-            className='flex animate-fastFadeIn justify-center !p-2.5'
+            className='flex animate-fastFadeIn justify-center !p-2.5 font-medium'
           >
             <div className={EXAM_WRAPPER_CLASSNAME}>
               <span className={EXAM_VALUE_CLASSNAME}>{totalExamCount}</span>
@@ -63,7 +63,7 @@ export const TeacherExamPerformanceOverview = memo(function ({
           </BaseSurface>
           <BaseSurface
             rounded='sm'
-            className='flex animate-fastFadeIn justify-center !p-2.5'
+            className='flex animate-fastFadeIn justify-center !p-4'
           >
             <BaseProgressCircle
               percent={overallExamCompletionPercent}

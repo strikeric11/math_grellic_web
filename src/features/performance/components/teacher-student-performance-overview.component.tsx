@@ -49,11 +49,6 @@ export const TeacherStudentPerformanceOverview = memo(function ({
           rounded='sm'
           className='flex animate-fastFadeIn flex-col justify-center gap-4 !py-4'
         >
-          <BaseProgressCircle
-            percent={overallLessonCompletionPercent}
-            performance={StudentPerformanceType.Lesson}
-            label='Overall Lesson Completion'
-          />
           <BaseDivider />
           <BaseProgressCircle
             percent={overallExamCompletionPercent}
@@ -65,6 +60,11 @@ export const TeacherStudentPerformanceOverview = memo(function ({
             percent={overallActivityCompletionPercent}
             performance={StudentPerformanceType.Activity}
             label='Overall Activity Completion'
+          />
+          <BaseProgressCircle
+            percent={overallLessonCompletionPercent}
+            performance={StudentPerformanceType.Lesson}
+            label='Overall Lesson Completion'
           />
         </BaseSurface>
       )}
