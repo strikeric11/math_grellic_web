@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { capitalize } from '#/utils/string.util';
+import { useTeacherClassPerformance } from '#/dashboard/hooks/use-teacher-class-performance.hook';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
@@ -12,6 +13,7 @@ import {
   useStudentPerformanceList,
 } from '../hooks/use-student-performance-list.hook';
 import { StudentPerformanceList } from '../components/student-performance-list.component';
+import { TeacherStudentPerformanceOverview } from '../components/teacher-student-performance-overview.component';
 
 const filterOptions = [
   {
@@ -61,6 +63,9 @@ export function StudentPerformanceListPage() {
     handlePerformanceDetails,
   } = useStudentPerformanceList();
 
+  const { classLoading, teacherClassPerformance } =
+    useTeacherClassPerformance();
+
   const data: any = useLoaderData();
 
   const defaulSelectedtFilterOptions = useMemo(() => [filterOptions[0]], []);
@@ -96,8 +101,12 @@ export function StudentPerformanceListPage() {
             />
           )}
         </div>
-        {/* TODO sidebar components */}
-        <BaseRightSidebar />
+        <BaseRightSidebar>
+          <TeacherStudentPerformanceOverview
+            teacherClassPerformance={teacherClassPerformance}
+            loading={classLoading}
+          />
+        </BaseRightSidebar>
       </div>
     </BaseDataSuspense>
   );

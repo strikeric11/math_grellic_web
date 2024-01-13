@@ -66,7 +66,7 @@ export const TeacherExamPerformanceOverview = memo(function ({
             className='flex animate-fastFadeIn justify-center !p-2.5'
           >
             <BaseProgressCircle
-              percent={overallExamCompletionPercent || 0}
+              percent={overallExamCompletionPercent}
               performance={StudentPerformanceType.Exam}
               label='Overall Completion'
             />
