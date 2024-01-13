@@ -124,7 +124,7 @@ export const TeacherDashboardUserSummary = memo(function ({
           </div>
           <div className='animate-fastFadeIn'>
             <div className='mb-4'>
-              <h3 className='text-lg'>Overall Class Progress</h3>
+              <h3 className='text-lg leading-none'>Overall Class Progress</h3>
               <span className='text-sm'>
                 Track your class overall completion
               </span>

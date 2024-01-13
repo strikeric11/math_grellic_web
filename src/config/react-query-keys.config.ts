@@ -13,6 +13,9 @@ export const queryUserKey = {
 
 export const queryTeacherPerformanceKey = {
   class: ['performances', 'class'],
+  lesson: ['performances', 'lesson'],
+  exam: ['performances', 'exam'],
+  activity: ['performances', 'activity'],
 };
 
 export const queryStudentPerformanceKey = {
@@ -42,6 +45,7 @@ export const queryActivityKey = {
 
 export const queryScheduleKey = {
   timeline: ['schedules', 'timeline'],
+  daily: ['schedules', 'daily'],
   list: ['schedules', 'list'],
   single: ['schedules', 'single'],
 };

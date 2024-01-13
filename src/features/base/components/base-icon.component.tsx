@@ -21,8 +21,10 @@ import {
   Bell,
   Calendar,
   CalendarCheck,
+  CaretCircleDown,
   CaretCircleLeft,
   CaretCircleRight,
+  CaretCircleUp,
   CaretDown,
   CaretRight,
   ChalkboardTeacher,
@@ -158,10 +160,14 @@ export const BaseIcon = memo(
           return Calendar;
         case 'calendar-check':
           return CalendarCheck;
-        case 'caret-circle-left':
-          return CaretCircleLeft;
+        case 'caret-circle-down':
+          return CaretCircleDown;
+          case 'caret-circle-left':
+            return CaretCircleLeft;
         case 'caret-circle-right':
           return CaretCircleRight;
+        case 'caret-circle-up':
+          return CaretCircleUp;
         case 'caret-right':
           return CaretRight;
         case 'caret-down':

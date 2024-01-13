@@ -1,11 +1,18 @@
 import { useLoaderData } from 'react-router-dom';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
+import { options } from '#/utils/scrollbar.util';
 import { capitalize } from '#/utils/string.util';
+import { RecordStatus } from '#/core/models/core.model';
+import { StudentPerformanceType } from '#/performance/models/performance.model';
+import { useTeacherActivityPerformanceOverview } from '#/performance/hooks/use-teacher-activity-performance-overview.hook';
+import { useTeacherStudentPerformanceLeaderboard } from '#/performance/hooks/use-teacher-student-performance-leaderboard.hook';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
 import { BaseDataPagination } from '#/base/components/base-data-pagination.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
-import { RecordStatus } from '#/core/models/core.model';
+import { TeacherActivityPerformanceOverview } from '#/performance/components/teacher-activity-performance-overview.component';
+import { TeacherStudentPerformanceLeaderboard } from '#/performance/components/teacher-student-performance-leaderboard.component';
 import {
   defaultSort,
   useTeacherActivityList,
@@ -55,6 +62,12 @@ export function TeacherActivityListPage() {
     handleActivityPreview,
   } = useTeacherActivityList();
 
+  const { loading: activityPerformanceLoading, activityPerformance } =
+    useTeacherActivityPerformanceOverview();
+
+  const { loading: activityLeaderboardLoading, students } =
+    useTeacherStudentPerformanceLeaderboard(StudentPerformanceType.Activity);
+
   const data: any = useLoaderData();
 
   return (
@@ -88,8 +101,25 @@ export function TeacherActivityListPage() {
             />
           )}
         </div>
-        {/* TODO sidebar components */}
-        <BaseRightSidebar />
+        <BaseRightSidebar>
+          <OverlayScrollbarsComponent
+            className='h-full w-full'
+            options={options}
+            defer
+          >
+            <div className='flex flex-col gap-5'>
+              <TeacherActivityPerformanceOverview
+                activityPerformance={activityPerformance}
+                loading={activityPerformanceLoading}
+              />
+              <TeacherStudentPerformanceLeaderboard
+                students={students}
+                performance={StudentPerformanceType.Activity}
+                loading={activityLeaderboardLoading}
+              />
+            </div>
+          </OverlayScrollbarsComponent>
+        </BaseRightSidebar>
       </div>
     </BaseDataSuspense>
   );

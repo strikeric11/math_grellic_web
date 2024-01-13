@@ -55,6 +55,38 @@ export function getSchedulesByDateRangeAndCurrentTeacherUser(
   };
 }
 
+export function getSchedulesByDateAndCurrentTeacherUser(
+  date: Date,
+  options?: Omit<
+    UseQueryOptions<TimelineSchedules, Error, TimelineSchedules, any>,
+    'queryKey' | 'queryFn'
+  >,
+) {
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/teachers`;
+    const searchParams = generateSearchParams({
+      from: dayjs(date).format('YYYY-MM-DD'),
+      to: dayjs(date).add(1, 'day').format('YYYY-MM-DD'),
+    });
+
+    try {
+      const timelineSchedules = await kyInstance
+        .get(url, { searchParams })
+        .json();
+      return timelineSchedules;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [...queryScheduleKey.daily, { date }],
+    queryFn,
+    ...options,
+  };
+}
+
 export function getPaginatedMeetingSchedulesByCurrentTeacherUser(
   keys?: {
     q?: string;

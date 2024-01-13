@@ -17,6 +17,9 @@ import type { Activity } from '#/activity/models/activity.model';
 import type {
   StudentPerformance,
   TeacherClassPerformance,
+  TeacherLessonPerformance,
+  TeacherExamPerformance,
+  TeacherActivityPerformance,
 } from '../models/performance.model';
 
 const BASE_URL = 'performances/teachers';
@@ -44,6 +47,89 @@ export function getClassPerformanceByCurrentTeacherUser(
 
   return {
     queryKey: [...queryTeacherPerformanceKey.class],
+    queryFn,
+    ...options,
+  };
+}
+
+export function getLessonPerformanceByCurrentTeacherUser(
+  options?: Omit<
+    UseQueryOptions<
+      TeacherLessonPerformance,
+      Error,
+      TeacherLessonPerformance,
+      any
+    >,
+    'queryKey' | 'queryFn'
+  >,
+) {
+  const queryFn = async (): Promise<any> => {
+    try {
+      const lessonPerformance = await kyInstance
+        .get(`${BASE_URL}/lessons`)
+        .json();
+      return lessonPerformance;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [...queryTeacherPerformanceKey.lesson],
+    queryFn,
+    ...options,
+  };
+}
+
+export function getExamPerformanceByCurrentTeacherUser(
+  options?: Omit<
+    UseQueryOptions<TeacherExamPerformance, Error, TeacherExamPerformance, any>,
+    'queryKey' | 'queryFn'
+  >,
+) {
+  const queryFn = async (): Promise<any> => {
+    try {
+      const examPerformance = await kyInstance.get(`${BASE_URL}/exams`).json();
+      return examPerformance;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [...queryTeacherPerformanceKey.exam],
+    queryFn,
+    ...options,
+  };
+}
+
+export function getActivityPerformanceByCurrentTeacherUser(
+  options?: Omit<
+    UseQueryOptions<
+      TeacherActivityPerformance,
+      Error,
+      TeacherActivityPerformance,
+      any
+    >,
+    'queryKey' | 'queryFn'
+  >,
+) {
+  const queryFn = async (): Promise<any> => {
+    try {
+      const activityPerformance = await kyInstance
+        .get(`${BASE_URL}/activities`)
+        .json();
+      return activityPerformance;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [...queryTeacherPerformanceKey.activity],
     queryFn,
     ...options,
   };

@@ -1,11 +1,21 @@
 import { useLoaderData } from 'react-router-dom';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
+import { options } from '#/utils/scrollbar.util';
 import { capitalize } from '#/utils/string.util';
 import { RecordStatus } from '#/core/models/core.model';
+import { ScheduleType } from '#/schedule/models/schedule.model';
+import { StudentPerformanceType } from '#/performance/models/performance.model';
+import { useTeacherScheduleDailyList } from '#/schedule/hooks/use-teacher-schedule-daily-list.hook';
+import { useTeacherExamPerformanceOverview } from '#/performance/hooks/use-teacher-exam-performance-overview.hook';
+import { useTeacherStudentPerformanceLeaderboard } from '#/performance/hooks/use-teacher-student-performance-leaderboard.hook';
 import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
 import { BaseDataPagination } from '#/base/components/base-data-pagination.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
+import { TeacherScheduleDailyCardList } from '#/schedule/components/teacher-schedule-daily-card-list.component';
+import { TeacherExamPerformanceOverview } from '#/performance/components/teacher-exam-performance-overview.component';
+import { TeacherStudentPerformanceLeaderboard } from '#/performance/components/teacher-student-performance-leaderboard.component';
 import {
   defaultSort,
   useTeacherExamList,
@@ -60,6 +70,20 @@ export function TeacherExamListPage() {
     handleExamSchedule,
   } = useTeacherExamList();
 
+  const {
+    loading: dailyScheduleLoading,
+    today,
+    currentDate,
+    setCurrentDate,
+    schedules,
+  } = useTeacherScheduleDailyList(ScheduleType.Exam);
+
+  const { loading: examPerformanceLoading, examPerformance } =
+    useTeacherExamPerformanceOverview();
+
+  const { loading: examLeaderboardLoading, students } =
+    useTeacherStudentPerformanceLeaderboard(StudentPerformanceType.Exam);
+
   const data: any = useLoaderData();
 
   return (
@@ -94,8 +118,33 @@ export function TeacherExamListPage() {
             />
           )}
         </div>
-        {/* TODO sidebar components */}
-        <BaseRightSidebar />
+        <BaseRightSidebar>
+          <OverlayScrollbarsComponent
+            className='h-full w-full'
+            options={options}
+            defer
+          >
+            <div className='flex flex-col gap-5'>
+              <TeacherScheduleDailyCardList
+                schedules={schedules}
+                today={today}
+                currentDate={currentDate}
+                title='Exam Schedules'
+                loading={dailyScheduleLoading}
+                setCurrentDate={setCurrentDate}
+              />
+              <TeacherExamPerformanceOverview
+                examPerformance={examPerformance}
+                loading={examPerformanceLoading}
+              />
+              <TeacherStudentPerformanceLeaderboard
+                students={students}
+                performance={StudentPerformanceType.Exam}
+                loading={examLeaderboardLoading}
+              />
+            </div>
+          </OverlayScrollbarsComponent>
+        </BaseRightSidebar>
       </div>
     </BaseDataSuspense>
   );

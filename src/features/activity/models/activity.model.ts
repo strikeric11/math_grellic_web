@@ -27,10 +27,10 @@ export enum ActivityCategoryLevel {
 }
 
 export const activityGameLabel = {
-  [ActivityGame.AngryBirds]: 'Angry Birds',
-  [ActivityGame.Basketball]: 'Basketball',
-  [ActivityGame.CarRacing]: 'Car Racing',
-  [ActivityGame.EscapeRoom]: 'Escape Room',
+  [ActivityGame.AngryBirds]: 'Furious Flyers',
+  [ActivityGame.Basketball]: 'Hoops Ball',
+  [ActivityGame.CarRacing]: 'Speedway',
+  [ActivityGame.EscapeRoom]: 'Doorway Quest',
   [ActivityGame.SlidePuzzle]: 'Slide Puzzle',
 };
 

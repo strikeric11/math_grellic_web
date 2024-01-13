@@ -1,11 +1,18 @@
 import { useLoaderData } from 'react-router-dom';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
+import { options } from '#/utils/scrollbar.util';
 import { capitalize } from '#/utils/string.util';
 import { RecordStatus } from '#/core/models/core.model';
+import { ScheduleType } from '#/schedule/models/schedule.model';
+import { useTeacherLessonPerformanceOverview } from '#/performance/hooks/use-teacher-lesson-performance-overview.hook';
+import { useTeacherScheduleDailyList } from '#/schedule/hooks/use-teacher-schedule-daily-list.hook';
 import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
 import { BaseDataPagination } from '#/base/components/base-data-pagination.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
+import { TeacherLessonPerformanceOverview } from '#/performance/components/teacher-lesson-performance-overview.component';
+import { TeacherScheduleDailyCardList } from '#/schedule/components/teacher-schedule-daily-card-list.component';
 import {
   defaultSort,
   useTeacherLessonList,
@@ -60,6 +67,17 @@ export function TeacherLessonListPage() {
     handleLessonSchedule,
   } = useTeacherLessonList();
 
+  const {
+    loading: dailyScheduleLoading,
+    today,
+    currentDate,
+    setCurrentDate,
+    schedules,
+  } = useTeacherScheduleDailyList(ScheduleType.Lesson);
+
+  const { loading: lessonPerformanceLoading, lessonPerformance } =
+    useTeacherLessonPerformanceOverview();
+
   const data: any = useLoaderData();
 
   return (
@@ -94,8 +112,28 @@ export function TeacherLessonListPage() {
             />
           )}
         </div>
-        {/* TODO sidebar components */}
-        <BaseRightSidebar />
+        <BaseRightSidebar>
+          <OverlayScrollbarsComponent
+            className='h-full w-full'
+            options={options}
+            defer
+          >
+            <div className='flex flex-col gap-5'>
+              <TeacherScheduleDailyCardList
+                schedules={schedules}
+                today={today}
+                currentDate={currentDate}
+                title='Lesson Schedules'
+                loading={dailyScheduleLoading}
+                setCurrentDate={setCurrentDate}
+              />
+              <TeacherLessonPerformanceOverview
+                lessonPerformance={lessonPerformance}
+                loading={lessonPerformanceLoading}
+              />
+            </div>
+          </OverlayScrollbarsComponent>
+        </BaseRightSidebar>
       </div>
     </BaseDataSuspense>
   );

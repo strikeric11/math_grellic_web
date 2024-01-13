@@ -31,3 +31,20 @@ export type TeacherClassPerformance = {
   overallExamCompletionPercent: number;
   overallActivityCompletionPercent: number;
 };
+
+export type TeacherLessonPerformance = {
+  totalLessonCount: number;
+  totalLessonDurationSeconds: number;
+  overallLessonCompletionPercent: number;
+};
+
+export type TeacherExamPerformance = {
+  totalExamCount: number;
+  totalExamPoints: number;
+  overallExamCompletionPercent: number;
+};
+
+export type TeacherActivityPerformance = {
+  totalActivityCount: number;
+  overallActivityCompletionPercent: number;
+};
