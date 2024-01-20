@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import cx from 'classix';
 
@@ -17,6 +17,8 @@ type Props = ComponentProps<'div'> & {
   headerRightContent?: ReactNode;
   isClose?: boolean;
 };
+
+const SITE_TITLE = import.meta.env.VITE_META_TITLE;
 
 export const BaseScene = memo(function ({
   className,
@@ -66,6 +68,10 @@ export const BaseScene = memo(function ({
   const handleClose = useCallback(() => {
     window.close();
   }, []);
+
+  useEffect(() => {
+    document.title = title?.trim() ? `${title} • ${SITE_TITLE}` : SITE_TITLE;
+  }, [title]);
 
   return (
     <div
