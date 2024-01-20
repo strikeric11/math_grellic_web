@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import cx from 'classix';
@@ -18,6 +18,7 @@ import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { createDefaultStageQuestion } from '../helpers/activity-form.helper';
+import { ActivityGame } from '../models/activity.model';
 import { ActivityUpsertStageQuestion } from './activity-upsert-stage-question.component';
 
 import type { ComponentProps } from 'react';
@@ -59,6 +60,13 @@ const StageQuestionList = memo(function ({
     name: `categories.${categoryIndex}.stageQuestions.${stageIndex}.questions`,
     keyName: 'key',
   });
+
+  const gameName = useWatch({ control, name: 'game.name' });
+
+  const isEscapeRoom = useMemo(
+    () => gameName === ActivityGame.EscapeRoom,
+    [gameName],
+  );
 
   const totalStageQuestionCountText = useMemo(() => {
     const count = questions.length;
@@ -148,7 +156,10 @@ const StageQuestionList = memo(function ({
   return (
     <BaseSurface
       key={`stage-${stageIndex}`}
-      className='w-full overflow-hidden !px-0 !pb-0 !pt-1'
+      className={cx(
+        'w-full overflow-hidden !px-0  !pt-1',
+        !isEscapeRoom ? '!pb-0' : '!pb-2.5',
+      )}
       rounded='sm'
     >
       <div className='mb-2.5 flex w-full items-center justify-between border-b border-b-accent/20 px-2.5'>
@@ -205,17 +216,19 @@ const StageQuestionList = memo(function ({
           </motion.li>
         ))}
       </ul>
-      <div className='p-2.5'>
-        <BaseButton
-          className='w-full overflow-hidden rounded bg-transparent py-2 !transition-[background] hover:bg-primary hover:text-white'
-          leftIconName='plus-circle'
-          variant='link'
-          size='sm'
-          onClick={handleAppend}
-        >
-          Add Question
-        </BaseButton>
-      </div>
+      {!isEscapeRoom && (
+        <div className='p-2.5'>
+          <BaseButton
+            className='w-full overflow-hidden rounded bg-transparent py-2 !transition-[background] hover:bg-primary hover:text-white'
+            leftIconName='plus-circle'
+            variant='link'
+            size='sm'
+            onClick={handleAppend}
+          >
+            Add Question
+          </BaseButton>
+        </div>
+      )}
     </BaseSurface>
   );
 });
