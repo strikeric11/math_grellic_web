@@ -49,3 +49,8 @@ export const queryScheduleKey = {
   list: ['schedules', 'list'],
   single: ['schedules', 'single'],
 };
+
+export const queryAnnouncementKey = {
+  list: ['announcement', 'list'],
+  single: ['announcement', 'single'],
+};

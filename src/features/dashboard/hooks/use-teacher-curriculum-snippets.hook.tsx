@@ -30,8 +30,13 @@ export function useTeacherCurriculumSnippets(): Result {
   } = useQuery(
     getLessonSnippetsByCurrentTeacherUser(undefined, {
       refetchOnWindowFocus: false,
-      select: (data: any[]) =>
-        data.map((item: unknown) => transformToLesson(item)),
+      select: (data: any[]) => {
+        if (!Array.isArray(data)) {
+          return [];
+        }
+
+        return data.map((item: unknown) => transformToLesson(item));
+      },
     }),
   );
 
@@ -43,8 +48,13 @@ export function useTeacherCurriculumSnippets(): Result {
   } = useQuery(
     getExamSnippetsByCurrentTeacherUser(undefined, {
       refetchOnWindowFocus: false,
-      select: (data: any[]) =>
-        data.map((item: unknown) => transformToExam(item)),
+      select: (data: any[]) => {
+        if (!Array.isArray(data)) {
+          return [];
+        }
+
+        return data.map((item: unknown) => transformToExam(item));
+      },
     }),
   );
 
@@ -56,8 +66,13 @@ export function useTeacherCurriculumSnippets(): Result {
   } = useQuery(
     getActivitySnippetsByCurrentTeacherUser(undefined, {
       refetchOnWindowFocus: false,
-      select: (data: any[]) =>
-        data.map((item: unknown) => transformToActivity(item)),
+      select: (data: any[]) => {
+        if (!Array.isArray(data)) {
+          return [];
+        }
+
+        return data.map((item: unknown) => transformToActivity(item));
+      },
     }),
   );
 

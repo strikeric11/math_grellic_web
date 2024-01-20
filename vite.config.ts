@@ -91,6 +91,12 @@ export default defineConfig({
           new URL('./src/features/schedule', import.meta.url),
         ),
       },
+      {
+        find: '#/announcement',
+        replacement: fileURLToPath(
+          new URL('./src/features/announcement', import.meta.url),
+        ),
+      },
     ],
   },
 });

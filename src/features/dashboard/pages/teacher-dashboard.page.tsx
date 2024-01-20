@@ -3,11 +3,15 @@ import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { useTeacherScheduleTodayList } from '#/schedule/hooks/use-teacher-schedule-today-list.hook';
 import { ScheduleDailyCardList } from '#/schedule/components/schedule-daily-card-list.component';
+import { useTeacherAnnouncementList } from '#/announcement/hooks/use-teacher-announcement-list.hook';
+import { useAnnouncementCreate } from '#/announcement/hooks/use-announcement-create.hook';
 import { useTeacherClassPerformance } from '../hooks/use-teacher-class-performance.hook';
 import { useTeacherCurriculumSnippets } from '../hooks/use-teacher-curriculum-snippets.hook';
 import { TeacherDashboardUserSummary } from '../components/teacher-dashboard-user-summary.component';
 import { TeacherDashboardCurriculumTabList } from '../components/teacher-dashboard-curriculum-tab-list.component';
 import { TeacherDashboardStudentLeaderboard } from '../components/teacher-dashboard-student-leaderboard.component';
+import { TeacherDashboardAnnouncementList } from '../components/teacher-dashboard-announcement-list.component';
+import { useAnnouncementEdit } from '#/announcement/hooks/use-announcement-edit.hook';
 
 const SCHEDULE_PATH = `/${teacherBaseRoute}/${teacherRoutes.schedule.to}`;
 
@@ -33,6 +37,21 @@ export function TeacherDashboardPage() {
   const { loading: todayScheduleLoading, schedules } =
     useTeacherScheduleTodayList();
 
+  const {
+    loading: announcementListLoading,
+    teacherAnnouncements,
+    refresh,
+  } = useTeacherAnnouncementList();
+
+  const { loading: announcementCreateLoading, createAnnouncement } =
+    useAnnouncementCreate();
+
+  const {
+    loading: announcemenEditLoading,
+    editAnnouncement,
+    deleteAnnouncement,
+  } = useAnnouncementEdit();
+
   return (
     <div className='flex items-start justify-center gap-5'>
       <div className='flex min-w-[835px] flex-col gap-5 pb-8'>
@@ -57,6 +76,18 @@ export function TeacherDashboardPage() {
         />
       </div>
       <div className='flex flex-col gap-5'>
+        <TeacherDashboardAnnouncementList
+          loading={
+            announcementListLoading ||
+            announcementCreateLoading ||
+            announcemenEditLoading
+          }
+          teacherAnnouncements={teacherAnnouncements}
+          onCreate={createAnnouncement}
+          onEdit={editAnnouncement}
+          onDelete={deleteAnnouncement}
+          onRefresh={refresh}
+        />
         <BaseSurface className='!px-4 pb-3'>
           <h3 className='mb-2.5 text-lg leading-none'>Today's Schedule</h3>
           <ScheduleDailyCardList

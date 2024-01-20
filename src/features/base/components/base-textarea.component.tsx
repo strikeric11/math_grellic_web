@@ -45,7 +45,7 @@ export const BaseTextArea = memo(
         )}
         {...moreWrapperProps}
       >
-        <div className='relative w-full'>
+        <div className='relative flex w-full'>
           <textarea
             ref={ref}
             name={name}

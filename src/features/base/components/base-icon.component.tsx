@@ -19,6 +19,7 @@ import {
   Article,
   At,
   Bell,
+  Broadcast,
   Calendar,
   CalendarCheck,
   CaretCircleDown,
@@ -79,6 +80,7 @@ import {
   PlusCircle,
   Presentation,
   Question,
+  Quotes,
   RadioButton,
   RocketLaunch,
   ShareFat,
@@ -156,14 +158,16 @@ export const BaseIcon = memo(
           return At;
         case 'bell':
           return Bell;
+        case 'broadcast':
+          return Broadcast;
         case 'calendar':
           return Calendar;
         case 'calendar-check':
           return CalendarCheck;
         case 'caret-circle-down':
           return CaretCircleDown;
-          case 'caret-circle-left':
-            return CaretCircleLeft;
+        case 'caret-circle-left':
+          return CaretCircleLeft;
         case 'caret-circle-right':
           return CaretCircleRight;
         case 'caret-circle-up':
@@ -276,6 +280,8 @@ export const BaseIcon = memo(
           return Presentation;
         case 'question':
           return Question;
+        case 'quotes':
+          return Quotes;
         case 'radio-button':
           return RadioButton;
         case 'rocket-launch':

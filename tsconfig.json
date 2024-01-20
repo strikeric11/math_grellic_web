@@ -33,7 +33,8 @@
       "#/activity/*": ["./src/features/activity/*"],
       "#/performance/*": ["./src/features/performance/*"],
       "#/help/*": ["./src/features/help/*"],
-      "#/schedule/*": ["./src/features/schedule/*"]
+      "#/schedule/*": ["./src/features/schedule/*"],
+      "#/announcement/*": ["./src/features/announcement/*"]
     }
   },
   "include": ["src"],

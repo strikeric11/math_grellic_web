@@ -4,9 +4,11 @@ import { useStudentPerformanceSingle } from '#/performance/hooks/use-student-per
 import { useStudentScheduleTodayList } from '#/schedule/hooks/use-student-schedule-today-list.hook';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { ScheduleDailyCardList } from '#/schedule/components/schedule-daily-card-list.component';
+import { useStudentAnnouncementList } from '#/announcement/hooks/use-student-announcement-list.hook';
 import { useStudentCurriculumSnippets } from '../hooks/use-student-curriculum-snippets.hook';
 import { StudentDashboardUserSummary } from '../components/student-dashboard-user-summary.component';
 import { StudentDashboardCurriculumTabList } from '../components/student-dashboard-curriculum-tab-list.component';
+import { StudentDashboardAnnouncementList } from '../components/student-dashboard-announcement-list.component';
 import { StudentDashboardHelpCard } from '../components/student-dashboard-help-card.component';
 
 const SCHEDULE_PATH = `/${studentBaseRoute}/${studentRoutes.schedule.to}`;
@@ -33,6 +35,12 @@ export function StudentDashboardPage() {
   const { loading: todayScheduleLoading, schedules } =
     useStudentScheduleTodayList();
 
+  const {
+    loading: announcementListLoading,
+    studentAnnouncements,
+    refresh: refreshAnnouncements,
+  } = useStudentAnnouncementList();
+
   return (
     <div className='flex items-start justify-center gap-5'>
       <div className='flex min-w-[835px] flex-col gap-5 pb-8'>
@@ -56,6 +64,11 @@ export function StudentDashboardPage() {
         />
       </div>
       <div className='flex flex-col gap-5'>
+        <StudentDashboardAnnouncementList
+          loading={announcementListLoading}
+          studentAnnouncements={studentAnnouncements}
+          onRefresh={refreshAnnouncements}
+        />
         <BaseSurface className='!px-4 pb-3'>
           <h3 className='mb-2.5 text-lg leading-none'>Today's Schedule</h3>
           <ScheduleDailyCardList
