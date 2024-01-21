@@ -16,7 +16,6 @@ import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
 import { BaseStepper } from '#/base/components/base-stepper.component';
 import { BaseButton } from '#/base/components/base-button.components';
-import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
 import { defaultQuestion } from '#/exam/helpers/exam-form.helper';
@@ -592,18 +591,15 @@ export const ActivityUpsertForm = memo(function ({
                     Preview
                   </Menu.Item> */}
                   {isEdit && (
-                    <>
-                      <BaseDivider className='my-1' />
-                      <Menu.Item
-                        as={BaseDropdownButton}
-                        className='text-red-500'
-                        iconName='trash'
-                        onClick={onDelete}
-                        disabled={loading}
-                      >
-                        Delete
-                      </Menu.Item>
-                    </>
+                    <Menu.Item
+                      as={BaseDropdownButton}
+                      className='text-red-500'
+                      iconName='trash'
+                      onClick={onDelete}
+                      disabled={loading}
+                    >
+                      Delete
+                    </Menu.Item>
                   )}
                 </BaseDropdownMenu>
               </div>

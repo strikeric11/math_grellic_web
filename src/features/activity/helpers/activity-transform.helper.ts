@@ -8,6 +8,7 @@ import {
   getQuestionImageUrl,
   transformToBaseModel,
 } from '#/base/helpers/base.helper';
+import { ActivityCategoryType } from '../models/activity.model';
 
 import type { StudentUserAccount } from '#/user/models/user.model';
 import type {
@@ -387,7 +388,7 @@ export function transformToActivityUpsertDto({
 }: any) {
   const categoriesDto =
     categories?.map((category: any) =>
-      transformToCategoryUpsertDto(category),
+      transformToCategoryUpsertDto(category, game.type),
     ) || [];
 
   return {
@@ -401,23 +402,38 @@ export function transformToActivityUpsertDto({
   };
 }
 
-export function transformToCategoryUpsertDto({
-  id,
-  level,
-  randomizeQuestions,
-  visibleQuestionsCount,
-  correctAnswerCount,
-  pointsPerQuestion,
-  duration,
-  totalStageCount,
-  questions,
-}: any) {
+export function transformToCategoryUpsertDto(
+  {
+    id,
+    level,
+    randomizeQuestions,
+    visibleQuestionsCount,
+    correctAnswerCount,
+    pointsPerQuestion,
+    duration,
+    totalStageCount,
+    questions,
+    stageQuestions,
+  }: any,
+  gameType: string,
+) {
   const durationSeconds = duration
     ? convertDurationToSeconds(duration)
     : undefined;
 
+  const targetQuestions =
+    gameType === ActivityCategoryType.Stage
+      ? stageQuestions.reduce(
+          (total: any[], stageQuestion: any) => [
+            ...total,
+            ...(stageQuestion?.questions || []),
+          ],
+          [],
+        )
+      : questions;
+
   const questionsDto =
-    questions?.map((question: any) =>
+    targetQuestions?.map((question: any) =>
       transformToCategoryQuestionUpsertDto(question),
     ) || [];
 
