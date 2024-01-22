@@ -22,7 +22,7 @@ export const CoreStaticLogo = memo(function ({
   return (
     <Link
       className={cx(
-        'inline-block origin-left py-2 transition-all hover:brightness-110',
+        'inline-block origin-left scale-90 py-2 transition-all hover:brightness-110 lg:scale-100',
         isCompact && 'scale-90',
         className,
       )}

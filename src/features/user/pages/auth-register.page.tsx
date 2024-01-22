@@ -21,13 +21,13 @@ export function AuthRegisterPage() {
 
   return (
     <BaseStaticScene id='auth-register'>
-      <section className='mx-auto w-full max-w-[966px] pt-4'>
+      <section className='mx-auto w-full max-w-full pt-4 lg:max-w-[966px]'>
         {/* // TODO show loading spinner */}
         {!loading && !!selectedUserRole && (
           <div
             className={cx(
-              'flex flex-col items-start justify-start rounded-b-20px rounded-t-lg bg-backdrop/50 pb-12',
-              isDone && '!rounded-t-20px',
+              'flex flex-col items-start justify-start rounded-none bg-backdrop/50 pb-12 lg:rounded-b-20px',
+              isDone ? 'lg:rounded-t-20px' : 'lg:rounded-t-lg',
             )}
           >
             {isDone ? (
@@ -35,7 +35,7 @@ export function AuthRegisterPage() {
             ) : (
               <>
                 <AuthRegisterRoleTab
-                  className='mb-12 overflow-hidden rounded-t-lg'
+                  className='lg-rounded-t-lg mb-12 overflow-hidden rounded-t-none'
                   userRole={selectedUserRole}
                   isDone={isDone}
                   onChange={handleRoleChange}

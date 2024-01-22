@@ -64,6 +64,7 @@ export type IconName =
   | 'gender-female'
   | 'gender-male'
   | 'hourglass'
+  | 'house'
   | 'identification-badge'
   | 'image-square'
   | 'link-simple'

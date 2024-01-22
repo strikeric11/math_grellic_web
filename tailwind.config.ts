@@ -8,6 +8,10 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      screens: {
+        xs: '550px',
+        'xl-sm': '1152px',
+      },
       maxWidth: {
         'static-full': '1232px',
         max: '1920px',
@@ -53,6 +57,7 @@ export default {
         '13px': '13px',
         '21px': '21px',
         '28px': '28px',
+        '32px': '32px',
       },
       borderRadius: {
         '4px': '4px',

@@ -60,12 +60,14 @@ export const AuthRegisterRoleTab = memo(function ({
           ))}
         </Tab.List>
         <Tab.Panels className='w-full px-4 pt-8 lg:px-11'>
-          <h1 className='mb-2'>Sign up as a {userRole}</h1>
+          <h1 className='xs:leading-normal mb-2 w-full text-center leading-tight sm:text-left'>
+            Sign up as a {userRole}
+          </h1>
           <p className='max-w-[600px] text-lg'>
             Complete the form and unlock the vast features of Math Grellic. If
             you&apos;re already a member, simply{' '}
             <button
-              className='text-primary hover:text-primary-focus-light'
+              className='hover:text-primary-focus-ligh text-left text-primary'
               onClick={onLogin}
               disabled={isDone}
             >

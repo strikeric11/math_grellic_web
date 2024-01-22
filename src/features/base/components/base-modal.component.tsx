@@ -35,23 +35,23 @@ export function BaseModal({
     <Transition appear show={open} as={Fragment}>
       <Dialog as='div' onClose={handleClose}>
         <Transition.Child as={Fragment} {...dialogBackdropTransition}>
-          <div className='fixed inset-0 z-max bg-black/20 backdrop-blur-lg' />
+          <div className='xs:backdrop-blur-lg fixed inset-0 z-max bg-black/20 backdrop-blur-none' />
         </Transition.Child>
         <div className='fixed inset-0 z-max w-screen overflow-y-auto'>
           <Transition.Child as={Fragment} {...dialogPanelTransition}>
-            <div className='flex min-h-full items-center justify-center'>
+            <div className='flex h-full min-h-full items-center justify-center'>
               <Dialog.Panel
                 className={cx(
-                  'w-full max-w-[700px] transition-all',
-                  size === 'xs' && '!max-w-sm',
-                  size === 'sm' && '!max-w-xl',
-                  size === 'lg' && '!max-w-[968px]',
+                  'xs:h-auto xs:max-w-[700px] h-full w-full max-w-full transition-all',
+                  size === 'xs' && 'xs:!max-w-sm',
+                  size === 'sm' && 'xs:!max-w-xl',
+                  size === 'lg' && 'xs:!max-w-[968px]',
                   size === 'none' && '!max-w-none',
                 )}
               >
                 <BaseSurface
                   className={cx(
-                    'relative min-h-[150px] w-full overflow-hidden !bg-backdrop shadow-md',
+                    'xs:h-auto xs:!rounded-20px xs:shadow-md relative h-full min-h-[150px] w-full overflow-hidden !rounded-none !bg-backdrop shadow-none',
                     onClose ? 'pt-14' : 'pt-8',
                     className,
                   )}

@@ -20,12 +20,12 @@ export const HomeSection3 = memo(function ({
   return (
     <section
       className={cx(
-        'mx-auto flex w-full max-w-static-full items-start justify-between px-4',
+        'xl-sm:items-start mx-auto flex w-full max-w-static-full flex-col items-center justify-between gap-5 px-4 lg:flex-row',
         className,
       )}
       {...moreProps}
     >
-      <div className='w-full max-w-[435px]'>
+      <div className='xl-sm:max-w-[435px] w-full max-w-xs'>
         <img
           src={logoOnlyWithStudentPng}
           alt='logo with student'
@@ -34,7 +34,9 @@ export const HomeSection3 = memo(function ({
         />
       </div>
       <div className='flex w-full max-w-[702px] flex-col items-center'>
-        <h2 className='mb-6'>{homeContent.section3.title}</h2>
+        <h2 className='lg:text-32px mb-6 text-center text-3xl'>
+          {homeContent.section3.title}
+        </h2>
         <div
           className='mb-5 text-justify text-lg'
           dangerouslySetInnerHTML={contentHtml}

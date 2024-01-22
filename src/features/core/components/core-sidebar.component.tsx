@@ -8,9 +8,11 @@ import { CoreLogo } from './core-logo.component';
 import { CoreNav } from './core-nav.component';
 
 import { generateDashboardPath } from '#/utils/path.util';
+import { homeNavItem } from '#/app/routes/static-routes';
 import { generateTeacherRouteLinks } from '#/app/routes/teacher-routes';
 import { generateStudentRouteLinks } from '#/app/routes/student-routes';
 import { UserRole } from '#/user/models/user.model';
+import { CoreNavItem } from './core-nav-item.component';
 
 import gridSmPng from '#/assets/images/grid-sm.png';
 
@@ -89,7 +91,11 @@ export const CoreSidebar = memo(function ({
           className='absolute left-0 top-1/2 z-0 -translate-y-1/2'
           isExpanded={sidebarMode === SidebarMode.Expanded}
         />
-        <div className='relative z-10 flex shrink-0 grow-0 items-center justify-center'>
+        <div className='relative z-10 flex shrink-0 grow-0 flex-col items-center justify-center overflow-hidden'>
+          <CoreNavItem
+            {...homeNavItem}
+            isExpanded={sidebarMode === SidebarMode.Expanded}
+          />
           {!!modeIconName && (
             <BaseIconButton
               name={modeIconName}

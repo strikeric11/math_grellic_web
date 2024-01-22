@@ -74,10 +74,13 @@ export const AuthLoginForm = memo(function ({
   );
 
   return (
-    <div className={cx('w-full', className)} {...moreProps}>
-      <div className='px-14 pb-14'>
+    <div
+      className={cx('xs:h-auto flex h-full w-full flex-col', className)}
+      {...moreProps}
+    >
+      <div className='xs:h-auto xs:px-14 h-full px-4 pb-14'>
         <div className='mb-9'>
-          <h2 className='mb-2'>Welcome Back!</h2>
+          <h2 className='xs:text-left mb-2 text-center'>Welcome Back!</h2>
           <p className='text-lg'>
             Sign in to embark on an exciting adventure. If you are new,
             don&apos;t worry,{' '}

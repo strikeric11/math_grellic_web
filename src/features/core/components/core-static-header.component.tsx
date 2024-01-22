@@ -86,7 +86,7 @@ export const CoreStaticHeader = memo(function ({
       />
       <div
         className={cx(
-          'relative z-10 mx-auto flex h-20 w-full max-w-static-full items-center justify-between px-4 transition-[height]',
+          'relative z-10 mx-auto flex h-14 w-full max-w-static-full items-center justify-between px-4 transition-[height] lg:h-20',
           !isScrollTop && '!h-14',
         )}
       >

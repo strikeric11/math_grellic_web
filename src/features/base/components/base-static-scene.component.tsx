@@ -15,11 +15,14 @@ export const BaseStaticScene = memo(function ({
 }: Props) {
   return (
     <div
-      className={cx('relative z-10 animate-pageChange pb-36 pt-20', className)}
+      className={cx(
+        'relative z-10 animate-pageChange pb-36 pt-14 lg:pt-20',
+        className,
+      )}
       {...moreProps}
     >
       {!!title?.trim().length && (
-        <h1 className='mb-32 pt-2 text-center'>{title}</h1>
+        <h1 className='xl-sm:mb-32 mb-16 pt-2 text-center'>{title}</h1>
       )}
       {children}
     </div>

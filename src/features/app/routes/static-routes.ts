@@ -1,3 +1,5 @@
+import type { IconName, NavItem } from '#/base/models/base.model';
+
 [
   {
     name: '',
@@ -30,3 +32,18 @@ export const staticRoutes = {
 };
 
 export const staticRouteLinks = [staticRoutes.about, staticRoutes.training];
+
+export const staticHomeNavItem: NavItem = {
+  name: 'home',
+  to: '',
+  label: 'Home',
+  end: true,
+};
+
+export const homeNavItem = {
+  className: 'w-full',
+  to: '/',
+  label: 'Home',
+  iconName: 'house' as IconName,
+  end: true,
+};

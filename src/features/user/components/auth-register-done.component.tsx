@@ -11,9 +11,11 @@ export const AuthRegisterDone = memo(function ({
 }: ComponentProps<'div'>) {
   return (
     <div className={cx('w-full p-1.5', className)} {...moreProps}>
-      <div className='w-full px-4 pt-8 lg:px-11'>
-        <h1 className='mb-2'>Sign up complete!</h1>
-        <p className='mb-8 text-lg'>
+      <div className='xs:block flex w-full flex-col items-center px-4 pt-8 lg:px-11'>
+        <h1 className='xs:text-left mb-2 w-full text-center'>
+          Sign up complete!
+        </h1>
+        <p className='xs:text-left mb-8 text-center text-lg'>
           Your account is currently pending approval.
           <br />A notification will be sent once it&apos;s been approved.
         </p>

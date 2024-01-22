@@ -1,23 +1,25 @@
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import cx from 'classix';
 
-import { staticRoutes } from '#/app/routes/static-routes';
-import { BaseButton } from '#/base/components/base-button.components';
-import { useBoundStore } from '../hooks/use-store.hook';
-import { CoreStaticNavItem } from './core-static-nav-item.component';
+import { staticHomeNavItem, staticRoutes } from '#/app/routes/static-routes';
+import { BaseIconButton } from '#/base/components/base-icon-button.component';
+import { BaseModal } from '#/base/components/base-modal.component';
+import { CoreStaticNavMenu } from './core-static-nav-menu.component';
 
 import type { ComponentProps } from 'react';
+import type { IconWeight } from '@phosphor-icons/react';
 import type { NavItem } from '#/base/models/base.model';
 
-type Props = ComponentProps<'nav'> & {
+type Props = ComponentProps<'div'> & {
   items: NavItem[];
   loading?: boolean;
-  onGetStarted?: () => void;
+  onGetStarted?: () => Promise<void>;
   onLogin?: () => void;
 };
 
 const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.authRegister.to}`;
+
+const menuIconProps = { weight: 'fill' as IconWeight };
 
 export const CoreStaticNav = memo(function ({
   items,
@@ -27,54 +29,63 @@ export const CoreStaticNav = memo(function ({
   ...moreProps
 }: Props) {
   const { pathname } = useLocation();
-  const user = useBoundStore((state) => state.user);
+  const [openModal, setOpenModal] = useState(false);
 
-  const getStartedText = useMemo(
-    () => (!user ? 'Get Started' : 'Logout'),
-    [user],
+  const mobileItems = useMemo(() => [staticHomeNavItem, ...items], [items]);
+
+  const handleSetModal = useCallback(
+    (isOpen: boolean) => () => setOpenModal(isOpen),
+    [],
   );
-  const loginText = useMemo(() => (!user ? 'Sign In' : 'Dashboard'), [user]);
-  const loginRightIconName = useMemo(
-    () => (!user ? 'door-open' : 'rocket-launch'),
-    [user],
-  );
+
+  const handleGetStarted = useCallback(async () => {
+    onGetStarted && (await onGetStarted());
+    handleSetModal(false)();
+  }, [onGetStarted, handleSetModal]);
+
+  const handleLogin = useCallback(() => {
+    onLogin && onLogin();
+    handleSetModal(false)();
+  }, [onLogin, handleSetModal]);
+
+  useEffect(() => {
+    console.log(pathname);
+    handleSetModal(false)();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   return (
-    <nav {...moreProps}>
-      <ul className='flex items-center'>
-        {items.map(({ name, label, to }) => (
-          <li key={name}>
-            <CoreStaticNavItem to={`/${to}`} label={label} />
-          </li>
-        ))}
-        <li>
-          <BaseButton
-            className={cx(
-              '!px-3.5 !font-body !font-medium !tracking-normal',
-              pathname === ABSOLUTE_REGISTER_PATH &&
-                '!text-primary-focus-light',
-            )}
-            variant='link'
-            onClick={onGetStarted}
+    <>
+      <div {...moreProps}>
+        <nav className='hidden lg:block'>
+          <CoreStaticNavMenu
+            items={items}
             loading={loading}
-            disabled={user === undefined}
-          >
-            {getStartedText}
-          </BaseButton>
-        </li>
-        <li className='pl-3.5'>
-          <BaseButton
-            className='!w-[150px] !px-4'
-            rightIconName={loginRightIconName}
-            size='sm'
-            onClick={onLogin}
-            loading={user === undefined}
-            disabled={loading}
-          >
-            {loginText}
-          </BaseButton>
-        </li>
-      </ul>
-    </nav>
+            isRegisterPath={pathname === ABSOLUTE_REGISTER_PATH}
+            onGetStarted={handleGetStarted}
+            onLogin={handleLogin}
+          />
+        </nav>
+        <div className='block lg:hidden'>
+          <BaseIconButton
+            name='list'
+            variant='link'
+            iconProps={menuIconProps}
+            onClick={handleSetModal(true)}
+          />
+        </div>
+      </div>
+      <BaseModal size='xs' open={openModal} onClose={handleSetModal(false)}>
+        <nav className='block lg:hidden'>
+          <CoreStaticNavMenu
+            items={mobileItems}
+            loading={loading}
+            isRegisterPath={pathname === ABSOLUTE_REGISTER_PATH}
+            onGetStarted={handleGetStarted}
+            onLogin={handleLogin}
+          />
+        </nav>
+      </BaseModal>
+    </>
   );
 });

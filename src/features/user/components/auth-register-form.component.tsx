@@ -34,6 +34,10 @@ type Props = Omit<
   ) => Promise<User | null>;
 };
 
+const INPUT_CLASSNAME = '!max-w-input md:max-lg:!max-w-full';
+
+const inputWrapperProps = { className: INPUT_CLASSNAME };
+
 const genders: SelectOption[] = [
   {
     label: capitalize(UserGender.Male),
@@ -147,25 +151,28 @@ export const AuthRegisterForm = memo(function ({
     <div className={cx('w-full', className)} {...moreProps}>
       <form onSubmit={handleSubmit(submitForm)}>
         <fieldset
-          className='group/field flex flex-wrap justify-center gap-5 lg:grid lg:grid-cols-3'
+          className='group/field flex flex-col items-center justify-center gap-5 md:grid md:grid-cols-3 md:items-start'
           disabled={isSubmitting || isDone}
         >
           <BaseControlledInput
             label='First Name'
             name='firstName'
             control={control}
+            wrapperProps={inputWrapperProps}
             asterisk
           />
           <BaseControlledInput
             label='Last Name'
             name='lastName'
             control={control}
+            wrapperProps={inputWrapperProps}
             asterisk
           />
           <BaseControlledInput
             label='Middle Name'
             name='middleName'
             control={control}
+            wrapperProps={inputWrapperProps}
             asterisk
           />
           <BaseControlledSelect
@@ -173,6 +180,7 @@ export const AuthRegisterForm = memo(function ({
             label='Gender'
             options={genders}
             control={control}
+            className={INPUT_CLASSNAME}
             asterisk
           />
           <BaseControlledDatePicker
@@ -180,18 +188,20 @@ export const AuthRegisterForm = memo(function ({
             label='Date of Birth'
             control={control}
             iconName='calendar'
+            className={INPUT_CLASSNAME}
             asterisk
           />
           <BaseControlledPhoneInput
             label='Phone Number'
             name='phoneNumber'
             control={control}
+            wrapperProps={inputWrapperProps}
             asterisk
           />
         </fieldset>
         <BaseDivider className='my-4' />
         <fieldset
-          className='group/field grid grid-cols-1 place-items-center justify-center gap-5 md:flex lg:grid lg:grid-cols-3 lg:place-items-start'
+          className='group/field flex flex-col place-items-start items-center justify-center gap-5 md:grid md:grid-cols-3 md:items-start'
           disabled={isSubmitting || isDone}
         >
           <BaseControlledInput
@@ -199,6 +209,7 @@ export const AuthRegisterForm = memo(function ({
             name='email'
             label='Email'
             control={control}
+            wrapperProps={inputWrapperProps}
             asterisk
           />
           <BaseControlledPasswordInput
@@ -207,19 +218,22 @@ export const AuthRegisterForm = memo(function ({
             control={control}
             showPassword={showPassword}
             onShowPassword={setShowPassword}
+            wrapperProps={inputWrapperProps}
             asterisk
           />
           <BaseControlledInput
             type={showPassword ? 'text' : 'password'}
             name='confirmPassword'
             label='Confirm Password'
+            wrapperProps={inputWrapperProps}
             control={control}
           />
         </fieldset>
         <fieldset
           className={cx(
             'group/field mt-6',
-            userRole === UserRole.Student && 'flex items-center gap-5',
+            userRole === UserRole.Student &&
+              'flex flex-col items-center gap-5 md:flex-row',
           )}
           disabled={isSubmitting || isDone}
         >
@@ -241,7 +255,7 @@ export const AuthRegisterForm = memo(function ({
             />
           </div>
         </fieldset>
-        <div className='mt-8 flex items-center justify-between'>
+        <div className='xs:flex-row mt-8 flex flex-col items-center justify-between gap-5'>
           <BaseButton
             variant='link'
             rightIconName='arrow-counter-clockwise'
@@ -252,7 +266,7 @@ export const AuthRegisterForm = memo(function ({
           </BaseButton>
           <BaseButton
             type='submit'
-            className='!h-16 px-8 !text-xl'
+            className='xs:w-auto !h-16 w-full px-8 !text-xl'
             size='base'
             loading={isSubmitting || isDone}
           >

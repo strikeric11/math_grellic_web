@@ -72,12 +72,14 @@ export const AuthRegisterRolePicker = memo(function ({
         )}
       >
         <div className='mb-12 flex flex-col items-center'>
-          <h2 className='mb-2 text-28px'>Which one are you?</h2>
+          <h2 className='xs:leading-normal mb-2 w-full text-center text-28px leading-tight'>
+            Which one are you?
+          </h2>
           <span className='text-lg'>
             Select your classroom role to get started
           </span>
         </div>
-        <div className='flex items-start justify-center gap-10'>
+        <div className='flex flex-col items-start justify-center gap-10 lg:flex-row'>
           <Button
             label='Student'
             onClick={handleRoleChange(UserRole.Student)}

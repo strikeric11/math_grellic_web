@@ -31,13 +31,15 @@ export const HomeSection4 = memo(function ({
   return (
     <section
       className={cx(
-        'mx-auto flex w-full max-w-static-full items-start justify-between px-4',
+        'xl-sm:items-start mx-auto flex w-full max-w-static-full flex-col items-center justify-between px-4 lg:flex-row',
         className,
       )}
       {...moreProps}
     >
       <div className='w-full max-w-[706px]'>
-        <h2 className='mb-6'>{homeContent.section4.title}</h2>
+        <h2 className='lg:text-32px xs:max-w-full mx-auto mb-6 max-w-sm text-center text-3xl lg:text-left'>
+          {homeContent.section4.title}
+        </h2>
         <div>
           {benefits.map(({ key, title, content, src }) => (
             <div key={key} className='mb-11 flex items-center last:mb-0'>
@@ -58,13 +60,13 @@ export const HomeSection4 = memo(function ({
           ))}
         </div>
       </div>
-      <div className='w-full max-w-[446px]'>
+      <div className='xl-sm:max-w-[446px] order-first w-full max-w-xs lg:order-none lg:max-w-sm'>
         <img
           src={teacherWithSymbolsPng}
           alt='teacher with symbols'
           width={446}
           height={528}
-          className='translate-x-[18px]'
+          className='lg:translate-x-[18px]'
         />
       </div>
     </section>

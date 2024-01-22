@@ -59,16 +59,16 @@ export const CoreStaticFooter = memo(function ({
         <div className='h-full w-full bg-gradient-to-t from-transparent to-backdrop' />
       </div>
       <div className='relative z-10 mx-auto flex max-w-static-full flex-col items-center'>
-        <div className='mb-40 flex items-center justify-between'>
+        <div className='mb-40 flex flex-col items-center justify-between lg:flex-row'>
           <img
             src={studentWithNumbersPng}
             alt='student with numbers'
             width={667}
             height={474}
-            className='-translate-x-4'
+            className='xs:max-w-lg max-w-full sm:max-w-xl lg:-translate-x-4 xl:max-w-none'
           />
           <div className='flex flex-col items-center pt-6'>
-            <h2 className='mb-7 text-[44px] font-bold'>
+            <h2 className='mb-7 max-w-md text-center font-bold md:max-w-none lg:text-left xl:text-[44px]'>
               Begin your journey with{' '}
               <i className='text-secondary'>{META_TITLE}</i> today.
             </h2>
@@ -86,7 +86,13 @@ export const CoreStaticFooter = memo(function ({
           to='/'
           className='mb-10 inline-block transition-all hover:brightness-110'
         >
-          <img src={logoColPng} alt='footer logo' width={218} height={132} />
+          <img
+            src={logoColPng}
+            alt='footer logo'
+            width={218}
+            height={132}
+            className='xs:max-w-none max-w-[160px]'
+          />
         </Link>
         <span className='text-lg font-medium leading-none'>
           © {currentYear} Math Grellic. All rights reserved

@@ -8,10 +8,10 @@ import { HomeSection5 } from '../components/home-section-5.component';
 export function HomePage() {
   return (
     <BaseStaticScene>
-      <HomeSection1 className='pt-20' />
-      <HomeSection2 className='mb-44' />
-      <HomeSection3 className='mb-44' />
-      <HomeSection4 className='mb-36' />
+      <HomeSection1 className='pt-4 lg:pt-20' />
+      <HomeSection2 className='mb-24 lg:mb-44' />
+      <HomeSection3 className='mb-24 lg:mb-44' />
+      <HomeSection4 className='mb-24 lg:mb-36' />
       <HomeSection5 />
     </BaseStaticScene>
   );

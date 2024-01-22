@@ -44,8 +44,12 @@ export const HomeSection1 = memo(function ({
       {...moreProps}
     >
       <div className='mb-6 text-center'>
-        <h2 className='text-[40px]'>{homeContent.section1.title}</h2>
-        <p className='text-lg'>{homeContent.section1.content}</p>
+        <h2 className='mx-auto mb-4 max-w-lg leading-tight md:mb-0 md:max-w-none md:leading-normal lg:text-[40px]'>
+          {homeContent.section1.title}
+        </h2>
+        <p className='mx-auto max-w-lg text-lg sm:max-w-full'>
+          {homeContent.section1.content}
+        </p>
       </div>
       <BaseButton
         className='mb-16'

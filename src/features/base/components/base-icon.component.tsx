@@ -58,6 +58,7 @@ import {
   GenderFemale,
   GenderMale,
   Hourglass,
+  House,
   IdentificationBadge,
   ImageSquare,
   LinkSimple,
@@ -236,6 +237,8 @@ export const BaseIcon = memo(
           return GenderMale;
         case 'hourglass':
           return Hourglass;
+        case 'house':
+          return House;
         case 'identification-badge':
           return IdentificationBadge;
         case 'image-square':
