@@ -138,15 +138,19 @@ export const StudentDashboardExamList = memo(function ({
                   exam={exam as Exam}
                   ongoingDuration={duration}
                   primary
+                  isDashboard
                 />
               ))}
             {(ongoingExamsWithDurations.length <= 1 || !upcomingExam) &&
-              latestExam && <StudentExamSingleCard exam={latestExam} primary />}
+              latestExam && (
+                <StudentExamSingleCard exam={latestExam} primary isDashboard />
+              )}
             {upcomingExam && (
               <StudentExamSingleCard
                 exam={upcomingExam}
                 upcomingDuration={upcomingExamDuration}
                 primary={!latestExam}
+                isDashboard
               />
             )}
           </div>
@@ -154,7 +158,7 @@ export const StudentDashboardExamList = memo(function ({
           <div>
             <h3 className='mb-2.5 text-lg'>Previous Exams</h3>
             {filteredPreviousExams.length ? (
-              <ul className='flex items-center gap-5'>
+              <ul className='flex flex-col items-center gap-2.5 lg-sm:flex-row lg-sm:gap-5 xl:flex-col xl:gap-4 2xl:flex-row 2xl:gap-5'>
                 {filteredPreviousExams.map((exam) => (
                   <li key={`pe-${exam.id}`} className='w-full'>
                     <ExamCompactCard exam={exam} />

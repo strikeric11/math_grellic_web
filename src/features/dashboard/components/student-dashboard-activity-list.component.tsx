@@ -125,6 +125,7 @@ export const StudentDashboardActivityList = memo(function ({
                   key={`fa-${activity.id}`}
                   activity={activity}
                   primary={index <= 0}
+                  isDashboard
                 />
               ))}
           </div>
@@ -132,7 +133,7 @@ export const StudentDashboardActivityList = memo(function ({
           <div>
             <h3 className='mb-2.5 text-lg'>More Activities</h3>
             {moreActivities.length ? (
-              <ul className='flex items-center gap-5'>
+              <ul className='flex flex-col items-center gap-2.5 lg-sm:flex-row lg-sm:gap-5 xl:flex-col xl:gap-4 2xl:flex-row 2xl:gap-5'>
                 {moreActivities.map((activity) => (
                   <li key={`a-${activity.id}`} className='w-full'>
                     <ActivityCompactCard activity={activity} />

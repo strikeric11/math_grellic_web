@@ -49,7 +49,6 @@ export const CoreStaticNav = memo(function ({
   }, [onLogin, handleSetModal]);
 
   useEffect(() => {
-    console.log(pathname);
     handleSetModal(false)();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);

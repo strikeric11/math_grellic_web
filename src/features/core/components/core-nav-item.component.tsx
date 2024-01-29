@@ -11,6 +11,7 @@ type Props = Omit<ComponentProps<typeof NavLink>, 'className'> &
   Omit<NavItem, 'to' | 'name'> & {
     className?: string;
     isExpanded?: boolean;
+    isMobile?: boolean;
   };
 
 export const CoreNavItem = memo(function ({
@@ -20,6 +21,7 @@ export const CoreNavItem = memo(function ({
   iconName,
   size,
   isExpanded,
+  isMobile,
   ...moreProps
 }: Props) {
   const setClassName = useCallback(
@@ -42,7 +44,7 @@ export const CoreNavItem = memo(function ({
           <span
             className={cx(
               'opacity-0 transition-opacity duration-300',
-              isExpanded && '!opacity-100',
+              (isMobile || isExpanded) && '!opacity-100',
             )}
           >
             {label}
@@ -51,6 +53,7 @@ export const CoreNavItem = memo(function ({
             className={cx(
               'absolute -right-[1px] top-1/2 h-0 w-0 -translate-y-1/2 translate-x-4 border-b-[11px] border-r-[15px] border-t-[11px] border-solid border-transparent border-r-primary transition-transform',
               isActive && '!translate-x-0',
+              isMobile && '!hidden',
             )}
           >
             <div className='absolute -top-2.5 left-0.5 h-0 w-0 border-b-[10px] border-r-[14px] border-t-[10px] border-solid border-transparent border-r-backdrop' />

@@ -57,8 +57,8 @@ export function CoreLayout() {
   }, [setSocket]);
 
   return (
-    <div className='flex items-start justify-start'>
-      <CoreSidebar />
+    <div className='flex flex-col items-start justify-start lg:flex-row'>
+      <CoreSidebar className='hidden lg:block' />
       <CoreMain id='main'>
         <CoreHeader />
         {disabledSceneWrapper ? (

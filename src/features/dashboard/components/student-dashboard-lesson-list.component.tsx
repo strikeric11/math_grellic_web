@@ -118,7 +118,12 @@ export const StudentDashboardLessonList = memo(function ({
               </BaseLink>
             </div>
             {latestLesson && (
-              <StudentLessonSingleCard lesson={latestLesson} primary fat />
+              <StudentLessonSingleCard
+                lesson={latestLesson}
+                primary
+                fat
+                isDashboard
+              />
             )}
             {upcomingLesson && (
               <StudentLessonSingleCard
@@ -126,6 +131,7 @@ export const StudentDashboardLessonList = memo(function ({
                 upcomingDuration={upcomingLessonDuration}
                 primary={!latestLesson}
                 fat
+                isDashboard
               />
             )}
           </div>
@@ -133,7 +139,7 @@ export const StudentDashboardLessonList = memo(function ({
           <div>
             <h3 className='mb-2.5 text-lg'>More Lessons</h3>
             {moreLessons.length ? (
-              <ul className='flex items-center gap-5'>
+              <ul className='flex flex-col items-center gap-2.5 lg-sm:flex-row lg-sm:gap-5 xl:flex-col xl:gap-4 2xl:flex-row 2xl:gap-5'>
                 {moreLessons.map((lesson) => (
                   <li key={`l-${lesson.id}`} className='w-full'>
                     <LessonCompactCard lesson={lesson} />

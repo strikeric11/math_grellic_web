@@ -10,6 +10,7 @@ export default {
     extend: {
       screens: {
         xs: '550px',
+        'lg-sm': '896px',
         'xl-sm': '1152px',
       },
       maxWidth: {

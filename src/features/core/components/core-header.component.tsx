@@ -4,8 +4,16 @@ import { Menu } from '@headlessui/react';
 import cx from 'classix';
 
 import { UserRole } from '#/user/models/user.model';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
+import {
+  generateTeacherRouteLinks,
+  teacherBaseRoute,
+  teacherRoutes,
+} from '#/app/routes/teacher-routes';
+import {
+  generateStudentRouteLinks,
+  studentBaseRoute,
+  studentRoutes,
+} from '#/app/routes/student-routes';
 import { useAuth } from '#/user/hooks/use-auth.hook';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
@@ -15,6 +23,7 @@ import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component
 import { useBoundStore } from '../hooks/use-store.hook';
 import { useScroll } from '../hooks/use-scroll.hook';
 import { CoreClock } from './core-clock.component';
+import { CoreMobileNav } from './core-mobile-nav.component';
 
 import type { ComponentProps } from 'react';
 
@@ -27,16 +36,29 @@ export const CoreHeader = memo(function ({
   const { isScrollTop } = useScroll();
   const { logout } = useAuth();
 
-  const publicId = useMemo(() => user?.publicId, [user]);
-
   // TODO notification
 
+  const [publicId, role] = useMemo(() => [user?.publicId, user?.role], [user]);
+
+  // TODO specify student or teacher links
+  const navLinks = useMemo(() => {
+    if (role === UserRole.Teacher) {
+      return generateTeacherRouteLinks();
+    } else if (role === UserRole.Student) {
+      return generateStudentRouteLinks();
+    } else if (role === UserRole.Admin) {
+      // TODO admin links
+    }
+
+    return [];
+  }, [role]);
+
   const handleUserAccount = useCallback(() => {
-    if (!user) {
+    if (!role) {
       return;
     }
 
-    switch (user.role) {
+    switch (role) {
       case UserRole.Student:
         navigate(`/${studentBaseRoute}/${studentRoutes.account.to}`);
         break;
@@ -47,7 +69,7 @@ export const CoreHeader = memo(function ({
         // navigate(`/${teacherBaseRoute}/${teacherRoutes.account.to}`)
         break;
     }
-  }, [user, navigate]);
+  }, [role, navigate]);
 
   const handleLogout = useCallback(() => {
     logout();
@@ -56,14 +78,24 @@ export const CoreHeader = memo(function ({
   return (
     <header
       className={cx(
-        'fixed right-10 top-4 z-20 w-fit rounded-lg border  border-transparent bg-backdrop px-0 transition-all duration-300',
-        !isScrollTop && '!border-accent/20 !px-2.5 drop-shadow-sm',
+        'fixed bottom-0 left-0 right-auto top-auto z-20 w-full rounded-none px-0 transition-all duration-300 lg:bottom-auto lg:left-auto lg:right-10 lg:top-4 lg:w-fit lg:rounded-lg',
+        'flex items-center justify-between border-0 border-t border-t-primary-border-light bg-white lg:block lg:border lg:border-transparent lg:bg-backdrop',
+        !isScrollTop && 'drop-shadow-sm lg:!border-accent/20 lg:!px-2.5',
         className,
       )}
       {...moreProps}
     >
-      <div className='flex h-[48px] items-center justify-center gap-2.5'>
-        <div className='flex items-center gap-1.5'>
+      {user && (
+        <CoreMobileNav
+          className='h-[48px]'
+          user={user}
+          links={navLinks}
+          onLogout={handleLogout}
+          onUserAccountClick={handleUserAccount}
+        />
+      )}
+      <div className='hidden h-[48px] items-center justify-center gap-2.5 lg:flex'>
+        <div className='items-center gap-1.5'>
           {/* <BaseIconButton name='bell' variant='solid' size='sm' /> */}
           <BaseDropdownMenu
             customMenuButton={
@@ -98,7 +130,7 @@ export const CoreHeader = memo(function ({
             </Menu.Item>
           </BaseDropdownMenu>
         </div>
-        <BaseDivider vertical />
+        <BaseDivider className='hidden lg:block' vertical />
         <CoreClock className='h-full' isCompact={!isScrollTop} />
       </div>
     </header>

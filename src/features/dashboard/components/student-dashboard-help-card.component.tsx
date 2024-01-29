@@ -25,7 +25,7 @@ export const StudentDashboardHelpCard = memo(function ({
         )}
         {...moreProps}
       >
-        <div className='mb-4 w-56'>
+        <div className='mb-4 w-64 lg-sm:w-56'>
           <h3 className='mb-2.5 text-lg'>Help & Support</h3>
           <span className='inline-block text-sm'>
             Need help? We are here to provide you with the assistance you need
@@ -33,8 +33,14 @@ export const StudentDashboardHelpCard = memo(function ({
           </span>
         </div>
         <div>
-          <div className='overflow-hidden rounded-b-xl border border-accent'>
-            <img src={helpBg} alt='help background' width={395} height={74} />
+          <div className='h-[76px] overflow-hidden rounded-b-xl border border-accent'>
+            <img
+              src={helpBg}
+              alt='help background'
+              width={395}
+              height={74}
+              className='w-full'
+            />
           </div>
           <img
             src={helpTeacher}

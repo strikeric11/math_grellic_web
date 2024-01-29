@@ -15,10 +15,10 @@ export function CoreMain({
   return (
     <main
       className={cx(
-        'relative flex min-h-screen w-full flex-1 flex-col transition-[margin] duration-300',
-        sidebarMode === SidebarMode.Collapsed && 'ml-[70px]',
-        sidebarMode === SidebarMode.Expanded && 'ml-64',
-        sidebarMode === SidebarMode.Hidden && 'ml-0',
+        'relative ml-0 flex min-h-screen w-full flex-1 flex-col transition-[margin] duration-300',
+        sidebarMode === SidebarMode.Collapsed && 'lg:ml-[70px]',
+        sidebarMode === SidebarMode.Expanded && 'lg:ml-64',
+        sidebarMode === SidebarMode.Hidden && 'lg:ml-0',
         className,
       )}
       {...moreProps}

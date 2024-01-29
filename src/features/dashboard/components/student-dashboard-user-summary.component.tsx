@@ -5,6 +5,7 @@ import { generateOrdinalSuffix } from '#/utils/string.util';
 import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { StudentPerformanceType } from '#/performance/models/performance.model';
 import { BaseDivider } from '#/base/components/base-divider.component';
+import { BaseLink } from '#/base/components/base-link.component';
 import { BaseProgressCircle } from '#/base/components/base-progress-circle.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
@@ -14,7 +15,6 @@ import { DashboardUserWelcome } from './dashboard-user-welcome.component';
 import type { ComponentProps } from 'react';
 import type { User } from '#/user/models/user.model';
 import type { StudentPerformance } from '#/performance/models/performance.model';
-import { BaseLink } from '#/base/components/base-link.component';
 
 type Props = ComponentProps<typeof BaseSurface> & {
   user: User | null;
@@ -81,7 +81,7 @@ export const StudentDashboardUserSummary = memo(function ({
   return (
     <BaseSurface
       className={cx(
-        'flex gap-4',
+        'lg-sm:flex-row flex flex-col gap-4 xl:flex-col 2xl:flex-row',
         loading ? 'items-center justify-center' : 'items-stretch',
         className,
       )}
@@ -91,7 +91,7 @@ export const StudentDashboardUserSummary = memo(function ({
         <BaseSpinner />
       ) : (
         <>
-          <div className='flex min-w-[400px] animate-fastFadeIn flex-col gap-4'>
+          <div className='flex w-full animate-fastFadeIn flex-col gap-4 2xl:min-w-[400px]'>
             {user && (
               <DashboardUserWelcome to={USER_ACCOUNT_PATH} user={user} />
             )}
@@ -112,7 +112,7 @@ export const StudentDashboardUserSummary = memo(function ({
                   Detailed View
                 </BaseLink>
               </div>
-              <div className='flex min-w-[230px] items-center gap-5 font-bold text-primary'>
+              <div className='lg-sm:justify-start flex min-w-[230px] items-center justify-center gap-5 font-bold text-primary xl:justify-center 2xl:justify-start'>
                 <div className='flex items-center gap-x-2.5'>
                   <span className='text-4xl'>{overallRankText}</span>
                   {overallRank != null && overallRank <= 10 && (
@@ -130,15 +130,16 @@ export const StudentDashboardUserSummary = memo(function ({
               </div>
             </div>
           </div>
-          <div>
+          <div className='lg-sm:block hidden xl:hidden 2xl:block'>
             <BaseDivider vertical />
           </div>
+          <BaseDivider className='lg-sm:hidden mb-1.5 mt-1 block xl:block 2xl:hidden' />
           <div className='animate-fastFadeIn'>
             <div className='mb-4'>
               <h3 className='text-lg'>Overall Progress</h3>
               <span className='text-sm'>Track your academic journey</span>
             </div>
-            <div className='flex items-start gap-6'>
+            <div className='lg-sm:gap-6 flex items-start justify-center gap-12 xl:gap-12 2xl:gap-6'>
               {performances.map(({ value, performace, label }, index) => (
                 <BaseProgressCircle
                   key={`progress-${index}`}

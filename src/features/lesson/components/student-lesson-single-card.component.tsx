@@ -22,6 +22,7 @@ type Props = ComponentProps<typeof BaseSurface> & {
   primary?: boolean;
   fat?: boolean;
   upcomingDuration?: Duration | null;
+  isDashboard?: boolean;
 };
 
 const LESSON_LIST_PATH = `/${studentBaseRoute}/${studentRoutes.lesson.to}`;
@@ -32,6 +33,7 @@ export const StudentLessonSingleCard = memo(function ({
   primary,
   fat,
   upcomingDuration,
+  isDashboard,
   ...moreProps
 }: Props) {
   const [singleTo, orderNumber, title, excerpt, isCompleted, duration] =
@@ -69,7 +71,7 @@ export const StudentLessonSingleCard = memo(function ({
     <Link to={singleTo} className='group'>
       <BaseSurface
         className={cx(
-          'flex w-full flex-col gap-2.5 !py-2.5 !pl-2.5 !pr-5 transition-all group-hover:-translate-y-1 group-hover:ring-1',
+          'flex w-full flex-col gap-2.5 !py-2.5 !pl-2.5 !pr-2.5 transition-all group-hover:-translate-y-1 group-hover:ring-1 sm:!pr-5',
           primary
             ? 'primary !border-accent !bg-primary group-hover:!border-primary-focus group-hover:ring-primary-focus group-hover:drop-shadow-primary'
             : 'group-hover:ring-primary-focus group-hover:drop-shadow-primary',
@@ -79,19 +81,41 @@ export const StudentLessonSingleCard = memo(function ({
         rounded='sm'
         {...moreProps}
       >
-        <div className='flex w-full items-stretch gap-4'>
+        <div
+          className={cx(
+            'flex w-full flex-col items-stretch gap-4 sm:flex-row',
+            formattedUpcomingDate &&
+              isDashboard &&
+              'flex-wrap justify-between lg-sm:flex-nowrap xl:flex-wrap 2xl:flex-nowrap 2xl:justify-start',
+          )}
+        >
           {/* Image */}
           <div
-            className={`flex h-[90px] w-[161px] items-center justify-center overflow-hidden rounded border border-primary bg-primary-focus-light/30 text-primary
-              [.fat_&]:h-[117px] [.fat_&]:w-[209px] [.primary_&]:border-accent [.primary_&]:bg-white/50 [.primary_&]:text-accent`}
+            className={cx(
+              'flex h-[90px] w-full items-center justify-center overflow-hidden rounded border border-primary bg-primary-focus-light/30 text-primary sm:w-[161px]',
+              '[.fat_&]:h-[117px] [.fat_&]:w-full [.primary_&]:border-accent [.primary_&]:bg-white/50 [.primary_&]:text-accent',
+              isDashboard
+                ? 'sm:[.fat_&]:!w-[150px] lg-sm:[.fat_&]:!w-[209px] xl:[.fat_&]:!w-[150px] 2xl:[.fat_&]:!w-[209px]'
+                : 'sm:[.fat_&]:w-[209px]',
+            )}
           >
             <BaseIcon name='chalkboard-teacher' size={40} weight='light' />
           </div>
-          <div className='flex flex-1'>
+          <div
+            className={cx(
+              'flex flex-1',
+              formattedUpcomingDate &&
+                isDashboard &&
+                'w-full sm:order-last lg-sm:order-none xl:order-last 2xl:order-none 2xl:w-auto',
+            )}
+          >
             <div
               className={cx(
-                'flex flex-1 flex-col justify-between',
-                !formattedUpcomingDate ? 'pb-2.5' : 'py-2.5',
+                'flex flex-1 flex-col justify-between gap-2.5 pb-2.5 sm:gap-0',
+                formattedUpcomingDate && 'pt-2.5',
+                formattedUpcomingDate &&
+                  isDashboard &&
+                  '!pt-0 lg-sm:!pt-2.5 xl:!pt-0 2xl:!pt-2.5',
               )}
             >
               {/* Title and status */}
@@ -140,7 +164,7 @@ export const StudentLessonSingleCard = memo(function ({
             </div>
           </div>
           {formattedUpcomingDate && scheduleDate && (
-            <div className='w-[276px]'>
+            <div className='order-first w-[276px] self-end sm:order-none sm:self-auto'>
               <small className='mb-1 flex w-full items-center justify-end font-medium uppercase [.primary_&]:text-white'>
                 <span className='relative mr-4 flex gap-1'>
                   <span className='relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-primary-focus-light [.primary_&]:bg-white'></span>
@@ -179,11 +203,11 @@ export const StudentLessonSingleCard = memo(function ({
 
 export const StudentLessonSingleCardSkeleton = memo(function () {
   return (
-    <div className='flex w-full animate-pulse items-center justify-between gap-4 rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-5'>
-      <div className='h-[90px] w-[161px] rounded bg-accent/20' />
-      <div className='flex h-fit flex-1 flex-col gap-5'>
+    <div className='flex w-full animate-pulse flex-col items-center justify-between gap-4 rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-2.5 sm:flex-row sm:pr-5'>
+      <div className='h-[90px] w-full rounded bg-accent/20 sm:w-[161px]' />
+      <div className='flex h-fit w-full flex-1 flex-col gap-5'>
         <div className='h-6 w-[200px] rounded bg-accent/20' />
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-between gap-2.5'>
           <div className='flex items-center gap-2.5'>
             <div className='h-6 w-28 rounded bg-accent/20' />
             <div className='h-6 w-28 rounded bg-accent/20' />

@@ -6,6 +6,7 @@ import { BaseIcon } from './base-icon.component';
 
 import type { ComponentProps } from 'react';
 import type { ButtonVariant, IconName } from '../models/base.model';
+import type { IconWeight } from '@phosphor-icons/react';
 
 type Variant = Omit<ButtonVariant, 'primary' | 'border'>;
 
@@ -15,6 +16,7 @@ type Props = ComponentProps<typeof Link> & {
   leftIconName?: IconName;
   rightIconName?: IconName;
   bodyFont?: boolean;
+  iconWeight?: IconWeight;
 };
 
 export const BaseLink = memo(
@@ -26,6 +28,7 @@ export const BaseLink = memo(
       leftIconName,
       rightIconName,
       bodyFont,
+      iconWeight = 'regular',
       children,
       ...moreProps
     },
@@ -48,11 +51,11 @@ export const BaseLink = memo(
         {...moreProps}
       >
         {leftIconName && (
-          <BaseIcon size={iconSize} weight='regular' name={leftIconName} />
+          <BaseIcon size={iconSize} weight={iconWeight} name={leftIconName} />
         )}
         {children}
         {rightIconName && (
-          <BaseIcon size={iconSize} weight='regular' name={rightIconName} />
+          <BaseIcon size={iconSize} weight={iconWeight} name={rightIconName} />
         )}
       </Link>
     );

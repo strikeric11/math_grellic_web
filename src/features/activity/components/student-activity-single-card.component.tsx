@@ -27,6 +27,7 @@ import type {
 type Props = ComponentProps<typeof BaseSurface> & {
   activity: Activity;
   primary?: boolean;
+  isDashboard?: boolean;
 };
 
 type ScoreProps = {
@@ -50,7 +51,7 @@ const Score = memo(function ({ game, score }: ScoreProps) {
   }, [game, score]);
 
   return (
-    <div className='flex h-[130px] w-[160px] items-center justify-center overflow-hidden rounded border border-primary-hue-teal-dark bg-primary-hue-teal-dark'>
+    <div className='flex h-[130px] w-full items-center justify-center overflow-hidden rounded border border-primary-hue-teal-dark bg-primary-hue-teal-dark sm:w-[160px]'>
       {score == null ? (
         <div className='flex h-full w-full items-center justify-center bg-primary-hue-teal-focus'>
           {/* TODO image */}
@@ -74,6 +75,7 @@ export const StudentActivitySingleCard = memo(function ({
   className,
   activity,
   primary,
+  isDashboard,
   ...moreProps
 }: Props) {
   const [singleTo, orderNumber, title, game, categories, score] = useMemo(
@@ -144,7 +146,7 @@ export const StudentActivitySingleCard = memo(function ({
     <Link to={singleTo} className='group'>
       <BaseSurface
         className={cx(
-          'flex w-full flex-col gap-2.5 !py-2.5 !pl-2.5 !pr-5 transition-all group-hover:-translate-y-1 group-hover:ring-1',
+          'flex w-full flex-col gap-2.5 !py-2.5 !pl-2.5 !pr-2.5 transition-all group-hover:-translate-y-1 group-hover:ring-1 sm:!pr-5',
           primary
             ? 'primary !border-accent !bg-primary-hue-teal group-hover:!border-primary-hue-teal-focus group-hover:ring-primary-hue-teal-focus group-hover:drop-shadow-primary'
             : 'group-hover:ring-primary-hue-teal-focus group-hover:drop-shadow-primary',
@@ -153,11 +155,11 @@ export const StudentActivitySingleCard = memo(function ({
         rounded='sm'
         {...moreProps}
       >
-        <div className='flex w-full items-stretch gap-4'>
+        <div className='flex w-full flex-col items-stretch gap-4 sm:flex-row'>
           <Score game={game} score={score} />
           <div
             className={cx(
-              'flex flex-1 flex-col justify-between',
+              'flex flex-1 flex-col justify-between gap-2.5 sm:gap-0',
               isGameTypeStage && 'pb-2.5',
             )}
           >
@@ -195,7 +197,14 @@ export const StudentActivitySingleCard = memo(function ({
                 </BaseChip>
                 <BaseChip iconName='dice-three'>{gameName}</BaseChip>
               </div>
-              <div className='w-[200px] [.primary_&]:text-white'>
+              <div
+                className={cx(
+                  '[.primary_&]:text-white',
+                  isDashboard
+                    ? 'w-[150px] lg-sm:w-[200px] xl:w-[150px] 2xl:w-[200px]'
+                    : 'w-[200px]',
+                )}
+              >
                 {categories.map((category, index) => (
                   <div
                     key={`cat-${index}`}
@@ -233,11 +242,11 @@ export const StudentActivitySingleCard = memo(function ({
 
 export const StudentActivitySingleCardSkeleton = memo(function () {
   return (
-    <div className='flex w-full animate-pulse items-center justify-between gap-4 rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-5'>
-      <div className='h-[130px] w-[160px] rounded bg-accent/20' />
-      <div className='flex h-fit flex-1 flex-col gap-4'>
+    <div className='flex w-full animate-pulse flex-col items-center justify-between gap-4 rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-5 sm:flex-row'>
+      <div className='h-[130px] w-full rounded bg-accent/20 sm:w-[160px]' />
+      <div className='flex h-fit w-full flex-1 flex-col gap-4'>
         <div className='h-6 w-[200px] rounded bg-accent/20' />
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-between gap-2.5'>
           <div className='flex flex-col gap-y-1.5'>
             <div className='h-6 w-40 rounded bg-accent/20' />
             <div className='h-6 w-40 rounded bg-accent/20' />

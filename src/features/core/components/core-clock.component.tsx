@@ -25,7 +25,7 @@ export const CoreClock = memo(function ({
         )}
         {...moreProps}
       >
-        <div className='flex w-[75px] justify-center font-medium uppercase leading-none text-primary'>
+        <div className='flex w-16 justify-center text-sm font-medium uppercase leading-none text-primary lg:w-[75px] lg:text-base'>
           {time}
         </div>
         <div
@@ -38,7 +38,7 @@ export const CoreClock = memo(function ({
         </div>
         <div
           className={cx(
-            'flex w-[104px] flex-col items-start overflow-hidden whitespace-nowrap font-medium uppercase leading-none text-primary opacity-100 transition-[width,opacity] duration-300',
+            'flex w-24 flex-col items-start overflow-hidden whitespace-nowrap text-sm font-medium uppercase leading-none text-primary opacity-100 transition-[width,opacity] duration-300 lg:w-[104px] lg:text-base',
             isCompact && '!w-0 !opacity-0',
           )}
         >

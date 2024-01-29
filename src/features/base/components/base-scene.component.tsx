@@ -76,7 +76,7 @@ export const BaseScene = memo(function ({
   return (
     <div
       className={cx(
-        'relative z-10 flex w-full flex-1 flex-col px-9',
+        'relative z-10 flex w-full flex-1 flex-col px-4 pb-20 lg:px-9 lg:pb-0',
         className,
       )}
       {...moreProps}
