@@ -35,7 +35,7 @@ export function StudentPerformanceSinglePage() {
     <BaseDataSuspense resolve={data?.main}>
       {student && (
         <div className='mx-auto w-full max-w-compact py-5 pb-16'>
-          <div className='mb-2.5 flex w-full items-center justify-between'>
+          <div className='mb-2.5 flex w-full flex-col items-start justify-between gap-2.5 xs:flex-row xs:items-center'>
             {/* name + avatar */}
             <div className='flex items-center gap-x-2.5'>
               <UserAvatarImg gender={gender as UserGender} size='lg' />

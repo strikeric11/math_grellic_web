@@ -22,6 +22,7 @@ import {
   Broadcast,
   Calendar,
   CalendarCheck,
+  Cards,
   CaretCircleDown,
   CaretCircleLeft,
   CaretCircleRight,
@@ -165,6 +166,8 @@ export const BaseIcon = memo(
           return Calendar;
         case 'calendar-check':
           return CalendarCheck;
+        case 'cards':
+          return Cards;
         case 'caret-circle-down':
           return CaretCircleDown;
         case 'caret-circle-left':

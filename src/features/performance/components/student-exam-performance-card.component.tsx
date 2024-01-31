@@ -103,8 +103,8 @@ export const StudentExamPerformanceCard = memo(function ({
             {openDetails ? 'Less' : 'More'} Details
           </BaseButton>
         </div>
-        <div className='flex min-h-[200px] w-full items-stretch'>
-          <div className='flex flex-1 flex-col items-center justify-center gap-y-8'>
+        <div className='flex min-h-[200px] w-full flex-col items-stretch gap-5 md:flex-row md:gap-0'>
+          <div className='flex flex-1 flex-col items-center justify-center gap-y-8 '>
             <div className='flex items-center justify-center gap-5 font-bold text-primary-hue-purple'>
               <div className='flex items-center gap-x-2.5'>
                 <span className='text-4xl'>{overallExamRankText}</span>
@@ -127,9 +127,10 @@ export const StudentExamPerformanceCard = memo(function ({
               label='Overall Completion'
             />
           </div>
-          <BaseDivider className='!h-auto' vertical />
+          <BaseDivider className='hidden !h-auto md:block' vertical />
+          <BaseDivider className='block md:hidden' />
           <div className='flex flex-1 flex-col items-center justify-center font-medium'>
-            <div className='grid w-fit grid-cols-2 gap-y-4'>
+            <div className='grid w-fit grid-cols-3 gap-y-4 md:grid-cols-2'>
               <div className={EXAM_WRAPPER_CLASSNAME}>
                 <span className={EXAM_VALUE_CLASSNAME}>{currentExamCount}</span>
                 <span>Current Exams</span>

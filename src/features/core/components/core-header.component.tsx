@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Menu } from '@headlessui/react';
 import cx from 'classix';
 
@@ -32,6 +32,7 @@ export const CoreHeader = memo(function ({
   ...moreProps
 }: ComponentProps<'header'>) {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const user = useBoundStore((state) => state.user);
   const { isScrollTop } = useScroll();
   const { logout } = useAuth();
@@ -52,6 +53,11 @@ export const CoreHeader = memo(function ({
 
     return [];
   }, [role]);
+
+  const hasRightSidebar = useMemo(() => {
+    const targetNavLink = navLinks.find((link) => link.to === pathname);
+    return (targetNavLink as any)?.hasRightSidebar;
+  }, [pathname, navLinks]);
 
   const handleUserAccount = useCallback(() => {
     if (!role) {
@@ -90,6 +96,7 @@ export const CoreHeader = memo(function ({
           className='h-[48px]'
           user={user}
           links={navLinks}
+          hasRightSidebar={hasRightSidebar}
           onLogout={handleLogout}
           onUserAccountClick={handleUserAccount}
         />

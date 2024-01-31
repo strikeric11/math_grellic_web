@@ -1,24 +1,43 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
+import { useWindowSize } from '@uidotdev/usehooks';
+import defaultTheme from 'tailwindcss/defaultTheme';
 import cx from 'classix';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { useScroll } from '#/core/hooks/use-scroll.hook';
 import { SidebarMode } from '../models/base.model';
 import { BaseDivider } from './base-divider.component';
+import { BaseModal } from './base-modal.component';
 
 import type { ComponentProps } from 'react';
-import { useBoundStore } from '#/core/hooks/use-store.hook';
 
 export const BaseRightSidebar = memo(function ({
   className,
   children,
   ...moreProps
 }: ComponentProps<'aside'>) {
+  const { width: windowWidth } = useWindowSize();
   const { isScrollTop } = useScroll();
+  const [heightStyle, setHeightStyle] = useState({});
   const rightSidebarMode = useBoundStore((state) => state.rightSidebarMode);
+
   const toggleRightSidebarMode = useBoundStore(
     (state) => state.toggleRightSidebarMode,
   );
-  const [heightStyle, setHeightStyle] = useState({});
+
+  const openModal = useMemo(
+    () => rightSidebarMode === SidebarMode.Expanded,
+    [rightSidebarMode],
+  );
+
+  const isModal = useMemo(() => {
+    if (windowWidth == null) {
+      return false;
+    }
+
+    const targetWidth = +defaultTheme.screens.lg.replace(/[^0-9]/g, '');
+    return windowWidth < targetWidth;
+  }, [windowWidth]);
 
   useEffect(() => {
     // Set component height by getting scene tile and scene toolbar height,
@@ -28,36 +47,43 @@ export const BaseRightSidebar = memo(function ({
   }, [isScrollTop]);
 
   return (
-    <aside
-      style={heightStyle}
-      className={cx(
-        className,
-        'sticky top-0 flex grow-0 items-start pb-4 transition-[width,height] duration-300',
-        rightSidebarMode === SidebarMode.Collapsed ? 'w-0' : 'w-[408px]',
-        isScrollTop ? 'pt-0' : 'pt-4',
-      )}
-      {...moreProps}
-    >
-      <div className='h-full px-2'>
-        <div
-          className='group/btn flex h-full w-4 justify-center transition-colors hover:bg-primary-focus-light/30'
-          role='button'
-          onClick={toggleRightSidebarMode}
-        >
-          <BaseDivider vertical />
+    <>
+      <aside
+        style={heightStyle}
+        className={cx(
+          className,
+          'sticky top-0 hidden grow-0 items-start pb-4 transition-[width,height] duration-300 lg:flex',
+          rightSidebarMode === SidebarMode.Collapsed ? 'w-0' : 'w-[408px]',
+          isScrollTop ? 'pt-0' : 'pt-4',
+        )}
+        {...moreProps}
+      >
+        <div className='h-full px-2'>
+          <div
+            className='group/btn flex h-full w-4 justify-center transition-colors hover:bg-primary-focus-light/30'
+            role='button'
+            onClick={toggleRightSidebarMode}
+          >
+            <BaseDivider vertical />
+          </div>
         </div>
-      </div>
-      {rightSidebarMode === SidebarMode.Expanded && (
-        <div
-          className={cx(
-            'h-full w-full overflow-hidden opacity-100 transition-[padding,opacity]',
-            isScrollTop ? 'pt-0' : 'pt-16',
-          )}
-        >
-          {children}
-        </div>
+        {rightSidebarMode === SidebarMode.Expanded && (
+          <div
+            className={cx(
+              'h-full w-full overflow-hidden opacity-100 transition-[padding,opacity]',
+              isScrollTop ? 'pt-0' : 'pt-16',
+            )}
+          >
+            {children}
+          </div>
+        )}
+      </aside>
+      {isModal && (
+        <BaseModal open={openModal} size='sm' onClose={toggleRightSidebarMode}>
+          <div>{children}</div>
+        </BaseModal>
       )}
-    </aside>
+    </>
   );
 });
 

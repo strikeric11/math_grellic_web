@@ -52,7 +52,7 @@ export function StudentHelpPage() {
             guidance, your intstructor is here to offer you with the support you
             need.
           </p>
-          <div className='max-w-sm'>
+          <div className='mx-auto max-w-sm sm:mx-0'>
             <BaseSurface className='mb-2.5' rounded='sm'>
               <div className='flex h-16 items-center gap-x-2.5'>
                 <UserAvatarImg gender={teacherGender as UserGender} />

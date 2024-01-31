@@ -26,6 +26,7 @@ export const teacherRoutes = {
       createTo: 'create',
       editTo: 'edit',
     },
+    hasRightSidebar: true,
   },
   exam: {
     name: 'exams',
@@ -40,6 +41,7 @@ export const teacherRoutes = {
       createTo: 'create',
       editTo: 'edit',
     },
+    hasRightSidebar: true,
   },
   activity: {
     name: 'activities',
@@ -49,6 +51,7 @@ export const teacherRoutes = {
     createTo: 'create',
     editTo: 'edit',
     previewTo: 'preview',
+    hasRightSidebar: true,
   },
   schedule: {
     name: 'schedules',
@@ -60,12 +63,14 @@ export const teacherRoutes = {
       createTo: 'create',
       editTo: 'edit',
     },
+    hasRightSidebar: true,
   },
   performance: {
     name: 'performance',
     to: 'performance',
     label: 'Performance',
     iconName: 'chart-donut',
+    hasRightSidebar: true,
   },
   student: {
     name: 'students',
@@ -74,6 +79,7 @@ export const teacherRoutes = {
     iconName: 'users-four',
     createTo: 'enroll',
     editTo: 'edit',
+    hasRightSidebar: true,
   },
   // help: {
   //   name: 'help',

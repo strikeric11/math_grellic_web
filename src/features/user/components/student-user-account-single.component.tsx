@@ -67,7 +67,7 @@ export const StudentUserAccountSingle = memo(function ({
               See Details
             </BaseLink>
           </div>
-          <div className='flex items-center justify-between'>
+          <div className='flex flex-col items-start justify-between gap-2.5 sm:flex-row sm:items-center'>
             <div className='flex h-16 items-center gap-x-2.5'>
               <UserAvatarImg gender={teacherGender as UserGender} />
               <div className='flex h-full flex-col justify-between py-0.5'>

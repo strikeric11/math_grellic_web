@@ -166,7 +166,7 @@ export const CurrentUserUpdateForm = memo(function ({
             className='group/field flex flex-col gap-5'
             disabled={loading}
           >
-            <div className='flex w-full items-start justify-between gap-5'>
+            <div className='flex w-full flex-col items-start justify-between gap-5 xs:flex-row'>
               <BaseControlledPhoneInput
                 label='Phone Number'
                 name='phoneNumber'

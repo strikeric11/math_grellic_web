@@ -86,7 +86,7 @@ export const StudentActivityPerformanceCard = memo(function ({
             {openDetails ? 'Less' : 'More'} Details
           </BaseButton>
         </div>
-        <div className='flex min-h-[200px] w-full items-stretch'>
+        <div className='flex min-h-[200px] w-full flex-col items-stretch gap-5 md:flex-row md:gap-0'>
           <div className='flex flex-1 flex-col items-center justify-center gap-y-8'>
             <div className='flex items-center justify-center gap-5 font-bold text-primary-hue-teal'>
               <div className='flex items-center gap-x-2.5'>
@@ -102,9 +102,10 @@ export const StudentActivityPerformanceCard = memo(function ({
               label='Overall Completion'
             />
           </div>
-          <BaseDivider className='!h-auto' vertical />
+          <BaseDivider className='hidden !h-auto md:block' vertical />
+          <BaseDivider className='block md:hidden' />
           <div className='flex flex-1 flex-col items-center justify-center font-medium'>
-            <div className='flex w-fit flex-col gap-y-4'>
+            <div className='flex w-fit flex-row md:flex-col md:gap-y-4'>
               <div className={ACTIVITY_WRAPPER_CLASSNAME}>
                 <span className={ACTIVITY_VALUE_CLASSNAME}>
                   {totalActivityCount}

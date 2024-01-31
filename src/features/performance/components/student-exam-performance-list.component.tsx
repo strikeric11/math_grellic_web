@@ -47,11 +47,12 @@ export const StudentExamPerformanceList = memo(function ({
 
   return (
     <div className={cx('flex flex-col py-2.5', className)} {...moreProps}>
-      {exams?.map((exam) => (
+      {exams?.map((exam, index) => (
         <StudentExamPerformanceDetails
           key={exam.slug}
           exam={exam}
           onClick={onExamClick}
+          last={index >= exams.length - 1}
         />
       ))}
     </div>

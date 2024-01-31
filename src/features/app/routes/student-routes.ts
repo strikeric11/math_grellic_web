@@ -18,12 +18,14 @@ export const studentRoutes = {
     to: 'lessons',
     label: 'Lessons',
     iconName: 'chalkboard-teacher',
+    hasRightSidebar: true,
   },
   exam: {
     name: 'exams',
     to: 'exams',
     label: 'Exams',
     iconName: 'exam',
+    hasRightSidebar: true,
   },
   activity: {
     name: 'activities',
@@ -31,6 +33,7 @@ export const studentRoutes = {
     label: 'Activities',
     iconName: 'game-controller',
     size: 28,
+    hasRightSidebar: true,
   },
   schedule: {
     name: 'schedules',
@@ -40,6 +43,7 @@ export const studentRoutes = {
     meeting: {
       to: 'meetings',
     },
+    hasRightSidebar: true,
   },
   performance: {
     name: 'performance',

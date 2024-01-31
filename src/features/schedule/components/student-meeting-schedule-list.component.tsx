@@ -49,6 +49,12 @@ export const StudentMeetingScheduleList = memo(function ({
         ))
       ) : (
         <>
+          {!currentMeetingSchedules.length &&
+            !upcomingMeetingSchedules.length && (
+              <div className='flex w-full justify-center'>
+                <span>No current meetings</span>
+              </div>
+            )}
           {!!currentMeetingSchedules.length && (
             <div className='flex w-full flex-col gap-2.5'>
               {currentMeetingSchedules.map((meetingSchedule) => (

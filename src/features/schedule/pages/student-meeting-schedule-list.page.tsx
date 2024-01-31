@@ -1,7 +1,6 @@
 import { useLoaderData } from 'react-router-dom';
 
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
-import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { useStudentMeetingScheduleList } from '../hooks/use-student-meeting-schedule-list.hook';
 import { StudentMeetingScheduleList } from '../components/student-meeting-schedule-list.component';
 
@@ -30,7 +29,7 @@ export function StudentMeetingScheduleListPage() {
           />
         </div>
         {/* TODO sidebar components */}
-        <BaseRightSidebar />
+        {/* <BaseRightSidebar /> */}
       </div>
     </BaseDataSuspense>
   );

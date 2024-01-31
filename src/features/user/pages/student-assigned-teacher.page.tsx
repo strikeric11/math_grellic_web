@@ -60,7 +60,7 @@ export function StudentAssignedTeacherPage() {
                 </div>
               </div>
             </div>
-            <div className='flex items-center justify-between'>
+            <div className='flex flex-col items-start justify-between gap-2.5 xs:flex-row xs:items-center xs:gap-0'>
               <div className='flex items-center gap-2.5'>
                 <BaseChip iconName='identification-badge'>{publicId}</BaseChip>
                 <BaseDivider className='!h-6' vertical />
