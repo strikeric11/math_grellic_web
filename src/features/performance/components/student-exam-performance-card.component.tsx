@@ -130,7 +130,7 @@ export const StudentExamPerformanceCard = memo(function ({
           <BaseDivider className='hidden !h-auto md:block' vertical />
           <BaseDivider className='block md:hidden' />
           <div className='flex flex-1 flex-col items-center justify-center font-medium'>
-            <div className='grid w-fit grid-cols-3 gap-y-4 md:grid-cols-2'>
+            <div className='grid w-fit grid-cols-2 gap-y-4 -2xs:grid-cols-3 md:grid-cols-2'>
               <div className={EXAM_WRAPPER_CLASSNAME}>
                 <span className={EXAM_VALUE_CLASSNAME}>{currentExamCount}</span>
                 <span>Current Exams</span>

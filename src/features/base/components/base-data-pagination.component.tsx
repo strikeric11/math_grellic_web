@@ -39,14 +39,14 @@ export const BaseDataPagination = memo(function ({
   return (
     <div
       className={cx(
-        'bg-gradient sticky bottom-0 w-full bg-gradient-to-t from-backdrop from-60% to-transparent pb-3 pt-10',
+        'bg-gradient sticky bottom-[48px] w-full bg-gradient-to-t from-backdrop from-60% to-transparent pb-3 pt-10 lg:bottom-0',
         className,
       )}
       {...moreProps}
     >
-      <div className='flex min-h-[46px] w-full items-center justify-between'>
+      <div className='flex min-h-[46px] w-full flex-col items-center justify-between gap-2.5 -2xs:flex-row'>
         <div className='text-sm'>{entriesText}</div>
-        <div className='flex items-center gap-2'>
+        <div className='flex w-full items-center justify-between gap-2 -2xs:w-fit -2xs:justify-normal'>
           <div className='flex items-center'>
             <BaseIconButton
               name='caret-circle-left'

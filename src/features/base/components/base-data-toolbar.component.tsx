@@ -35,6 +35,10 @@ const sortButtonProps = { leftIconName: 'list-bullets' } as ComponentProps<
   typeof BaseButton
 >;
 
+const searchWrapperProps = {
+  className: '-2xs:!max-w-input !max-w-full w-full',
+};
+
 export const BaseDataToolbar = memo(
   ({
     className,
@@ -62,33 +66,40 @@ export const BaseDataToolbar = memo(
 
     return (
       <div
-        className={cx('flex w-full items-center justify-between', className)}
+        className={cx(
+          'flex w-full flex-col items-center justify-between gap-2.5 -2xs:flex-row -2xs:gap-0',
+          className,
+        )}
         {...moreProps}
       >
         <BaseSearchInput
+          className='w-full md:w-auto'
           placeholder='Find a lesson'
+          wrapperProps={searchWrapperProps}
           onChange={onSearchChange}
         />
-        <div className='flex items-center gap-2.5'>
-          {filterOptions && (
-            <BaseDataToolbarFilterMenu
-              options={filterOptions}
-              defaulSelectedtOptions={defaulSelectedtFilterOptions}
-              submitButtonLabel='Apply Filter'
-              singleFilterOnly={singleFilterOnly}
-              buttonProps={filterButtonProps}
-              onSubmit={onFilter}
-            />
-          )}
-          {sortOptions && (
-            <BaseDataToolbarSorterMenu
-              options={sortOptions}
-              defaultSelectedSort={defaultSelectedSort}
-              submitButtonLabel='Apply Sort'
-              buttonProps={sortButtonProps}
-              onSubmit={onSort}
-            />
-          )}
+        <div className='flex w-full items-center justify-between gap-2.5 -2xs:w-fit -2xs:justify-start'>
+          <div className='order-last flex items-center gap-2.5 -2xs:order-first'>
+            {filterOptions && (
+              <BaseDataToolbarFilterMenu
+                options={filterOptions}
+                defaulSelectedtOptions={defaulSelectedtFilterOptions}
+                submitButtonLabel='Apply Filter'
+                singleFilterOnly={singleFilterOnly}
+                buttonProps={filterButtonProps}
+                onSubmit={onFilter}
+              />
+            )}
+            {sortOptions && (
+              <BaseDataToolbarSorterMenu
+                options={sortOptions}
+                defaultSelectedSort={defaultSelectedSort}
+                submitButtonLabel='Apply Sort'
+                buttonProps={sortButtonProps}
+                onSubmit={onSort}
+              />
+            )}
+          </div>
           <BaseTooltip content='Refresh'>
             <BaseIconButton
               name='arrow-clockwise'

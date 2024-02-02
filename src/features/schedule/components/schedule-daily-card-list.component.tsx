@@ -87,7 +87,7 @@ export const ScheduleDailyCardList = memo(function ({
             <div
               className={cx(
                 'flex h-[234px] items-center justify-center',
-                fixedWidth ? 'w-[300px]' : 'w-full',
+                fixedWidth ? 'w-full -2lg:w-[300px]' : 'w-full',
               )}
             >
               <BaseSpinner />

@@ -138,10 +138,14 @@ export const CurrentUserUpdateForm = memo(function ({
 
   return (
     <div className={cx('w-full pb-8', className)} {...moreProps}>
-      <form onSubmit={handleSubmit(submitForm)}>
-        <div>
-          <BaseDivider className='mb-2.5 pt-2.5' />
-          <div className='flex w-full items-center justify-between'>
+      <form
+        className='flex w-full flex-col'
+        onSubmit={handleSubmit(submitForm)}
+      >
+        <BaseDivider className='mb-2.5 block pt-2.5 xs:hidden' />
+        <div className='order-last pt-5 xs:order-none xs:pt-0'>
+          <BaseDivider className='mb-2.5 hidden pt-2.5 xs:block' />
+          <div className='flex w-full flex-col items-center justify-between gap-2.5 xs:flex-row'>
             <BaseButton
               variant='link'
               size='sm'
@@ -152,6 +156,7 @@ export const CurrentUserUpdateForm = memo(function ({
               Reset Fields
             </BaseButton>
             <BaseButton
+              className='w-full xs:w-auto'
               type='submit'
               rightIconName='floppy-disk-back'
               loading={loading}

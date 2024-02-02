@@ -54,15 +54,12 @@ export function StudentHelpPage() {
           </p>
           <div className='mx-auto max-w-sm sm:mx-0'>
             <BaseSurface className='mb-2.5' rounded='sm'>
-              <div className='flex h-16 items-center gap-x-2.5'>
+              <div className='flex h-auto flex-col items-start gap-2.5 -3xs:h-16 -3xs:flex-row -3xs:items-center'>
                 <UserAvatarImg gender={teacherGender as UserGender} />
-                <div className='flex h-full flex-col justify-between py-0.5'>
+                <div className='flex h-full flex-col justify-between gap-2.5 py-0.5 -3xs:gap-0'>
                   <span className='text-lg font-medium'>{teacherFullName}</span>
                   <div className='flex items-center gap-2.5'>
-                    <BaseChip
-                      iconName='identification-badge'
-                      className='!text-sm'
-                    >
+                    <BaseChip iconName='identification-badge'>
                       {teacherPublicId}
                     </BaseChip>
                     <BaseDivider className='!h-6' vertical />

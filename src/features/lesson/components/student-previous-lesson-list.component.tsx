@@ -88,10 +88,10 @@ export const StudentPreviousLessonList = memo(function ({
   return (
     <div className={cx('w-full', className)} {...moreProps}>
       <Tab.Group>
-        <div className='relative flex w-full items-baseline justify-between'>
+        <div className='relative flex w-full flex-col items-baseline justify-between xs:flex-row'>
           <div className='absolute bottom-0 left-0 h-0.5 w-full bg-primary/20' />
-          <h2 className='text-lg'>{title}</h2>
-          <Tab.List className='relative z-10 flex'>
+          <h2 className='mb-2.5 text-lg xs:mb-0'>{title}</h2>
+          <Tab.List className='relative z-10 mx-auto flex xs:mx-0'>
             {Object.values(tabCategories).map(({ name, label }) => (
               <Tab key={name} className={setClassName}>
                 {label}

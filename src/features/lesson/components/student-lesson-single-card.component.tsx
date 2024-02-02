@@ -86,7 +86,7 @@ export const StudentLessonSingleCard = memo(function ({
             'flex w-full flex-col items-stretch gap-4 sm:flex-row',
             formattedUpcomingDate &&
               isDashboard &&
-              'flex-wrap justify-between lg-sm:flex-nowrap xl:flex-wrap 2xl:flex-nowrap 2xl:justify-start',
+              '-2lg:flex-nowrap flex-wrap justify-between xl:flex-wrap 2xl:flex-nowrap 2xl:justify-start',
           )}
         >
           {/* Image */}
@@ -95,7 +95,7 @@ export const StudentLessonSingleCard = memo(function ({
               'flex h-[90px] w-full items-center justify-center overflow-hidden rounded border border-primary bg-primary-focus-light/30 text-primary sm:w-[161px]',
               '[.fat_&]:h-[117px] [.fat_&]:w-full [.primary_&]:border-accent [.primary_&]:bg-white/50 [.primary_&]:text-accent',
               isDashboard
-                ? 'sm:[.fat_&]:!w-[150px] lg-sm:[.fat_&]:!w-[209px] xl:[.fat_&]:!w-[150px] 2xl:[.fat_&]:!w-[209px]'
+                ? '-2lg:[.fat_&]:!w-[209px] sm:[.fat_&]:!w-[150px] xl:[.fat_&]:!w-[150px] 2xl:[.fat_&]:!w-[209px]'
                 : 'sm:[.fat_&]:w-[209px]',
             )}
           >
@@ -106,7 +106,7 @@ export const StudentLessonSingleCard = memo(function ({
               'flex flex-1',
               formattedUpcomingDate &&
                 isDashboard &&
-                'w-full sm:order-last lg-sm:order-none xl:order-last 2xl:order-none 2xl:w-auto',
+                '-2lg:order-none w-full sm:order-last xl:order-last 2xl:order-none 2xl:w-auto',
             )}
           >
             <div
@@ -115,7 +115,7 @@ export const StudentLessonSingleCard = memo(function ({
                 formattedUpcomingDate && 'pt-2.5',
                 formattedUpcomingDate &&
                   isDashboard &&
-                  '!pt-0 lg-sm:!pt-2.5 xl:!pt-0 2xl:!pt-2.5',
+                  '-2lg:!pt-2.5 !pt-0 xl:!pt-0 2xl:!pt-2.5',
               )}
             >
               {/* Title and status */}
@@ -146,13 +146,13 @@ export const StudentLessonSingleCard = memo(function ({
                 )}
               </div>
               {/* Info chips */}
-              <div className='flex w-full items-center justify-between [.primary_&]:text-white'>
-                <div className='flex items-center gap-2.5'>
+              <div className='-3xs:flex-row -3xs:gap-0 -3xs:items-center flex w-full flex-col items-start justify-between gap-1 [.primary_&]:text-white'>
+                <div className='-3xs:flex-row -3xs:items-center -3xs:gap-2.5 flex flex-col items-start gap-1'>
                   <BaseChip iconName='chalkboard-teacher'>
                     Lesson {orderNumber}
                   </BaseChip>
                   <BaseDivider
-                    className='!h-6 [.primary_&]:border-white/20'
+                    className='-3xs:block hidden !h-6 [.primary_&]:border-white/20'
                     vertical
                   />
                   <BaseChip iconName='hourglass'>{duration}</BaseChip>

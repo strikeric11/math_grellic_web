@@ -99,7 +99,7 @@ export const TeacherDashboardUserSummary = memo(function ({
   return (
     <BaseSurface
       className={cx(
-        'flex gap-4',
+        'flex flex-col gap-4 -2lg:flex-row xl:flex-col 2xl:flex-row',
         loading ? 'items-center justify-center' : 'items-stretch',
         className,
       )}
@@ -109,7 +109,7 @@ export const TeacherDashboardUserSummary = memo(function ({
         <BaseSpinner />
       ) : (
         <>
-          <div className='flex min-w-[400px] animate-fastFadeIn flex-col gap-4'>
+          <div className='flex w-full animate-fastFadeIn flex-col gap-4 2xl:min-w-[400px]'>
             {user && (
               <DashboardUserWelcome to={USER_ACCOUNT_PATH} user={user} />
             )}
@@ -119,9 +119,10 @@ export const TeacherDashboardUserSummary = memo(function ({
               links={links}
             />
           </div>
-          <div>
+          <div className='hidden -2lg:block xl:hidden 2xl:block'>
             <BaseDivider vertical />
           </div>
+          <BaseDivider className='mb-1.5 mt-1 block -2lg:hidden xl:block 2xl:hidden' />
           <div className='animate-fastFadeIn'>
             <div className='mb-4'>
               <h3 className='text-lg leading-none'>Overall Class Progress</h3>
@@ -129,7 +130,7 @@ export const TeacherDashboardUserSummary = memo(function ({
                 Track your class overall completion
               </span>
             </div>
-            <div className='flex items-start gap-6'>
+            <div className='flex flex-col items-center justify-center gap-4 -3xs:flex-row -3xs:items-start -3xs:gap-6 -2xs:gap-12 -2lg:gap-6 xl:gap-12 2xl:gap-6'>
               {performances.map(({ value, performace, label }, index) => (
                 <BaseProgressCircle
                   key={`progress-${index}`}

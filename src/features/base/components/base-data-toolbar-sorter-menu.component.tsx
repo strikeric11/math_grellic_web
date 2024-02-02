@@ -160,7 +160,7 @@ export const BaseDataToolbarSorterMenu = memo(function ({
             {...moreButtonProps}
             {...getReferenceProps()}
           >
-            {buttonLabel}
+            <span className='hidden md:inline'>{buttonLabel}</span>
           </Popover.Button>
           <Transition as={Fragment} show={open} appear>
             <Popover.Panel

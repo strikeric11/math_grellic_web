@@ -94,7 +94,7 @@ export function StudentCurrentUserSinglePage() {
                 </BaseLink>
               </div>
             </div>
-            <div className='flex items-center justify-between gap-2.5'>
+            <div className='flex flex-col items-start justify-between gap-2.5 -2xs:flex-row -2xs:items-center'>
               <div className='flex flex-col items-start gap-1 sm:flex-row sm:gap-2.5'>
                 <BaseChip iconName='identification-badge'>{publicId}</BaseChip>
                 <BaseDivider className='hidden !h-6 sm:block' vertical />

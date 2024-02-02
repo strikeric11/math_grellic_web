@@ -1,5 +1,7 @@
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
+import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { transformToLesson } from '#/lesson/helpers/lesson-transform.helper';
 import { transformToExam } from '#/exam/helpers/exam-transform.helper';
 import { transformToActivity } from '#/activity/helpers/activity-transform.helper';
@@ -10,6 +12,7 @@ import { getActivitySnippetsByCurrentTeacherUser } from '#/activity/api/teacher-
 import type { Lesson } from '#/lesson/models/lesson.model';
 import type { Exam } from '#/exam/models/exam.model';
 import type { Activity } from '#/activity/models/activity.model';
+import { useCallback } from 'react';
 
 type Result = {
   loading: boolean;
@@ -19,9 +22,18 @@ type Result = {
   refreshLessons: () => void;
   refreshExams: () => void;
   refreshActivities: () => void;
+  handleLessonDetails: (slug: string) => void;
+  handleExamDetails: (slug: string) => void;
+  handleActivityDetails: (slug: string) => void;
 };
 
+const LESSON_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
+const EXAM_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
+const ACTIVITY_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
+
 export function useTeacherCurriculumSnippets(): Result {
+  const navigate = useNavigate();
+
   const {
     data: lessonsData,
     isLoading: isLessonsLoading,
@@ -76,6 +88,27 @@ export function useTeacherCurriculumSnippets(): Result {
     }),
   );
 
+  const handleLessonDetails = useCallback(
+    (slug: string) => {
+      navigate(`${LESSON_LIST_PATH}/${slug}`);
+    },
+    [navigate],
+  );
+
+  const handleExamDetails = useCallback(
+    (slug: string) => {
+      navigate(`${EXAM_LIST_PATH}/${slug}`);
+    },
+    [navigate],
+  );
+
+  const handleActivityDetails = useCallback(
+    (slug: string) => {
+      navigate(`${ACTIVITY_LIST_PATH}/${slug}`);
+    },
+    [navigate],
+  );
+
   return {
     loading:
       isLessonsLoading ||
@@ -90,5 +123,8 @@ export function useTeacherCurriculumSnippets(): Result {
     refreshLessons,
     refreshExams,
     refreshActivities,
+    handleLessonDetails,
+    handleExamDetails,
+    handleActivityDetails,
   };
 }

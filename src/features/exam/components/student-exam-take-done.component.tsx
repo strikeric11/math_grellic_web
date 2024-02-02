@@ -140,14 +140,14 @@ export const StudentExamTakeDone = memo(function ({
             </>
           )}
         </div>
-        <div className='mb-12 flex items-center gap-x-4 px-2.5'>
-          <div>
+        <div className='mb-12 flex flex-row flex-wrap items-start gap-x-4 px-2.5 xs:items-center'>
+          <div className='mb-5 w-full xs:mb-0 xs:w-auto'>
             <BaseChip iconName='exam'>Exam {orderNumber}</BaseChip>
             <h2 className='font-body text-lg font-medium tracking-normal text-accent'>
               {title}
             </h2>
           </div>
-          <BaseDivider className='!h-12' vertical />
+          <BaseDivider className='hidden !h-12 xs:block' vertical />
           <div className={FIELD_WRAPPER_CLASSNAME}>
             <span className={FIELD_VALUE_CLASSNAME}>{totalPoints}</span>
             <small className={FIELD_LABEL_CLASSNAME}>{totalPointsLabel}</small>
@@ -176,7 +176,7 @@ export const StudentExamTakeDone = memo(function ({
               animate='show'
             >
               <motion.div
-                className='mb-8 flex items-center justify-center gap-5 px-5 text-primary'
+                className='mb-2.5 flex flex-col items-center justify-center gap-2.5 px-5 text-primary -2xs:mb-8 -2xs:flex-row -2xs:gap-5'
                 variants={scoreShowItemVariants}
               >
                 {score != null && rank != null && (
@@ -187,10 +187,10 @@ export const StudentExamTakeDone = memo(function ({
                         <PerformanceRankAwardImg rank={rank} size='lg' />
                       )}
                     </div>
-                    <BaseDivider className='!h-14' vertical />
+                    <BaseDivider className='hidden !h-14 -2xs:block' vertical />
                   </>
                 )}
-                <div className='flex items-center gap-2.5 font-display text-4xl font-medium tracking-tighter'>
+                <div className='flex items-center gap-2.5 font-display text-3xl font-medium tracking-tighter -2xs:text-4xl'>
                   {isExpired ? (
                     <span>-</span>
                   ) : (
@@ -201,23 +201,24 @@ export const StudentExamTakeDone = memo(function ({
                   )}
                 </div>
               </motion.div>
+              <BaseDivider className='mb-2.5 block -2xs:hidden' />
               {hasPassed ? (
                 <motion.div
-                  className='flex items-center gap-x-2.5 text-green-500'
+                  className='flex flex-col items-center justify-center gap-2.5 text-green-500 -2xs:flex-row'
                   variants={scoreShowItemVariants}
                 >
                   <BaseIcon name='check-circle' size={40} weight='bold' />
-                  <h2 className='text-3xl text-green-500'>
+                  <h2 className='text-center text-2xl text-green-500 -2xs:text-left -2xs:text-3xl'>
                     You've Passed the Exam
                   </h2>
                 </motion.div>
               ) : (
                 <motion.div
-                  className='flex items-center gap-x-2.5 text-red-500'
+                  className='flex flex-col items-center justify-center gap-2.5 text-red-500 -2xs:flex-row'
                   variants={scoreShowItemVariants}
                 >
                   <BaseIcon name='x-circle' size={40} weight='bold' />
-                  <h2 className='text-3xl text-red-500'>
+                  <h2 className='text-center text-2xl text-red-500 -2xs:text-left -2xs:text-3xl'>
                     You've Failed the Exam
                   </h2>
                 </motion.div>

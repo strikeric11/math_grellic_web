@@ -31,27 +31,30 @@ export const HomeSection4 = memo(function ({
   return (
     <section
       className={cx(
-        'xl-sm:items-start mx-auto flex w-full max-w-static-full flex-col items-center justify-between px-4 lg:flex-row',
+        'mx-auto flex w-full max-w-static-full flex-col items-center justify-between px-4 lg:flex-row -2xl:items-start',
         className,
       )}
       {...moreProps}
     >
       <div className='w-full max-w-[706px]'>
-        <h2 className='lg:text-32px xs:max-w-full mx-auto mb-6 max-w-sm text-center text-3xl lg:text-left'>
+        <h2 className='mx-auto mb-6 max-w-sm text-center text-3xl xs:max-w-full lg:text-left lg:text-32px'>
           {homeContent.section4.title}
         </h2>
         <div>
           {benefits.map(({ key, title, content, src }) => (
-            <div key={key} className='mb-11 flex items-center last:mb-0'>
+            <div
+              key={key}
+              className='mb-11 flex flex-col items-center last:mb-0 -2xs:flex-row'
+            >
               <img
                 src={src}
                 alt={title}
                 width={104}
                 height={104}
-                className='mr-4'
+                className='mb-5 -2xs:mb-0 -2xs:mr-4'
               />
               <div>
-                <h3 className='mb-3.5 text-21px font-bold leading-none'>
+                <h3 className='mb-3.5 w-full text-center text-21px font-bold leading-none -2xs:text-start'>
                   {title}
                 </h3>
                 <p className='text-lg'>{content}</p>
@@ -60,7 +63,7 @@ export const HomeSection4 = memo(function ({
           ))}
         </div>
       </div>
-      <div className='xl-sm:max-w-[446px] order-first w-full max-w-xs lg:order-none lg:max-w-sm'>
+      <div className='order-first w-full max-w-xs lg:order-none lg:max-w-sm -2xl:max-w-[446px]'>
         <img
           src={teacherWithSymbolsPng}
           alt='teacher with symbols'

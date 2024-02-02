@@ -9,9 +9,11 @@ export default {
   theme: {
     extend: {
       screens: {
+        '-3xs': '440px',
+        '-2xs': '480px',
         xs: '550px',
-        'lg-sm': '896px',
-        'xl-sm': '1152px',
+        '-2lg': '896px',
+        '-2xl': '1152px',
       },
       maxWidth: {
         'static-full': '1232px',

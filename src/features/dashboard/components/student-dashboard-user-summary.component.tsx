@@ -81,7 +81,7 @@ export const StudentDashboardUserSummary = memo(function ({
   return (
     <BaseSurface
       className={cx(
-        'lg-sm:flex-row flex flex-col gap-4 xl:flex-col 2xl:flex-row',
+        'flex flex-col gap-4 -2lg:flex-row xl:flex-col 2xl:flex-row',
         loading ? 'items-center justify-center' : 'items-stretch',
         className,
       )}
@@ -97,8 +97,8 @@ export const StudentDashboardUserSummary = memo(function ({
             )}
             <BaseDivider />
             <div>
-              <div className='mb-5 flex items-start justify-between'>
-                <div>
+              <div className='mb-5 flex flex-col items-start justify-between -3xs:flex-row'>
+                <div className='mb-1.5 -3xs:mb-0'>
                   <h3 className='text-lg'>Overall Rank</h3>
                   <span className='text-sm'>
                     Your current position among peers
@@ -112,7 +112,7 @@ export const StudentDashboardUserSummary = memo(function ({
                   Detailed View
                 </BaseLink>
               </div>
-              <div className='lg-sm:justify-start flex min-w-[230px] items-center justify-center gap-5 font-bold text-primary xl:justify-center 2xl:justify-start'>
+              <div className='flex min-w-[230px] items-center justify-center gap-5 font-bold text-primary -2lg:justify-start xl:justify-center 2xl:justify-start'>
                 <div className='flex items-center gap-x-2.5'>
                   <span className='text-4xl'>{overallRankText}</span>
                   {overallRank != null && overallRank <= 10 && (
@@ -130,16 +130,16 @@ export const StudentDashboardUserSummary = memo(function ({
               </div>
             </div>
           </div>
-          <div className='lg-sm:block hidden xl:hidden 2xl:block'>
+          <div className='hidden -2lg:block xl:hidden 2xl:block'>
             <BaseDivider vertical />
           </div>
-          <BaseDivider className='lg-sm:hidden mb-1.5 mt-1 block xl:block 2xl:hidden' />
+          <BaseDivider className='mb-1.5 mt-1 block -2lg:hidden xl:block 2xl:hidden' />
           <div className='animate-fastFadeIn'>
             <div className='mb-4'>
               <h3 className='text-lg'>Overall Progress</h3>
               <span className='text-sm'>Track your academic journey</span>
             </div>
-            <div className='lg-sm:gap-6 flex items-start justify-center gap-12 xl:gap-12 2xl:gap-6'>
+            <div className='flex flex-col items-center justify-center gap-4 -3xs:flex-row -3xs:items-start -3xs:gap-6 -2xs:gap-12 -2lg:gap-6 xl:gap-12 2xl:gap-6'>
               {performances.map(({ value, performace, label }, index) => (
                 <BaseProgressCircle
                   key={`progress-${index}`}

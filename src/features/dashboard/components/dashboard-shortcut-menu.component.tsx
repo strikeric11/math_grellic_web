@@ -41,7 +41,10 @@ export const DashboardShortcutMenu = memo(function ({
 }: Props) {
   return (
     <div
-      className={cx('flex items-center justify-center gap-2.5', className)}
+      className={cx(
+        'grid grid-cols-2 items-center justify-center gap-2.5 -3xs:flex ',
+        className,
+      )}
       {...moreProps}
     >
       {links.map(({ to, label, icons }) => (

@@ -22,7 +22,7 @@ export const BaseStaticScene = memo(function ({
       {...moreProps}
     >
       {!!title?.trim().length && (
-        <h1 className='xl-sm:mb-32 mb-16 pt-2 text-center'>{title}</h1>
+        <h1 className='-2xl:mb-32 mb-16 pt-2 text-center'>{title}</h1>
       )}
       {children}
     </div>

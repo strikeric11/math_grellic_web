@@ -25,7 +25,7 @@ export const StudentDashboardHelpCard = memo(function ({
         )}
         {...moreProps}
       >
-        <div className='mb-4 w-64 lg-sm:w-56'>
+        <div className='mb-4 w-64 -2lg:w-56'>
           <h3 className='mb-2.5 text-lg'>Help & Support</h3>
           <span className='inline-block text-sm'>
             Need help? We are here to provide you with the assistance you need
@@ -39,7 +39,7 @@ export const StudentDashboardHelpCard = memo(function ({
               alt='help background'
               width={395}
               height={74}
-              className='w-full'
+              className='h-full w-full object-cover'
             />
           </div>
           <img
@@ -47,7 +47,7 @@ export const StudentDashboardHelpCard = memo(function ({
             alt='help teacher'
             width={106}
             height={214}
-            className='absolute bottom-0 right-14 transition-transform duration-300 group-hover:-translate-y-2.5 group-hover:scale-110'
+            className='absolute bottom-0 right-12 transition-transform duration-300 group-hover:-translate-y-2.5 group-hover:scale-110 -2xs:right-14'
           />
         </div>
       </BaseSurface>

@@ -133,7 +133,7 @@ export const StudentDashboardActivityList = memo(function ({
           <div>
             <h3 className='mb-2.5 text-lg'>More Activities</h3>
             {moreActivities.length ? (
-              <ul className='flex flex-col items-center gap-2.5 lg-sm:flex-row lg-sm:gap-5 xl:flex-col xl:gap-4 2xl:flex-row 2xl:gap-5'>
+              <ul className='-2lg:flex-row -2lg:gap-5 flex flex-col items-center gap-2.5 xl:flex-col xl:gap-4 2xl:flex-row 2xl:gap-5'>
                 {moreActivities.map((activity) => (
                   <li key={`a-${activity.id}`} className='w-full'>
                     <ActivityCompactCard activity={activity} />

@@ -21,6 +21,7 @@ type Props = ComponentProps<typeof BaseSurface> & {
   exams: Exam[];
   activities: Activity[];
   loading?: boolean;
+  onLessonDetails?: (slug: string) => void;
 };
 
 type CurriculumListProps = {
@@ -29,6 +30,7 @@ type CurriculumListProps = {
   activities: Activity[];
   category: string;
   loading?: boolean;
+  onLessonDetails?: (slug: string) => void;
 };
 
 const LESSON_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
@@ -59,7 +61,15 @@ const CurriculumList = memo(function ({
   lessons,
   exams,
   activities,
+  onLessonDetails,
 }: CurriculumListProps) {
+  const handleLessonDetails = useCallback(
+    (slug: string) => () => {
+      onLessonDetails && onLessonDetails(slug);
+    },
+    [onLessonDetails],
+  );
+
   if (loading) {
     return (
       <div className='flex w-full items-center justify-center'>
@@ -73,7 +83,11 @@ const CurriculumList = memo(function ({
       <>
         {exams.length ? (
           exams.map((exam) => (
-            <TeacherExamSingleCard key={`item-${exam.id}`} exam={exam} />
+            <TeacherExamSingleCard
+              key={`item-${exam.id}`}
+              exam={exam}
+              role='row'
+            />
           ))
         ) : (
           <BaseDataEmptyMessage
@@ -91,6 +105,7 @@ const CurriculumList = memo(function ({
             <TeacherActivitySingleCard
               key={`item-${activity.id}`}
               activity={activity}
+              role='row'
             />
           ))
         ) : (
@@ -107,7 +122,13 @@ const CurriculumList = memo(function ({
     <>
       {lessons.length ? (
         lessons.map((lesson) => (
-          <TeacherLessonSingleCard key={`item-${lesson.id}`} lesson={lesson} />
+          <TeacherLessonSingleCard
+            key={`item-${lesson.id}`}
+            lesson={lesson}
+            role='row'
+            onDetails={handleLessonDetails(lesson.slug)}
+            isDashboard
+          />
         ))
       ) : (
         <BaseDataEmptyMessage
@@ -125,6 +146,7 @@ export const TeacherDashboardCurriculumTabList = memo(function ({
   lessons,
   exams,
   activities,
+  onLessonDetails,
   ...moreProps
 }: Props) {
   const setClassName = useCallback(
@@ -194,6 +216,7 @@ export const TeacherDashboardCurriculumTabList = memo(function ({
                 activities={activities}
                 category={category}
                 loading={loading}
+                onLessonDetails={onLessonDetails}
               />
               <div className='w-full text-right'>{createLink(category)}</div>
             </Tab.Panel>

@@ -103,7 +103,7 @@ export const AnnouncementCard = memo(function ({
     <div
       className={cx(
         'group/announcement relative flex rounded-xl border-[3px] bg-inherit',
-        fullSize ? 'w-full' : 'h-[154px] w-full lg-sm:w-[396px]',
+        fullSize ? 'w-full' : '-2lg:w-[396px] h-[154px] w-full',
         loading && 'items-center !justify-center',
         ...wrapperClassName,
         className,

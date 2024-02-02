@@ -190,8 +190,8 @@ export const StudentActivitySingleCard = memo(function ({
               </div>
             </div>
             {/* Info */}
-            <div className='flex items-start justify-between'>
-              <div className='[.primary_&]:text-white'>
+            <div className='flex flex-col items-start justify-between gap-5 -2xs:flex-row -2xs:gap-0'>
+              <div className='gap-1 [.primary_&]:text-white'>
                 <BaseChip iconName='game-controller'>
                   Activity {orderNumber}
                 </BaseChip>
@@ -199,9 +199,9 @@ export const StudentActivitySingleCard = memo(function ({
               </div>
               <div
                 className={cx(
-                  '[.primary_&]:text-white',
+                  'gap-1 [.primary_&]:text-white',
                   isDashboard
-                    ? 'w-[150px] lg-sm:w-[200px] xl:w-[150px] 2xl:w-[200px]'
+                    ? 'w-[150px] -2lg:w-[200px] xl:w-[150px] 2xl:w-[200px]'
                     : 'w-[200px]',
                 )}
               >

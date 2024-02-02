@@ -42,16 +42,16 @@ export const HomeSection2 = memo(function ({
         style={headerStyle}
         className='flex h-44 w-full items-end justify-center bg-[-30px_top] bg-repeat-x'
       >
-        <h2 className='xs:px-0 mb-3.5 max-w-md px-2.5 text-center text-lg font-bold md:max-w-none'>
+        <h2 className='mb-3.5 max-w-md px-2.5 text-center text-lg font-bold xs:px-0 md:max-w-none'>
           {homeContent.section2.title}
         </h2>
       </div>
-      <div className='xl-sm:flex-row xl-sm:justify-between xl-sm:items-end flex w-full max-w-[calc(40px+theme(maxWidth.static-full))] flex-col items-center justify-start px-4'>
+      <div className='-2xl:flex-row -2xl:justify-between -2xl:items-end flex w-full max-w-[calc(40px+theme(maxWidth.static-full))] flex-col items-center justify-start px-4'>
         {features.map(({ key, title, content, contentStyle, style }) => (
           <div
             key={key}
             style={style}
-            className='xs:w-[410px] flex h-[500px] w-full flex-col items-center justify-end bg-bottom bg-no-repeat pb-14'
+            className='flex h-[500px] w-full flex-col items-center justify-end bg-bottom bg-no-repeat pb-14 xs:w-[410px]'
           >
             <h3 className='mb-3.5 text-center text-21px font-bold leading-none'>
               {title}

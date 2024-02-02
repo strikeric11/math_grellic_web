@@ -42,7 +42,7 @@ export function StudentDashboardPage() {
   } = useStudentAnnouncementList();
 
   return (
-    <div className='max-w-auto mx-auto flex w-full flex-col items-center justify-center gap-5 pb-8 sm:max-w-[592px] lg-sm:max-w-[835px] xl:flex-row xl:items-start'>
+    <div className='max-w-auto mx-auto flex w-full flex-col items-center justify-center gap-5 pb-8 sm:max-w-[592px] -2lg:max-w-[835px] xl:flex-row xl:items-start'>
       <div className='xl:max-w-auto flex w-full shrink-0 flex-col gap-5 xl:w-[592px] xl:pb-8 2xl:w-auto 2xl:min-w-[835px]'>
         <StudentDashboardUserSummary
           className='min-h-[262px]'
@@ -51,7 +51,7 @@ export function StudentDashboardPage() {
           loading={!user || performanceLoading}
         />
         <StudentDashboardAnnouncementList
-          className='block lg-sm:hidden'
+          className='block -2lg:hidden'
           loading={announcementListLoading}
           studentAnnouncements={studentAnnouncements}
           onRefresh={refreshAnnouncements}
@@ -69,9 +69,9 @@ export function StudentDashboardPage() {
           refresh={refresh}
         />
       </div>
-      <div className='flex w-full flex-col gap-5 lg-sm:w-fit'>
+      <div className='flex w-full flex-col gap-5 -2lg:w-fit'>
         <StudentDashboardAnnouncementList
-          className='hidden lg-sm:block'
+          className='hidden -2lg:block'
           loading={announcementListLoading}
           studentAnnouncements={studentAnnouncements}
           onRefresh={refreshAnnouncements}

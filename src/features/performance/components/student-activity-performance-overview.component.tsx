@@ -58,7 +58,7 @@ export const StudentActivityPerformanceOverview = memo(function ({
       className={cx('flex w-full flex-col gap-2.5', className)}
       {...moreProps}
     >
-      <h2 className='text-lg'>Exams Overview</h2>
+      <h2 className='text-lg'>Activities Overview</h2>
       {loading ? (
         <div className='flex w-full items-center justify-center'>
           <BaseSpinner />

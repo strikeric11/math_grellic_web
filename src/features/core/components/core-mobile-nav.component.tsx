@@ -125,13 +125,13 @@ export const CoreMobileNav = memo(function ({
         <div>
           <BaseLink
             to={userAccountTo}
-            className='box-content flex h-full w-7 items-center justify-center px-4'
+            className='box-content flex h-full w-7 items-center justify-center px-2.5 -2xs:px-4'
             leftIconName='user'
             iconWeight='bold'
           />
           {hasRightSidebar && (
             <BaseIconButton
-              className='box-content !h-full !w-7 px-4'
+              className='box-content !h-full !w-7 px-2.5 -2xs:px-4'
               name='cards'
               variant='link'
               iconProps={sidebarIconProps}

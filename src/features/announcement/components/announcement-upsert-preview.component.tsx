@@ -45,7 +45,7 @@ export const AnnouncementUpsertPreview = memo(function ({
       <div
         className={cx(
           'group/ann-preview relative mb-[22px] flex cursor-pointer rounded-xl border-[3px]  bg-inherit transition-colors',
-          fullSize ? 'w-full' : 'h-[154px] w-[396px]',
+          fullSize ? 'w-full' : 'h-[154px] w-full -2lg:w-[396px]',
           hasError
             ? 'border-red-500 hover:border-red-400'
             : 'border-primary hover:border-primary-focus-light',

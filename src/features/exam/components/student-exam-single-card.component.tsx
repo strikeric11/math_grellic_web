@@ -252,7 +252,7 @@ export const StudentExamSingleCard = memo(function ({
             'flex w-full flex-col items-center gap-4 sm:flex-row',
             upcomingCountdown &&
               isDashboard &&
-              'flex-wrap justify-between lg-sm:flex-nowrap xl:flex-wrap 2xl:flex-nowrap 2xl:justify-start',
+              'flex-wrap justify-between -2lg:flex-nowrap xl:flex-wrap 2xl:flex-nowrap 2xl:justify-start',
           )}
         >
           <Score
@@ -266,7 +266,7 @@ export const StudentExamSingleCard = memo(function ({
               'flex w-full flex-1',
               upcomingCountdown &&
                 isDashboard &&
-                'basis-full sm:order-last lg-sm:order-none lg-sm:basis-0 xl:order-last xl:basis-full 2xl:order-none 2xl:basis-0',
+                'basis-full sm:order-last -2lg:order-none -2lg:basis-0 xl:order-last xl:basis-full 2xl:order-none 2xl:basis-0',
             )}
           >
             <div className='flex flex-1 flex-col gap-3'>
@@ -280,8 +280,8 @@ export const StudentExamSingleCard = memo(function ({
                 )}
               </div>
               {/* Info chips */}
-              <div className='flex w-full items-center justify-between [.primary_&]:text-white'>
-                <div className='flex flex-col'>
+              <div className='flex w-full flex-col items-start justify-between gap-5 -2xs:flex-row -2xs:items-center -2xs:gap-0 [.primary_&]:text-white'>
+                <div className='flex flex-col gap-1'>
                   <BaseChip iconName='exam'>Exam {orderNumber}</BaseChip>
                   <BaseChip iconName='list-numbers'>{totalPointsText}</BaseChip>
                   <BaseChip iconName='list-checks'>
@@ -289,7 +289,7 @@ export const StudentExamSingleCard = memo(function ({
                   </BaseChip>
                 </div>
                 {!upcomingCountdown && scheduleDate && (
-                  <div className='flex flex-col'>
+                  <div className='flex flex-col gap-1'>
                     <BaseChip iconName='calendar-check'>
                       {scheduleDate}
                     </BaseChip>

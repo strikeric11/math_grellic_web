@@ -31,7 +31,10 @@ export const DashboardUserWelcome = memo(function ({
 
   return (
     <div
-      className={cx('flex items-start justify-between', className)}
+      className={cx(
+        '-2xs:flex-row flex flex-col items-start justify-between gap-2.5',
+        className,
+      )}
       {...moreProps}
     >
       <div className='flex items-center gap-3'>

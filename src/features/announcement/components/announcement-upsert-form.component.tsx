@@ -132,9 +132,9 @@ export const AnnouncementUpsertForm = memo(function ({
     <div className={cx('w-full', className)} {...moreProps}>
       <form onSubmit={handleSubmit(submitForm)}>
         <h3 className='text-lg leading-none'>{headerAnnouncementText}</h3>
-        <div className='mx-auto mb-4 w-full pt-5'>
+        <div className='mx-auto mb-5 w-full pt-5'>
           <fieldset
-            className='group/field flex flex-wrap gap-4'
+            className='group/field flex flex-wrap gap-5'
             disabled={loading}
           >
             <BaseControlledInput
@@ -150,7 +150,7 @@ export const AnnouncementUpsertForm = memo(function ({
               className='!min-h-[140px]'
               fullWidth
             />
-            <div className='flex w-full items-start justify-between gap-2.5'>
+            <div className='flex w-full flex-col items-start justify-between gap-5 -2xs:flex-row'>
               <BaseControlledDatePicker
                 name='startDate'
                 label='Date'
@@ -177,7 +177,7 @@ export const AnnouncementUpsertForm = memo(function ({
           </fieldset>
         </div>
         <div>
-          <div className='flex w-full items-center justify-between'>
+          <div className='flex w-full flex-col items-center justify-between gap-2.5 -2xs:flex-row'>
             <BaseButton
               variant='link'
               size='sm'
@@ -187,8 +187,9 @@ export const AnnouncementUpsertForm = memo(function ({
             >
               Reset Fields
             </BaseButton>
-            <div className='group-button'>
+            <div className='group-button w-full -2xs:w-auto'>
               <BaseButton
+                className='w-full'
                 type='submit'
                 rightIconName={publishButtonIconName}
                 loading={loading}

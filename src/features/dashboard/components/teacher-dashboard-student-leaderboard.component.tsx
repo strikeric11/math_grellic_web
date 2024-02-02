@@ -68,10 +68,10 @@ const StudentRankCard = memo(function ({
   );
 
   return (
-    <div className='flex flex-1 flex-col items-center gap-2.5 p-2.5'>
+    <div className='flex flex-1 flex-col items-center justify-center gap-2.5 p-2.5'>
       <div
         className={cx(
-          'flex h-10 items-center gap-x-2.5 font-bold',
+          'flex h-10 w-28 items-center justify-center gap-x-2.5 font-bold sm:w-fit',
           performance === StudentPerformanceType.Exam &&
             '!text-primary-hue-purple',
           performance === StudentPerformanceType.Activity &&
@@ -83,7 +83,7 @@ const StudentRankCard = memo(function ({
           <PerformanceRankAwardImg rank={overallRank} />
         )}
       </div>
-      <h4 className='flex flex-col items-center font-body text-base font-medium leading-tight tracking-normal text-accent'>
+      <h4 className='flex flex-row items-center justify-start font-body text-base font-medium leading-tight tracking-normal text-accent sm:flex-col'>
         <span>{lastName}</span>
         <span>{firstWithMiddleName}</span>
       </h4>
@@ -149,7 +149,7 @@ export const TeacherDashboardStudentLeaderboard = memo(function ({
             </div>
           ) : (
             <div className='flex animate-fastFadeIn items-stretch'>
-              <div className='flex flex-1 items-start'>
+              <div className='items-star flex flex-1 flex-col sm:flex-row'>
                 {students.map((student, index) => (
                   <Fragment key={`stu-${student.id}`}>
                     <StudentRankCard
@@ -159,14 +159,22 @@ export const TeacherDashboardStudentLeaderboard = memo(function ({
                     {!offsetStudentCount
                       ? index < students.length - 1
                       : students.length + offsetStudentCount - 1 && (
-                          <BaseDivider vertical />
+                          <>
+                            <BaseDivider className='hidden sm:block' vertical />
+                            <BaseDivider className='block sm:hidden' />
+                          </>
                         )}
                   </Fragment>
                 ))}
                 {[...Array(offsetStudentCount)].map((_, index) => (
                   <Fragment key={index}>
-                    <div className='flex-1' />
-                    {index < offsetStudentCount - 1 && <BaseDivider vertical />}
+                    <div className='flex-1 basis-[90px] sm:basis-0' />
+                    {index < offsetStudentCount - 1 && (
+                      <>
+                        <BaseDivider className='hidden sm:block' vertical />
+                        <BaseDivider className='block sm:hidden' />
+                      </>
+                    )}
                   </Fragment>
                 ))}
               </div>

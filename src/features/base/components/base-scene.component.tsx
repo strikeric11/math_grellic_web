@@ -90,7 +90,7 @@ export const BaseScene = memo(function ({
         <div
           id='scene-toolbar'
           className={cx(
-            'flex min-h-[46px] w-full items-center justify-between',
+            'flex min-h-[46px] w-full flex-col items-start justify-between gap-2.5 md:flex-row md:items-center md:gap-0',
             !title?.trim() && 'h-20',
           )}
         >
