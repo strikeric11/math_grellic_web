@@ -106,10 +106,14 @@ export const LessonScheduleUpsertForm = memo(function ({
 
   return (
     <div className={cx('flex w-full items-start', className)} {...moreProps}>
-      <form className='flex-1' onSubmit={handleSubmit(submitForm)}>
-        <div>
+      <form
+        className='flex flex-1 flex-col'
+        onSubmit={handleSubmit(submitForm)}
+      >
+        <BaseDivider className='block -2xs:hidden' />
+        <div className='order-last pt-2.5 -2xs:order-none -2xs:pt-0'>
           <BaseDivider className='mb-2.5 pt-2.5' />
-          <div className='flex w-full items-center justify-between'>
+          <div className='flex w-full flex-col items-center justify-between gap-2.5 -3xs:flex-row -3xs:gap-0'>
             <BaseButton
               variant='link'
               size='sm'
@@ -120,6 +124,7 @@ export const LessonScheduleUpsertForm = memo(function ({
               Reset Fields
             </BaseButton>
             <BaseButton
+              className='w-full -3xs:w-auto'
               type='submit'
               rightIconName={scheduleButtonIconName}
               loading={isSubmitting}
@@ -134,7 +139,7 @@ export const LessonScheduleUpsertForm = memo(function ({
             className='group/field flex flex-wrap gap-5'
             disabled={isSubmitting || isDone}
           >
-            <div className='flex w-full items-start justify-between gap-5'>
+            <div className='flex w-full flex-col items-start justify-between gap-5 -2xs:flex-row'>
               <BaseControlledDatePicker
                 name='startDate'
                 label='Start Date'

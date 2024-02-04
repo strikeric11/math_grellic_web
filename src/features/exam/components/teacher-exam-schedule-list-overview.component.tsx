@@ -119,8 +119,8 @@ export const TeacherExamScheduleListOverview = memo(function ({
   return (
     <div className={cx('w-full', className)}>
       {/* Exam details */}
-      <div className='flex w-full items-center justify-between'>
-        <h2 className='pb-1 text-xl'>{title}</h2>
+      <div className='flex w-full flex-col items-start justify-between gap-2.5 sm:flex-row sm:items-center'>
+        <h2 className='text-xl sm:pb-1'>{title}</h2>
         <div className='flex items-center gap-2.5'>
           <BaseChip iconName='chalkboard-teacher'>Exam {orderNumber}</BaseChip>
           <BaseDivider className='!h-6' vertical />
@@ -132,14 +132,14 @@ export const TeacherExamScheduleListOverview = memo(function ({
         targetSchedules.map(({ date, time, duration }, index) => (
           <BaseSurface
             key={index}
-            className='my-4 flex h-16 items-center justify-between !px-6 !py-3'
+            className='my-4 flex flex-col items-start justify-between gap-2.5 !px-6 !py-3 -3xs:flex-row -3xs:items-center -3xs:gap-0 sm:h-16'
             rounded='xs'
           >
-            <div className='flex items-center gap-2.5'>
+            <div className='flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2.5'>
               <BaseChip iconName='calendar-check'>{date}</BaseChip>
-              <BaseDivider className='!h-6' vertical />
+              <BaseDivider className='hidden !h-6 sm:block' vertical />
               <BaseChip iconName='clock'>{time}</BaseChip>
-              <BaseDivider className='!h-6' vertical />
+              <BaseDivider className='hidden !h-6 sm:block' vertical />
               <BaseChip iconName='hourglass'>{duration}</BaseChip>
             </div>
             <BaseButton
@@ -154,7 +154,7 @@ export const TeacherExamScheduleListOverview = memo(function ({
         ))}
       {!currentExamSchedule && (
         <BaseButton
-          className='w-full overflow-hidden rounded bg-transparent py-2 !transition-[background] hover:bg-primary hover:text-white'
+          className='mt-2.5 w-full overflow-hidden rounded bg-transparent py-2 !transition-[background] hover:bg-primary hover:text-white sm:mt-0'
           leftIconName={isUpsert ? 'x-circle' : 'plus-circle'}
           variant='link'
           size='sm'

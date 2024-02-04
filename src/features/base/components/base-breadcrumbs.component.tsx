@@ -30,7 +30,7 @@ export const BaseBreadcrumbs = memo(function ({
       }
 
       return (
-        <li className='flex after:mx-1.5 after:content-["/"] hover:text-primary'>
+        <li className='flex items-center leading-none after:mx-1.5 after:content-["/"] hover:text-primary'>
           <Link to={itemLink}>{label}</Link>
         </li>
       );

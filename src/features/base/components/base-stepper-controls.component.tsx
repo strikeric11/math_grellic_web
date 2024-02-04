@@ -26,10 +26,19 @@ export const BaseStepperControls = memo(function ({
 }: Props) {
   return (
     <div
-      className={cx('flex items-center justify-between', className)}
+      className={cx(
+        'flex flex-col items-center justify-start gap-2.5 sm:flex-row sm:justify-between',
+        className,
+      )}
       {...moreProps}
     >
-      <div className='flex items-center gap-5'>
+      <BaseDivider className='mb-2.5 block sm:hidden' />
+      <div
+        className={cx(
+          'flex w-full items-center gap-5 sm:w-auto sm:justify-start',
+          !isSingleStep ? 'justify-between' : 'justify-center',
+        )}
+      >
         <BaseButton
           variant='link'
           size='sm'
@@ -41,29 +50,31 @@ export const BaseStepperControls = memo(function ({
         </BaseButton>
         {!isSingleStep && (
           <>
-            <BaseDivider className='!h-[46px]' vertical />
-            <BaseButton
-              variant='link'
-              size='sm'
-              leftIconName='arrow-circle-left'
-              onClick={onPrev}
-              disabled={disabled}
-            >
-              Prev
-            </BaseButton>
-            <BaseButton
-              variant='link'
-              size='sm'
-              rightIconName='arrow-circle-right'
-              onClick={onNext}
-              disabled={disabled}
-            >
-              Next
-            </BaseButton>
+            <BaseDivider className='hidden !h-[46px] sm:block' vertical />
+            <div className='flex items-center gap-5'>
+              <BaseButton
+                variant='link'
+                size='sm'
+                leftIconName='arrow-circle-left'
+                onClick={onPrev}
+                disabled={disabled}
+              >
+                Prev
+              </BaseButton>
+              <BaseButton
+                variant='link'
+                size='sm'
+                rightIconName='arrow-circle-right'
+                onClick={onNext}
+                disabled={disabled}
+              >
+                Next
+              </BaseButton>
+            </div>
           </>
         )}
       </div>
-      <div>{children}</div>
+      <div className='w-full sm:w-auto'>{children}</div>
     </div>
   );
 });

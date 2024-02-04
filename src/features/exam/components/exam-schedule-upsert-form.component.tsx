@@ -196,10 +196,14 @@ export const ExamScheduleUpsertForm = memo(function ({
 
   return (
     <div className={cx('flex w-full items-start', className)} {...moreProps}>
-      <form className='flex-1' onSubmit={handleSubmit(submitForm)}>
-        <div>
+      <form
+        className='flex flex-1 flex-col'
+        onSubmit={handleSubmit(submitForm)}
+      >
+        <BaseDivider className='block -2xs:hidden' />
+        <div className='order-last pt-2.5 -2xs:order-none -2xs:pt-0'>
           <BaseDivider className='mb-2.5 pt-2.5' />
-          <div className='flex w-full items-center justify-between'>
+          <div className='flex w-full flex-col items-center justify-between gap-2.5 -3xs:flex-row -3xs:gap-0'>
             <BaseButton
               variant='link'
               size='sm'
@@ -209,8 +213,9 @@ export const ExamScheduleUpsertForm = memo(function ({
             >
               Reset Fields
             </BaseButton>
-            <div className='group-button'>
+            <div className='group-button w-full -3xs:w-auto'>
               <BaseButton
+                className='w-full'
                 type='submit'
                 rightIconName={scheduleButtonIconName}
                 loading={loading}
@@ -250,7 +255,7 @@ export const ExamScheduleUpsertForm = memo(function ({
                 fullWidth
               />
             </div>
-            <div className='flex w-full items-start justify-between gap-5'>
+            <div className='flex w-full flex-col items-start justify-between gap-5 -2xs:flex-row'>
               <BaseControlledTimeInput
                 name='startTime'
                 label='Start Time'

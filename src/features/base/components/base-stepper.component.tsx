@@ -111,10 +111,18 @@ export const BaseStepper = memo(function ({
   );
 
   return (
-    <div className={cx('w-full', className)} {...moreProps}>
-      <div className='flex w-full items-center justify-center'>
+    <div
+      className={cx('flex w-full flex-col sm:block', className)}
+      {...moreProps}
+    >
+      <div className='flex w-full items-center justify-center pt-2.5 md:pt-0'>
         <BaseDivider />
-        <ol className='mx-4 my-2 flex h-5 items-center'>
+        <ol
+          className={cx(
+            'my-2 flex h-5 items-center',
+            !isSingleStep ? 'mx-4' : 'mx-0',
+          )}
+        >
           {stepLabels.map((label, index) => (
             <li
               key={index}
@@ -138,6 +146,7 @@ export const BaseStepper = memo(function ({
         <BaseDivider />
       </div>
       <BaseStepperControls
+        className='order-last sm:order-none'
         onPrev={handlePrevStep}
         onNext={handleNextStep}
         onReset={handleReset}

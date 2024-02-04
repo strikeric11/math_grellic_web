@@ -98,7 +98,10 @@ export const BaseRichTextEditorMenubar = function ({
 
   return (
     <div className='w-full'>
-      <div className={cx('flex w-full items-center', className)} {...moreProps}>
+      <div
+        className={cx('flex w-full flex-wrap items-center', className)}
+        {...moreProps}
+      >
         <div className={MENU_WRAPPER_CLASSNAME}>
           <BaseTooltip content='Heading 1'>
             <BaseIconButton

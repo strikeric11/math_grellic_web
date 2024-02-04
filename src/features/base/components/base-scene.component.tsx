@@ -90,11 +90,11 @@ export const BaseScene = memo(function ({
         <div
           id='scene-toolbar'
           className={cx(
-            'flex min-h-[46px] w-full flex-col items-start justify-between gap-2.5 md:flex-row md:items-center md:gap-0',
+            'flex min-h-[46px] w-full flex-col flex-wrap items-start justify-between gap-2.5 md:flex-row md:items-center',
             !title?.trim() && 'h-20',
           )}
         >
-          <div className='flex items-center justify-start gap-2'>
+          <div className='flex flex-wrap items-center justify-start gap-2'>
             {isClose ? (
               <BaseControlButton leftIconName='x' onClick={handleClose}>
                 Close

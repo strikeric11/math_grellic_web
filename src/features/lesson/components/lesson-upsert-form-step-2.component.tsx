@@ -31,7 +31,7 @@ export const LessonUpsertFormStep2 = memo(function ({
         className='group/field flex flex-wrap gap-5'
         disabled={disabled}
       >
-        <div className='flex w-full items-start justify-between gap-5'>
+        <div className='flex w-full flex-col items-start justify-between gap-5 -2xs:flex-row'>
           <BaseControlledDatePicker
             name='startDate'
             label='Start Date'

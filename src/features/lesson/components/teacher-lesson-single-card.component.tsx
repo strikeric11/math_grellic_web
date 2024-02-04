@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { Menu } from '@headlessui/react';
 import cx from 'classix';
 
@@ -13,7 +13,7 @@ import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 
-import type { ComponentProps } from 'react';
+import type { ComponentProps, MouseEvent } from 'react';
 import type { Lesson } from '../models/lesson.model';
 
 type Props = ComponentProps<typeof BaseSurface> & {
@@ -46,6 +46,10 @@ const ContextMenu = memo(function ({
   onSchedule,
   ...moreProps
 }: ContextMenuProps) {
+  const handleClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+  }, []);
+
   return (
     <div
       className={cx('pointer-events-auto relative h-12 w-7', className)}
@@ -60,6 +64,7 @@ const ContextMenu = memo(function ({
               variant='link'
               className='button absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
               iconProps={menuIconProps}
+              onClick={handleClick}
             />
           </div>
         }
@@ -238,17 +243,17 @@ export const TeacherLessonSingleCard = memo(function ({
 
 export const TeacherLessonSingleCardSkeleton = memo(function () {
   return (
-    <div className='flex w-full animate-pulse justify-between rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-4'>
-      <div className='flex w-full items-center gap-4'>
-        <div className='h-[68px] w-[121px] rounded bg-accent/20' />
-        <div className='flex h-fit flex-1 flex-col gap-3'>
-          <div className='h-6 w-[200px] rounded bg-accent/20' />
+    <div className='flex w-full animate-pulse flex-col justify-between gap-5 rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-4 xs:flex-row xs:gap-2.5'>
+      <div className='flex flex-1 flex-col items-start justify-between gap-4 xs:flex-row xs:items-center md:justify-start'>
+        <div className='h-[68px] w-full rounded bg-accent/20 xs:w-[121px]' />
+        <div className='flex h-full w-full flex-1 flex-col justify-between gap-2.5'>
+          <div className='h-6 w-full rounded bg-accent/20 -3xs:w-[200px] xs:w-full sm:w-[200px]' />
           <div className='h-6 w-28 rounded bg-accent/20' />
         </div>
       </div>
-      <div className='flex h-full gap-5'>
-        <div className='h-6 w-[240px] rounded bg-accent/20' />
-        <div className='h-full w-5 rounded bg-accent/20' />
+      <div className='flex h-full w-full flex-1 gap-5 -3xs:w-fit md:flex-none'>
+        <div className='h-6 w-full rounded bg-accent/20 -3xs:w-[240px] xs:w-full md:w-[240px]' />
+        <div className='hidden h-full w-5 rounded bg-accent/20 xs:block' />
       </div>
     </div>
   );

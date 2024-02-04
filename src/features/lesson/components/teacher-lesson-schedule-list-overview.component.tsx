@@ -80,7 +80,7 @@ export const TeacherLessonScheduleListOverview = memo(function ({
   return (
     <div className={cx('w-full', className)}>
       {/* Lesson details */}
-      <div className='flex w-full items-center justify-between'>
+      <div className='flex w-full flex-col items-start justify-between gap-2.5 sm:flex-row sm:items-center'>
         <h2 className='pb-1 text-xl'>{title}</h2>
         <div className='flex items-center gap-2.5'>
           <BaseChip iconName='chalkboard-teacher'>
@@ -92,14 +92,14 @@ export const TeacherLessonScheduleListOverview = memo(function ({
       </div>
       {/* Lesson schedule */}
       <BaseSurface
-        className='my-4 flex h-16 items-center justify-between !px-6 !py-3'
+        className='my-4 flex h-auto items-center justify-between !px-6 !py-3 -3xs:h-16'
         rounded='xs'
       >
         {scheduleDate ? (
           <>
-            <div className='flex items-center gap-2.5'>
+            <div className='flex flex-col items-start gap-1 -3xs:flex-row -3xs:items-center -3xs:gap-2.5'>
               <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
-              <BaseDivider className='!h-6' vertical />
+              <BaseDivider className='hidden !h-6 -3xs:block' vertical />
               <BaseChip iconName='clock'>{scheduleTime}</BaseChip>
             </div>
             <BaseButton

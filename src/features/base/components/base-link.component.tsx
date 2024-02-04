@@ -40,7 +40,7 @@ export const BaseLink = memo(
       <Link
         ref={ref}
         className={cx(
-          'inline-flex items-center justify-center gap-2 py-0.5 font-display text-lg tracking-tighter text-primary transition-colors hover:text-primary-focus-light',
+          'inline-flex items-center justify-center gap-2 py-0.5 font-display text-lg !leading-none tracking-tighter text-primary transition-colors hover:text-primary-focus-light',
           variant === 'solid' &&
             'solid h-[46px] rounded-md border border-primary-border-light bg-white px-5 hover:!border-primary-focus-light',
           size === 'sm' && '!text-base',

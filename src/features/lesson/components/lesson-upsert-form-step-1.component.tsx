@@ -15,6 +15,9 @@ type Props = ComponentProps<'div'> & {
   disabled?: boolean;
 };
 
+const FIELD_GROUP_CLASSNAME =
+  'flex sm:flex-row flex-col w-full items-start justify-between gap-5';
+
 export const LessonUpsertFormStep1 = memo(function ({
   disabled,
   ...moreProps
@@ -27,7 +30,7 @@ export const LessonUpsertFormStep1 = memo(function ({
         className='group/field flex flex-wrap gap-5'
         disabled={disabled}
       >
-        <div className='flex w-full items-start justify-between gap-5'>
+        <div className={FIELD_GROUP_CLASSNAME}>
           <BaseControlledInput
             label='Title'
             name='title'
@@ -43,7 +46,7 @@ export const LessonUpsertFormStep1 = memo(function ({
             asterisk
           />
         </div>
-        <div className='flex w-full items-start justify-between gap-5'>
+        <div className={FIELD_GROUP_CLASSNAME}>
           <BaseControlledInput
             label='Video Url'
             name='videoUrl'

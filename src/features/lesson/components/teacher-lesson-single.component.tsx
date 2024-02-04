@@ -62,7 +62,7 @@ export const TeacherLessonSingle = memo(function ({
 
   return (
     <div className={cx('w-full', className)} {...moreProps}>
-      <div className='flex w-full items-center justify-between'>
+      <div className='flex w-full flex-col items-start justify-between gap-2.5 -2xs:flex-row -2xs:items-center'>
         <div>
           <h2 className='pb-1 text-xl'>{title}</h2>
           <div className='flex items-center gap-2.5'>
@@ -104,10 +104,10 @@ export const TeacherLessonSingle = memo(function ({
           rounded='sm'
         >
           {scheduleDate ? (
-            <div className='flex items-center gap-2.5'>
-              <h3 className='mr-2 text-base'>Schedule</h3>
+            <div className='flex flex-col items-start gap-1 xs:flex-row xs:items-center xs:gap-2.5'>
+              <h3 className='mb-1 text-base xs:mb-0 xs:mr-2'>Schedule</h3>
               <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
-              <BaseDivider className='!h-6' vertical />
+              <BaseDivider className='hidden !h-6 xs:block' vertical />
               <BaseChip iconName='clock'>{scheduleTime}</BaseChip>
             </div>
           ) : (
@@ -125,8 +125,8 @@ export const TeacherLessonSingle = memo(function ({
             <LessonVideo url={videoUrl} title={title} />
           </div>
           <BaseDivider />
-          <div className='flex items-start'>
-            <div className='mr-4 flex-1 border-r border-accent/20'>
+          <div className='flex flex-col items-start gap-2.5 md:flex-row md:gap-0'>
+            <div className='mr-4 flex-1 border-0 border-accent/20 md:border-r'>
               <h3 className='block text-base'>
                 {descriptionHtml ? 'Description' : 'Lesson has no description'}
               </h3>
@@ -137,6 +137,7 @@ export const TeacherLessonSingle = memo(function ({
                 />
               )}
             </div>
+            <BaseDivider className='block md:hidden' />
             <div className='flex-1'>
               <h3 className='text-base'>
                 {excerpt ? 'Excerpt' : 'Lesson has no excerpt'}

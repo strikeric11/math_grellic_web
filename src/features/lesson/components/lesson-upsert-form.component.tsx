@@ -225,8 +225,9 @@ export const LessonUpsertForm = memo(function ({
             disabled={loading}
             onReset={handleReset}
             controlsRightContent={
-              <div className='group-button'>
+              <div className='group-button w-full sm:w-auto'>
                 <BaseButton
+                  className='w-full'
                   rightIconName={publishButtonIconName}
                   loading={isSubmitting || loading}
                   disabled={isDone}
