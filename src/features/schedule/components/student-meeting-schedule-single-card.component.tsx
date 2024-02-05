@@ -64,8 +64,10 @@ export const StudentMeetingScheduleSingleCard = memo(function ({
         <div className='flex h-full flex-1 flex-col items-start gap-4 md:flex-row md:items-center'>
           <div className='flex h-full flex-1 items-center gap-4'>
             <div
-              className={`flex h-[90px] w-[121px] items-center justify-center overflow-hidden rounded border border-primary-hue-orange bg-primary-hue-orange-focus/30 text-primary-hue-orange
-              [.primary_&]:border-accent [.primary_&]:bg-white/50 [.primary_&]:text-accent`}
+              className={cx(
+                'flex h-[90px] w-[121px] items-center justify-center overflow-hidden rounded border border-primary-hue-orange bg-primary-hue-orange-focus/30 text-primary-hue-orange',
+                '[.primary_&]:border-accent [.primary_&]:bg-white/50 [.primary_&]:text-accent',
+              )}
             >
               <BaseIcon name='presentation' size={40} weight='light' />
             </div>

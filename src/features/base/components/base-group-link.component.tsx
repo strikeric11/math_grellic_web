@@ -41,7 +41,7 @@ export const BaseGroupLink = memo(function ({
   ...moreProps
 }: Props) {
   return (
-    <div className={cx('group-button', className)} {...moreProps}>
+    <div className={cx('group-button mobile-fw', className)} {...moreProps}>
       {links.map(({ to, label, icons }) => (
         <BaseLink
           key={to}

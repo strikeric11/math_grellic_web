@@ -229,7 +229,7 @@ export const LessonPicker = memo(
           </ul>
         )}
         <BaseModal
-          className='!min-h-0 !border-0 !px-10 !pb-8'
+          className='!min-h-0 !border-0 !px-0 !pb-8 xs:!px-10'
           size='sm'
           open={openModal}
           onClose={handleCancel}

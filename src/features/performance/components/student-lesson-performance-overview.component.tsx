@@ -63,7 +63,7 @@ export const StudentLessonPerformanceOverview = memo(function ({
               </span>
               <span className={LESSON_LABEL_CLASSNAME}>Current Lessons</span>
             </div>
-            <div className={`${LESSON_WRAPPER_CLASSNAME} flex-1`}>
+            <div className={cx(LESSON_WRAPPER_CLASSNAME, 'flex-1')}>
               <span className={LESSON_VALUE_CLASSNAME}>
                 {lessonsCompletedCount}
               </span>

@@ -80,7 +80,7 @@ export const ExamUpsertFormStep3 = memo(function ({
             fullWidth
           />
         </div>
-        <div className='flex w-full items-start justify-between gap-5'>
+        <div className='flex w-full flex-col items-start justify-between gap-5 -2xs:flex-row'>
           <BaseControlledTimeInput
             name='startTime'
             label='Start Time'

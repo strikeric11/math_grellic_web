@@ -48,7 +48,7 @@ export const BaseCheckbox = memo(
           <label
             htmlFor={newId}
             className={cx(
-              'ml-3 cursor-pointer text-sm',
+              'ml-3 cursor-pointer text-sm !leading-tight',
               !!errorMessage && 'text-red-500',
               labelClassName,
             )}

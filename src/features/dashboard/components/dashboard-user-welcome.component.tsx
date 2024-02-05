@@ -32,7 +32,7 @@ export const DashboardUserWelcome = memo(function ({
   return (
     <div
       className={cx(
-        '-2xs:flex-row flex flex-col items-start justify-between gap-2.5',
+        'flex flex-col items-start justify-between gap-2.5 -2xs:flex-row',
         className,
       )}
       {...moreProps}
@@ -46,8 +46,10 @@ export const DashboardUserWelcome = memo(function ({
       </div>
       <Link
         to={to}
-        className={`flex items-center gap-1 overflow-hidden rounded-4px border border-accent/50 px-1.5 py-1
-          text-sm leading-none transition-all hover:border-primary-focus hover:text-primary-focus`}
+        className={cx(
+          'flex items-center gap-1 overflow-hidden rounded-4px border border-accent/50 px-1.5 py-1',
+          'text-sm leading-none transition-all hover:border-primary-focus hover:text-primary-focus',
+        )}
       >
         <BaseIcon name='identification-badge' size={18} />
         <span>{publicId}</span>

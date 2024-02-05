@@ -108,7 +108,9 @@ export const BaseScene = memo(function ({
               <BaseBreadcrumbs pathname={pathname} basePath={basePath} />
             )}
           </div>
-          {!!headerRightContent && <div>{headerRightContent}</div>}
+          {!!headerRightContent && (
+            <div className='w-full xs:w-auto'>{headerRightContent}</div>
+          )}
         </div>
       )}
       {children}

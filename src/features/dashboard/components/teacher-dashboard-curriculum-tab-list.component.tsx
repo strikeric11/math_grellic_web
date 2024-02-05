@@ -22,6 +22,7 @@ type Props = ComponentProps<typeof BaseSurface> & {
   activities: Activity[];
   loading?: boolean;
   onLessonDetails?: (slug: string) => void;
+  onExamDetails?: (slug: string) => void;
 };
 
 type CurriculumListProps = {
@@ -31,6 +32,7 @@ type CurriculumListProps = {
   category: string;
   loading?: boolean;
   onLessonDetails?: (slug: string) => void;
+  onExamDetails?: (slug: string) => void;
 };
 
 const LESSON_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
@@ -62,12 +64,20 @@ const CurriculumList = memo(function ({
   exams,
   activities,
   onLessonDetails,
+  onExamDetails,
 }: CurriculumListProps) {
   const handleLessonDetails = useCallback(
     (slug: string) => () => {
       onLessonDetails && onLessonDetails(slug);
     },
     [onLessonDetails],
+  );
+
+  const handleExamDetails = useCallback(
+    (slug: string) => () => {
+      onExamDetails && onExamDetails(slug);
+    },
+    [onExamDetails],
   );
 
   if (loading) {
@@ -86,7 +96,9 @@ const CurriculumList = memo(function ({
             <TeacherExamSingleCard
               key={`item-${exam.id}`}
               exam={exam}
+              onDetails={handleExamDetails(exam.slug)}
               role='row'
+              isDashboard
             />
           ))
         ) : (
@@ -147,6 +159,7 @@ export const TeacherDashboardCurriculumTabList = memo(function ({
   exams,
   activities,
   onLessonDetails,
+  onExamDetails,
   ...moreProps
 }: Props) {
   const setClassName = useCallback(
@@ -217,6 +230,7 @@ export const TeacherDashboardCurriculumTabList = memo(function ({
                 category={category}
                 loading={loading}
                 onLessonDetails={onLessonDetails}
+                onExamDetails={onExamDetails}
               />
               <div className='w-full text-right'>{createLink(category)}</div>
             </Tab.Panel>

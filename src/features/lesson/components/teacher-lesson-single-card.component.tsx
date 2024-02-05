@@ -139,6 +139,7 @@ export const TeacherLessonSingleCard = memo(function ({
     <BaseSurface
       className={cx(
         'pointer-events-none flex items-center gap-5 !p-2.5 transition-all hover:cursor-pointer hover:!border-primary-focus hover:shadow-md hover:ring-1 hover:ring-primary-focus',
+        isDashboard && 'xs:!pr-5',
         className,
       )}
       rounded='sm'

@@ -93,6 +93,16 @@
   .group-button > .button.solid:not(:last-child):hover {
     @apply !border-r-primary-focus-light;
   }
+
+  @media only screen and (max-width: 549px) {
+    .group-button.mobile-fw {
+      @apply w-full;
+    }
+
+    .group-button > .button {
+      @apply flex-1;
+    }
+  }
 }
 
 .os-scrollbar .os-scrollbar-handle {

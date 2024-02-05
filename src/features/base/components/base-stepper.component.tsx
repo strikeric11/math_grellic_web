@@ -75,6 +75,26 @@ export const BaseStepper = memo(function ({
     );
   }, [isSingleStep, steps]);
 
+  const mobileStepLabel = useMemo(() => {
+    const targetStep = steps && steps[currentIndex];
+
+    if (isSingleStep || !targetStep) {
+      return null;
+    }
+
+    const label = (targetStep.props as ComponentProps<typeof BaseStepperStep>)
+      .label;
+
+    return (
+      <div className='flex items-center py-2 font-medium text-primary-focus'>
+        <div className='mr-1 flex h-full w-5 items-center justify-center'>
+          {currentIndex}
+        </div>
+        <span className='w-max'>{label}</span>
+      </div>
+    );
+  }, [isSingleStep, currentIndex, steps]);
+
   const isForward = useMemo(
     () => (prevIndex <= currentIndex ? 1 : 0),
     [prevIndex, currentIndex],
@@ -117,9 +137,19 @@ export const BaseStepper = memo(function ({
     >
       <div className='flex w-full items-center justify-center pt-2.5 md:pt-0'>
         <BaseDivider />
+        {/* Mobile step labels */}
+        <div
+          className={cx(
+            'my-2 flex h-5 items-center xs:hidden',
+            !isSingleStep ? 'mx-4' : 'mx-0',
+          )}
+        >
+          {mobileStepLabel}
+        </div>
+        {/* Desktop step labels */}
         <ol
           className={cx(
-            'my-2 flex h-5 items-center',
+            'my-2 hidden h-5 items-center xs:flex',
             !isSingleStep ? 'mx-4' : 'mx-0',
           )}
         >
@@ -157,7 +187,7 @@ export const BaseStepper = memo(function ({
       </BaseStepperControls>
       <div
         className={cx(
-          'relative mx-auto min-h-[700px] w-full max-w-[600px] overflow-hidden py-5',
+          'relative mx-auto min-h-[700px] w-full max-w-[600px] overflow-hidden pb-5 pt-2.5 sm:pt-5',
           stepWrapperClassName,
         )}
         {...moreStepWrapperProps}

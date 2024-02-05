@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
+import cx from 'classix';
 
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseControlledNumberInput } from '#/base/components/base-input.component';
@@ -17,10 +18,13 @@ type Props = ComponentProps<'div'> & {
   disabled?: boolean;
 };
 
-const FIXED_FIELD_CLASSNAME = 'flex shrink-0 flex-col items-center gap-y-1';
+const FIXED_FIELD_CLASSNAME =
+  'flex shrink-0 flex-col items-center gap-y-1 -3xs:w-auto w-full';
 const FIXED_FIELD_VALUE_CLASSNAME = 'text-2xl font-medium leading-none';
+const POINTS_LABEL_CLASSNAME =
+  'inline-block text-center text-[13px] -3xs:text-xs uppercase xs:w-auto xs:text-[13px]';
 
-const passingPointsWrapperProps = { className: 'max-w-[203px]' };
+const passingPointsWrapperProps = { className: 'w-full -3xs:max-w-[203px]' };
 
 export const ExamUpsertFormStep2 = memo(function ({
   disabled,
@@ -98,21 +102,25 @@ export const ExamUpsertFormStep2 = memo(function ({
           disabled={disabled}
         >
           <BaseSurface
-            className='flex w-full items-center justify-between gap-5'
+            className='flex w-full flex-wrap items-center justify-center gap-5 -3xs:flex-nowrap -3xs:justify-between'
             rounded='sm'
           >
             <div className={FIXED_FIELD_CLASSNAME}>
               <span className={FIXED_FIELD_VALUE_CLASSNAME}>
                 {totalQuestionCount}
               </span>
-              <small className='uppercase'>Total Questions</small>
+              <small className={cx(POINTS_LABEL_CLASSNAME, '-3xs:w-[70px]')}>
+                Total Questions
+              </small>
             </div>
             <BaseIcon className='w-11 shrink-0 opacity-40' name='x' size={28} />
             <div className={FIXED_FIELD_CLASSNAME}>
               <span className={FIXED_FIELD_VALUE_CLASSNAME}>
                 {pointsPerQuestion}
               </span>
-              <small className='uppercase'>Point Per Question</small>
+              <small className={cx(POINTS_LABEL_CLASSNAME, '-3xs:w-16')}>
+                Point Per Question
+              </small>
             </div>
             <BaseIcon
               className='w-11 shrink-0 opacity-40'
@@ -121,11 +129,13 @@ export const ExamUpsertFormStep2 = memo(function ({
             />
             <div className={FIXED_FIELD_CLASSNAME}>
               <span className={FIXED_FIELD_VALUE_CLASSNAME}>{totalPoints}</span>
-              <small className='uppercase'>Total Points</small>
+              <small className={cx(POINTS_LABEL_CLASSNAME, '-3xs:w-12')}>
+                Total Points
+              </small>
             </div>
           </BaseSurface>
           <BaseSurface
-            className='flex w-full items-center justify-between gap-5'
+            className='flex w-full flex-col items-start justify-between gap-5 -3xs:flex-row -3xs:items-center'
             rounded='sm'
           >
             <BaseControlledNumberInput

@@ -33,6 +33,8 @@ export function TeacherDashboardPage() {
     exams,
     activities,
     handleLessonDetails,
+    handleExamDetails,
+    handleActivityDetails,
   } = useTeacherCurriculumSnippets();
 
   const { loading: todayScheduleLoading, schedules } =
@@ -68,6 +70,7 @@ export function TeacherDashboardPage() {
           activities={activities}
           loading={curriculumLoading}
           onLessonDetails={handleLessonDetails}
+          onExamDetails={handleExamDetails}
         />
         <TeacherDashboardStudentLeaderboard
           className='min-h-[224px]'

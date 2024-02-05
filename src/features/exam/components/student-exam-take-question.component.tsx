@@ -118,11 +118,11 @@ export const StudentExamTakeQuestion = memo(function ({
     >
       <div
         className={cx(
-          'flex gap-x-1 border-b border-accent/20 pl-5 pr-1',
-          isImage ? 'items-start' : 'items-center',
+          'flex flex-col gap-x-1 border-b border-accent/20 px-5 py-2.5 xs:flex-row xs:py-0 xs:pl-5 xs:pr-1',
+          isImage ? 'items-start' : 'items-start xs:items-center',
         )}
       >
-        <span className='py-[18px] pr-2.5 font-medium opacity-70'>
+        <span className='pb-2.5 font-medium opacity-70 xs:py-[18px] xs:pr-2.5'>
           {orderNumber.toString().padStart(2, '0')}.
         </span>
         {!isImage ? (
@@ -151,33 +151,35 @@ export const StudentExamTakeQuestion = memo(function ({
               onClick={handleChange(preview ? orderNumber : id)}
             >
               {isChoiceSelected(preview ? orderNumber : id) && (
-                <div className='z-11 absolute left-0 top-0 flex h-full items-center justify-center px-2.5 text-green-500'>
+                <div className='z-11 absolute right-0 top-0 flex h-full items-start justify-center px-3 py-2.5 text-green-500 xs:left-0 xs:right-auto'>
                   <BaseIcon name='check-fat' weight='fill' size={20} />
                 </div>
               )}
               <div
                 className={cx(
-                  'flex min-h-[40px] flex-1 pr-5 transition-[padding]',
+                  'flex min-h-[40px] flex-1 flex-wrap pr-5 transition-[padding] xs:flex-nowrap',
                   textType === ExActTextType.Image
                     ? 'items-start'
                     : 'items-center',
                   textType === ExActTextType.Expression ? 'pb-1 pt-2' : 'py-2',
                   isChoiceSelected(preview ? orderNumber : id)
-                    ? 'bg-green-100 pl-10'
+                    ? 'bg-green-100 pl-5 xs:pl-10'
                     : 'bg-white pl-5',
                   !isExpired && 'group-hover/choice:bg-green-100',
                 )}
               >
                 <span
                   className={cx(
-                    'mr-2.5 font-medium opacity-70',
+                    'mb-1 font-medium opacity-70 xs:mb-0 xs:mr-2.5',
                     isChoiceSelected(preview ? orderNumber : id) &&
                       'text-green-600',
                   )}
                 >
                   {getChoiceLabel(orderNumber - 1)}.
                 </span>
-                <ChoiceText text={text} textType={textType} />
+                <div className='w-full'>
+                  <ChoiceText text={text} textType={textType} />
+                </div>
               </div>
             </div>
           </li>

@@ -36,8 +36,10 @@ const Button = memo(function ({
       <div className='relative w-full pt-5 transition-transform group-hover/rbtn:-translate-y-5'>
         {children}
         <BaseSurface
-          className={`flex w-full justify-center border border-primary-focus/50 !pb-3 !pt-[170px] font-display text-21px font-bold leading-none
-            tracking-tighter text-primary drop-shadow-primary transition-all group-hover/rbtn:text-primary-focus group-hover/rbtn:drop-shadow-primary-focus`}
+          className={cx(
+            'flex w-full justify-center border border-primary-focus/50 !pb-3 !pt-[170px] font-display text-21px font-bold leading-none',
+            'tracking-tighter text-primary drop-shadow-primary transition-all group-hover/rbtn:text-primary-focus group-hover/rbtn:drop-shadow-primary-focus',
+          )}
           rounded='base'
         >
           {label}
@@ -72,7 +74,7 @@ export const AuthRegisterRolePicker = memo(function ({
         )}
       >
         <div className='mb-12 flex flex-col items-center'>
-          <h2 className='xs:leading-normal mb-2 w-full text-center text-28px leading-tight'>
+          <h2 className='mb-2 w-full text-center text-28px leading-tight xs:leading-normal'>
             Which one are you?
           </h2>
           <span className='text-lg'>

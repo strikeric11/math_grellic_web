@@ -132,7 +132,7 @@ export const StudentUserPickerList = memo(function ({
           </OverlayScrollbarsComponent>
         </div>
       </div>
-      <div className='flex w-full items-center justify-between gap-4'>
+      <div className='flex w-full items-center justify-between gap-4 px-5 pt-2.5 xs:px-0'>
         <BaseButton variant='link' onClick={onCancel}>
           Cancel
         </BaseButton>

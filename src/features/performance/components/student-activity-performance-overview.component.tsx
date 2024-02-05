@@ -80,7 +80,7 @@ export const StudentActivityPerformanceOverview = memo(function ({
                 )}
               </div>
             </div>
-            <span className={`${ACTIVITY_LABEL_CLASSNAME} font-medium`}>
+            <span className={cx(ACTIVITY_LABEL_CLASSNAME, 'font-medium')}>
               Current Overall Rank
             </span>
           </BaseSurface>

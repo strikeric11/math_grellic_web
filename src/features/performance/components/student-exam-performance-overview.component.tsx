@@ -97,7 +97,7 @@ export const StudentExamPerformanceOverview = memo(function ({
                 {overallExamScoreText}
               </span>
             </div>
-            <span className={`${EXAM_LABEL_CLASSNAME} font-medium`}>
+            <span className={cx(EXAM_LABEL_CLASSNAME, 'font-medium')}>
               Current Overall Rank
             </span>
           </BaseSurface>

@@ -110,16 +110,16 @@ export const TeacherExamSingle = memo(function ({
 
   return (
     <div className={cx('w-full pb-16', className)} {...moreProps}>
-      <div className='flex w-full items-center justify-between'>
+      <div className='flex w-full flex-wrap items-start justify-between gap-2.5 sm:flex-nowrap sm:items-center'>
         <div>
           <h2 className='pb-1 text-xl'>{title}</h2>
-          <div className='flex items-center gap-2.5'>
+          <div className='sm:item flex flex-col items-start gap-1 sm:flex-row sm:gap-2.5'>
             <BaseChip iconName='chalkboard-teacher'>
               Exam {orderNumber}
             </BaseChip>
-            <BaseDivider className='!h-6' vertical />
+            <BaseDivider className='hidden !h-6 sm:block' vertical />
             <BaseChip iconName='list-numbers'>{totalPointsText}</BaseChip>
-            <BaseDivider className='!h-6' vertical />
+            <BaseDivider className='hidden !h-6 sm:block' vertical />
             <BaseChip iconName='list-checks'>{passingPointsText}</BaseChip>
             {randomizeQuestions && (
               <>
@@ -165,18 +165,21 @@ export const TeacherExamSingle = memo(function ({
             )}
           </div>
           {schedules.length ? (
-            <div className='flex w-full flex-col gap-y-4'>
+            <div className='flex w-full flex-col gap-2.5 sm:gap-y-4'>
               {schedules.map(({ date, time, duration }, index) => (
-                <div
-                  key={`sched-${index}`}
-                  className='flex items-center gap-2.5'
-                >
-                  <BaseChip iconName='calendar-check'>{date}</BaseChip>
-                  <BaseDivider className='!h-6' vertical />
-                  <BaseChip iconName='clock'>{time}</BaseChip>
-                  <BaseDivider className='!h-6' vertical />
-                  <BaseChip iconName='hourglass'>{duration}</BaseChip>
-                </div>
+                <>
+                  <div
+                    key={`sched-${index}`}
+                    className='flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2.5'
+                  >
+                    <BaseChip iconName='calendar-check'>{date}</BaseChip>
+                    <BaseDivider className='hidden !h-6 sm:block' vertical />
+                    <BaseChip iconName='clock'>{time}</BaseChip>
+                    <BaseDivider className='hidden !h-6 sm:block' vertical />
+                    <BaseChip iconName='hourglass'>{duration}</BaseChip>
+                  </div>
+                  {index < schedules.length - 1 && <BaseDivider />}
+                </>
               ))}
             </div>
           ) : (
@@ -195,8 +198,8 @@ export const TeacherExamSingle = memo(function ({
             ))}
           </div>
           <BaseDivider />
-          <div className='flex items-start'>
-            <div className='mr-4 flex-1 border-r border-accent/20'>
+          <div className='flex flex-col items-start gap-2.5 md:flex-row md:gap-0'>
+            <div className='mr-4 flex-1 border-0 border-accent/20 md:border-r'>
               <h3 className='text-base'>
                 {descriptionHtml ? 'Description' : 'Exam has no description'}
               </h3>
@@ -207,6 +210,7 @@ export const TeacherExamSingle = memo(function ({
                 />
               )}
             </div>
+            <BaseDivider className='block md:hidden' />
             <div className='flex-1'>
               <h3 className='text-base'>
                 {excerpt ? 'Excerpt' : 'Exam has no excerpt'}

@@ -196,10 +196,13 @@ export const StudentExamTakeForm = memo(function ({
           </div>
           <StudentExamTakeFooter
             className='relative z-20'
+            loading={isSubmitting || formLoading}
+            submitDisabled={isDone}
             questions={questions}
             answers={answers}
             ongoingDuration={ongoingDuration}
             preview={preview}
+            onSubmit={handleSetModal(true)}
           />
         </form>
       </div>

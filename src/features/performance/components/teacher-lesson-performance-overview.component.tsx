@@ -60,7 +60,7 @@ export const TeacherLessonPerformanceOverview = memo(function ({
               <span className={LESSON_VALUE_CLASSNAME}>{totalLessonCount}</span>
               <span className={LESSON_LABEL_CLASSNAME}>Total Lessons</span>
             </div>
-            <div className={`${LESSON_WRAPPER_CLASSNAME} flex-1`}>
+            <div className={cx(LESSON_WRAPPER_CLASSNAME, 'flex-1')}>
               <span className={LESSON_VALUE_CLASSNAME}>
                 {totalLessonDuration}
               </span>

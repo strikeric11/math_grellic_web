@@ -149,8 +149,10 @@ export const CoreMobileNav = memo(function ({
           >
             <div className='flex h-12 w-full items-center justify-between py-2'>
               <button
-                className={`flex items-center gap-1 overflow-hidden rounded-4px border border-accent/50 px-1.5 py-1
-                  text-sm leading-none transition-all hover:border-primary-focus hover:text-primary-focus`}
+                className={cx(
+                  'flex items-center gap-1 overflow-hidden rounded-4px border border-accent/50 px-1.5 py-1',
+                  'text-sm leading-none transition-all hover:border-primary-focus hover:text-primary-focus',
+                )}
                 onClick={onUserAccountClick}
               >
                 <BaseIcon name='identification-badge' size={18} />

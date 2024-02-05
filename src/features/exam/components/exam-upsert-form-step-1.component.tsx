@@ -27,7 +27,7 @@ export const ExamUpsertFormStep1 = memo(function ({
         className='group/field flex flex-wrap gap-5'
         disabled={disabled}
       >
-        <div className='flex w-full items-start justify-between gap-5'>
+        <div className='flex w-full flex-col items-start justify-between gap-5 sm:flex-row'>
           <BaseControlledInput
             label='Title'
             name='title'
