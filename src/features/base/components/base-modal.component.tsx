@@ -51,7 +51,7 @@ export function BaseModal({
               >
                 <BaseSurface
                   className={cx(
-                    'relative h-full min-h-[150px] w-full overflow-hidden !rounded-none !bg-backdrop !px-4 shadow-none xs:h-auto xs:!rounded-20px xs:!px-5 xs:shadow-md',
+                    'relative h-full min-h-[150px] w-full overflow-hidden !rounded-none !bg-backdrop px-4 shadow-none xs:h-auto xs:!rounded-20px xs:px-5 xs:shadow-md',
                     onClose ? 'pt-14' : 'pt-8',
                     className,
                   )}

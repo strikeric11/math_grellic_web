@@ -1,6 +1,8 @@
 import { memo, useCallback, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
+import { options } from '#/utils/scrollbar.util';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
@@ -76,29 +78,35 @@ export function StudentScheduleCalendarPage() {
     <>
       <BaseDataSuspense resolve={data?.main}>
         <div id='scene-content' className='flex w-full flex-1 items-start pt-5'>
-          <div className='flex w-full flex-1 flex-col self-stretch pb-5'>
-            {!!today && (
-              <>
-                <ScheduleWeeklyCalendarSelector
-                  className='mb-5'
-                  loading={loading}
-                  today={today}
-                  weekIndex={weekIndex}
-                  onWeekChange={handleWeekChange}
-                  onRefresh={refresh}
-                />
-                {!!timelineSchedules && (
-                  <ScheduleWeeklyCalendar
+          <OverlayScrollbarsComponent
+            className='h-full w-full'
+            options={options}
+            defer
+          >
+            <div className='flex w-full flex-1 flex-col self-stretch pb-5'>
+              {!!today && (
+                <>
+                  <ScheduleWeeklyCalendarSelector
+                    className='mb-5'
                     loading={loading}
                     today={today}
                     weekIndex={weekIndex}
-                    timelineSchedules={timelineSchedules}
-                    onScheduleClick={handleScheduleClick}
+                    onWeekChange={handleWeekChange}
+                    onRefresh={refresh}
                   />
-                )}
-              </>
-            )}
-          </div>
+                  {!!timelineSchedules && (
+                    <ScheduleWeeklyCalendar
+                      loading={loading}
+                      today={today}
+                      weekIndex={weekIndex}
+                      timelineSchedules={timelineSchedules}
+                      onScheduleClick={handleScheduleClick}
+                    />
+                  )}
+                </>
+              )}
+            </div>
+          </OverlayScrollbarsComponent>
           <BaseRightSidebar>
             {today && (
               <StudentScheduleMonthlyCalendar

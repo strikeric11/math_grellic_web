@@ -12,6 +12,8 @@ import { ScheduleCalendarInfo } from '../components/schedule-calendar-info.compo
 import { ScheduleMonthlyCalendar } from '../components/schedule-monthly-calendar.component';
 
 import type { ScheduleCard } from '../models/schedule.model';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
+import { options } from '#/utils/scrollbar.util';
 
 type ScheduleMonthlyCalendarProps = {
   today: Date;
@@ -76,27 +78,33 @@ export function TeacherScheduleCalendarPage() {
     <>
       <BaseDataSuspense resolve={data?.main}>
         <div id='scene-content' className='flex w-full flex-1 items-start pt-5'>
-          <div className='flex w-full flex-1 flex-col self-stretch pb-5'>
-            {!!today && (
-              <>
-                <ScheduleWeeklyCalendarSelector
-                  className='mb-5'
-                  loading={loading}
-                  today={today}
-                  weekIndex={weekIndex}
-                  onWeekChange={handleWeekChange}
-                  onRefresh={refresh}
-                />
-                <ScheduleWeeklyCalendar
-                  loading={loading}
-                  today={today}
-                  weekIndex={weekIndex}
-                  timelineSchedules={timelineSchedules}
-                  onScheduleClick={handleScheduleClick}
-                />
-              </>
-            )}
-          </div>
+          <OverlayScrollbarsComponent
+            className='h-full w-full'
+            options={options}
+            defer
+          >
+            <div className='flex w-full flex-1 flex-col self-stretch pb-5'>
+              {!!today && (
+                <>
+                  <ScheduleWeeklyCalendarSelector
+                    className='mb-5'
+                    loading={loading}
+                    today={today}
+                    weekIndex={weekIndex}
+                    onWeekChange={handleWeekChange}
+                    onRefresh={refresh}
+                  />
+                  <ScheduleWeeklyCalendar
+                    loading={loading}
+                    today={today}
+                    weekIndex={weekIndex}
+                    timelineSchedules={timelineSchedules}
+                    onScheduleClick={handleScheduleClick}
+                  />
+                </>
+              )}
+            </div>
+          </OverlayScrollbarsComponent>
           <BaseRightSidebar>
             {today && (
               <TeacherScheduleMonthlyCalendar

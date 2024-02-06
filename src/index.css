@@ -99,8 +99,10 @@
       @apply w-full;
     }
 
-    .group-button > .button {
+    .group-button.mobile-fw > .button {
       @apply flex-1;
+      @apply !text-sm;
+      @apply !leading-tight;
     }
   }
 }
