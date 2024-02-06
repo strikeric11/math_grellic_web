@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { Menu } from '@headlessui/react';
 import cx from 'classix';
 
@@ -14,7 +14,7 @@ import { UserAvatarImg } from '#/user/components/user-avatar-img.component';
 import { StudentPerformanceType } from '../models/performance.model';
 import { PerformanceRankAwardImg } from './performance-rank-award-img.component';
 
-import type { ComponentProps } from 'react';
+import type { ComponentProps, MouseEvent } from 'react';
 import type { StudentPerformance } from '../models/performance.model';
 
 type Props = ComponentProps<typeof BaseSurface> & {
@@ -23,9 +23,53 @@ type Props = ComponentProps<typeof BaseSurface> & {
   onDetails?: () => void;
 };
 
+type ContextMenuProps = ComponentProps<'div'> & {
+  onDetails?: () => void;
+};
+
 const menuIconProps = { weight: 'bold', size: 48 } as ComponentProps<
   typeof BaseIconButton
 >['iconProps'];
+
+const ContextMenu = memo(function ({
+  className,
+  onDetails,
+  ...moreProps
+}: ContextMenuProps) {
+  const handleClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+  }, []);
+
+  return (
+    <div
+      className={cx('pointer-events-auto relative h-12 w-7', className)}
+      {...moreProps}
+    >
+      <BaseDropdownMenu
+        customMenuButton={
+          <div className='relative h-12 w-7'>
+            <Menu.Button
+              as={BaseIconButton}
+              name='dots-three-vertical'
+              variant='link'
+              className='button absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+              iconProps={menuIconProps}
+              onClick={handleClick}
+            />
+          </div>
+        }
+      >
+        <Menu.Item
+          as={BaseDropdownButton}
+          iconName='article'
+          onClick={onDetails}
+        >
+          Details
+        </Menu.Item>
+      </BaseDropdownMenu>
+    </div>
+  );
+});
 
 export const StudentPerformanceSingleCard = memo(function ({
   className,
@@ -104,41 +148,46 @@ export const StudentPerformanceSingleCard = memo(function ({
       {...moreProps}
     >
       <div
-        className='group pointer-events-auto flex flex-1 items-center gap-4'
+        className='group pointer-events-auto flex flex-1 flex-col items-start gap-4 -2lg:flex-row -2lg:items-center'
         tabIndex={0}
         onClick={onDetails}
       >
-        <div className='flex flex-1 items-center gap-4'>
-          <UserAvatarImg gender={gender} />
-          <div className='flex h-full flex-1 flex-col gap-2'>
-            {/* Info chips */}
-            <div className='flex items-center gap-2.5'>
-              <BaseChip iconName='identification-badge'>{publicId}</BaseChip>
-              <BaseDivider className='!h-6' vertical />
-              <BaseChip iconName='at' className='!lowercase'>
-                {email}
-              </BaseChip>
+        <div className='flex w-full flex-1 flex-col items-center gap-4 xs:flex-row'>
+          <UserAvatarImg className='shrink-0' gender={gender} />
+          <div className='flex w-full items-center justify-between'>
+            <div className='flex flex-1 flex-col gap-2'>
+              {/* Info chips */}
+              <div className='flex flex-col items-start gap-1 xs:flex-row xs:items-center xs:gap-2.5'>
+                <BaseChip iconName='identification-badge' className='shrink-0'>
+                  {publicId}
+                </BaseChip>
+                <BaseDivider className='hidden !h-6 xs:block' vertical />
+                <BaseChip iconName='at' className='!lowercase'>
+                  {email}
+                </BaseChip>
+              </div>
+              {/* Title */}
+              <h2
+                className={cx(
+                  'font-body text-lg font-medium tracking-normal text-accent',
+                  performance === StudentPerformanceType.Exam &&
+                    'group-hover:text-primary-hue-purple-focus',
+                  performance === StudentPerformanceType.Activity &&
+                    'group-hover:text-primary-hue-teal-focus',
+                  performance === StudentPerformanceType.Lesson &&
+                    'group-hover:text-primary-focus',
+                )}
+              >
+                {fullName}
+              </h2>
             </div>
-            {/* Title */}
-            <h2
-              className={cx(
-                'font-body text-lg font-medium tracking-normal text-accent',
-                performance === StudentPerformanceType.Exam &&
-                  'group-hover:text-primary-hue-purple-focus',
-                performance === StudentPerformanceType.Activity &&
-                  'group-hover:text-primary-hue-teal-focus',
-                performance === StudentPerformanceType.Lesson &&
-                  'group-hover:text-primary-focus',
-              )}
-            >
-              {fullName}
-            </h2>
+            <ContextMenu className='block xs:hidden' onDetails={onDetails} />
           </div>
         </div>
         {/* Ranking + score */}
         <div
           className={cx(
-            'flex h-full min-w-[230px] items-center gap-5 font-bold',
+            'flex h-full w-full min-w-[230px] items-center gap-5 font-bold -2lg:w-auto',
             performance === StudentPerformanceType.Exam &&
               '!text-primary-hue-purple',
             performance === StudentPerformanceType.Activity &&
@@ -148,7 +197,7 @@ export const StudentPerformanceSingleCard = memo(function ({
         >
           {performance !== StudentPerformanceType.Lesson ? (
             <>
-              <div className='flex items-center gap-x-2.5'>
+              <div className='flex w-1/2 items-center justify-end gap-x-2.5 -2lg:w-auto -2lg:justify-normal'>
                 <span className='text-4xl'>{overallRankText}</span>
                 {overallRank != null && overallRank <= 10 && (
                   <PerformanceRankAwardImg rank={overallRank} />
@@ -170,47 +219,25 @@ export const StudentPerformanceSingleCard = memo(function ({
           )}
         </div>
       </div>
-      <div className='pointer-events-auto relative h-12 w-7'>
-        <BaseDropdownMenu
-          customMenuButton={
-            <div className='relative h-12 w-7'>
-              <Menu.Button
-                as={BaseIconButton}
-                name='dots-three-vertical'
-                variant='link'
-                className='button absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-                iconProps={menuIconProps}
-              />
-            </div>
-          }
-        >
-          <Menu.Item
-            as={BaseDropdownButton}
-            iconName='article'
-            onClick={onDetails}
-          >
-            Details
-          </Menu.Item>
-        </BaseDropdownMenu>
-      </div>
+      <ContextMenu className='hidden xs:block' onDetails={onDetails} />
     </BaseSurface>
   );
 });
 
 export const StudentPerformanceSingleCardSkeleton = memo(function () {
   return (
-    <div className='flex w-full animate-pulse items-center justify-between gap-x-4 rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-4'>
-      <div className='h-[63px] w-[63px] rounded bg-accent/20' />
-      <div className='flex h-full flex-1 flex-col justify-between gap-3 py-2.5'>
-        <div className='h-6 w-[200px] rounded bg-accent/20' />
+    <div className='flex w-full animate-pulse flex-col items-center justify-between gap-4 rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-4 xs:flex-row'>
+      <div className='h-[63px] w-[63px] shrink-0 rounded bg-accent/20' />
+      <div className='flex h-full w-full flex-1 flex-col justify-between gap-3 py-2.5'>
+        <div className='h-6 w-full rounded bg-accent/20 -3xs:w-[200px]' />
         <div className='h-6 w-28 rounded bg-accent/20' />
       </div>
-      <div className='flex h-full gap-5'>
-        <div className='flex items-center gap-x-5'>
-          <div className='h-10 w-24 rounded bg-accent/20' />
-          <div className='h-10 w-36 rounded bg-accent/20' />
+      <div className='flex h-full w-full justify-center gap-4 xs:justify-normal xs:gap-2.5 sm:w-auto md:gap-5'>
+        <div className='flex w-full items-center gap-4 -3xs:w-auto xs:w-full xs:gap-2.5 sm:w-auto md:gap-5'>
+          <div className='h-10 w-full rounded bg-accent/20 -3xs:w-24 xs:w-full sm:w-24' />
+          <div className='h-10 w-full rounded bg-accent/20 -3xs:w-36 xs:w-full sm:w-36' />
         </div>
-        <div className='h-full w-5 rounded bg-accent/20' />
+        <div className='hidden h-full w-5 rounded bg-accent/20 xs:block' />
       </div>
     </div>
   );

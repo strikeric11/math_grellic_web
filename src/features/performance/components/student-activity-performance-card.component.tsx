@@ -105,7 +105,7 @@ export const StudentActivityPerformanceCard = memo(function ({
           <BaseDivider className='hidden !h-auto md:block' vertical />
           <BaseDivider className='block md:hidden' />
           <div className='flex flex-1 flex-col items-center justify-center font-medium'>
-            <div className='flex w-fit flex-row md:flex-col md:gap-y-4'>
+            <div className='flex w-fit flex-col gap-y-4 -3xs:flex-row md:flex-col'>
               <div className={ACTIVITY_WRAPPER_CLASSNAME}>
                 <span className={ACTIVITY_VALUE_CLASSNAME}>
                   {totalActivityCount}

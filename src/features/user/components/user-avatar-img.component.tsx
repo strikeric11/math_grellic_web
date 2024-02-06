@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import cx from 'classix';
 
 import { UserGender } from '../models/user.model';
 
@@ -13,6 +14,7 @@ type Props = ComponentProps<'div'> & {
 };
 
 export const UserAvatarImg = ({
+  className,
   gender,
   size = 'base',
   ...moreProps
@@ -27,7 +29,10 @@ export const UserAvatarImg = ({
 
   return (
     <div
-      className='flex items-center justify-center overflow-hidden rounded bg-accent'
+      className={cx(
+        'flex items-center justify-center overflow-hidden rounded bg-accent',
+        className,
+      )}
       {...moreProps}
     >
       <img src={src} alt='avatar' width={imgSize} height={imgSize} />

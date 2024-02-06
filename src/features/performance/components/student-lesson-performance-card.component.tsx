@@ -85,7 +85,7 @@ export const StudentLessonPerformanceCard = memo(function ({
         <BaseDivider className='hidden !h-auto md:block' vertical />
         <BaseDivider className='block md:hidden' />
         <div className='flex flex-1 flex-col items-center justify-center font-medium'>
-          <div className='flex w-fit flex-row gap-y-4 md:flex-col'>
+          <div className='flex w-fit grid-cols-2 flex-col gap-y-4 -3xs:grid -3xs:flex-row xs:flex md:flex-col'>
             <div className={LESSON_WRAPPER_CLASSNAME}>
               <span className={LESSON_VALUE_CLASSNAME}>
                 {currentLessonCount}

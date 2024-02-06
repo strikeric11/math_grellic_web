@@ -123,7 +123,7 @@ export const StudentUserPendingEnrollmentList = memo(
         {currentStudent && (
           <BaseSurface
             className={cx(
-              'flex min-h-[125px] flex-col justify-between !p-3',
+              'flex min-h-[125px] flex-col justify-between gap-4 !p-3 -3xs:gap-0',
               onStudentDetails && 'cursor-pointer hover:!border-primary',
               loading &&
                 'pointer-events-none w-full !items-center !justify-center',
@@ -136,8 +136,8 @@ export const StudentUserPendingEnrollmentList = memo(
               <BaseSpinner size='sm' />
             ) : (
               <>
-                <div className='flex items-start gap-2.5'>
-                  <h3 className='flex-1 font-body text-base font-medium !tracking-normal !text-accent'>
+                <div className='flex flex-col items-start gap-2.5 -3xs:flex-row'>
+                  <h3 className='order-last flex-1 font-body text-base font-medium !tracking-normal !text-accent -3xs:order-none'>
                     {fullName}
                   </h3>
                   <BaseChip iconName='calendar-check'>{date}</BaseChip>

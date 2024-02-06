@@ -66,15 +66,15 @@ export const StudentUserSummary = memo(function ({
       )}
       {...moreProps}
     >
-      <div className='flex w-full flex-1 items-center gap-4 pb-2.5'>
+      <div className='flex w-full flex-1 flex-col items-center gap-4 pb-2.5 xs:flex-row'>
         <UserAvatarImg gender={gender} size='lg' />
-        <div className='flex h-full flex-1 flex-col gap-2'>
+        <div className='flex h-full w-full flex-1 flex-col gap-2.5'>
           {/* Info chips */}
-          <div className='flex items-center gap-2.5'>
+          <div className='flex flex-col items-start gap-1 -3xs:flex-row -3xs:items-center -3xs:gap-2.5'>
             <BaseChip iconName='identification-badge'>{publicId}</BaseChip>
-            <BaseDivider className='!h-6' vertical />
+            <BaseDivider className='hidden !h-6 -3xs:block' vertical />
             <BaseChip iconName='identification-badge'>{phoneNumber}</BaseChip>
-            <BaseDivider className='!h-6' vertical />
+            <BaseDivider className='hidden !h-6 -3xs:block' vertical />
             <BaseChip iconName={statusIconName as IconName}>
               {statusLabel}
             </BaseChip>
@@ -88,7 +88,7 @@ export const StudentUserSummary = memo(function ({
           </div>
         </div>
       </div>
-      <div className='flex min-h-[48px] w-full items-center justify-center gap-2.5'>
+      <div className='flex min-h-[48px] w-full flex-col items-center justify-center gap-2.5 -3xs:flex-row'>
         {loading ? (
           <BaseSpinner size='xs' />
         ) : (
