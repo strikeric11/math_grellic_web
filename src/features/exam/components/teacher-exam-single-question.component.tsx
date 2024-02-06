@@ -129,7 +129,7 @@ export const TeacherExamSingleQuestion = memo(function ({
             {text}
           </span>
         ) : (
-          <div className='w-full py-2.5 pr-5 xs:w-auto  xs:pr-0'>
+          <div className='w-full py-2.5 pr-5 xs:w-auto xs:pr-0'>
             <img
               src={text}
               className='overflow-hidden rounded border border-primary-border-light object-contain'

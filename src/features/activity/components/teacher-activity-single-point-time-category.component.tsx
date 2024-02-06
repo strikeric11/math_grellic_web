@@ -57,7 +57,7 @@ const TypeChip = memo(function ({
         <BaseChip iconName='list-checks'>
           {typePointPointsPerQuestionText}
         </BaseChip>
-        <BaseDivider className='!h-6' vertical />
+        <BaseDivider className='hidden !h-6 xs:block' vertical />
         <BaseChip iconName='hourglass'>{typePointDurationText}</BaseChip>
       </>
     );
@@ -113,9 +113,9 @@ export const TeacherActivitySinglePointTimeCategory = memo(function ({
           />
           <h3 className='text-base'>{categoryLevel[level].levelName} Level</h3>
         </div>
-        <div className='flex items-center gap-2.5 text-sm'>
+        <div className='flex flex-col items-start gap-1.5 text-sm xs:flex-row xs:items-center xs:gap-2.5'>
           <BaseChip iconName='list-numbers'>{questionsCountText}</BaseChip>
-          <BaseDivider className='!h-6' vertical />
+          <BaseDivider className='hidden !h-6 xs:block' vertical />
           <TypeChip
             gameType={gameType}
             typePoint={typePoint}
@@ -123,7 +123,7 @@ export const TeacherActivitySinglePointTimeCategory = memo(function ({
           />
           {randomizeQuestions && (
             <>
-              <BaseDivider className='!h-6' vertical />
+              <BaseDivider className='hidden !h-6 xs:block' vertical />
               <BaseChip iconName='check-square'>Randomized</BaseChip>
             </>
           )}

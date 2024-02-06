@@ -110,26 +110,26 @@ export const TeacherExamSingle = memo(function ({
 
   return (
     <div className={cx('w-full pb-16', className)} {...moreProps}>
-      <div className='flex w-full flex-wrap items-start justify-between gap-2.5 sm:flex-nowrap sm:items-center'>
+      <div className='flex w-full flex-col flex-wrap items-start justify-between gap-2.5 -3xs:flex-row -2lg:flex-nowrap -2lg:items-center'>
         <div>
           <h2 className='pb-1 text-xl'>{title}</h2>
-          <div className='sm:item flex flex-col items-start gap-1 sm:flex-row sm:gap-2.5'>
+          <div className='flex flex-col items-start gap-1 -2lg:flex-row -2lg:gap-2.5'>
             <BaseChip iconName='chalkboard-teacher'>
               Exam {orderNumber}
             </BaseChip>
-            <BaseDivider className='hidden !h-6 sm:block' vertical />
+            <BaseDivider className='hidden !h-6 -2lg:block' vertical />
             <BaseChip iconName='list-numbers'>{totalPointsText}</BaseChip>
-            <BaseDivider className='hidden !h-6 sm:block' vertical />
+            <BaseDivider className='hidden !h-6 -2lg:block' vertical />
             <BaseChip iconName='list-checks'>{passingPointsText}</BaseChip>
             {randomizeQuestions && (
               <>
-                <BaseDivider className='!h-6' vertical />
+                <BaseDivider className='hidden !h-6 -2lg:block' vertical />
                 <BaseChip iconName='check-square'>Randomized</BaseChip>
               </>
             )}
             {isDraft && (
               <>
-                <BaseDivider className='!h-6' vertical />
+                <BaseDivider className='hidden !h-6 -2lg:block' vertical />
                 <BaseChip iconName='file-dashed'>Draft</BaseChip>
               </>
             )}
@@ -226,9 +226,9 @@ export const TeacherExamSingle = memo(function ({
             <div className='flex w-full flex-col gap-y-4'>
               {questions.map((question) => (
                 <TeacherExamSingleQuestion
-                  key={question.id}
+                  key={`eq-${question.id}`}
                   question={question}
-                ></TeacherExamSingleQuestion>
+                />
               ))}
             </div>
           </div>

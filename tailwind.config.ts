@@ -106,7 +106,7 @@ export default {
     },
   },
   plugins: [
-    require('@tailwindcss/forms'),
+    import('@tailwindcss/forms'),
     // animation-delay-
     plugin(({ matchUtilities, theme }) => {
       matchUtilities(

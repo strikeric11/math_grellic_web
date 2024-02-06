@@ -140,7 +140,7 @@ export const BaseStepper = memo(function ({
         {/* Mobile step labels */}
         <div
           className={cx(
-            'my-2 flex h-5 items-center xs:hidden',
+            'my-2 flex h-5 items-center -2lg:hidden',
             !isSingleStep ? 'mx-4' : 'mx-0',
           )}
         >
@@ -149,7 +149,7 @@ export const BaseStepper = memo(function ({
         {/* Desktop step labels */}
         <ol
           className={cx(
-            'my-2 hidden h-5 items-center xs:flex',
+            'my-2 hidden h-5 items-center -2lg:flex',
             !isSingleStep ? 'mx-4' : 'mx-0',
           )}
         >

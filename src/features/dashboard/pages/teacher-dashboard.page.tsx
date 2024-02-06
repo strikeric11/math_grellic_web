@@ -71,6 +71,7 @@ export function TeacherDashboardPage() {
           loading={curriculumLoading}
           onLessonDetails={handleLessonDetails}
           onExamDetails={handleExamDetails}
+          onActivityDetails={handleActivityDetails}
         />
         <TeacherDashboardStudentLeaderboard
           className='min-h-[224px]'

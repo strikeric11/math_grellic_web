@@ -77,20 +77,20 @@ export const TeacherActivitySingle = memo(function ({
 
   return (
     <div className={cx('w-full pb-16', className)} {...moreProps}>
-      <div className='mb-2.5 flex w-full items-center justify-between'>
+      <div className='mb-2.5 flex w-full flex-col flex-wrap items-start justify-between gap-2.5 -3xs:flex-row -2lg:flex-nowrap -2lg:items-center'>
         <div>
           <h2 className='pb-1 text-xl'>{title}</h2>
-          <div className='flex items-center gap-2.5'>
+          <div className='flex flex-col items-start gap-1 -2lg:flex-row -2lg:items-center -2lg:gap-2.5'>
             <BaseChip iconName='game-controller'>
               Activity {orderNumber}
             </BaseChip>
-            <BaseDivider className='!h-6' vertical />
+            <BaseDivider className='hidden !h-6 -2lg:block' vertical />
             <BaseChip iconName='dice-three'>{gameName}</BaseChip>
             {isGameTypeStage && (
               <>
-                <BaseDivider className='!h-6' vertical />
+                <BaseDivider className='hidden !h-6 -2lg:block' vertical />
                 <BaseChip iconName='stack'>{totalStageCountText}</BaseChip>
-                <BaseDivider className='!h-6' vertical />
+                <BaseDivider className='hidden !h-6 -2lg:block' vertical />
                 <BaseChip iconName='list-bullets'>
                   {totalQuestionCounText}
                 </BaseChip>
@@ -98,7 +98,7 @@ export const TeacherActivitySingle = memo(function ({
             )}
             {isDraft && (
               <>
-                <BaseDivider className='!h-6' vertical />
+                <BaseDivider className='hidden !h-6 -2lg:block' vertical />
                 <BaseChip iconName='file-dashed'>Draft</BaseChip>
               </>
             )}
@@ -123,9 +123,9 @@ export const TeacherActivitySingle = memo(function ({
         </div>
       </div>
       <BaseDivider className='mb-2.5' />
-      <BaseSurface rounded='sm'>
-        <div className='mb-2.5 flex items-start'>
-          <div className='mr-4 flex-1 border-r border-accent/20'>
+      <BaseSurface className='flex flex-col gap-2.5' rounded='sm'>
+        <div className='flex flex-col items-start gap-2.5 md:flex-row md:gap-0'>
+          <div className='mr-4 flex-1 border-0 border-accent/20 md:border-r'>
             <h3 className='text-base'>
               {descriptionHtml ? 'Description' : 'Activity has no description'}
             </h3>
@@ -136,6 +136,7 @@ export const TeacherActivitySingle = memo(function ({
               />
             )}
           </div>
+          <BaseDivider className='block md:hidden' />
           <div className='flex-1'>
             <h3 className='text-base'>
               {excerpt ? 'Excerpt' : 'Activity has no excerpt'}
@@ -143,7 +144,7 @@ export const TeacherActivitySingle = memo(function ({
             <p className='my-2'>{excerpt}</p>
           </div>
         </div>
-        <BaseDivider className='mb-2.5' />
+        <BaseDivider className='mb-1.5' />
         {/* Categories */}
         {!isGameTypeStage
           ? categories.map((category) => (

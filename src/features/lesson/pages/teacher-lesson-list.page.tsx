@@ -1,7 +1,5 @@
 import { useLoaderData } from 'react-router-dom';
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
-import { options } from '#/utils/scrollbar.util';
 import { capitalize } from '#/utils/string.util';
 import { RecordStatus } from '#/core/models/core.model';
 import { ScheduleType } from '#/schedule/models/schedule.model';
@@ -113,26 +111,20 @@ export function TeacherLessonListPage() {
           )}
         </div>
         <BaseRightSidebar>
-          <OverlayScrollbarsComponent
-            className='h-full w-full'
-            options={options}
-            defer
-          >
-            <div className='flex flex-col gap-5'>
-              <TeacherScheduleDailyCardList
-                schedules={schedules}
-                today={today}
-                currentDate={currentDate}
-                title='Lesson Schedules'
-                loading={dailyScheduleLoading}
-                setCurrentDate={setCurrentDate}
-              />
-              <TeacherLessonPerformanceOverview
-                lessonPerformance={lessonPerformance}
-                loading={lessonPerformanceLoading}
-              />
-            </div>
-          </OverlayScrollbarsComponent>
+          <div className='flex flex-col gap-5'>
+            <TeacherScheduleDailyCardList
+              schedules={schedules}
+              today={today}
+              currentDate={currentDate}
+              title='Lesson Schedules'
+              loading={dailyScheduleLoading}
+              setCurrentDate={setCurrentDate}
+            />
+            <TeacherLessonPerformanceOverview
+              lessonPerformance={lessonPerformance}
+              loading={lessonPerformanceLoading}
+            />
+          </div>
         </BaseRightSidebar>
       </div>
     </BaseDataSuspense>

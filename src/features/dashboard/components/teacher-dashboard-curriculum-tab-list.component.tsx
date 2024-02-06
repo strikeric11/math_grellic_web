@@ -23,6 +23,7 @@ type Props = ComponentProps<typeof BaseSurface> & {
   loading?: boolean;
   onLessonDetails?: (slug: string) => void;
   onExamDetails?: (slug: string) => void;
+  onActivityDetails?: (slug: string) => void;
 };
 
 type CurriculumListProps = {
@@ -33,6 +34,7 @@ type CurriculumListProps = {
   loading?: boolean;
   onLessonDetails?: (slug: string) => void;
   onExamDetails?: (slug: string) => void;
+  onActivityDetails?: (slug: string) => void;
 };
 
 const LESSON_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
@@ -65,6 +67,7 @@ const CurriculumList = memo(function ({
   activities,
   onLessonDetails,
   onExamDetails,
+  onActivityDetails,
 }: CurriculumListProps) {
   const handleLessonDetails = useCallback(
     (slug: string) => () => {
@@ -78,6 +81,13 @@ const CurriculumList = memo(function ({
       onExamDetails && onExamDetails(slug);
     },
     [onExamDetails],
+  );
+
+  const handleActivityDetails = useCallback(
+    (slug: string) => () => {
+      onActivityDetails && onActivityDetails(slug);
+    },
+    [onActivityDetails],
   );
 
   if (loading) {
@@ -117,7 +127,9 @@ const CurriculumList = memo(function ({
             <TeacherActivitySingleCard
               key={`item-${activity.id}`}
               activity={activity}
+              onDetails={handleActivityDetails(activity.slug)}
               role='row'
+              isDashboard
             />
           ))
         ) : (
@@ -160,6 +172,7 @@ export const TeacherDashboardCurriculumTabList = memo(function ({
   activities,
   onLessonDetails,
   onExamDetails,
+  onActivityDetails,
   ...moreProps
 }: Props) {
   const setClassName = useCallback(
@@ -231,6 +244,7 @@ export const TeacherDashboardCurriculumTabList = memo(function ({
                 loading={loading}
                 onLessonDetails={onLessonDetails}
                 onExamDetails={onExamDetails}
+                onActivityDetails={onActivityDetails}
               />
               <div className='w-full text-right'>{createLink(category)}</div>
             </Tab.Panel>

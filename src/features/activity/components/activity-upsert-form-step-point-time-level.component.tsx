@@ -23,8 +23,15 @@ type Props = ComponentProps<'div'> & {
   disabled?: boolean;
 };
 
-const FIXED_FIELD_CLASSNAME = 'flex shrink-0 flex-col items-center gap-y-1';
+const FIXED_FIELD_CLASSNAME =
+  'flex shrink-0 flex-col items-center gap-y-1 w-full xs:w-auto';
 const FIXED_FIELD_VALUE_CLASSNAME = 'text-2xl font-medium leading-none';
+const POINTS_LABEL_CLASSNAME =
+  'inline-block text-center text-[13px] w-auto xs:text-xs uppercase md:w-auto md:text-[13px]';
+
+const durationWrapperProps = {
+  className: 'w-full -2xs:w-auto -2xs:max-w-[280px]',
+};
 
 export const ActivityUpsertFormStepPointTimeLevel = memo(function ({
   className,
@@ -155,7 +162,7 @@ export const ActivityUpsertFormStepPointTimeLevel = memo(function ({
           disabled={disabled}
         >
           <BaseSurface
-            className='flex w-full items-center justify-center gap-5'
+            className='flex w-full flex-col items-center justify-center gap-5 xs:flex-row'
             rounded='sm'
           >
             {game?.type === ActivityCategoryType.Time && (
@@ -181,7 +188,9 @@ export const ActivityUpsertFormStepPointTimeLevel = memo(function ({
               <span className={FIXED_FIELD_VALUE_CLASSNAME}>
                 {totalQuestionCount}
               </span>
-              <small className='uppercase'>Total Questions</small>
+              <small className={cx(POINTS_LABEL_CLASSNAME, 'xs:w-[70px]')}>
+                Total Questions
+              </small>
             </div>
             {game?.type === ActivityCategoryType.Point && (
               <>
@@ -205,25 +214,29 @@ export const ActivityUpsertFormStepPointTimeLevel = memo(function ({
                   <span className={FIXED_FIELD_VALUE_CLASSNAME}>
                     {totalPoints}
                   </span>
-                  <small className='uppercase'>Total Points</small>
+                  <small className={cx(POINTS_LABEL_CLASSNAME, 'xs:w-12')}>
+                    Total Points
+                  </small>
                 </div>
               </>
             )}
           </BaseSurface>
           <BaseSurface
-            className='flex w-full items-center justify-between gap-5'
+            className='flex w-full flex-col items-start justify-between gap-5 -2xs:flex-row -2xs:items-center'
             rounded='sm'
           >
             {game?.type === ActivityCategoryType.Point && (
               <BaseControlledDurationInput
+                wrapperProps={durationWrapperProps}
                 label='Level Duration (hh:mm:ss)'
                 name={`categories.${categoryIndex}.duration`}
                 control={control}
+                fullWidth
                 asterisk
               />
             )}
             <BaseControlledCheckbox
-              labelClassName='mt-0.5 !text-base'
+              labelClassName='mt-0.5 !text-base inline-block w-auto xs:w-[155px]'
               name={`categories.${categoryIndex}.randomizeQuestions`}
               label='Randomize Questions'
               control={control}

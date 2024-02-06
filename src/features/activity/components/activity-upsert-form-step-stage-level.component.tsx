@@ -116,7 +116,7 @@ export const ActivityUpsertFormStepStageLevel = memo(function ({
           disabled={disabled}
         >
           <BaseSurface
-            className='flex w-full items-center justify-between gap-5'
+            className='flex w-full flex-col items-center justify-between gap-5 xs:flex-row'
             rounded='sm'
           >
             <BaseControlledCheckbox

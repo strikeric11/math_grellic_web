@@ -1,7 +1,5 @@
 import { useLoaderData } from 'react-router-dom';
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
-import { options } from '#/utils/scrollbar.util';
 import { capitalize } from '#/utils/string.util';
 import { RecordStatus } from '#/core/models/core.model';
 import { StudentPerformanceType } from '#/performance/models/performance.model';
@@ -102,23 +100,17 @@ export function TeacherActivityListPage() {
           )}
         </div>
         <BaseRightSidebar>
-          <OverlayScrollbarsComponent
-            className='h-full w-full'
-            options={options}
-            defer
-          >
-            <div className='flex flex-col gap-5'>
-              <TeacherActivityPerformanceOverview
-                activityPerformance={activityPerformance}
-                loading={activityPerformanceLoading}
-              />
-              <TeacherStudentPerformanceLeaderboard
-                students={students}
-                performance={StudentPerformanceType.Activity}
-                loading={activityLeaderboardLoading}
-              />
-            </div>
-          </OverlayScrollbarsComponent>
+          <div className='flex flex-col gap-5'>
+            <TeacherActivityPerformanceOverview
+              activityPerformance={activityPerformance}
+              loading={activityPerformanceLoading}
+            />
+            <TeacherStudentPerformanceLeaderboard
+              students={students}
+              performance={StudentPerformanceType.Activity}
+              loading={activityLeaderboardLoading}
+            />
+          </div>
         </BaseRightSidebar>
       </div>
     </BaseDataSuspense>

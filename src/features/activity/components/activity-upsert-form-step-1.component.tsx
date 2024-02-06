@@ -94,7 +94,7 @@ export const ActivityUpsertFormStep1 = memo(function ({
             )}
           />
         </div>
-        <div className='flex w-full items-start justify-between gap-5'>
+        <div className='flex w-full flex-col items-start justify-between gap-5 sm:flex-row'>
           <BaseControlledInput
             label='Title'
             name='title'

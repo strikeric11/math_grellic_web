@@ -24,7 +24,9 @@ const FIXED_FIELD_VALUE_CLASSNAME = 'text-2xl font-medium leading-none';
 const POINTS_LABEL_CLASSNAME =
   'inline-block text-center text-[13px] -3xs:text-xs uppercase xs:w-auto xs:text-[13px]';
 
-const passingPointsWrapperProps = { className: 'w-full -3xs:max-w-[203px]' };
+const passingPointsWrapperProps = {
+  className: 'w-full -3xs:w-auto -3xs:max-w-[203px]',
+};
 
 export const ExamUpsertFormStep2 = memo(function ({
   disabled,

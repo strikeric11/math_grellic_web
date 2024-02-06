@@ -39,7 +39,7 @@ const Choice = memo(function ({
         return (
           <img
             src={value}
-            className='overflow-hidden rounded border border-primary-border-light object-contain'
+            className='mt-2 overflow-hidden rounded border border-primary-border-light object-contain xs:mt-0'
           />
         );
     }
@@ -54,26 +54,26 @@ const Choice = memo(function ({
     <li className='w-full border-b border-accent/20 last:border-b-0'>
       <div className='relative flex w-full items-center'>
         {isCorrect && (
-          <div className='z-11 absolute left-0 top-0 flex h-full items-start justify-center px-3 py-2.5 text-green-500'>
+          <div className='z-11 absolute right-0 top-0 flex h-full items-start justify-center px-3 py-2.5 text-green-500 xs:left-0 xs:right-auto'>
             <BaseIcon name='check-fat' weight='fill' size={20} />
           </div>
         )}
         <div
           className={cx(
-            'flex min-h-[40px] flex-1 bg-white pl-10  pr-5 transition-[padding] group-hover/choice:bg-green-100',
+            'flex min-h-[40px] flex-1 flex-wrap bg-white pl-5 pr-5 transition-[padding] group-hover/choice:bg-green-100 xs:flex-nowrap xs:pl-10',
             textType === ExActTextType.Image ? 'items-start' : 'items-center',
             textType === ExActTextType.Expression ? 'pb-1 pt-2' : 'py-2',
           )}
         >
           <span
             className={cx(
-              'mx-2.5 inline-block w-6 text-left font-medium opacity-70',
+              'mx-0 inline-block w-6 text-left font-medium opacity-70 xs:mx-2.5',
               isCorrect && 'text-green-600',
             )}
           >
             {getChoiceLabel(orderNumber - 1)}.
           </span>
-          {textComponent}
+          <div className='w-full xs:w-auto'>{textComponent}</div>
         </div>
       </div>
     </li>
@@ -117,11 +117,11 @@ export const TeacherActivitySingleQuestion = memo(function ({
     >
       <div
         className={cx(
-          'flex gap-x-1 border-b border-accent/20 px-1',
+          'flex flex-wrap justify-between gap-x-1 border-b border-accent/20 pb-2.5 pl-5 pr-1 xs:flex-nowrap xs:justify-start xs:px-1 xs:pb-0',
           isImage ? 'items-start' : 'items-center',
         )}
       >
-        <div className='flex h-input items-center justify-center'>
+        <div className='flex items-center justify-center xs:h-input'>
           <BaseIconButton
             name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
             variant='link'
@@ -129,13 +129,15 @@ export const TeacherActivitySingleQuestion = memo(function ({
             onClick={handleIsCollapsed}
           />
         </div>
-        <span className='py-[18px] pr-2.5 font-medium opacity-70'>
+        <span className='order-first py-2.5 pr-2.5 font-medium opacity-70 xs:order-none xs:py-[18px]'>
           {orderNumber.toString().padStart(2, '0')}.
         </span>
         {!isImage ? (
-          <span>{text}</span>
+          <span className='inline-block w-full pr-5 xs:w-auto xs:pr-0'>
+            {text}
+          </span>
         ) : (
-          <div className='py-2.5'>
+          <div className='w-full py-2.5 pr-5 xs:w-auto xs:pr-0'>
             <img
               src={text}
               className='overflow-hidden rounded border border-primary-border-light object-contain'

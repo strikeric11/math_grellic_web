@@ -1,8 +1,10 @@
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useWindowSize } from '@uidotdev/usehooks';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import defaultTheme from 'tailwindcss/defaultTheme';
 import cx from 'classix';
 
+import { options } from '#/utils/scrollbar.util';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { useScroll } from '#/core/hooks/use-scroll.hook';
 import { SidebarMode } from '../models/base.model';
@@ -39,6 +41,14 @@ export const BaseRightSidebar = memo(function ({
     return windowWidth < targetWidth;
   }, [windowWidth]);
 
+  const handleModalClose = useCallback(() => {
+    if (rightSidebarMode !== SidebarMode.Expanded) {
+      return;
+    }
+
+    toggleRightSidebarMode();
+  }, [rightSidebarMode, toggleRightSidebarMode]);
+
   useEffect(() => {
     // Set component height by getting scene tile and scene toolbar height,
     // and subtracting it to browser window inner height
@@ -74,13 +84,25 @@ export const BaseRightSidebar = memo(function ({
               isScrollTop ? 'pt-0' : 'pt-16',
             )}
           >
-            {children}
+            <OverlayScrollbarsComponent
+              className='h-full w-full'
+              options={options}
+              defer
+            >
+              {children}
+            </OverlayScrollbarsComponent>
           </div>
         )}
       </aside>
       {isModal && (
-        <BaseModal open={openModal} size='sm' onClose={toggleRightSidebarMode}>
-          <div>{children}</div>
+        <BaseModal open={openModal} size='sm' onClose={handleModalClose}>
+          <OverlayScrollbarsComponent
+            className='h-full w-full'
+            options={options}
+            defer
+          >
+            <div>{children}</div>
+          </OverlayScrollbarsComponent>
         </BaseModal>
       )}
     </>

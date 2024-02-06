@@ -1,7 +1,5 @@
 import { useLoaderData } from 'react-router-dom';
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
-import { options } from '#/utils/scrollbar.util';
 import { useStudentPerformanceSingle } from '#/performance/hooks/use-student-performance-single.hook';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
@@ -44,16 +42,10 @@ export function StudentExamListPage() {
           <div className='bg-gradient sticky bottom-0 h-20 w-full bg-gradient-to-t from-backdrop from-60% to-transparent' />
         </div>
         <BaseRightSidebar>
-          <OverlayScrollbarsComponent
-            className='h-full w-full'
-            options={options}
-            defer
-          >
-            <StudentExamPerformanceOverview
-              studentPerformance={studentPerformance}
-              loading={performanceLoading}
-            />
-          </OverlayScrollbarsComponent>
+          <StudentExamPerformanceOverview
+            studentPerformance={studentPerformance}
+            loading={performanceLoading}
+          />
         </BaseRightSidebar>
       </div>
     </BaseDataSuspense>

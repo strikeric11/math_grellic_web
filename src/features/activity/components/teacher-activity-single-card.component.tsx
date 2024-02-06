@@ -18,7 +18,7 @@ import {
   categoryLevel,
 } from '../models/activity.model';
 
-import type { ComponentProps } from 'react';
+import type { ComponentProps, MouseEvent } from 'react';
 import type { IconName } from '#/base/models/base.model';
 import type {
   Activity,
@@ -28,6 +28,13 @@ import type {
 
 type Props = ComponentProps<typeof BaseSurface> & {
   activity: Activity;
+  isDashboard?: boolean;
+  onDetails?: () => void;
+  onPreview?: () => void;
+  onEdit?: () => void;
+};
+
+type ContextMenuProps = ComponentProps<'div'> & {
   onDetails?: () => void;
   onPreview?: () => void;
   onEdit?: () => void;
@@ -37,9 +44,63 @@ const menuIconProps = { weight: 'bold', size: 48 } as ComponentProps<
   typeof BaseIconButton
 >['iconProps'];
 
+const ContextMenu = memo(function ({
+  className,
+  onDetails,
+  onPreview,
+  onEdit,
+  ...moreProps
+}: ContextMenuProps) {
+  const handleClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+  }, []);
+
+  return (
+    <div
+      className={cx('pointer-events-auto relative h-12 w-7', className)}
+      {...moreProps}
+    >
+      <BaseDropdownMenu
+        customMenuButton={
+          <div className='relative h-12 w-7'>
+            <Menu.Button
+              as={BaseIconButton}
+              name='dots-three-vertical'
+              variant='link'
+              className='button absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+              iconProps={menuIconProps}
+              onClick={handleClick}
+            />
+          </div>
+        }
+      >
+        <Menu.Item
+          as={BaseDropdownButton}
+          iconName='article'
+          onClick={onDetails}
+        >
+          Details
+        </Menu.Item>
+        <Menu.Item
+          as={BaseDropdownButton}
+          iconName='file-text'
+          onClick={onPreview}
+        >
+          Preview
+        </Menu.Item>
+        <BaseDivider className='my-1' />
+        <Menu.Item as={BaseDropdownButton} iconName='pencil' onClick={onEdit}>
+          Edit
+        </Menu.Item>
+      </BaseDropdownMenu>
+    </div>
+  );
+});
+
 export const TeacherActivitySingleCard = memo(function ({
   className,
   activity,
+  isDashboard,
   onDetails,
   onPreview,
   onEdit,
@@ -118,39 +179,54 @@ export const TeacherActivitySingleCard = memo(function ({
       {...moreProps}
     >
       <div
-        className='group pointer-events-auto flex h-full flex-1 items-center gap-4'
+        className={cx(
+          'group pointer-events-auto flex h-full flex-1 flex-col items-start gap-4',
+          isDashboard
+            ? 'flex-col -2lg:flex-row xl:flex-col xl:items-start 2xl:flex-row 2xl:items-center'
+            : 'md:flex-row md:items-center',
+        )}
         tabIndex={0}
         onClick={onDetails}
       >
-        <div className='flex h-full flex-1 items-start gap-4'>
+        <div className='flex h-full w-full flex-1 flex-col items-start gap-4 xs:flex-row'>
           {/* TODO Image */}
-          <div className='flex h-[88px] w-[121px] items-center justify-center overflow-hidden rounded border border-primary-hue-teal bg-primary-hue-teal/30 font-medium'>
+          <div className='flex h-[88px] w-full items-center justify-center overflow-hidden rounded border border-primary-hue-teal bg-primary-hue-teal/30 font-medium xs:w-[121px]'>
             <BaseIcon name='game-controller' size={40} weight='light' />
           </div>
-          <div className='flex h-full flex-1 flex-col justify-between gap-2 py-2'>
-            {/* Info chips */}
-            <div className='flex items-center gap-2.5'>
-              <BaseChip iconName='game-controller'>
-                Activity {orderNumber}
-              </BaseChip>
-              <BaseDivider className='!h-6' vertical />
-              <BaseChip iconName='dice-three'>{gameName}</BaseChip>
-              {isDraft && (
-                <>
-                  <BaseDivider className='!h-6' vertical />
-                  <BaseChip iconName='file-dashed'>Draft</BaseChip>
-                </>
-              )}
+          <div className='flex h-full w-full flex-1 flex-row items-center justify-between xs:w-auto'>
+            <div className='flex h-full flex-1 flex-col justify-between gap-2 py-2'>
+              {/* Info chips */}
+              <div className='flex flex-col items-start gap-1 -3xs:flex-row -3xs:items-center -3xs:gap-2.5'>
+                <BaseChip iconName='game-controller'>
+                  Activity {orderNumber}
+                </BaseChip>
+                <BaseDivider className='hidden !h-6 -3xs:block' vertical />
+                <BaseChip iconName='dice-three'>{gameName}</BaseChip>
+                {isDraft && (
+                  <>
+                    <BaseDivider className='!h-6' vertical />
+                    <BaseChip iconName='file-dashed'>Draft</BaseChip>
+                  </>
+                )}
+              </div>
+              {/* Title */}
+              <h2 className='font-body text-lg font-medium tracking-normal text-accent group-hover:text-primary-hue-teal-focus'>
+                {title}
+              </h2>
             </div>
-            {/* Title */}
-            <h2 className='font-body text-lg font-medium tracking-normal text-accent group-hover:text-primary-hue-teal-focus'>
-              {title}
-            </h2>
+            {!isDashboard && (
+              <ContextMenu
+                className='block xs:hidden'
+                onDetails={onDetails}
+                onPreview={onPreview}
+                onEdit={onEdit}
+              />
+            )}
           </div>
         </div>
         {/* Category info */}
         {!!categories.length && (
-          <div className='flex min-w-[190px] flex-col'>
+          <div className='flex min-w-[190px] flex-col gap-1'>
             {categories.map((category, index) => (
               <div key={`cat-${index}`} className='flex items-center gap-2.5'>
                 {!isGameTypeStage ? (
@@ -163,7 +239,7 @@ export const TeacherActivitySingleCard = memo(function ({
                     </span>
                   </>
                 ) : (
-                  <div>
+                  <div className='flex flex-col gap-1'>
                     <BaseChip iconName='stack'>
                       {generateStageText(category)}
                     </BaseChip>
@@ -177,57 +253,31 @@ export const TeacherActivitySingleCard = memo(function ({
           </div>
         )}
       </div>
-      <div className='pointer-events-auto relative h-12 w-7'>
-        <BaseDropdownMenu
-          customMenuButton={
-            <div className='relative h-12 w-7'>
-              <Menu.Button
-                as={BaseIconButton}
-                name='dots-three-vertical'
-                variant='link'
-                className='button absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-                iconProps={menuIconProps}
-              />
-            </div>
-          }
-        >
-          <Menu.Item
-            as={BaseDropdownButton}
-            iconName='article'
-            onClick={onDetails}
-          >
-            Details
-          </Menu.Item>
-          <Menu.Item
-            as={BaseDropdownButton}
-            iconName='file-text'
-            onClick={onPreview}
-          >
-            Preview
-          </Menu.Item>
-          <BaseDivider className='my-1' />
-          <Menu.Item as={BaseDropdownButton} iconName='pencil' onClick={onEdit}>
-            Edit
-          </Menu.Item>
-        </BaseDropdownMenu>
-      </div>
+      {!isDashboard && (
+        <ContextMenu
+          className='hidden xs:block'
+          onDetails={onDetails}
+          onPreview={onPreview}
+          onEdit={onEdit}
+        />
+      )}
     </BaseSurface>
   );
 });
 
 export const TeacherActivitySingleCardSkeleton = memo(function () {
   return (
-    <div className='flex min-h-[110px] w-full animate-pulse justify-between gap-x-4 rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-4'>
-      <div className='h-full w-[120px] rounded bg-accent/20' />
-      <div className='flex h-full flex-1 flex-col justify-between gap-3 py-2.5'>
-        <div className='h-6 w-[250px] rounded bg-accent/20' />
+    <div className='flex h-full min-h-[110px] w-full animate-pulse flex-col justify-between gap-x-4 rounded-lg bg-accent/20 py-2.5 pl-2.5 pr-4 xs:flex-row'>
+      <div className='h-[90px] w-full shrink-0 rounded bg-accent/20 xs:h-full xs:w-[120px]' />
+      <div className='flex h-full w-full flex-1 flex-col justify-between gap-3 py-2.5'>
+        <div className='h-6 w-full rounded bg-accent/20 -3xs:w-[250px] xs:w-full -2lg:w-[250px]' />
         <div className='h-6 w-[130px] rounded bg-accent/20' />
       </div>
-      <div className='flex h-full gap-5'>
-        <div className='flex flex-col justify-center gap-1.5'>
-          <div className='h-6 w-48 rounded bg-accent/20' />
-          <div className='h-6 w-48 rounded bg-accent/20' />
-          <div className='h-6 w-48 rounded bg-accent/20' />
+      <div className='flex h-full w-auto flex-1 gap-5 -2lg:flex-none'>
+        <div className='flex flex-1 flex-col justify-center gap-1.5'>
+          <div className='h-6 rounded bg-accent/20 -3xs:w-48 xs:w-full -2lg:w-48' />
+          <div className='h-6 rounded bg-accent/20 -3xs:w-48 xs:w-full -2lg:w-48' />
+          <div className='h-6 rounded bg-accent/20 -3xs:w-48 xs:w-full -2lg:w-48' />
         </div>
         <div className='h-full w-5 rounded bg-accent/20' />
       </div>

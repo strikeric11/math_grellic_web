@@ -24,6 +24,18 @@ type Props = ComponentProps<typeof BaseSurface> & {
   onSchedule?: () => void;
 };
 
+type ContextMenuProps = ComponentProps<'div'> & {
+  isDraft?: boolean;
+  onDetails?: () => void;
+  onPreview?: () => void;
+  onEdit?: () => void;
+  onSchedule?: () => void;
+};
+
+const menuIconProps = { weight: 'bold', size: 48 } as ComponentProps<
+  typeof BaseIconButton
+>['iconProps'];
+
 const ContextMenu = memo(function ({
   className,
   isDraft,
@@ -90,18 +102,6 @@ const ContextMenu = memo(function ({
     </div>
   );
 });
-
-type ContextMenuProps = ComponentProps<'div'> & {
-  isDraft?: boolean;
-  onDetails?: () => void;
-  onPreview?: () => void;
-  onEdit?: () => void;
-  onSchedule?: () => void;
-};
-
-const menuIconProps = { weight: 'bold', size: 48 } as ComponentProps<
-  typeof BaseIconButton
->['iconProps'];
 
 export const TeacherExamSingleCard = memo(function ({
   className,

@@ -62,7 +62,7 @@ export const TeacherLessonSingle = memo(function ({
 
   return (
     <div className={cx('w-full', className)} {...moreProps}>
-      <div className='flex w-full flex-col items-start justify-between gap-2.5 -2xs:flex-row -2xs:items-center'>
+      <div className='flex w-full flex-col flex-wrap items-start justify-between gap-2.5 -3xs:flex-row -2lg:flex-nowrap -2lg:items-center'>
         <div>
           <h2 className='pb-1 text-xl'>{title}</h2>
           <div className='flex items-center gap-2.5'>

@@ -1,7 +1,5 @@
 import { useLoaderData } from 'react-router-dom';
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
-import { options } from '#/utils/scrollbar.util';
 import { capitalize } from '#/utils/string.util';
 import { RecordStatus } from '#/core/models/core.model';
 import { ScheduleType } from '#/schedule/models/schedule.model';
@@ -119,31 +117,25 @@ export function TeacherExamListPage() {
           )}
         </div>
         <BaseRightSidebar>
-          <OverlayScrollbarsComponent
-            className='h-full w-full'
-            options={options}
-            defer
-          >
-            <div className='flex flex-col gap-5'>
-              <TeacherScheduleDailyCardList
-                schedules={schedules}
-                today={today}
-                currentDate={currentDate}
-                title='Exam Schedules'
-                loading={dailyScheduleLoading}
-                setCurrentDate={setCurrentDate}
-              />
-              <TeacherExamPerformanceOverview
-                examPerformance={examPerformance}
-                loading={examPerformanceLoading}
-              />
-              <TeacherStudentPerformanceLeaderboard
-                students={students}
-                performance={StudentPerformanceType.Exam}
-                loading={examLeaderboardLoading}
-              />
-            </div>
-          </OverlayScrollbarsComponent>
+          <div className='flex max-h-[600px] flex-col gap-5 lg:max-h-full'>
+            <TeacherScheduleDailyCardList
+              schedules={schedules}
+              today={today}
+              currentDate={currentDate}
+              title='Exam Schedules'
+              loading={dailyScheduleLoading}
+              setCurrentDate={setCurrentDate}
+            />
+            <TeacherExamPerformanceOverview
+              examPerformance={examPerformance}
+              loading={examPerformanceLoading}
+            />
+            <TeacherStudentPerformanceLeaderboard
+              students={students}
+              performance={StudentPerformanceType.Exam}
+              loading={examLeaderboardLoading}
+            />
+          </div>
         </BaseRightSidebar>
       </div>
     </BaseDataSuspense>

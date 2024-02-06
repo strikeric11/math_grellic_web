@@ -141,7 +141,7 @@ export const CoreMobileNav = memo(function ({
         </div>
       </div>
       <BaseModal size='xs' open={openModal} onClose={handleSetModal(false)}>
-        <nav className='block lg:hidden'>
+        <nav className='block h-full lg:hidden'>
           <OverlayScrollbarsComponent
             className='h-full w-full'
             options={options}
