@@ -80,6 +80,8 @@ export function registerStudentUser(
 
     try {
       const user = await kyInstance.post(url, { json }).json();
+      console.log("user info");
+      console.log(user);
       return transformToUser(user);
     } catch (error: any) {
       const apiError = await generateApiError(error);
