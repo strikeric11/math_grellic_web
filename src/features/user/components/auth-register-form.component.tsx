@@ -138,11 +138,11 @@ export const AuthRegisterForm = memo(function ({
     async (data: AuthRegisterFormData) => {
       try {
         const response = await onSubmit(data, userRole);
-        console.log('Server Response:', response);
+        console.log('Server Response 1:', response);
         onDone && onDone(true);
         // TODO show done component
       } catch (error: any) {
-        console.log('error.message', error.message);
+        console.log('error.message 2:', error.message);
         //toast.error(error.message);
       }
     },
