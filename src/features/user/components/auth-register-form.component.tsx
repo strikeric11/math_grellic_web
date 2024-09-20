@@ -142,6 +142,7 @@ export const AuthRegisterForm = memo(function ({
         onDone && onDone(true);
         // TODO show done component
       } catch (error: any) {
+        console.log('error11');
         toast.error(error.message);
       }
     },
