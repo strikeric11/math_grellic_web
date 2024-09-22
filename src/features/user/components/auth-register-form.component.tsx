@@ -136,8 +136,8 @@ export const AuthRegisterForm = memo(function ({
 
   const submitForm = useCallback(
     async (data: AuthRegisterFormData) => {
-      console.log('Server Response data d:', data);
-      console.log('Server Response userRole d:', userRole);
+      console.log('Server Response data e:', data);
+      console.log('Server Response userRole e:', userRole);
       try {
         const response = await onSubmit(data, userRole);
         console.log('Server Response 1:', response);
