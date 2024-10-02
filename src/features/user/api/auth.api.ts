@@ -58,8 +58,6 @@ export function registerTeacherUser(
 
     try {
       const user = await kyInstance.post(url, { json }).json();
-      console.log("user info 1");
-      console.log(user);
       return transformToUser(user);
     } catch (error: any) {
       const apiError = await generateApiError(error);
@@ -82,8 +80,6 @@ export function registerStudentUser(
 
     try {
       const user = await kyInstance.post(url, { json }).json();
-      console.log("user info 2");
-      console.log(user);
       return transformToUser(user);
     } catch (error: any) {
       const apiError = await generateApiError(error);
